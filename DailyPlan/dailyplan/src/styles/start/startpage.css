@@ -1,0 +1,20 @@
+.startpage-header {
+    background-color: #FFEDD3;
+    padding: 20px;
+    text-align: center;
+    border-bottom: 2px solid #ccc;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+    letter-spacing: 0.5em
+}
+
+.startpage-components
+{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

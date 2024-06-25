@@ -1,0 +1,39 @@
+/* menuStyles.css */
+
+/* Estilos generales */
+body {
+    margin: 0;
+}
+
+.menu-container {
+    width: 100%; /* Ancho del menú */
+}
+
+.menu-list {
+    /* width: 100%; */
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: x-large;
+    user-select: none;
+}
+
+.menu-item, .menu-item-close {
+    border-bottom: 2px solid #ccc;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.menu-item:hover {
+    background-color: #f0f0f0;
+}
+
+.menu-item-close:hover {
+    color:#f0f0f0;
+    background-color: #B43F61;
+}
+
+.view-container {
+    flex: 1; 
+    padding: 20px; 
+}

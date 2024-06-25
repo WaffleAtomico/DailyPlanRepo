@@ -1,0 +1,57 @@
+.app-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+select {
+  margin-bottom: 20px;
+}
+
+.calendar-container {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.react-calendar {
+  width: 100%;
+}
+
+.week-view-container {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.week-nav {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.week-days {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  
+}
+
+.day-box {
+  border: 1px solid black;
+  padding: 10px;
+  width: 14%;
+  background-color: aliceblue;
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .day-box {
+    padding: 0px;
+    width: 100%;
+    margin-bottom: 10px;
+    font-size: small;
+    
+  }
+}

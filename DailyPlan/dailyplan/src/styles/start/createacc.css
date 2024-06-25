@@ -1,0 +1,26 @@
+.create-block {
+    width: 24rem;
+    height: fit-content;
+    background-color: #FFEDD3;
+    border-radius: 10px;
+    border: 2px solid black; 
+    justify-content: center;
+    margin-top: auto;
+    overflow: hidden;
+}
+.create-block Form.Control {
+    margin: 1rem;
+}
+.create-action {
+    display: flex;
+    margin-top: 10px;
+}
+.create-action Button {
+    flex-basis: 100%;
+ }
+.create-form
+{
+    padding: 0 1rem;
+}
+
+

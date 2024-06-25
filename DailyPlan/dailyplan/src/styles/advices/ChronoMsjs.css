@@ -1,0 +1,12 @@
+.floating-component {
+    position: fixed;
+    right: 1.5rem;
+    bottom: 0.5rem;
+    font-size: larger;
+    border-radius: 1rem;
+    background-color: #77A3ED;
+    color: white;
+    padding: 1rem;
+    z-index: 101;
+    user-select: none;
+}

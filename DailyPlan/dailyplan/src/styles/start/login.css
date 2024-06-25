@@ -1,0 +1,23 @@
+.login-block {
+    width: 25rem;
+    background-color: #FFEDD3;
+    border-radius: 10px;
+    border: 1px solid black; 
+    padding: 1rem;
+    /* display: flex; */
+     justify-content: center;
+    /* align-items: center;  */
+    overflow: hidden;
+}
+
+.login-action {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.login-action Button {
+    flex-basis: 55%;
+}
+
+

@@ -1,0 +1,33 @@
+.clock-spinner-container {
+    width: 300px; /* Ajusta el ancho según tus necesidades */
+    margin: 0 auto;
+  }
+  
+  .search-input {
+    width: 100%;
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .timezone-list {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .timezone-item {
+    cursor: pointer;
+    padding: 4px;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .timezone-item:hover {
+    background-color: #f5f5f5;
+  }
+
+  .timezone-row{
+    cursor: pointer;
+    padding: 4px;
+    border-bottom: 1px solid #eee;
+  }  
