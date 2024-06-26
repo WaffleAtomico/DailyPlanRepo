@@ -10,6 +10,8 @@ import { addClock, getClock, delClock, ClockExistsInUser} from './requests/clock
 
 import { addAllTitles, getUserTitles, updateTitleStatus } from './requests/archivements.js';
 
+import {  getUsersBlocked, addUserBlocked, delUserBlocked } from './requests/userbloqued.js';
+
 const app = express();
 
 app.use(express.json());
@@ -114,3 +116,13 @@ app.post("/title-addAll", addAllTitles);
 app.post("/title-getAll", getUserTitles);
 
 app.post("/title-updateOne", updateTitleStatus);
+
+
+/*-------------------------- BloqUSR --------------------------  */
+
+app.post("/bloqusr", addUserBlocked);
+
+app.post("/unbloq", delUserBlocked);
+
+app.post("/getusrbloq", getUsersBlocked);
+

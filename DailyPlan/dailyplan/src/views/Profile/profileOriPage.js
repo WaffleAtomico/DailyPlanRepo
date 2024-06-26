@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { getUsrName } from '../../utils/validations/user';
 
 import Archivement_view from "./Archievements";
 import ProfileConfig_view from "./ProfileConfig";
@@ -7,6 +8,9 @@ import ProfileConfig_view from "./ProfileConfig";
 import '../../styles/UI/profile/profGeneral.css'
 
 import { IoIosArrowBack } from "react-icons/io";
+import { FaUserClock } from "react-icons/fa6";
+
+
 
 export default function ProfileOriPage() {
 
@@ -14,6 +18,7 @@ export default function ProfileOriPage() {
     const navigate  = useNavigate();
 
     const [selectedOption, setSelectedOption] = useState(0);
+    const [username, setUsername] = useState('');
 
 
     const handleSuboption = (index) => 
@@ -32,6 +37,7 @@ export default function ProfileOriPage() {
         case 0:
           return (<>
           <ProfileConfig_view 
+            user_id={id}
           />
           </>)
         case 1:
@@ -41,9 +47,19 @@ export default function ProfileOriPage() {
             />
             </>)
         default:
-          return <><ProfileConfig_view /></>
+          return <><ProfileConfig_view  user_id={id}/></>
       }
     }
+
+    useEffect(() => {
+      const getUserName = async (user_id) => {
+        const response = await getUsrName(user_id);
+        console.log("Response in front " + response.user_name);
+        setUsername(response.user_name);
+      };
+      getUserName(id);
+    }, []);
+  
 
     const GoToOrigin = () =>
     {
@@ -56,11 +72,7 @@ export default function ProfileOriPage() {
         <div className='prof-UI-header'>
           <div onClick={()=>GoToOrigin()} className='prof-left-button'> <IoIosArrowBack /> Volver </div>
             <div style={{fontSize: "xx-large", paddingBottom: "1rem"}}>Configuración</div> 
-              {/* <Ui_navbar 
-                handleOptionSelected={handleOptionSelected} 
-                selectedOption={selectedOption}
-              /> */}
-            <button className='prof-right-button'>Perfil</button>
+            <button className='prof-right-button' > <FaUserClock /> {username} </button>
             <button  className='UI-btn-opption' 
             onClick={()=>handleSuboption(selectedOption)} 
             >

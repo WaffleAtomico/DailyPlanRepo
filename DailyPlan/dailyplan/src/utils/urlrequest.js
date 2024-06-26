@@ -1,5 +1,5 @@
 const urllocal = "http://localhost:";
-const urlserver = "https://192.168.15.24:"
+const urlserver = "https://dailyplan-api.javateam.mx"
 const PORT = "3001";
 
 

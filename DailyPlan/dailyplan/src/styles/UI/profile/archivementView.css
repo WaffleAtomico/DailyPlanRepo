@@ -23,4 +23,12 @@
     border: 2px solid #BDBDBD;
     background-color: #F5F5F5;
   }
+
+  .achievement-icon-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px; /* Ajusta según el tamaño necesario */
+}
+
   
