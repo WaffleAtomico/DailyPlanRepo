@@ -37,7 +37,7 @@ export default function ProfileOriPage() {
         case 1:
             return (<>
             <Archivement_view
-              id={id}
+              user_id={id}
             />
             </>)
         default:

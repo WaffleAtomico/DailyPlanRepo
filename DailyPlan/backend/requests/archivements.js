@@ -26,11 +26,25 @@ const addAllTitles = (req, res) => {
 
 
 
+// const getUserTitles = (req, res) => {
+//     const userId = req.body.user_id;
+//     const query = {
+//         sql: 'SELECT * FROM `user_titles` WHERE `user_id` = ?',
+//         values: [userId],
+//     };
+//     db.query(query.sql, query.values, (err, data) => {
+//         if (err) {
+//             return res.json({ message: 'Error fetching titles', error: err });
+//         }
+//         return res.json({ titles: data });
+//     });
+// };
+
 const getUserTitles = (req, res) => {
-    const userId = req.body.user_id;
+    const user_id = req.body.user_id;
     const query = {
-        sql: 'SELECT * FROM `user_titles` WHERE `user_id` = ?',
-        values: [userId],
+        sql: `SELECT t.title_name, ut.title_done FROM user_titles AS ut JOIN titles AS t ON ut.title_id = t.title_id WHERE ut.user_id = ?`,
+        values: [user_id],
     };
     db.query(query.sql, query.values, (err, data) => {
         if (err) {
@@ -38,7 +52,8 @@ const getUserTitles = (req, res) => {
         }
         return res.json({ titles: data });
     });
-};
+}
+
 
 const updateTitleStatus = (req, res) => {
     // const userId = req.body.user_id;

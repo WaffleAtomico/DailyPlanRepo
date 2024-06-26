@@ -1,0 +1,26 @@
+.archivement-view {
+    padding: 20px;
+    padding-bottom: 6rem;
+    max-height: 100vh;
+    overflow-y: auto;
+  }
+  
+  .achievement-card {
+    margin: 20px;
+    text-align: center;
+  }
+  
+  .image-no-bg {
+    background-color: transparent;
+  }
+  
+  .achievement-card.achieved {
+    border: 2px solid #4CAF50;
+    background-color: #E8F5E9;
+  }
+  
+  .achievement-card.unachieved {
+    border: 2px solid #BDBDBD;
+    background-color: #F5F5F5;
+  }
+  
