@@ -1,12 +1,12 @@
-
 .archivement-view {
     padding: 20px;
+    padding-bottom: 6rem;
     max-height: 100vh;
     overflow-y: auto;
   }
   
   .achievement-card {
-    margin-bottom: 20px;
+    margin: 20px;
     text-align: center;
   }
   
