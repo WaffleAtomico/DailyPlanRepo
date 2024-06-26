@@ -11,6 +11,7 @@ import Form from 'react-bootstrap/Form';
 import { IoReturnUpBackSharp } from "react-icons/io5";
 import '../../styles/start/general.css';
 import '../../styles/start/createacc.css';
+import { urllocalhost } from "../../utils/urlrequest";
 
 // NOTA: Puedes pasar la informacion necesaria para iniciar sesión cuando la información de crear cuenta es correcta
 // Para que sea mas facil para el usuario acceder a la cuenta que acaba de crear
@@ -78,12 +79,12 @@ testusr3@gmail.com
 
           // console.log(userInfoToSend);
           try {
-            await axios.post("http://localhost:3001/users", userInfoToSend);
+            await axios.post(`${urllocalhost}/users`, userInfoToSend);
             const user_id = await UserExist(validateInfo);
             if(user_id >= 0)
             {
               console.log(user_id);
-              await axios.post("http://localhost:3001/title-addAll", { user_id })
+              await axios.post(`${urllocalhost}/title-addAll`, { user_id })
             }
             navigate("/login");
             // form.current.reset();

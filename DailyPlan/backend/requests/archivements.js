@@ -43,14 +43,15 @@ const addAllTitles = (req, res) => {
 const getUserTitles = (req, res) => {
     const user_id = req.body.user_id;
     const query = {
-        sql: `SELECT t.title_name, ut.title_done FROM user_titles AS ut JOIN titles AS t ON ut.title_id = t.title_id WHERE ut.user_id = ?`,
+        sql: `SELECT t.title_id, t.title_name, ut.title_done FROM user_titles AS ut JOIN titles AS t ON ut.title_id = t.title_id WHERE ut.user_id = ?`,
         values: [user_id],
     };
+    console.log(user_id);
     db.query(query.sql, query.values, (err, data) => {
         if (err) {
             return res.json({ message: 'Error fetching titles', error: err });
         }
-        return res.json({ titles: data });
+        return res.json(data);
     });
 }
 

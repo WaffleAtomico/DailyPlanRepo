@@ -1,56 +1,91 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Card, Row, Col } from 'react-bootstrap';
 import { FaTrophy } from 'react-icons/fa';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../styles/UI/profile/archivementView.css';
-import { getAllArchivements } from '../../utils/archivements/grantArchivement';
-
-const achievements = [
-    // Agrega más logros si es necesario para llenar las filas
-    { id: 1, title: 'Logro 1', description: 'Descripción del logro 1', image: 'ruta/a/la/imagen1.png', status: 'Logrado' },
-    { id: 2, title: 'Logro 2', description: 'Descripción del logro 2', image: 'ruta/a/la/imagen2.png', status: 'Apagado' },
-    { id: 3, title: 'Logro 3', description: 'Descripción del logro 3', image: 'ruta/a/la/imagen3.png', status: 'Logrado' },
-    { id: 4, title: 'Logro 4', description: 'Descripción del logro 4', image: 'ruta/a/la/imagen4.png', status: 'Apagado' },
-    { id: 5, title: 'Logro 5', description: 'Descripción del logro 5', image: 'ruta/a/la/imagen5.png', status: 'Logrado' },
-    { id: 6, title: 'Logro 6', description: 'Descripción del logro 6', image: 'ruta/a/la/imagen6.png', status: 'Apagado' },
-    { id: 7, title: 'Logro 7', description: 'Descripción del logro 7', image: 'ruta/a/la/imagen7.png', status: 'Logrado' },
-    { id: 8, title: 'Logro 8', description: 'Descripción del logro 8', image: 'ruta/a/la/imagen8.png', status: 'Apagado' },
-    { id: 9, title: 'Logro 9', description: 'Descripción del logro 9', image: 'ruta/a/la/imagen9.png', status: 'Logrado' },
-    { id: 10, title: 'Logro 10', description: 'Descripción del logro 10', image: 'ruta/a/la/imagen10.png', status: 'Apagado' },
-    { id: 11, title: 'Logro 11', description: 'Descripción del logro 11', image: 'ruta/a/la/imagen11.png', status: 'Logrado' },
-    { id: 12, title: 'Logro 12', description: 'Descripción del logro 12', image: 'ruta/a/la/imagen12.png', status: 'Apagado' },
-    { id: 13, title: 'Logro 13', description: 'Descripción del logro 13', image: 'ruta/a/la/imagen13.png', status: 'Logrado' },
-    { id: 14, title: 'Logro 14', description: 'Descripción del logro 14', image: 'ruta/a/la/imagen14.png', status: 'Apagado' },
-    { id: 15, title: 'Logro 15', description: 'Descripción del logro 15', image: 'ruta/a/la/imagen15.png', status: 'Logrado' },
-    { id: 16, title: 'Logro 16', description: 'Descripción del logro 16', image: 'ruta/a/la/imagen16.png', status: 'Apagado' }
-];
+import { getAllArchivements, grantArchivement } from '../../utils/archivements/grantArchivement';
 
 export default function Archivement_view(props) {
+    const additionalFields = {
+        1: { description: "Obten una puntuacion mayor de 80 en puntualidad", image: "image1.png" },
+        2: { description: "Obten una puntuacion mayor de 90 en puntualidad", image: "image2.png" },
+        3: { description: "Obten una puntuacion mayor de 95 en puntualidad", image: "image2.png" },
+        4: { description: "Acepta una invitacion de un recordatorio compartido", image: "image2.png" },
+        5: { description: "Notifica que llegarás tarde", image: "image2.png" },
+        6: { description: "Gana en alguna categoría de competición durante un recordatorio compartido", image: "image2.png" },
+        7: { description: "Comparte una alarma con otro usuario", image: "image2.png" },
+        8: { description: "Completa un ciclo pomodoro", image: "image2.png" },
+        9: { description: "Completa tu primer grupo de objetivos", image: "image2.png" },
+        10: { description: "Completa todas tus actividades a tiempo teniendo activa la preparación", image: "image2.png" },
+        11: { description: "No dejes que baje tu puntualidad por una semana", image: "image2.png" },
+        12: { description: "Crea un recordatorio compartido e invita otros usuarios", image: "image2.png" },
+        13: { description: "Cambia tu titulo des configuración", image: "image2.png" },
+        14: { description: "Agrega un nuevo reloj", image: "image2.png" },
+        15: { description: "Guarda un cronómetro con al menos 5 marcas de tiempo", image: "image2.png" },
+        16: { description: "Obten todos los logros", image: "image2.png" },
+    };
 
     const [titlesfromuser, setTitlesfromuser] = useState([]);
+    const [allAchievementsDone, setAllAchievementsDone] = useState(false);
 
-    const getUserArchivement = async (user_id) => {
-        const gettitles = await getAllArchivements(user_id);
-        return gettitles;
-    }
+    useEffect(() => {
+        const getUserArchivement = async (user_id) => {
+            try {
+                const gettitles = await getAllArchivements(user_id);
+                const updatedTitles = gettitles.map(title => {
+                    if (additionalFields[title.title_id]) {
+                        return {
+                            ...title,
+                            ...additionalFields[title.title_id]
+                        };
+                    }
+                    return title;
+                });
+                setTitlesfromuser(updatedTitles);
+                
+                if (checkAllAchievementsDone(updatedTitles)) {
+                    console.log("Cumple la condición");
+                    await grant16Archivement(user_id);
+                }
 
-    useState(() => {
-        setTitlesfromuser(getUserArchivement(props.user_id));
-        console.log(titlesfromuser);
-    }, [])
+            } catch (error) {
+                console.error("Error fetching titles:", error);
+            }
+        };
 
+        getUserArchivement(props.user_id);
+    }, [props.user_id]);
+
+    useEffect(() => {
+        if (titlesfromuser.length > 0) {
+            console.log("Titles from user", titlesfromuser[0].title_id);
+            console.log("Titles from user", titlesfromuser[0].title_name);
+            console.log("Titles from user", titlesfromuser[0].title_done);
+        }
+    }, [titlesfromuser]);
+
+    const checkAllAchievementsDone = (achievements) => {
+        return achievements.every(achievement => achievement.title_done);
+    };
+
+    const grant16Archivement = async (user_id) => {
+        try {
+            await grantArchivement(user_id, 16);
+        } catch (error) {
+            console.error("Error granting achievement:", error);
+        }
+    };
     
-
     return (
         <Container fluid className="archivement-view">
             <h2 className="text-center">Logros</h2>
             <Row>
-                {achievements.map((achievement) => (
-                    <Col key={achievement.id} xs={6} sm={4} md={2}>
-                        <Card className={`achievement-card ${achievement.status === 'Logrado' ? 'achieved' : 'unachieved'}`}>
+                {titlesfromuser.map((achievement) => (
+                    <Col key={achievement.title_id} xs={6} sm={4} md={2}>
+                        <Card className={`achievement-card ${achievement.title_done ? 'achieved' : 'unachieved'}`}>
                             <Card.Img variant="top" src={achievement.image} className="image-no-bg" />
                             <Card.Body>
-                                <Card.Title>{achievement.title}</Card.Title>
+                                <Card.Title>{achievement.title_name}</Card.Title>
                                 <Card.Text>{achievement.description}</Card.Text>
                             </Card.Body>
                         </Card>
