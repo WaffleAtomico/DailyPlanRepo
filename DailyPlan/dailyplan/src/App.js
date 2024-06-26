@@ -47,15 +47,15 @@ const router = createBrowserRouter([
   {
     path: '/dailyplanconfig/:id',
     element: <ProfileOriPage />,
-  }
+  },
   // { //calendar
   //   path: '/dailyplan/calendar:id',
   //   element: <Calendar_view />
   // },
-  // { //alarm
-  //   path: '/dailyplan/alarm/:id',
-  //   element: <Alarm />,  
-  // },
+   { //alarm
+    path: '/dailyplan/alarm/',
+     element: <Alarm />,  
+   },
   // { //chonometer
   //   path: '/dailyplan/chonometer/:id',
   //   element: <Chrono />,
