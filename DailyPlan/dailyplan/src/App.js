@@ -52,10 +52,10 @@ const router = createBrowserRouter([
   //   path: '/dailyplan/calendar:id',
   //   element: <Calendar_view />
   // },
-   { //alarm
-    path: '/dailyplan/alarm/',
-     element: <Alarm />,  
-   },
+  //  { //alarm
+  //   path: '/dailyplan/alarm/',
+  //    element: <Alarm />,  
+  //  },
   // { //chonometer
   //   path: '/dailyplan/chonometer/:id',
   //   element: <Chrono />,
