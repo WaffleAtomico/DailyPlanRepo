@@ -1,0 +1,135 @@
+body {
+    font-family: Arial;
+    background-color: #ffecd4;
+    font-size: 18px;
+}
+
+.alarma {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center; 
+    gap: 1rem;
+  }
+
+.alarma-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; 
+    gap: 1rem;
+  }
+
+  .horas-container {
+    margin-top: -260px;
+    margin-bottom: 100px;
+    margin-bottom: 10px;
+    align-items: flex-end;
+    justify-content: right; 
+    display: flex;
+  }
+
+  label.texto{
+    font-size: 62px;
+    text-align: left;
+  }
+
+  label.horas{
+    font-size: 172px;
+    text-align: left;
+    margin-right: 40px;
+  }
+
+.toggle-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.time-input {
+    margin-bottom: 1rem;
+}
+
+.confirmar-button-container {
+    margin-top: -1rem;
+    margin-bottom: 1rem;
+}
+
+.confirm {
+    background: linear-gradient(to top left, #ffffff, #e6f9c7);
+    border: 5px solid #4FBD40;
+    border-radius: 25px;
+    color: black;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 18px;
+    width: 280px;
+    padding: 10px 20px;
+    transition: 0.2s all;
+}
+
+.confirm:hover {
+    background: linear-gradient(to top left, #a2e65e, #3fb232);
+    color: #fff;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 20px;
+    margin-left: 15px;
+    margin-right: 15px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #3fb232;
+    transition: 0.4s;
+    border-radius: 20px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    transition: 0.4s;
+    border-radius: 50%;
+}
+
+input:checked+.slider {
+    background-color: #ccc;
+}
+
+input:focus+.slider {
+    box-shadow: 0 0 1px #3fb232;
+}
+
+input:checked+.slider:before {
+    transform: translateX(20px);
+}
+
+input[type="time"] {
+    width: 280px;
+    height: 40px;
+}
+
+input[type="text"] {
+    width: 850px;
+    height: 40px;
+}
