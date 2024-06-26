@@ -70,8 +70,6 @@ export default function ClockView(props) {
         }
         const horaActual1 = moment().tz(zonaHoraria1).format('HH:mm:ss');
         const horaActual2 = moment().tz(zonaHoraria2).format('HH:mm:ss');
-        // console.log(horaActual1);
-        // console.log(horaActual2);
         const hora1 = moment(horaActual1, 'HH:mm:ss');
         const hora2 = moment(horaActual2, 'HH:mm:ss');
         const diferencia = hora2 - hora1;

@@ -1,61 +1,97 @@
-body {
+.sleep-body-nolink {
     font-family: Arial;
     background-color: #ffecd4;
     font-size: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    overflow-y: auto; 
+    height: 100vh;
+    min-height: 100vh;
+    /* padding: 7rem; */
+    /* padding-bottom: 60rem;
+    padding-top: 30rem; */
+    /* margin-bottom: 10rem; */
+}
+.sleep-body-link {
+    font-family: Arial;
+    background-color: #ffecd4;
+    font-size: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    overflow-y: auto; 
+    height: 100vh;
+    min-height: 100vh;
+    /* padding: 7rem; */
+    padding-bottom: 60rem;
+    padding-top: 30rem;
+    /* margin-bottom: 10rem; */
+}
+.content-wrapper {
+    width: 100%;
+    max-width: 850px;
+    gap: 2rem;
+    /* padding: 2rem; */
 }
 
-.alarma {
+.sleep-alarma {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    justify-content: center; 
+    justify-content: center;
     gap: 1rem;
-  }
+}
 
-.alarma-container {
+.sleep-alarma-container {
     display: flex;
+    
     flex-direction: column;
     align-items: center;
-    justify-content: center; 
+    justify-content: center;
     gap: 1rem;
-  }
+}
 
-  .horas-container {
-    margin-top: -260px;
+.sleep-horas-container {
+    margin-top: -8rem;
+    /* font-size: x-large; */
     margin-bottom: 100px;
     margin-bottom: 10px;
     align-items: flex-end;
-    justify-content: right; 
+    justify-content: right;
     display: flex;
-  }
+}
 
-  label.texto{
+.sleep-label.texto {
     font-size: 62px;
     text-align: left;
-  }
+}
 
-  label.horas{
+.sleep-label.horas {
     font-size: 172px;
+    font-size: xx-large;
     text-align: left;
     margin-right: 40px;
-  }
+}
 
-.toggle-container {
+.sleep-toggle-container {
     display: flex;
     align-items: center;
     gap: 0.5rem;
 }
 
-.time-input {
+.sleep-time-input {
     margin-bottom: 1rem;
 }
 
-.confirmar-button-container {
+.sleep-confirmar-button-container {
     margin-top: -1rem;
     margin-bottom: 1rem;
 }
 
-.confirm {
+.sleep-confirm {
     background: linear-gradient(to top left, #ffffff, #e6f9c7);
     border: 5px solid #4FBD40;
     border-radius: 25px;
@@ -68,12 +104,12 @@ body {
     transition: 0.2s all;
 }
 
-.confirm:hover {
+.sleep-confirm:hover {
     background: linear-gradient(to top left, #a2e65e, #3fb232);
     color: #fff;
 }
 
-.switch {
+.sleep-switch {
     position: relative;
     display: inline-block;
     width: 40px;
@@ -82,13 +118,13 @@ body {
     margin-right: 15px;
 }
 
-.switch input {
+.sleep-switch input {
     opacity: 0;
     width: 0;
     height: 0;
 }
 
-.slider {
+.sleep-slider {
     position: absolute;
     cursor: pointer;
     top: 0;
@@ -100,7 +136,7 @@ body {
     border-radius: 20px;
 }
 
-.slider:before {
+.sleep-slider:before {
     position: absolute;
     content: "";
     height: 16px;
@@ -112,24 +148,38 @@ body {
     border-radius: 50%;
 }
 
-input:checked+.slider {
+.sleep-input:checked+.slider {
     background-color: #ccc;
 }
 
-input:focus+.slider {
+.sleep-input:focus+.slider {
     box-shadow: 0 0 1px #3fb232;
 }
 
-input:checked+.slider:before {
+.sleep-input:checked+.slider:before {
     transform: translateX(20px);
 }
 
-input[type="time"] {
+.sleep-input[type="time"] {
     width: 280px;
     height: 40px;
 }
 
-input[type="text"] {
-    width: 850px;
+.sleep-input[type="text"] {
+    width: 100%;
     height: 40px;
+    margin-top: 2rem;
+    padding: 0.5rem;
+}
+
+.media-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 2rem;
+}
+
+.media-container {
+    margin-top: 2rem;
 }
