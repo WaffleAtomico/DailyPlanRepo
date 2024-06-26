@@ -1,75 +1,89 @@
 import { useState } from "react";
 import '../../styles/UI/profile/profconfig.css';
 import { useNavigate } from 'react-router-dom';
-
-
+import { BloqUser, PersoInfo, UserNodif, UserPermissions, UserTitles } from "../../components/profileconfig/userConfigOptions";
 
 export default function ProfileConfig_view(props) {
 
-    const navigate  = useNavigate();
+    const navigate = useNavigate();
     const [widthmenui, setWidthmenui] = useState(100)
-    const [optionselected, setOptionselected] =useState(0);
+    const [optionselected, setOptionselected] = useState(0);
 
-    const RenderOption = () => 
-    {
-        // console.log("opcion: " + optionselected);
+    const RenderOption = () => {
         switch (optionselected) {
-            // case 0:
-            //     return (<>Nadota</>)
             case 1:
-                return (<>Info personal</>)
+                return (<PersoInfo id={props.user_id}/>)
             case 2:
-                return (<>Títulos</>)
+                return (<UserTitles id={props.user_id}/>)
             case 3:
-                return (<>Permisos</>)
+                return (<UserPermissions id={props.user_id}/>)
             case 4:
-                return (<>Usuarios bloqueados</>)
+                return (<BloqUser id={props.user_id}/>)
             case 5:
-                return (<>Notificaciones</>)
+                return (<UserNodif id={props.user_id}/>)
             default:
-                return (<>Nadota</>)
+                return (<></>)
         }
     }
 
-    const handleOptionSelected = (option) =>
-    {
-        if(option !== optionselected)
-        {
+    const handleOptionSelected = (option) => {
+        if (option !== optionselected) {
             setWidthmenui(50);
             setOptionselected(option);
-        }else
-        {
-            if(widthmenui === 100)
-            {
-                setWidthmenui(50) 
-            }else
-            {
+        } else {
+            if (widthmenui === 100) {
+                setWidthmenui(50)
+            } else {
                 setWidthmenui(100);
                 setOptionselected(0);
             }
-            // (widthmenui === 100 ? setWidthmenui(50) : (setWidthmenui(100), setOptionselected(0) ));  
-            // (widthmenui === 100 ? (setWidthmenui(50), setOptionselected(0)) : setWidthmenui(100));
         }
     }
 
-    const closeSesion = () =>
-    {
+    const closeSesion = () => {
         navigate('/login');
     }
 
-    return(
-    <div className="menu-container">
-        <ul className="menu-list" style={{width: `${widthmenui}%`}} >
-            <li className="menu-item" onClick={() => handleOptionSelected(1)}>Información personal</li>
-            <li className="menu-item" onClick={() => handleOptionSelected(2)}>Títulos</li>
-            <li className="menu-item" onClick={() => handleOptionSelected(3)}>Permisos</li>
-            <li className="menu-item" onClick={() => handleOptionSelected(4)}>Usuarios bloqueados</li>
-            <li className="menu-item" onClick={() => handleOptionSelected(5)}>Notificaciones</li>
-            <li className="menu-item-close" onClick={()=>closeSesion()} >Cerrar sesión</li>
-        </ul>
-        <div >
-            {RenderOption()}
+    return (
+        <div className="menu-container" style={{ display: 'flex' }}>
+            <table className="menu-list" style={{ width: `${widthmenui}%` }}>
+                <tbody>
+                    <tr>
+                        <td className={`menu-item ${optionselected === 1 ? 'selected' : ''}`} onClick={() => handleOptionSelected(1)}>
+                            Información personal
+                        </td>
+                    </tr>
+                    <tr>
+                        <td className={`menu-item ${optionselected === 2 ? 'selected' : ''}`} onClick={() => handleOptionSelected(2)}>
+                            Títulos
+                        </td>
+                    </tr>
+                    <tr>
+                        <td className={`menu-item ${optionselected === 3 ? 'selected' : ''}`} onClick={() => handleOptionSelected(3)}>
+                            Permisos
+                        </td>
+                    </tr>
+                    <tr>
+                        <td className={`menu-item ${optionselected === 4 ? 'selected' : ''}`} onClick={() => handleOptionSelected(4)}>
+                            Usuarios bloqueados
+                        </td>
+                    </tr>
+                    <tr>
+                        <td className={`menu-item ${optionselected === 5 ? 'selected' : ''}`} onClick={() => handleOptionSelected(5)}>
+                            Notificaciones
+                        </td>
+                    </tr>
+                    <tr>
+                        <td className="menu-item-close" onClick={() => closeSesion()}>Cerrar sesión</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            {optionselected !== 0 && (
+                <div style={{ width: '50%' }}>
+                    {RenderOption()}
+                </div>
+            )}
         </div>
-    </div>
     );
 }
