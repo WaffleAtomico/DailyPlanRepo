@@ -5,7 +5,7 @@ import Ui_navbar from "../../components/nav/UinavBar";
 import Calendar from "./Calendar";
 import Alarm from "./Alarm";
 import Chrono from "./Chrono";
-import Timer from "./Timer";
+import CountdownTimer from "./CountdownTimer";
 import Clock from "./Clock";
 import Invitation from "./Invtitation";
 import Sleep from './Sleep';
@@ -19,6 +19,7 @@ import ChronoIndicator from "../../components/advices/ChronoMsjs";
 
 import '../../styles/UI/Origin/UI.css';
 import '../../styles/start/startpage.css';
+import '../../styles/UI/Countdowntimer/style.css';
 
 import { FaUserClock } from "react-icons/fa6";
 import { getUsrName } from '../../utils/validations/user';
@@ -162,7 +163,7 @@ export default function OriginPage() {
             handleStaStoChrono={handleStaSto}
             handleResetChrono={handleReset}
           />}
-          {selectedOption === 3 && <Timer />}
+          {selectedOption === 3 && <CountdownTimer />}
           {selectedOption === 4 && <Clock id_user={id} />}
           {selectedOption === 5 && <Invitation />}
           {/* {selectedOption === 6 && <Configuration />} */}
