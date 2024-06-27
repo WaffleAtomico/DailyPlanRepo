@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { isValidEmail, EmailExist} from "../../utils/validations/user"
+import { isValidEmail, EmailExist, getUsrByEmail} from "../../utils/validations/user"
 import { BdNoCon } from "../../components/advices/ErrorMsjs"
 
 
@@ -12,6 +12,7 @@ import { IoReturnUpBackSharp  } from "react-icons/io5";
 import '../../styles/start/general.css'; 
 import '../../styles/start/createacc.css';
 
+//import { ReactSession }  from 'react-client-session';
 
 export default function Recover_pwd(props) {
 
@@ -25,18 +26,37 @@ export default function Recover_pwd(props) {
   };
 
   const sendForm = (e) => {
-      e.preventDefault();
-      // Ask if the mail exist
-      if(isValidEmail(user_mail) && EmailExist(user_mail))
-      {
-          // alert("Formulario enviado");
-          form.current.reset();
-          navigate(`/restore_pwd/${user_mail}`);
-      }else
-      {
-        alert("Ingresa un correo electronico")
-      }
-  }
+    e.preventDefault();
+    // Ask if the mail exist
+    var emailvalid = isValidEmail(user_mail);	  
+    if (emailvalid)
+    {
+    var emailexist = EmailExist(user_mail);
+    if (emailexist) {
+      const storedCount = localStorage.getItem('recuperacion');
+      var count = storedCount ? parseInt(storedCount) : 0;
+      if (count < 10) {
+        count = count + 1;
+        localStorage.setItem('recuperacion',count);
+        
+        var datausr = getUsrByEmail(user_mail);
+        console.log(datausr);
+        
+        form.current.reset();        
+        alert("datos usuario " + datausr);
+        //navigate(`/restore_pwd/${user_mail}`);
+      } else {
+        alert("Excedidos los intentos de recuperacion")    
+      }				
+    } else
+    {
+      alert("Cuenta de correo electronico no registrada")
+    }
+    } else
+    {
+    alert("Ingresa un correo electronico")
+    }
+}
 
     return (
       <>

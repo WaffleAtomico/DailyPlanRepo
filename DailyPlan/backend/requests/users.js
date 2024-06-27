@@ -196,6 +196,30 @@ const userExistsByNumber = (req, res) => {
     });
 };
 
+const getUserByMail = (req, res) => {
+    // console.log("En back el correo: " + req.body.user_mail);
+    const query = {
+        sql: "SELECT * FROM users WHERE `user_status` = 1 AND `user_mail` = ?",
+        values: [req.body.user_mail],
+    };
+    db.query(query.sql, query.values, (err, data) => {
+        if (err) return res.json(err);
+        return res.json(data);
+    });
+};
+
+const getUserByNumber = (req, res) => {
+    // console.log("En back el telefono: " + req.body.user_number);
+    const query = {
+        sql: "SELECT * FROM users WHERE `user_status` = 1 AND `user_number` = ?",
+        values: [req.body.user_number],
+    };
+    db.query(query.sql, query.values, (err, data) => {
+        if (err) return res.json(err);
+        return res.json(data);
+    });
+};
+
 export { getUsers,
         getConn,
         getUser,
@@ -205,5 +229,7 @@ export { getUsers,
         userExists,
         userExistsByEmail,
         userExistsByName,
-        userExistsByNumber 
+        userExistsByNumber,
+        getUserByMail,
+        getUserByNumber
         };
