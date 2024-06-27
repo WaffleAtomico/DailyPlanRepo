@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { BsBell } from "react-icons/bs"
 import Timer from "./Timer";
 
 document.body.style.background = "#FFEDD3";

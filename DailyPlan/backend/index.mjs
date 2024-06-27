@@ -2,14 +2,28 @@ import express from "express";
 import cors from "cors";
 import nodemailer from "nodemailer";
 
+import { loginUser } from "./requests/app.js";
 import { getUsers, getConn, getUser, createUser, updateUser, deleteUser, userExists, userExistsByEmail, 
     userExistsByName, userExistsByNumber, getUserByMail, getUserByNumber } from './requests/users.js';
 
-import { addClock, getClock, delClock, ClockExistsInUser} from './requests/clocks.js';
+import {
+  addClock,
+  getClock,
+  delClock,
+  ClockExistsInUser,
+} from "./requests/clocks.js";
 
-import { addAllTitles, getUserTitles, updateTitleStatus } from './requests/archivements.js';
+import {
+  addAllTitles,
+  getUserTitles,
+  updateTitleStatus,
+} from "./requests/archivements.js";
 
-import {  getUsersBlocked, addUserBlocked, delUserBlocked } from './requests/userbloqued.js';
+import {
+  getUsersBlocked,
+  addUserBlocked,
+  delUserBlocked,
+} from "./requests/userbloqued.js";
 
 import { sendMailrest } from "./requests/mail.js";
 
@@ -18,8 +32,8 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-app.get("/", (req,res) => {
-    res.json("Hello this is the backend");
+app.get("/", (req, res) => {
+  res.json("Hello this is the backend");
 });
 
 app.listen(3001, () =>
@@ -63,18 +77,18 @@ export const transporter = nodemailer.createTransport({
 /*-------------------------- Envio de correo --------------------------*/
 app.post('/send', sendMailrest);
 
-
 /*-------------------------- Conn --------------------------*/
-
 
 app.get("/conn", getConn);
 
-/*-------------------------- Users --------------------------*/
+/*-------------------------- Login --------------------------*/
+app.post("/login", loginUser);
 
+/*-------------------------- Users --------------------------*/
 
 app.get("/users", getUsers);
 
-app.post("/get-userinfo" , getUser);
+app.post("/get-userinfo", getUser);
 
 /*
 {
@@ -166,7 +180,6 @@ app.post("/title-getAll", getUserTitles);
 
 app.post("/title-updateOne", updateTitleStatus);
 
-
 /*-------------------------- BloqUSR --------------------------  */
 
 app.post("/bloqusr", addUserBlocked);
@@ -174,8 +187,6 @@ app.post("/bloqusr", addUserBlocked);
 app.post("/unbloq", delUserBlocked);
 
 app.post("/getusrbloq", getUsersBlocked);
-
-
 
 /*-------------------------------spotify------------------------- */
 
