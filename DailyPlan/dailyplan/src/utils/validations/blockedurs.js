@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { urllocalhost } from "../urlrequest";
 
 export const addUserBlocked = async (userBlockedInfo) => {
     try {
@@ -22,9 +23,9 @@ export const delUserBlocked = async (userBlockedId) => {
 };
 
 
-export const getUsersBlocked = async (userId) => {
+export const getUsersBlocked = async (user_id) => {
     try {
-        const response = await axios.post(`${urllocalhost}/getusrbloq`, { user_id: userId });
+        const response = await axios.post(`${urllocalhost}/getusrbloq`, { user_id });
         return response.data;
     } catch (err) {
         console.error('Error retrieving blocked users:', err);
