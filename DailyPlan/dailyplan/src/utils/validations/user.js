@@ -32,27 +32,27 @@ export const UserExist = async (userInfoLogin) => {
 }
 }
 
-export const EmailExist = async (user_mail) => 
+export const EmailExist = (user_mail) => 
 {
   console.log(user_mail);
   try {
-      const response = await axios.post(`${urllocalhost}/users-existmail`, { user_mail });
+      const response = axios.post(`${urllocalhost}/users-existmail`, { user_mail });
       console.log(response.data.exists); //true  si existe, false  no existe
       return response.data.exists;
   } catch (err) {
-      console.log(err);
+      return false;
   }
 }
 
-export const NumberExist = async (user_number) => 
+export const NumberExist = (user_number) => 
 {
   console.log(user_number);
   try {
-      const response = await axios.post(`${urllocalhost}/users-existnumber`, { user_number });
+      const response = axios.post(`${urllocalhost}/users-existnumber`, { user_number });
       console.log(response.data.exists); //true  si existe, false  no existe
       return response.data.exists;
   } catch (err) {
-      console.log(err);
+      return false;
   }
 }
 
@@ -78,3 +78,15 @@ export const getUsrName = async (user_id) => {
       console.log(err);
   }
 }
+
+export const getUsrByEmail = (user_mail) => 
+  {
+    console.log(user_mail);
+    try {
+        const response = axios.post(`${urllocalhost}/user-bymail`, { user_mail });
+        console.log(response.data); 
+        return response.data;
+    } catch (err) {
+        return false;
+    }
+  }
