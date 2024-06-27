@@ -1,0 +1,92 @@
+.clock-view-container {
+    max-width: 800px;
+    max-height: 100vh; 
+    overflow-y: auto;
+    margin: 0 auto;
+    padding: 2rem;
+    padding-bottom: 10rem;
+    margin-bottom: 4rem;
+    font-family: Arial, sans-serif;
+}
+
+.clock-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.clock-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.clock-analog {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.clock-analog .analog-clock {
+    width: 200px;
+    height: 200px;
+    background-color: #f0f0f0;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.clock-analog .hour-hand,
+.clock-analog .minute-hand,
+.clock-analog .second-hand {
+    /* Estilos para las manecillas del reloj analógico */
+}
+
+.clock-spinners {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.diferencia-horas {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.button-large {
+    font-size: 16px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.button-large:hover {
+    background-color: #0056b3;
+}
+
+.clock-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.clock-table th, .clock-table td {
+    padding: 10px;
+    text-align: center;
+    font-size: 16px;
+    border: 1px solid #ccc;
+}
+
+.icon-large {
+    font-size: 20px;
+    cursor: pointer;
+    color: #ff0000;
+}

@@ -10,13 +10,14 @@ import Createacc from './views/login/Createacc';
 import Recoverpwd from './views/login/Recoverpwd';
 import Restore_pwd from './views/login/Restorepwd';
 import OriginPage from './views/UI/Originpage';
-import Calendar_view from "./views/UI/Calendar";
-import Alarm from "./views/UI/Alarm";
-import Chrono from "./views/UI/Chrono";
-import Timer from "./views/UI/Timer";
-import Clock from "./views/UI/Clock";
-import Invitation from "./views/UI/Invtitation";
 import ProfileOriPage from './views/Profile/profileOriPage';
+
+// import Calendar_view from "./views/UI/Calendar";
+// import Alarm from "./views/UI/Alarm";
+// import Chrono from "./views/UI/Chrono";
+// import Timer from "./views/UI/Timer";
+// import Clock from "./views/UI/Clock";
+// import Invitation from "./views/UI/Invtitation";
 
 const router = createBrowserRouter([
   { //login
@@ -48,30 +49,6 @@ const router = createBrowserRouter([
     path: '/dailyplanconfig/:id',
     element: <ProfileOriPage />,
   },
-  // { //calendar
-  //   path: '/dailyplan/calendar:id',
-  //   element: <Calendar_view />
-  // },
-  //  { //alarm
-  //   path: '/dailyplan/alarm/',
-  //    element: <Alarm />,  
-  //  },
-  // { //chonometer
-  //   path: '/dailyplan/chonometer/:id',
-  //   element: <Chrono />,
-  // },
-  // { //timer
-  //   path: '/dailyplan/timer/:id',
-  //   element: <Timer />,
-  // },
-  // { //clock
-  //   path: '/dailyplan/clock/:id',
-  //   element: <Clock />,
-  // },
-  // { //invitations
-  //   path: '/dailyplan/invitation/:id',
-  //   element: <Invitation />,
-  // },
 ]);
 
 function App() {

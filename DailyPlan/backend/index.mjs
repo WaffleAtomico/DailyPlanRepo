@@ -1,22 +1,10 @@
 import express from "express";
 import cors from "cors";
-// import mysql from "mysql"
-// import { db } from './server/connection.js';
+import nodemailer from "nodemailer";
 
 import { loginUser } from "./requests/app.js";
-
-import {
-  getUsers,
-  getConn,
-  getUser,
-  createUser,
-  updateUser,
-  deleteUser,
-  userExists,
-  userExistsByEmail,
-  userExistsByName,
-  userExistsByNumber,
-} from "./requests/users.js";
+import { getUsers, getConn, getUser, createUser, updateUser, deleteUser, userExists, userExistsByEmail, 
+    userExistsByName, userExistsByNumber, getUserByMail, getUserByNumber } from './requests/users.js';
 
 import {
   addClock,
@@ -37,6 +25,8 @@ import {
   delUserBlocked,
 } from "./requests/userbloqued.js";
 
+import { sendMailrest } from "./requests/mail.js";
+
 const app = express();
 
 app.use(express.json());
@@ -46,11 +36,46 @@ app.get("/", (req, res) => {
   res.json("Hello this is the backend");
 });
 
-//You could make a const with the name of PORT
-
-app.listen(3001, () => {
-  console.log("Connected to backend! on port 3001");
+app.listen(3001, () =>
+{
+    console.log("Connected to backend! on port 3001")
 });
+
+/**--------------------- MAIL ------------------ */
+
+export const transporter = nodemailer.createTransport({
+    pool: true,
+    host: "mail.javateam.com.mx",
+    port: 587,
+    secure: false, // use TLS
+    auth: {
+      user: "dailyplan@javateam.com.mx",
+      pass: "d4i1yp!an2024",
+    },
+    tls:{
+      ciphers:'SSLv3'
+    }
+  });
+  
+  // async..await is not allowed in global scope, must use a wrapper
+  async function main() {
+    // send mail with defined transport object
+    const info = await transporter.sendMail({
+      from: '"DailyPlan" <dailyplan@javateam.com.mx>', // sender address
+      to: "openilla@javateam.com.mx", // list of receivers
+      subject: "Hello", // Subject line
+      text: "Hello world?", // plain text body
+      html: "<b>Hello world?</b>", // html body
+    });
+  
+    console.log("Message sent: %s", info.messageId);
+    // Message sent: <d786aa62-4e0a-070a-47ed-0b0666549519@ethereal.email>
+  }
+  //prueba de envio de correo
+  //main().catch(console.error);
+
+/*-------------------------- Envio de correo --------------------------*/
+app.post('/send', sendMailrest);
 
 /*-------------------------- Conn --------------------------*/
 
@@ -122,6 +147,21 @@ app.post("/users-existname", userExistsByName);
 */
 app.post("/users-existnumber", userExistsByNumber);
 
+/* 
+{
+    "user_mail": "testTitle@gmail.com"
+}
+*/
+app.post("/user-bymail", getUserByMail);
+
+/* 
+{
+    "user_number": "3312345678"
+}
+*/
+app.post("/user-bynumber", getUserByNumber);
+
+
 /*-------------------------- Clocks --------------------------*/
 
 app.post("/clock-id", addClock);
@@ -147,3 +187,37 @@ app.post("/bloqusr", addUserBlocked);
 app.post("/unbloq", delUserBlocked);
 
 app.post("/getusrbloq", getUsersBlocked);
+
+/*-------------------------------spotify------------------------- */
+
+const CLIENT_ID = 'b8a02610f9414e06875e2a1ab33695a6';
+const CLIENT_SECRET = 'ece004e5f2d44a9e9f4ad4b80140532e';
+const REDIRECT_URI = 'http://localhost:3000/callback';
+
+
+app.get('/auth-url', (req, res) => {
+    const scopes = [
+        'user-modify-playback-state',
+        'user-read-playback-state',
+    ];
+    const authUrl = `https://accounts.spotify.com/authorize?client_id=${CLIENT_ID}&response_type=code&redirect_uri=${REDIRECT_URI}&scope=${scopes.join('%20')}`;
+    res.send({ url: authUrl });
+});
+
+app.post('/get-token', async (req, res) => {
+    const { code } = req.body;
+
+    try {
+        const response = await axios.post('https://accounts.spotify.com/api/token', new URLSearchParams({
+            grant_type: 'authorization_code',
+            code,
+            redirect_uri: REDIRECT_URI,
+            client_id: CLIENT_ID,
+            client_secret: CLIENT_SECRET,
+        }));
+
+        res.send(response.data);
+    } catch (error) {
+        res.status(500).send({ error: 'Failed to fetch access token' });
+    }
+});

@@ -3,21 +3,15 @@ import '../../styles/UI/Alarm/Sleep.css'
 import ToggleButton from '../../components/alarm/togglebtn';
 import ReactPlayer from 'react-player';
 import moment from 'moment-timezone/builds/moment-timezone-with-data-10-year-range.js';
+// import SpotifyPlayer from '../../components/alarm/SpoRepro';
 
 
-export default function SleepAlarm() {
-    // const [activo, setActivo] = useState(false);
-
-    const [isToggled, setIsToggled] = useState(false);
+export default function SleepAlarm() { const [isToggled, setIsToggled] = useState(false);
     const [isPlaying, setIsPlaying] = useState(true);
     const [horaActual, setHoraActual] = useState(moment().format('HH:mm:ss'));
-
-    const handleChange = () => {
-        setIsToggled(!isToggled);
-    };
-
     const [horaDormir, setHoraDormir] = useState('');
     const [horaDespertar, setHoraDespertar] = useState('');
+    const [horadiff, setHoradiff] = useState();
     const [mediaLink, setMediaLink] = useState('');
 
     const handleMediaSubmit = (e) => {
@@ -25,18 +19,41 @@ export default function SleepAlarm() {
         console.log('Media Link:', mediaLink);
     };
 
-    useEffect( () => {
-        const interval = setInterval(() => {
-            setHoraActual(moment().format('HH:mm'));
-        }, 1000);
-        return () => clearInterval(interval);
-    }, []);
-
+    const calcularDiferenciaHoras = () => {
+        const fechaDormir = new Date(`2000-01-01T${horaDormir}`);
+        const fechaDespertar = new Date(`2000-01-01T${horaDespertar}`);
+        let diferenciaMilisegundos = fechaDespertar - fechaDormir;
+        if (diferenciaMilisegundos < 0) {
+            diferenciaMilisegundos += 24 * 3600000;
+        }
+        const horas = Math.floor(diferenciaMilisegundos / 3600000);
+        setHoradiff(horas);
+        return horas;
+    };
     
 
-    const handlePause = () => {
-        setIsPlaying(false);
-    };
+    useEffect(() => {
+        const interval = setInterval(() => {
+            const horaActual = moment().format('HH:mm');
+
+            if(isToggled)
+            {
+                // console.log("Es menor la actual a despertar: " + (horaActual <= horaDespertar) );
+                // console.log("Es mayor la actual a dormir: " + (horaActual > horaDormir) );
+                if (  (horaActual < horaDespertar) && (horaActual >= horaDormir) ) {
+                    // console.log("es true")
+                    setIsPlaying(true); 
+                } else {
+                    // console.log("es false")
+                    setIsPlaying(false); 
+                }
+            }else{
+                // console.log("es false toggle")
+                setIsPlaying(false); 
+            }
+        }, 1000);
+        return () => clearInterval(interval);
+    }, [horaDespertar, isToggled]);
 
     return (
         <div className={mediaLink ? "sleep-body-link" : "sleep-body-nolink"}>
@@ -72,7 +89,7 @@ export default function SleepAlarm() {
                             </div>
                         </div>
                         <div className="sleep-confirmar-button-container">
-                            <button className="sleep-confirm" onClick={() => console.log(horaDormir)}>
+                            <button className="sleep-confirm" onClick={() => calcularDiferenciaHoras()}>
                                 Confirmar hora de dormir
                             </button>
                         </div>
@@ -80,7 +97,7 @@ export default function SleepAlarm() {
                 </div>
 
                 <div className="sleep-horas-container">
-                    <label className='sleep-horas' style={{ fontSize: "120px" }}> X </label>
+                    <label className='sleep-horas' style={{ fontSize: "120px" }}> {horadiff} </label>
                     <label className='sleep-texto' style={{ fontSize: "40px" }}> Horas <br /> de <br /> Sueño </label>
                 </div>
 
@@ -104,14 +121,9 @@ export default function SleepAlarm() {
                                 playing={isPlaying} 
                             />
                         ) : mediaLink.includes('spotify.com') ? (
-                            <iframe
-                                src={`https://open.spotify.com/embed/track/${mediaLink.split('track/')[1]}`}
-                                width="300"
-                                height="80"
-                                frameBorder="0"
-                                allowtransparency="true"
-                                allow="encrypted-media"
-                            ></iframe>
+                            <></>
+                            // <SpotifyPlayer mediaLink={mediaLink} />
+
                         ) : (
                             <p>El enlace proporcionado no es válido</p>
                         )}

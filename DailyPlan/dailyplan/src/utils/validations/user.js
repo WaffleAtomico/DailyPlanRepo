@@ -33,6 +33,7 @@ export const UserExist = async (userInfoLogin) => {
   }
 };
 
+<<<<<<< HEAD
 export const EmailExist = async (user_mail) => {
   console.log(user_mail);
   try {
@@ -43,9 +44,21 @@ export const EmailExist = async (user_mail) => {
     return response.data.exists;
   } catch (err) {
     console.log(err);
+=======
+export const EmailExist = (user_mail) => 
+{
+  console.log(user_mail);
+  try {
+      const response = axios.post(`${urllocalhost}/users-existmail`, { user_mail });
+      console.log(response.data.exists); //true  si existe, false  no existe
+      return response.data.exists;
+  } catch (err) {
+      return false;
+>>>>>>> main
   }
 };
 
+<<<<<<< HEAD
 export const NumberExist = async (user_number) => {
   console.log(user_number);
   try {
@@ -56,6 +69,17 @@ export const NumberExist = async (user_number) => {
     return response.data.exists;
   } catch (err) {
     console.log(err);
+=======
+export const NumberExist = (user_number) => 
+{
+  console.log(user_number);
+  try {
+      const response = axios.post(`${urllocalhost}/users-existnumber`, { user_number });
+      console.log(response.data.exists); //true  si existe, false  no existe
+      return response.data.exists;
+  } catch (err) {
+      return false;
+>>>>>>> main
   }
 };
 
@@ -83,4 +107,20 @@ export const getUsrName = async (user_id) => {
   } catch (err) {
     console.log(err);
   }
+<<<<<<< HEAD
 };
+=======
+}
+
+export const getUsrByEmail = (user_mail) => 
+  {
+    console.log(user_mail);
+    try {
+        const response = axios.post(`${urllocalhost}/user-bymail`, { user_mail });
+        console.log(response.data); 
+        return response.data;
+    } catch (err) {
+        return false;
+    }
+  }
+>>>>>>> main
