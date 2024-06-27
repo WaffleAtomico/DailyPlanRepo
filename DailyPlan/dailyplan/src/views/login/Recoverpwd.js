@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { isValidEmail, EmailExist } from "../../utils/validations/user";
-import { BdNoCon } from "../../components/advices/ErrorMsjs";
+import { isValidEmail, EmailExist, getUsrByEmail} from "../../utils/validations/user"
+import { BdNoCon } from "../../components/advices/ErrorMsjs"
 
 import Badge from "react-bootstrap/Badge";
 import Button from "react-bootstrap/Button";
@@ -10,17 +10,6 @@ import Form from "react-bootstrap/Form";
 import { IoReturnUpBackSharp } from "react-icons/io5";
 import "../../styles/start/general.css";
 import "../../styles/start/createacc.css";
-import { isValidEmail, EmailExist, getUsrByEmail} from "../../utils/validations/user"
-import { BdNoCon } from "../../components/advices/ErrorMsjs"
-
-
-import Badge from 'react-bootstrap/Badge';
-import Button from 'react-bootstrap/Button';
-import Alert from 'react-bootstrap/Alert';
-import Form from 'react-bootstrap/Form';
-import { IoReturnUpBackSharp  } from "react-icons/io5";
-import '../../styles/start/general.css'; 
-import '../../styles/start/createacc.css';
 
 //import { ReactSession }  from 'react-client-session';
 
