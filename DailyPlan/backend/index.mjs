@@ -3,43 +3,67 @@ import cors from "cors";
 // import mysql from "mysql"
 // import { db } from './server/connection.js';
 
-import { getUsers, getConn, getUser, createUser, updateUser, deleteUser, userExists, userExistsByEmail, 
-    userExistsByName, userExistsByNumber } from './requests/users.js';
+import { loginUser } from "./requests/app.js";
 
-import { addClock, getClock, delClock, ClockExistsInUser} from './requests/clocks.js';
+import {
+  getUsers,
+  getConn,
+  getUser,
+  createUser,
+  updateUser,
+  deleteUser,
+  userExists,
+  userExistsByEmail,
+  userExistsByName,
+  userExistsByNumber,
+} from "./requests/users.js";
 
-import { addAllTitles, getUserTitles, updateTitleStatus } from './requests/archivements.js';
+import {
+  addClock,
+  getClock,
+  delClock,
+  ClockExistsInUser,
+} from "./requests/clocks.js";
 
-import {  getUsersBlocked, addUserBlocked, delUserBlocked } from './requests/userbloqued.js';
+import {
+  addAllTitles,
+  getUserTitles,
+  updateTitleStatus,
+} from "./requests/archivements.js";
+
+import {
+  getUsersBlocked,
+  addUserBlocked,
+  delUserBlocked,
+} from "./requests/userbloqued.js";
 
 const app = express();
 
 app.use(express.json());
 app.use(cors());
 
-app.get("/", (req,res) => {
-    res.json("Hello this is the backend");
+app.get("/", (req, res) => {
+  res.json("Hello this is the backend");
 });
 
 //You could make a const with the name of PORT
 
-app.listen(3001, () =>
-{
-    console.log("Connected to backend! on port 3001")
+app.listen(3001, () => {
+  console.log("Connected to backend! on port 3001");
 });
-
 
 /*-------------------------- Conn --------------------------*/
 
-
 app.get("/conn", getConn);
+
+/*-------------------------- Login --------------------------*/
+app.post("/login", loginUser);
 
 /*-------------------------- Users --------------------------*/
 
-
 app.get("/users", getUsers);
 
-app.post("/get-userinfo" , getUser);
+app.post("/get-userinfo", getUser);
 
 /*
 {
@@ -98,7 +122,6 @@ app.post("/users-existname", userExistsByName);
 */
 app.post("/users-existnumber", userExistsByNumber);
 
-
 /*-------------------------- Clocks --------------------------*/
 
 app.post("/clock-id", addClock);
@@ -117,7 +140,6 @@ app.post("/title-getAll", getUserTitles);
 
 app.post("/title-updateOne", updateTitleStatus);
 
-
 /*-------------------------- BloqUSR --------------------------  */
 
 app.post("/bloqusr", addUserBlocked);
@@ -125,4 +147,3 @@ app.post("/bloqusr", addUserBlocked);
 app.post("/unbloq", delUserBlocked);
 
 app.post("/getusrbloq", getUsersBlocked);
-

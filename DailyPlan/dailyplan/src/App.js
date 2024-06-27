@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import './App.css';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-
+import { AuthContext } from './services/AuthContext';
 
 import Startpage from './views/login/Startpage';
 import Errorurl from './views/Errorurl';
@@ -86,7 +86,7 @@ function App() {
   return (
     <div className="App">
       <div>
-        <RouterProvider router={router} />
+        <RouterProvider router={router}/>
       </div>
     </div>
   );
