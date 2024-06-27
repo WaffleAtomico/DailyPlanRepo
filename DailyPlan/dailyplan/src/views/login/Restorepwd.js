@@ -16,28 +16,68 @@ export default function Restore_pwd(props) {
     const form = useRef();
     const navigate  = useNavigate();
     // Para usarlo luego
-    const { email } = useParams();
+    //const { email } = useParams();
 
     const [user_newpwd, setNewpwd] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+	const [verificationCode,setVerificationCode] = useState("");
 
     const handleNewPassword = (e) => {
         setNewpwd(e.target.value);
-        console.log(user_newpwd);
-    };      
+        //console.log(user_newpwd);
+    };
+	
     const handleConfirmPassword = (e) => {
         setConfirmPassword(e.target.value);
-        console.log(confirmPassword);
-      };
+        //console.log(confirmPassword);
+    };
+	  
+	const handleVerificationCode = (e) => {
+        setVerificationCode(e.target.value);
+        //console.log(verificationCode);
+    };
+	
+	var email;
+	
+	function SetMail() {
+		let { id } = useParams();
+		email = id;
+		return (
+        <div hidden>{id}</div>
+		);
+	}
+	  
     const sendForm = (e) => {
         // props.user_mail
         e.preventDefault();
-        console.log("email actual: " + email);
-        if(user_newpwd === confirmPassword)
+        //console.log("email actual: " + email);
+		//console.log("codigo de verificacion: " + verificationCode);
+		const storedCode = localStorage.getItem('rec-codigo');
+		var code = storedCode ? storedCode : 'ABCDEFGH';
+		const storedMail = localStorage.setItem('rec-correo');
+		var semail = storedMail ? storedMail : '@@@@@@@';
+		
+		//console.log("Codigo en Session: " + code);
+		
+        if(code === verificationCode)
         {
-            alert("Formulario enviado");
-            form.current.reset();
-            navigate("/login");
+            if(semail === email)
+			{
+				if(user_newpwd === confirmPassword)
+				{
+                    //Aqui hay que mandar actualizar la contraseña
+                    //semail y user_newpwd
+					alert("Cntraseña Actualizada");
+					form.current.reset();
+					navigate("/login");
+				} else {
+					alert("Cntraseñas Diferentes");
+				}
+			} else {
+				alert("Cuenta de Correo Erronea");
+			}
+        } else {
+            alert("Codigo de Verificacion Invalido o Caducado");
         }
     }
 
@@ -49,8 +89,15 @@ export default function Restore_pwd(props) {
                     <Badge bg="secondary"> <IoReturnUpBackSharp  /> </Badge>                                   
             </Link>
             <h1>Recuperar contraseña</h1>
+			<SetMail />
             <div className="create-form">
            
+                <Form.Control size="lg" type="password" placeholder="Codigo de Verificacion" style={{
+                    backgroundColor: 'rgba(0, 141, 205, 0.55)', 
+                    borderRadius: '20px',
+                    margin: '10px 0',
+                    border: '1px solid black', 
+                }} onChange={handleVerificationCode} /> 
                 <Form.Control size="lg" type="password" placeholder="Contraseña nueva" style={{
                         backgroundColor: 'rgba(0, 141, 205, 0.55)', 
                         borderRadius: '20px',
