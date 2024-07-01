@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Timer from "./Timer";
+import '../../styles/UI/Countdowntimer/style.css'
+
 
 document.body.style.background = "#FFEDD3";
 export default function CountdownTimer() {
@@ -84,7 +86,7 @@ export default function CountdownTimer() {
   return (
     <div>
       {showEndScreen.show && (
-        <h1 className="title text-dark">{showEndScreen.message}</h1>
+        <h1 className="count-title text-dark">{showEndScreen.message}</h1>
       )}
       <Timer
         milliseconds={milliseconds}
@@ -97,12 +99,12 @@ export default function CountdownTimer() {
       />
       <br />
       {!isRunning && (
-        <button className="btn btn-accept btn-lg" onClick={startTimer}>Iniciar</button>
+        <button className="count-btn btn-accept btn-lg" onClick={startTimer}>Iniciar</button>
       )}
       {isRunning && (
-        <button className="btn btn-warning btn-lg" onClick={pauseTimer}>Pausa</button>
+        <button className="count-btn btn-warning btn-lg" onClick={pauseTimer}>Pausa</button>
       )}{" "}
-      <button className="btn btn-danger btn-lg" onClick={stopTimer}>Detener</button>
+      <button className="count-btn btn-danger btn-lg" onClick={stopTimer}>Detener</button>
     </div>
   );
 }
