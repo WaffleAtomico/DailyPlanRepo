@@ -1,0 +1,55 @@
+ .punt_button-container {
+    display: flex;
+    top: 0.5rem;
+    position: absolute;
+    margin-left: 2rem;
+  } 
+  
+  .punt_button-circle {
+    background-color: #77A3ED;
+    border: none;
+    border-radius: 50px;
+    width: 4rem;
+    height: 4rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+  }
+  
+  .punt_button-text {
+    background-color: white;
+    border-radius: 10px;
+    padding: 0.2rem;
+  }
+  
+  .punt_button-popup-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 80%;
+    max-width: 500px;
+    z-index: 1000;
+    padding: 20px;
+  }
+  
+  .punt_button-popup-header {
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .punt_button-close-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+  }
+  
+  .punt_button-tab-content {
+    padding: 20px;
+  }
+  

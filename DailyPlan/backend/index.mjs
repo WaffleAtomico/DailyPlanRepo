@@ -25,6 +25,17 @@ import {
   delUserBlocked,
 } from "./requests/userbloqued.js";
 
+import {
+  addAlarm,
+  getAlarmById,
+  updateAlarm,
+  deleteAlarm,
+  getAlarmsForUser,
+  isAlarmNameExistForUser,
+  isUserAlarmLimitReached,
+} from './requests/alarm.js';
+
+
 import { sendMailrest } from "./requests/mail.js";
 
 const app = express();
@@ -187,6 +198,23 @@ app.post("/bloqusr", addUserBlocked);
 app.post("/unbloq", delUserBlocked);
 
 app.post("/getusrbloq", getUsersBlocked);
+
+/*-------------------------------Alarm------------------------- */
+
+app.post('/add-alarm', addAlarm);
+
+app.get('/get-user-alarms', getAlarmsForUser);
+
+app.get('/get-alarm', getAlarmById);
+
+app.post('/updatte-alarm', updateAlarm);
+
+app.post('/delete-alarm', deleteAlarm);
+
+app.post('/alarms-existsname', isAlarmNameExistForUser);
+
+app.post('/alarms-limit-user', isUserAlarmLimitReached);
+
 
 /*-------------------------------spotify------------------------- */
 

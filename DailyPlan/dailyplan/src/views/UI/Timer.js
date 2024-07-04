@@ -1,5 +1,5 @@
 import React from "react";
-import '../../styles/UI/Countdowntimer/style.css'
+import '../../styles/UI/Countdowntimer/countdown.css'
 
 export default function Timer({
   milliseconds,

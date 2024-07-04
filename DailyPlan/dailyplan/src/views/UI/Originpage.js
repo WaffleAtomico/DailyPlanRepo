@@ -7,9 +7,11 @@ import Alarm from "./Alarm";
 import Chrono from "./Chrono";
 import CountdownTimer from "./CountdownTimer";
 import Clock from "./Clock";
-import Invitation from "./Invtitation";
+import Invitation from "./Invitation";
 import Sleep from "./Sleep";
 import Pomodoro from "./Pomodoro";
+import PuntButton from "../../components/puntuality/punt_button";
+
 
 import { timeFormatSec } from "../../utils/timeFormat";
 
@@ -17,7 +19,7 @@ import ChronoIndicator from "../../components/advices/ChronoMsjs";
 
 import "../../styles/UI/Origin/UI.css";
 import "../../styles/start/startpage.css";
-import "../../styles/UI/Countdowntimer/style.css";
+import "../../styles/UI/Countdowntimer/countdown.css";
 
 import { FaUserClock } from "react-icons/fa6";
 import { getUsrName } from "../../utils/validations/user";
@@ -36,10 +38,16 @@ export default function OriginPage() {
   };
 
   useEffect(() => {
-    const getUserName = async (user_id) => {
-      const response = await getUsrName(user_id);
-      console.log("Response in front " + response.user_name);
-      setUsername(response.user_name);
+    const getUserName = (user_id) => {
+      // const response = await 
+      getUsrName(user_id).then(response => {
+        console.log("Response in front");
+        console.log(response.data);
+        setUsername(response.data[0].user_name);
+      }).catch(error => {
+        console.error(error);
+      });
+
     };
     getUserName(id);
   }, []);
@@ -118,7 +126,10 @@ export default function OriginPage() {
   return (
     <div className="main-container">
       <div className="UI-header">
-        <button className="left-button">Puntualidad</button>
+        <PuntButton />
+        {/* <button className="left-button">
+          Puntualidad
+          </button> */}
         <Ui_navbar
           handleOptionSelected={handleOptionSelected}
           selectedOption={selectedOption}
@@ -142,16 +153,16 @@ export default function OriginPage() {
           selectedOption === 3 ||
           selectedOption === 7 ||
           selectedOption === 8) && (
-          <button
-            className="UI-btn-opption"
-            onClick={() => handleSuboption(selectedOption)}
-          >
-            {selectedOption === 1 && "Modo de sueño"}
-            {selectedOption === 3 && "Pomodoro"}
-            {selectedOption === 7 && "Alarma"}
-            {selectedOption === 8 && "Temporizador"}
-          </button>
-        )}
+            <button
+              className="UI-btn-opption"
+              onClick={() => handleSuboption(selectedOption)}
+            >
+              {selectedOption === 1 && "Modo de sueño"}
+              {selectedOption === 3 && "Pomodoro"}
+              {selectedOption === 7 && "Alarma"}
+              {selectedOption === 8 && "Temporizador"}
+            </button>
+          )}
       </div>
 
       <div className="UI-background">
@@ -168,7 +179,6 @@ export default function OriginPage() {
         {selectedOption === 3 && <CountdownTimer />}
         {selectedOption === 4 && <Clock id_user={id} />}
         {selectedOption === 5 && <Invitation />}
-        {/* {selectedOption === 6 && <Configuration />} */}
         {selectedOption === 7 && <Sleep />}
         {selectedOption === 8 && <Pomodoro />}
         {selectedOption !== 2 && secondsPassed > 0 && (

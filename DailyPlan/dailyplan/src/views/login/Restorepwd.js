@@ -65,7 +65,6 @@ export default function Restore_pwd(props) {
 			{
 				if(user_newpwd === confirmPassword)
 				{
-					
 					alert("Contraseña Actualizada");
 					form.current.reset();
 					navigate("/login");

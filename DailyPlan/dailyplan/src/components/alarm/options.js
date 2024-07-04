@@ -7,12 +7,9 @@ export default function Form_createAlarm(props) {
     
     return (
         <div className='form-body'>
-            <Card className="text-center mx-auto" style={{ width: '43rem', marginTop: '90px', marginBottom: '110px' }}
-                onClick={() => props.setVisibilty()}
-            >
-                <div style={{ display: 'flex', justifyContent: 'flex-end' }} 
-                 >
-                    <CloseButton className='close-button' />
+            <Card className="text-center mx-auto" style={{ width: '43rem', marginTop: '90px', marginBottom: '110px' }} onClick={() => props.setVisibilty()} >
+                <div style={{ display: 'flex', justifyContent: 'flex-end' }} >
+                    <CloseButton className='close-button'  />
                 </div>
                 <Card.Body>
                     <section className="form-input">
@@ -24,7 +21,6 @@ export default function Form_createAlarm(props) {
                                 <input
                                     className="recordatorio"
                                     type="text"
-                                    name="user_mail"
                                     placeholder="Antelacion de Recordatorio"
                                     style={{ marginTop: '5px' }}
                                 />
@@ -32,16 +28,14 @@ export default function Form_createAlarm(props) {
                             <p>
                                 <input
                                     className="salida"
-                                    type="password"
-                                    name="user_password"
+                                    type="text"
                                     placeholder="Contrase&ntilde;a"
                                 />
                             </p>
                             <p>
                                 <input
                                     className="llegada"
-                                    type="password"
-                                    name="user_password"
+                                    type="text"
                                     placeholder="Contrase&ntilde;a"
                                 />
                             </p>

@@ -1,23 +1,27 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { BsDatabaseFillExclamation } from "react-icons/bs";
 import { IoCloseCircleOutline } from "react-icons/io5";
 import '../../styles/advices/BdNoConnection.css';
 import { isDbConnected } from "../../utils/validations/user"
 
-function BdNoCon (){
+function BdNoCon() {
     const [show, setShow] = useState(false);
 
     const checkDbConnection = async () => {
-            const isConnected = await isDbConnected();
-            if (!isConnected) {
-                setShow(true); // Muestra el mensaje si no está conectado
-            }
+        isDbConnected()
+            .then(response => {
+                if (!response.data.connected) {
+                    setShow(true);
+                }
+            })
+            .catch(error => {
+                console.error(error);
+            });
     };
 
     setInterval(checkDbConnection, 10000);
 
-    if(show)
-    {
+    if (show) {
         return (
             <div className='BdNoCon-container'>
                 <div className='BdNoCon-icon'>
@@ -28,14 +32,13 @@ function BdNoCon (){
                 </div>
                 {show && (
                     <button className='BdNoCon-btn' onClick={() => setShow(false)}>
-                       <IoCloseCircleOutline />
+                        <IoCloseCircleOutline />
                     </button>
                 )}
             </div>
         );
-    }else
-    {
-        return(<p></p>);
+    } else {
+        return (<p></p>);
     }
 };
 

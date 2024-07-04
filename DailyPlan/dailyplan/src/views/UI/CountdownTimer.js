@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Timer from "./Timer";
-import '../../styles/UI/Countdowntimer/style.css'
+import '../../styles/UI/Countdowntimer/countdown.css'
 
 
-document.body.style.background = "#FFEDD3";
+// document.body.style.background = "#FFEDD3";
 export default function CountdownTimer() {
   const [hours, setHours] = useState(0);
   const [minutes, setMinutes] = useState(0);

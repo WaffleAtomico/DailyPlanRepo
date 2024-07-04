@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import moment from 'moment-timezone/builds/moment-timezone-with-data-10-year-range.js';
 import ClockSpinner from '../../components/clock/clockSpinner';
 import AnalogClock from 'analog-clock-react';
+import { TiArrowRightThick } from "react-icons/ti";
 
 import { TiDeleteOutline } from "react-icons/ti";
 
@@ -10,16 +11,17 @@ import { saveUserClock, getUserClocks, delUserClock, ZoneInUserExist } from '../
 import '../../styles/UI/Clock/clockView.css'
 
 
+//instalar libreria carbon
+
+
+
 export default function ClockView(props) {
-    const [zonaHoraria1, setZonaHoraria1] = useState('America/New_York');
-    const [zonaHoraria2, setZonaHoraria2] = useState('America/New_York');
+    const [zonaHoraria1, setZonaHoraria1] = useState('');
+    const [zonaHoraria2, setZonaHoraria2] = useState('');
     const [diferenciaHoras, setDiferenciaHoras] = useState(null);
     const [horaActual, setHoraActual] = useState(moment().format('HH:mm:ss'));
     const [clocksOfUser, setclocksOfUser] = useState([]);
 
-    // const fechaActual1 = moment().tz(zonaHoraria1);
-    // const fechaActual2 = moment().tz(zonaHoraria2);
-    
     const [options1, setOptions1] = useState({
         useCustomTime: true,
         width: "200px",
@@ -29,9 +31,9 @@ export default function ClockView(props) {
         centerColor: "#459cff",
         centerBorderColor: "#ffffff",
         handColors: {
-            second: "#d81c7a",
+            second: "#17a2b8",
             minute: "#ffffff",
-            hour: "#ffffff"
+            hour: "#d81c7a"
         },
         seconds: 0,
         minutes: 0,
@@ -46,9 +48,9 @@ export default function ClockView(props) {
         centerColor: "#459cff",
         centerBorderColor: "#ffffff",
         handColors: {
-            second: "#d81c7a",
+            second: "#17a2b8",
             minute: "#ffffff",
-            hour: "#ffffff"
+            hour: "#d81c7a"
         },
         seconds: 0,
         minutes: 0,
@@ -58,40 +60,56 @@ export default function ClockView(props) {
     const zonaHorariaSistema = moment.tz.guess();
 
     //esta funcion puede ir en un useEffect para que cada que se cargue la pagina se renderize lo necesario
-    const getAllUserClocks = async () => {
-        const id_userSaved = props.id_user;
-        const UsersClocks = await getUserClocks(id_userSaved);
-        setclocksOfUser(UsersClocks);
+    const getAllUserClocks = () => {
+        const id_user = props.id_user;
+        // const UsersClocks = await 
+        getUserClocks(id_user).then(response => {
+            setclocksOfUser(response.data);
+        }).catch(error => {
+            console.error(error);
+        });
     }
 
     const AddUserClock = async () => {
-        // Hacer una validacion para que no agrege dos iguales
-
-        // const userExist = await UserExist(userInfoLogin);
-        // console.log(props.id_user);
         if (zonaHoraria1 && zonaHoraria2) {
             const clockInfo = {
                 clock_name: zonaHoraria2,
                 user_id: props.id_user
             }
-            if (!(await ZoneInUserExist(clockInfo))) {
-                await saveUserClock(clockInfo);
-                // console.log(clocksOfUser);
-                getAllUserClocks();
-                // console.log(clocksOfUser);
-            }
+            // if (!(await ZoneInUserExist(clockInfo))) {
+            //     await saveUserClock(clockInfo);
+            //     // console.log(clocksOfUser);
+            //     getAllUserClocks();
+            //     // console.log(clocksOfUser);
+            // }
+
+            ZoneInUserExist(clockInfo).then(zoneExists => {
+                if (!zoneExists.data.exists) {
+                    saveUserClock(clockInfo).then(() => {
+                        getAllUserClocks();
+                        // console.log(clocksOfUser);
+                    }).catch(error => {
+                        console.error("Error al guardar el reloj del usuario:", error);
+                    });
+                }
+            }).catch(error => {
+                console.error("Error al verificar si la zona existe en el usuario:", error);
+            });
+
         }
     }
 
 
-    const deleteUserClock = async (clock_id) => {
-        // const userExist = await UserExist(userInfoLogin);
+    const deleteUserClock = (clock_id) => {
         console.log("Clock id to delete: " + clock_id);
-        // esto es un objeto con valores como 
-        await delUserClock(clock_id);
-        // console.log("Response de eliminar: " + response);
-        getAllUserClocks();
-    }
+        delUserClock(clock_id).then(response => {
+            console.log("Response de eliminar: " + response);
+            getAllUserClocks();
+        }).catch(error => {
+            console.error("Error al eliminar el reloj del usuario:", error);
+        });
+    };
+
 
     useEffect(() => {
         getAllUserClocks();
@@ -102,89 +120,95 @@ export default function ClockView(props) {
         return () => clearInterval(interval);
     }, []);
 
-    useEffect(() => {
-        console.log("Info en el hook: ", clocksOfUser);
-    }, [clocksOfUser]);
+    // useEffect(() => {
+    //     console.log("Info en el hook: ", clocksOfUser);
+    // }, [clocksOfUser]);
 
-    const calcularDiferenciaZonasHorarias = (zonaHoraria1, zonaHoraria2) => {
-        if (zonaHoraria1 == zonaHoraria2) {
-            return 'Misma hora';
+    function calculateHourDifference() {
+        let hourDifference = moment().tz(zonaHoraria2).hours() - moment().tz(zonaHoraria1).hours();
+        if (hourDifference < 0) {
+            hourDifference += 24;
+            return -hourDifference
         }
-        const horaActual1 = moment().tz(zonaHoraria1).format('HH:mm:ss');
-        const horaActual2 = moment().tz(zonaHoraria2).format('HH:mm:ss');
-        const hora1 = moment(horaActual1, 'HH:mm:ss');
-        const hora2 = moment(horaActual2, 'HH:mm:ss');
-        const diferencia = hora2 - hora1;
-        const minutos = Math.floor(diferencia / 60000);
-        const horas = Math.floor(minutos / 60);
-        const minutosRestantes = minutos % 60;
-        console.log(`La diferencia es de ${horas} horas y ${minutosRestantes} minutos`);
-        //Cuando la hora es menor se debe de hacer el cambio para mostar la diferencia en negativo
-        if (horas == 0 && minutosRestantes == 0) { return 'Misma hora'; }
-        if (horas != 0 && minutosRestantes == 0) { return `${horas}h`; }
-        if (horas == 0 && minutosRestantes != 0) { return `${minutosRestantes}min`; }
+        return hourDifference;
+    }
 
-        return `${horas}h ${minutosRestantes}min`;
-    };
-
-
-    const handleTimezoneSelection1 = (selectedTimezone) => {
-        setZonaHoraria1(selectedTimezone);
+    useEffect(()=>{
         calcularDiferencia();
-    };
-
-    const handleTimezoneSelection2 = (selectedTimezone) => {
-        setZonaHoraria2(selectedTimezone);
+    },[zonaHoraria2]);
+    useEffect(()=>{
         calcularDiferencia();
-    };
+    },[zonaHoraria1]);
 
     const calcularDiferencia = () => {
         if (zonaHoraria1 && zonaHoraria2) {
-            const diferencia = calcularDiferenciaZonasHorarias(zonaHoraria1, zonaHoraria2);
-            setDiferenciaHoras(diferencia);
+            console.log("Entre a calcular diferencia ");
+            const diference = calculateHourDifference();
+            setDiferenciaHoras(diference);
         }
     };
 
     useEffect(() => {
-        const fechaActual1 = moment().tz(zonaHoraria1);
-        const fechaActual2 = moment().tz(zonaHoraria2);
+        if (zonaHoraria1) {
+            const fechaActual1 = moment().tz(zonaHoraria1);
 
-        setOptions1(prevOptions => ({
-            ...prevOptions,
-            seconds: fechaActual1.seconds(),
-            minutes: fechaActual1.minutes(),
-            hours: fechaActual1.hours()
-        }));
+            setOptions1(prevOptions => ({
+                ...prevOptions,
+                seconds: fechaActual1.seconds(),
+                minutes: fechaActual1.minutes(),
+                hours: fechaActual1.hours()
+            }));
+        } else {
+            setOptions1(prevOptions => ({
+                ...prevOptions,
+                seconds: 0,
+                minutes: 0,
+                hours: 0
+            }));
+        }
+        if (zonaHoraria2) {
+            const fechaActual2 = moment().tz(zonaHoraria2);
 
-        setOptions2(prevOptions => ({
-            ...prevOptions,
-            seconds: fechaActual2.seconds(),
-            minutes: fechaActual2.minutes(),
-            hours: fechaActual2.hours()
-        }));
+            setOptions2(prevOptions => ({
+                ...prevOptions,
+                seconds: fechaActual2.seconds(),
+                minutes: fechaActual2.minutes(),
+                hours: fechaActual2.hours()
+            }));
+        } else {
+            setOptions1(prevOptions => ({
+                ...prevOptions,
+                seconds: 0,
+                minutes: 0,
+                hours: 0
+            }));
+        }
     }, [zonaHoraria1, zonaHoraria2]);
 
     return (
         <div className="clock-view-container">
-            <div className="clock-title">Relojes</div>
             <div>Tu hora actual: {horaActual}, estás en {zonaHorariaSistema}</div>
 
             <div className="clock-container">
                 <div className="clock-spinners">
                     <AnalogClock {...options1} />
-                    <ClockSpinner onSelectTimezone={handleTimezoneSelection1} />
+                    <p>{zonaHoraria1} {zonaHoraria1 ? moment().tz(zonaHoraria1).format('HH:mm:ss') : "00:00:00"}</p>
+                    <ClockSpinner sethour={setZonaHoraria1}/>
                 </div>
-
+                <div>   
+                    <TiArrowRightThick size={82} />
+                </div>
                 <div className="clock-spinners">
                     <AnalogClock {...options2} />
-                    <ClockSpinner onSelectTimezone={handleTimezoneSelection2} />
+                    <p>{zonaHoraria2}  {zonaHoraria2 ? moment().tz(zonaHoraria2).format('HH:mm:ss') : "00:00:00"}</p>
+                    <ClockSpinner  sethour={setZonaHoraria2} />
                 </div>
             </div>
 
             <div className="diferencia-horas">Diferencia: {diferenciaHoras}</div>
 
             <button className="button-large" onClick={AddUserClock}>
-                Guardar
+                Guardar reloj de destino
             </button>
 
             <table className="clock-table">
