@@ -33,17 +33,22 @@ export default function Login(props) {
     console.log(userInfoLogin);
   };
 
-  const HandleLogin = async (e) => {
+  const HandleLogin = (e) => {
     e.preventDefault();
-    try {
-      const response = await axios.post("http://localhost:3001/login", userInfoLogin);
-      login(response.data.token);
-      const userExist = await UserExist(userInfoLogin);
-      navigate(`/dailyplan/${userExist}`);
-    } catch (error) {
-      console.error("Error al intentar login:", error);
-      form.current.reset();
-    }
+    // try {
+    // const response = await axios.post("http://localhost:3001/login", userInfoLogin);
+
+    // login(response.data.token);
+    UserExist(userInfoLogin).then(userExist => {
+      navigate(`/dailyplan/${userExist.data.id}`);
+    }).catch(error => {
+      console.error(error);
+    });
+
+    // } catch (error) {
+    //   console.error("Error al intentar login:", error);
+    //   form.current.reset();
+    // }
 
     // const userExist = await UserExist(userInfoLogin);
     // // const emailExist = await EmailExist(userInfo.email);
@@ -84,6 +89,7 @@ export default function Login(props) {
               margin: "10px 0",
               border: "1px solid black",
             }}
+
             onChange={handleUserInfoChange}
           />
           <Form.Control
@@ -106,8 +112,7 @@ export default function Login(props) {
                 variant="outline-success"
                 style={{ border: "2px solid", borderRadius: "20px" }}
               >
-                {" "}
-                Crear cuenta{" "}
+                Crear cuenta
               </Button>
             </Link>
             <Button

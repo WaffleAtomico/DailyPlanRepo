@@ -1,81 +1,93 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { FaPlus } from 'react-icons/fa';
+
 import Form_createAlarm from '../../components/alarm/options';
-import ButtonAlarm from '../../components/alarm/create-btn';
-import { FaPlus } from "react-icons/fa";
+import Alarm_formCrea from '../../components/alarm/alarm_formCrea';
 
 import '../../styles/UI/Alarm/alarmview.css'
+import '../../styles/UI/Alarm/alarmview.css';
 
 function Alarm_view() {
     const [visible, setVisibilty] = useState(false);
-
-    const handleForm = () => {
-        console.log("activado");
-        setVisibilty(visible => !visible);
-    }
-
-    const [items, setItems] = useState(['Item 1']); // Items iniciales
-
+    const [items, setItems] = useState([]);
+    
     const addItem = () => {
-        const newItem = `Item ${items.length + 1}`;
-        setItems([...items, newItem]);
+        setVisibilty(visible => !visible);
+
+        //Si recibe el boton de guardar, debe de agregar un nuevo item con la informacion que se obtuvo del formulario
+        // if()
+        // {
+
+        // }
+        // const newItem = `Item ${items.length + 1}`;
+        // setItems([...items, newItem]);
     };
 
-    // Función para dividir los items en líneas de 4
     const chunkArray = (arr, size) => {
         return Array.from({ length: Math.ceil(arr.length / size) }, (_, index) =>
             arr.slice(index * size, index * size + size)
         );
     };
 
-    // Dividir los items en líneas de 4
-    const itemLines = chunkArray(items, 4);
+    const firstLine = items.slice(0, 3); // First line has a max of 3 items
+    const remainingItems = items.slice(3); // Rest of the items
+    const remainingLines = chunkArray(remainingItems, 4); // Subsequent lines have max 4 items
 
     return (
-        <div className='alarmv-body'>
-           {visible && <div style={{
+        <div className='crealar-alarmv-body'>
+            {visible && <div style={{
                 position: 'fixed',
                 top: 0,
                 left: 0,
                 width: '100%',
                 height: '100%',
-                backgroundColor: 'rgba(0, 0, 0, 0.5)',
                 zIndex: 999
             }} >
-            
-            <div style={{ visibility: visible ? 'visible' : 'hidden', paddingTop: "2rem" }}>
-                 <Form_createAlarm 
-                    setVisibilty={setVisibilty}
-                /> 
-            </div>
-            </div>}
-            <div className="item-grid">
-            {/* Mostrar el botón de "Agregar" en la primera línea */}
-            <div className="linea">
-                <div className="item" >
-                    <button className="custom-button agregar-btn" onClick={addItem} >
-                        <FaPlus size={40}/>
-                    </button>
+                <div style={{ visibility: visible ? 'visible' : 'hidden', paddingTop: "2rem" }}>
+                    {/* <Form_createAlarm 
+                        setVisibilty={setVisibilty} 
+                        // saveAlarm={}
+                    /> */}
+                    <Alarm_formCrea 
+                        setVisibilty={setVisibilty} 
+                    />
+                    
                 </div>
-                {itemLines[0].map((item, itemIndex) => (
-                <div className="item" key={itemIndex} onClick={()=>setVisibilty(visible => !visible)}>
-                        {item}
+            </div>}
+            {items.length > 0 && (
+                <div className="crealar-item-grid">
+                    <div className="crealar-linea">
+                        <div className="crealar-item" onClick={addItem}>
+                            <button className="crealar-custom-button crealar-agregar-btn" >
+                                <FaPlus size={40} />
+                            </button>
+                        </div>
+                        {firstLine.map((item, itemIndex) => (
+                            <div className="crealar-item" key={itemIndex} onClick={() => setVisibilty(visible => !visible)}>
+                                {item}
+                            </div>
+                        ))}
                     </div>
-                ))}
-            </div>
-
-            {/* Mostrar las líneas de items restantes */}
-            {itemLines.slice(1).map((line, index) => (
-                <div className="linea" key={index + 1}>
-                    {line.map((item, itemIndex) => (
-                        <div className="item" key={itemIndex}>
-                            {item}
+                    {remainingLines.map((line, index) => (
+                        <div className="crealar-linea" key={index + 1}>
+                            {line.map((item, itemIndex) => (
+                                <div className="crealar-item" key={itemIndex}>
+                                    {item}
+                                </div>
+                            ))}
                         </div>
                     ))}
                 </div>
-            ))}
-        </div>
-
-
+            )}
+            {items.length === 0 && (
+                <div className="crealar-linea">
+                    <div className="crealar-item" onClick={addItem}>
+                        <button className="crealar-custom-button crealar-agregar-btn" >
+                            <FaPlus size={40} />
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

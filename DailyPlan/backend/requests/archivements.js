@@ -19,8 +19,8 @@ const addAllTitles = (req, res) => {
         console.log("Title added successfully:", title.title_id);
       }
     });
-  }
 
+  }
   return res.json({ message: "Titles are being added" });
 };
 

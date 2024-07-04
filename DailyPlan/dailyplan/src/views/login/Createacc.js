@@ -1,11 +1,6 @@
 import React, { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import {
-  UserExist,
-  isValidEmail,
-  EmailExist,
-  NumberExist,
-} from "../../utils/validations/user";
+import { UserExist, isValidEmail, EmailExist, NumberExist, UserAdd, } from "../../utils/validations/user";
 import { BdNoCon } from "../../components/advices/ErrorMsjs";
 import axios from "axios";
 
@@ -62,50 +57,73 @@ testusr3@gmail.com
 123
 123
 */
-  const sendForm = async (e) => {
+  const sendForm = (e) => {
     e.preventDefault();
-    const emailExist = await EmailExist(userInfo.email);
-    const numberExists = await NumberExist(userInfo.number);
-    if (isValidEmail(userInfo.email) && !emailExist) {
-      if (userInfo.newPassword == userInfo.confirmPassword) {
-        if (!numberExists || userInfo.number.length() < 10) {
-          const userInfoToSend = {
-            user_mail: userInfo.email,
-            user_name: userInfo.name,
-            user_password: userInfo.newPassword,
-            user_number: userInfo.number.replace(/\s/g, ""),
-            user_status: 1,
-          };
-          const validateInfo = {
-            user_mail: userInfo.email,
-            user_password: userInfo.newPassword,
-          };
+    EmailExist(userInfo.email).then(emailExist => {
+      // Si el correo es válido y no existe
+      if (isValidEmail(userInfo.email) && !emailExist.data.exists) {
 
-          // console.log(userInfoToSend);
-          try {
-            await axios.post(`${urllocalhost}/users`, userInfoToSend);
-            const user_id = await UserExist(validateInfo);
-            if (user_id >= 0) {
-              console.log(user_id);
-              await axios.post(`${urllocalhost}/title-addAll`, { user_id });
+        // Verificar si las contraseñas coinciden
+        if (userInfo.newPassword === userInfo.confirmPassword) {
+
+          // Verificar si el número no existe o es menor a 10 caracteres
+          NumberExist(userInfo.number).then(numberExists => {
+            if (!numberExists.data.exists || userInfo.number.length < 10) {
+
+              const userInfoToSend = {
+                user_mail: userInfo.email,
+                user_name: userInfo.name,
+                user_password: userInfo.newPassword,
+                user_number: userInfo.number.replace(/\s/g, ""),
+                user_status: 1,
+              };
+
+              const validateInfo = {
+                user_mail: userInfo.email,
+                user_password: userInfo.newPassword,
+              };
+
+              // Añadir el usuario
+              UserAdd(userInfoToSend).then(() => {
+
+                // Verificar si el usuario existe
+                UserExist(validateInfo).then(response => {
+                  const user_id = response.data.id;
+                  if (user_id >= 0) {
+                    console.log(user_id);
+                    axios.post(`${urllocalhost}/title-addAll`, { user_id }).then(response => {
+                      navigate("/login");
+                    }).catch(error => {
+                      console.error(error);
+                    });
+                  }
+                }).catch(error => {
+                  console.error(error);
+                });
+
+                form.current.reset();
+                // navigate(`/create_acount`);
+              }).catch(error => {
+                console.error(error);
+              });
+            } else {
+              alert("Ya existe una cuenta con ese número");
             }
-            navigate("/login");
-            // form.current.reset();
-            // console.log("user created");
-          } catch (err) {
-            console.log(err);
-          }
-          form.current.reset();
-          // navigate(`/create_acount`);
+          }).catch(error => {
+            console.error(error);
+          });
+
         } else {
-          alert("Ya existe una cuenta con ese número");
+          alert("Las contraseñas no coinciden");
         }
+
       } else {
-        alert("Las contraseñas no coinciden");
+        alert("Correo electrónico inválido");
       }
-    } else {
-      alert("Correo electrónico inválido");
-    }
+
+    }).catch(error => {
+      console.error(error);
+    });
   };
 
   return (

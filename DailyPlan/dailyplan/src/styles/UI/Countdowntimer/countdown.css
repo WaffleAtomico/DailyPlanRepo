@@ -1,20 +1,20 @@
 /* Roboto Font */
-body {
+.count-body {
     font-family: "Roboto", sans-serif;
   }
   
   /*Container class*/
-  .container {
+  .count-container {
     max-width: 900px;
     margin: 0 auto;
   }
   
-  .d-time-wrapper{
+  .count-d-time-wrapper{
     margin-top: 20vh;
     width: 600px;
     margin-left: auto;
     margin-right: auto;
-    background-color: #FFEDD3;
+    /* background-color: #FFEDD3; */
     color: #eee;
     border-radius: 5px;
     display: flex;
@@ -23,17 +23,17 @@ body {
     /*box-shadow: 5px 4px 6px rgba(0, 0, 0, 0.4);*/
     padding: 1rem 0;
   
-    .stop-watch {
+    .count-stop-watch {
       font-size: 6rem;
       margin-right: 1rem;
     }
-    label {
+    .count-label {
       margin-bottom: 0.5rem;
       color: #928f8f;
       font-size: 1.5rem;
       font-weight: bold;
     }
-    input {
+    .count-input {
       width: 100px;
       margin-right: 1rem;
       color: #282c34;
@@ -50,12 +50,12 @@ body {
     }
   }
   
-  .d-flex {
+  .count-d-flex {
     display: flex;
     justify-content: center;
     align-items: center;
   }
-  .d-flex.flex-column {
+  .count-d-flex.flex-column {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -63,21 +63,21 @@ body {
   }
   
   /*Title and Subtitle */
-  .title {
+  .count-title {
     font-size: 3.75rem;
     font-weight: 500;
     margin: 3rem 0 0 0;
   }
   
-  .text-light {
+  .count-text-light {
     color: #f8f9fa;
   }
   
-  .text-dark{
+  .count-text-dark{
     color: #636262;
   }
   /*Main Btn Class*/
-  .btn {
+  .count-btn {
     margin: 0.25rem 0.125rem;
     padding: 0.35rem 1.25rem;
     font-family: inherit;
@@ -91,9 +91,9 @@ body {
     box-shadow: 0 2px 5px rgba(51, 51, 51, 0.3);
     transition: 0.3s ease;
   }
-  .btn:hover,
-  .btn-accept:hover,
-  .btn-warning:hover {
+  .count-btn:hover,
+  .count-btn-accept:hover,
+  .count-btn-warning:hover {
     cursor: pointer;
     box-shadow: none;
     transition: 0.3s ease;
@@ -104,7 +104,7 @@ body {
   /* Btn Types*/
   
   
-  .btn-danger {
+  .count-btn-danger {
     background: linear-gradient(to top left, #ffffff, #fb4356);
     border: 5px solid #dc3545;
     border-radius: 25px;
@@ -116,21 +116,21 @@ body {
     padding: 10px 20px;
     transition: 0.2s all;
   }
-  .btn-danger:hover {
+  .count-btn-danger:hover {
     background: linear-gradient(to top left, #f37380bf, #fb4356);
     color: #fff;
   }
   
-  .btn-danger-1 {
+  .count-btn-danger-1 {
     background-color: #dc3545;
     color: white;
   }
   
-  .btn-danger-1:hover {
+  .count-btn-danger-1:hover {
     background: rgba(220, 53, 69, 0.75);
   }
   
-  .btn-warning {
+  .count-btn-warning {
     background: linear-gradient(to top left, #ffffff, #f5db8e);
     border: 5px solid #ffc107;
     border-radius: 25px;
@@ -142,21 +142,21 @@ body {
     padding: 10px 20px;
     transition: 0.2s all;
   }
-  .btn-warning:hover {
+  .count-btn-warning:hover {
     background: linear-gradient(to top left, #f8e097, #f5db8e);
     color: #fff;
   }
   
-  .btn-warning-1 {
+  .count-btn-warning-1 {
     background-color: #ffc107;
     color: white;
     color: #000;
   }
   
-  .btn-warning-1:hover {
+  .count-btn-warning-1:hover {
     background: rgba(255, 193, 7, 0.75);
   }
-  .btn-accept {
+  .count-btn-accept {
     background: linear-gradient(to top left, #ffffff, #a0b7fa);
     border: 5px solid #284ea7;
     border-radius: 25px;
@@ -168,29 +168,29 @@ body {
     padding: 10px 20px;
     transition: 0.2s all;
   }
-  .btn-accept:hover {
+  .count-btn-accept:hover {
     background: linear-gradient(to top left, #70b7ee, #5e88ea);
     color: #fff;
   }
   
-  .btn-accept-1 {
+  .count-btn-accept-1 {
     background-color: #284ea7;
     color: white;
   }
-  .btn-accept-1:hover {
+  .count-btn-accept-1:hover {
     background: rgba(40, 78, 167, 0.75);
   }
   
   
   
-  .btn-lg {
+  .count-btn-lg {
     margin: 0.3125rem 0.15625rem;
     padding: 0.4375rem 1.5625rem;
     font-size: 20px;
   }
   
   
-  .confirm {
+  .count-confirm {
     background: linear-gradient(to top left, #ffffff, #e6f9c7);
     border: 5px solid #4FBD40;
     border-radius: 25px;
@@ -203,7 +203,7 @@ body {
     transition: 0.2s all;
   }
   
-  .confirm:hover {
+  .count-confirm:hover {
     background: linear-gradient(to top left, #a2e65e, #3fb232);
     color: #fff;
   }

@@ -18,8 +18,6 @@ export default function Cronometro(props) {
             {/* timeFormat() */}
             <div>{props.chronoTimeToChrono}</div>
             <div>
-                Tabla media rara, una lista de COMO MAXIMO 10 marcas?
-                En esta debe de poner Marca en un input | tiempo guardado
 
             </div>
             <div>

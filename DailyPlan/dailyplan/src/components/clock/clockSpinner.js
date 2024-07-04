@@ -3,7 +3,7 @@ import React, { useState, useRef } from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 import '../../styles/UI/Clock/ClockSpinner.css'; // Importa el archivo CSS
 
-export default function ClockSpinner({ onSelectTimezone }) {
+export default function ClockSpinner({ sethour }) {
   const [searchText, setSearchText] = useState('');
   const [matchingTimezones, setMatchingTimezones] = useState([]);
   const [showOptions, setShowOptions] = useState(false);
@@ -25,10 +25,14 @@ export default function ClockSpinner({ onSelectTimezone }) {
   };
 
   const handleTimezoneSelect = (timezone) => {
-    onSelectTimezone(timezone);
     setSelectedTimezone(timezone);
     setSearchText(timezone);
+    
     setShowOptions(false);
+    
+    sethour(timezone)
+    // onSelectTimezone(timezone);
+
     inputRef.current.blur(); // Desenfocar el campo de texto después de seleccionar
   };
 
@@ -43,7 +47,7 @@ export default function ClockSpinner({ onSelectTimezone }) {
            value={searchText}
            onChange={handleSearchChange}
            className="search-input"
-           ref={inputRef} // Asignar la referencia al campo de texto
+           ref={inputRef}
           />
         </Dropdown.Toggle>
         <Dropdown.Menu>

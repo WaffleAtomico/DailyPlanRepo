@@ -2,9 +2,9 @@ import { transporter } from "../index.mjs";
 import nodemailer from "nodemailer";
 
 export const sendMailrest = (req, res, next) => {
-    const email = req.body.email
-    const nombre = req.body.nombre
-    const codigo = req.body.codigo
+    const email = req.body.email;
+    const nombre = req.body.nombre;
+    const codigo = req.body.codigo;
 
     var mensaje = '<span style="font-size: 13.0pt; font-family: sans-serif;">' + 
       '<p>Estimado usuario:<strong>' + nombre + '</strong></p>' + 

@@ -1,12 +1,8 @@
 export default function Pomodoro_view() {
     return(
         <div>
-        Pomodoro pro
+        Pomodoro 
             <div>
-            Ni se que debo de agregar aca, metele funcionalidad, y de que, alarmas o cosas así bien pedorras
-
-            Aca iba... que iba? algo asi como 
-
             Debes de en algun momento mostrar una pantalla con el contador, llenarla por completo o sobreponerla para mostrar el contador 
             Debe de tener un boton para salir, pero seguir ejecutando el contador de igual forma
             Debe de reproducir un sonido
