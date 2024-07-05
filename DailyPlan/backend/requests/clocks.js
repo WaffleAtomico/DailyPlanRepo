@@ -1,4 +1,4 @@
-import { db } from "../server/connection.js";
+import { db } from "../config/connection.js";
 
 /*
 {

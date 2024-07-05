@@ -1,4 +1,4 @@
-import { db } from '../server/connection.js';
+import { db } from '../config/connection.js';
 import jwt from "jsonwebtoken";
 
 const SECRET_KEY = 'Xu$UW$z)555419G:f+iuZ';

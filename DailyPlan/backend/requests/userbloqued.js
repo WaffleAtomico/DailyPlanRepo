@@ -1,4 +1,4 @@
-import { db } from "../server/connection.js";
+import { db } from "../config/connection.js";
 
 const getUsersBlocked = (req, res) => {
   const user_id = req.body.user_id;
