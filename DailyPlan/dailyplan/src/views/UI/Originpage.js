@@ -1,21 +1,22 @@
 import { useContext, useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-import Ui_navbar from "../../components/nav/UinavBar";
-import Calendar from "./Calendar";
-import Alarm from "./Alarm";
-import Chrono from "./Chrono";
-import CountdownTimer from "./CountdownTimer";
-import Clock from "./Clock";
-import Invitation from "./Invitation";
-import Sleep from "./Sleep";
-import Pomodoro from "./Pomodoro";
-import PuntButton from "../../components/puntuality/punt_button";
+import Ui_navbar from "./nav/UinavBar";
+import Calendar from "./Calendar_module/Calendar";
+import Alarm from "./Alarm_module/Alarm";
+import Chrono from "./Chrono_module/Chrono";
+import CountdownTimer from "./CountDownTimer_module/CountdownTimer";
+import Clock from "./Clocks_module/Clock";
+import Invitation from "./Invitations_module/Invitation";
+import Sleep from "./SleepMode_module/Sleep";
+import Pomodoro from "./Pomodoro_module/Pomodoro";
+import PuntButton from "./Puntuality_module/punt_button";
+import ChronoIndicator from "./advices/ChronoMsjs";
+import GeneralNotif from "./advices/GeneralNotif";
 
 
 import { timeFormatSec } from "../../utils/timeFormat";
 
-import ChronoIndicator from "../../components/advices/ChronoMsjs";
 
 import "../../styles/UI/Origin/UI.css";
 import "../../styles/start/startpage.css";
@@ -69,6 +70,17 @@ export default function OriginPage() {
       default:
         break;
     }
+  };
+
+  /*-------------------- Notifications --------------------*/
+  const [mostrarNotificacion, setMostrarNotificacion] = useState(true);
+
+  const handleShowNotificacion = () => {
+    setMostrarNotificacion(true);
+  };
+
+  const handleCloseNotificacion = () => {
+    setMostrarNotificacion(false);
   };
 
   /*  --------------------CHRONO IN ALL-------------------- */
@@ -188,6 +200,18 @@ export default function OriginPage() {
           />
         )}
       </div>
+      {/* <GeneralNotif
+          mensaje="Este es el mensaje de la notificación"
+          onClose={handleCloseNotificacion}
+          componente={<div>Componente adicional</div>}
+        /> */}
+      {mostrarNotificacion && (
+        <GeneralNotif
+          mensaje="Este es el mensaje de la notificación"
+          onClose={handleCloseNotificacion}
+          componente={<div>Componente adicional</div>}
+        />
+      )}
     </div>
   );
 }

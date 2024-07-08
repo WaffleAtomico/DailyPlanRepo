@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getUsrName } from "../../utils/validations/user";
 
-import Archivement_view from "./Archievements";
-import ProfileConfig_view from "./ProfileConfig";
+import Archivement_view from "./Archivements_module/Archievements";
+import ProfileConfig_view from "./ProfileConfig_module/ProfileConfig";
 
 import "../../styles/UI/profile/profGeneral.css";
 
