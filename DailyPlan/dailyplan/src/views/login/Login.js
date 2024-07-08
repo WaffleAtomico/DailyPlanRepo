@@ -1,7 +1,7 @@
 import React, { useContext, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { UserExist } from "../../utils/validations/user";
-import { BdNoCon } from "../../components/advices/ErrorMsjs";
+import { BdNoCon } from "../UI/advices/ErrorMsjs";
 import axios from "axios";
 
 //design
@@ -40,7 +40,10 @@ export default function Login(props) {
 
     // login(response.data.token);
     UserExist(userInfoLogin).then(userExist => {
-      navigate(`/dailyplan/${userExist.data.id}`);
+      if(userExist.data.id > 0)
+      {
+        navigate(`/dailyplan/${userExist.data.id}`);
+      }
     }).catch(error => {
       console.error(error);
     });

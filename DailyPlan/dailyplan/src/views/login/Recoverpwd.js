@@ -1,8 +1,7 @@
 import { useRef, useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { isValidEmail, EmailExist, getUsrByEmail, enviaCorreo } from "../../utils/validations/user"
-import { BdNoCon } from "../../components/advices/ErrorMsjs"
-
+import { BdNoCon } from "../UI/advices/ErrorMsjs";
 
 import Badge from 'react-bootstrap/Badge';
 import Button from 'react-bootstrap/Button';

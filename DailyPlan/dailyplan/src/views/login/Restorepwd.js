@@ -1,7 +1,6 @@
 import { useRef, useState } from "react";
 import { Link, useNavigate, useParams  } from "react-router-dom";
-import { BdNoCon } from "../../components/advices/ErrorMsjs"
-
+import { BdNoCon } from "../UI/advices/ErrorMsjs";
 
 import Badge from 'react-bootstrap/Badge';
 import Button from 'react-bootstrap/Button';
