@@ -1,9 +1,13 @@
 import axios from 'axios';
-import { urllocalhost } from "../urlrequest";
+import {
+    ADD_USER_BLOCKED_URL,
+    DELETE_USER_BLOCKED_URL,
+    GET_USERS_BLOCKED_URL
+} from '../routes';
 
 export const addUserBlocked = async (userBlockedInfo) => {
     try {
-        const response = await axios.post(`${urllocalhost}/bloqusr`, userBlockedInfo);
+        const response = await axios.post(ADD_USER_BLOCKED_URL, userBlockedInfo);
         return response.data;
     } catch (err) {
         console.error('Error adding user blocked:', err);
@@ -11,10 +15,9 @@ export const addUserBlocked = async (userBlockedInfo) => {
     }
 };
 
-
 export const delUserBlocked = async (userBlockedId) => {
     try {
-        const response = await axios.post(`${urllocalhost}/unbloq`, { userblocked_id: userBlockedId });
+        const response = await axios.post(DELETE_USER_BLOCKED_URL, { userblocked_id: userBlockedId });
         return response.data;
     } catch (err) {
         console.error('Error deleting user blocked:', err);
@@ -22,10 +25,9 @@ export const delUserBlocked = async (userBlockedId) => {
     }
 };
 
-
 export const getUsersBlocked = async (user_id) => {
     try {
-        const response = await axios.post(`${urllocalhost}/getusrbloq`, { user_id });
+        const response = await axios.post(GET_USERS_BLOCKED_URL, { user_id });
         return response.data;
     } catch (err) {
         console.error('Error retrieving blocked users:', err);
