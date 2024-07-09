@@ -82,7 +82,7 @@ export default function Chrono_view(props) {
                 <tbody>
                     <tr>
                         <td >Tiempo esperado</td>
-                        <td >Diferencia al obtenido</td>
+                        <td >Diferencia al obtenido s</td>
                     </tr>
                     {timesFromUser.map((time, index) => (
                         <tr key={index}>
