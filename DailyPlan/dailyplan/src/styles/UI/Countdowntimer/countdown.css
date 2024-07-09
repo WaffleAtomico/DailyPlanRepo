@@ -1,0 +1,233 @@
+/* Roboto Font */
+.count-body {
+  font-family: "Roboto", sans-serif;
+}
+
+/* Container class */
+.count-container {
+  max-width: 900px;
+  margin: 0 auto;
+  height: 80vh; /* Altura máxima del contenedor */
+  overflow-y: auto; /* Habilita el scroll vertical cuando el contenido excede la altura */
+}
+
+.count-d-time-wrapper {
+  margin-top: 20vh;
+  width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  /* background-color: #FFEDD3; */
+  color: #eee;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /*box-shadow: 5px 4px 6px rgba(0, 0, 0, 0.4);*/
+  padding: 1rem 0;
+}
+
+.count-stop-watch {
+  font-size: 6rem;
+  margin-right: 1rem;
+}
+
+.count-label {
+  margin-bottom: 0.5rem;
+  color: #928f8f;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.count-input {
+  width: 100px;
+  margin-right: 1rem;
+  color: #282c34;
+  outline: none;
+  border: none;
+  font-size: 4.5rem;
+  font-weight: 600;
+  text-align: center;
+  padding: 0rem 0.5rem;
+  border-radius: 5px;
+}
+
+input:hover {
+  background-color: #928f8f;
+}
+
+.count-d-flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.count-d-flex.flex-column {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+/* Title and Subtitle */
+.count-title {
+  font-size: 3.75rem;
+  font-weight: 500;
+  margin: 3rem 0 0 0;
+}
+
+.count-text-light {
+  color: #f8f9fa;
+}
+
+.count-text-dark {
+  color: #636262;
+}
+
+/* Main Btn Class */
+.count-btn {
+  margin: 0.25rem 0.125rem;
+  padding: 0.35rem 1.25rem;
+  font-family: inherit;
+  font-weight: 500;
+  font-size: 1rem;
+  letter-spacing: 0.6px;
+  border-radius: 0.3rem;
+  color: #fff;
+  background-color: #000;
+  border: none;
+  box-shadow: 0 2px 5px rgba(51, 51, 51, 0.3);
+  transition: 0.3s ease;
+}
+
+.count-btn:hover,
+.count-btn-accept:hover,
+.count-btn-warning:hover {
+  cursor: pointer;
+  box-shadow: none;
+  transition: 0.3s ease;
+  background: rgba(0, 0, 0, 0.75);
+}
+
+/* Btn Types */
+
+.count-btn-danger {
+  background: linear-gradient(to top left, #ffffff, #fb4356);
+  border: 5px solid #dc3545;
+  border-radius: 25px;
+  color: black;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 18px;
+  width: 200px;
+  padding: 10px 20px;
+  transition: 0.2s all;
+}
+
+.count-btn-danger:hover {
+  background: linear-gradient(to top left, #f37380bf, #fb4356);
+  color: #fff;
+}
+
+.count-btn-danger-1 {
+  background-color: #dc3545;
+  color: white;
+}
+
+.count-btn-danger-1:hover {
+  background: rgba(220, 53, 69, 0.75);
+}
+
+.count-btn-warning {
+  background: linear-gradient(to top left, #ffffff, #f5db8e);
+  border: 5px solid #ffc107;
+  border-radius: 25px;
+  color: black;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 18px;
+  width: 200px;
+  padding: 10px 20px;
+  transition: 0.2s all;
+}
+
+.count-btn-warning:hover {
+  background: linear-gradient(to top left, #f8e097, #f5db8e);
+  color: #fff;
+}
+
+.count-btn-warning-1 {
+  background-color: #ffc107;
+  color: white;
+  color: #000;
+}
+
+.count-btn-warning-1:hover {
+  background: rgba(255, 193, 7, 0.75);
+}
+
+.count-btn-accept {
+  background: linear-gradient(to top left, #ffffff, #a0b7fa);
+  border: 5px solid #284ea7;
+  border-radius: 25px;
+  color: black;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 18px;
+  width: 200px;
+  padding: 10px 20px;
+  transition: 0.2s all;
+}
+
+.count-btn-accept:hover {
+  background: linear-gradient(to top left, #70b7ee, #5e88ea);
+  color: #fff;
+}
+
+.count-btn-accept-1 {
+  background-color: #284ea7;
+  color: white;
+}
+
+.count-btn-accept-1:hover {
+  background: rgba(40, 78, 167, 0.75);
+}
+
+.count-btn-lg {
+  margin: 0.3125rem 0.15625rem;
+  padding: 0.4375rem 1.5625rem;
+  font-size: 20px;
+}
+
+.count-confirm {
+  background: linear-gradient(to top left, #ffffff, #e6f9c7);
+  border: 5px solid #4FBD40;
+  border-radius: 25px;
+  color: black;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 18px;
+  width: 280px;
+  padding: 10px 20px;
+  transition: 0.2s all;
+}
+
+.count-confirm:hover {
+  background: linear-gradient(to top left, #a2e65e, #3fb232);
+  color: #fff;
+}
+
+/* Estilo para el botón de temporizadores */
+.count-temporizadores {
+  background-color: #4caf50;
+  color: white;
+  font-size: 1.5rem;
+  padding: 1rem 2rem;
+  border-radius: 10px;
+  margin-top: 1rem;
+  border: none;
+  cursor: pointer;
+}
+
+.count-temporizadores:hover {
+  background-color: #45a049;
+}

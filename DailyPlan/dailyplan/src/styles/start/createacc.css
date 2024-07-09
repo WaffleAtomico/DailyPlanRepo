@@ -8,6 +8,7 @@
     margin-top: auto;
     overflow: hidden;
 }
+
 .create-block Form.Control {
     margin: 1rem;
 }
@@ -18,6 +19,7 @@
 .create-action Button {
     flex-basis: 100%;
  }
+ 
 .create-form
 {
     padding: 0 1rem;

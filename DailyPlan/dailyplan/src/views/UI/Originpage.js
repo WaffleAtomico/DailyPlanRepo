@@ -1,23 +1,26 @@
 import { useContext, useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-import Ui_navbar from "../../components/nav/UinavBar";
-import Calendar from "./Calendar";
-import Alarm from "./Alarm";
-import Chrono from "./Chrono";
-import CountdownTimer from "./CountdownTimer";
-import Clock from "./Clock";
-import Invitation from "./Invtitation";
-import Sleep from "./Sleep";
-import Pomodoro from "./Pomodoro";
+import Ui_navbar from "./nav/UinavBar";
+import Calendar from "./Calendar_module/Calendar";
+import Alarm from "./Alarm_module/Alarm";
+import Chrono from "./Chrono_module/Chrono";
+import CountdownTimer from "./CountDownTimer_module/CountdownTimer";
+import Clock from "./Clocks_module/Clock";
+import Invitation from "./Invitations_module/Invitation";
+import Sleep from "./SleepMode_module/Sleep";
+import Pomodoro from "./Pomodoro_module/Pomodoro";
+import PuntButton from "./Puntuality_module/punt_button";
+import ChronoIndicator from "./advices/ChronoMsjs";
+import GeneralNotif from "./advices/GeneralNotif";
+
 
 import { timeFormatSec } from "../../utils/timeFormat";
 
-import ChronoIndicator from "../../components/advices/ChronoMsjs";
 
 import "../../styles/UI/Origin/UI.css";
 import "../../styles/start/startpage.css";
-import "../../styles/UI/Countdowntimer/style.css";
+import "../../styles/UI/Countdowntimer/countdown.css";
 
 import { FaUserClock } from "react-icons/fa6";
 import { getUsrName } from "../../utils/validations/user";
@@ -36,10 +39,16 @@ export default function OriginPage() {
   };
 
   useEffect(() => {
-    const getUserName = async (user_id) => {
-      const response = await getUsrName(user_id);
-      console.log("Response in front " + response.user_name);
-      setUsername(response.user_name);
+    const getUserName = (user_id) => {
+      // const response = await 
+      getUsrName(user_id).then(response => {
+        console.log("Response in front");
+        console.log(response.data);
+        setUsername(response.data[0].user_name);
+      }).catch(error => {
+        console.error(error);
+      });
+
     };
     getUserName(id);
   }, []);
@@ -61,6 +70,17 @@ export default function OriginPage() {
       default:
         break;
     }
+  };
+
+  /*-------------------- Notifications --------------------*/
+  const [mostrarNotificacion, setMostrarNotificacion] = useState(true);
+
+  const handleShowNotificacion = () => {
+    setMostrarNotificacion(true);
+  };
+
+  const handleCloseNotificacion = () => {
+    setMostrarNotificacion(false);
   };
 
   /*  --------------------CHRONO IN ALL-------------------- */
@@ -118,7 +138,10 @@ export default function OriginPage() {
   return (
     <div className="main-container">
       <div className="UI-header">
-        <button className="left-button">Puntualidad</button>
+        <PuntButton />
+        {/* <button className="left-button">
+          Puntualidad
+          </button> */}
         <Ui_navbar
           handleOptionSelected={handleOptionSelected}
           selectedOption={selectedOption}
@@ -142,16 +165,16 @@ export default function OriginPage() {
           selectedOption === 3 ||
           selectedOption === 7 ||
           selectedOption === 8) && (
-          <button
-            className="UI-btn-opption"
-            onClick={() => handleSuboption(selectedOption)}
-          >
-            {selectedOption === 1 && "Modo de sueño"}
-            {selectedOption === 3 && "Pomodoro"}
-            {selectedOption === 7 && "Alarma"}
-            {selectedOption === 8 && "Temporizador"}
-          </button>
-        )}
+            <button
+              className="UI-btn-opption"
+              onClick={() => handleSuboption(selectedOption)}
+            >
+              {selectedOption === 1 && "Modo de sueño"}
+              {selectedOption === 3 && "Pomodoro"}
+              {selectedOption === 7 && "Alarma"}
+              {selectedOption === 8 && "Temporizador"}
+            </button>
+          )}
       </div>
 
       <div className="UI-background">
@@ -168,7 +191,6 @@ export default function OriginPage() {
         {selectedOption === 3 && <CountdownTimer />}
         {selectedOption === 4 && <Clock id_user={id} />}
         {selectedOption === 5 && <Invitation />}
-        {/* {selectedOption === 6 && <Configuration />} */}
         {selectedOption === 7 && <Sleep />}
         {selectedOption === 8 && <Pomodoro />}
         {selectedOption !== 2 && secondsPassed > 0 && (
@@ -178,6 +200,18 @@ export default function OriginPage() {
           />
         )}
       </div>
+      {/* <GeneralNotif
+          mensaje="Este es el mensaje de la notificación"
+          onClose={handleCloseNotificacion}
+          componente={<div>Componente adicional</div>}
+        /> */}
+      {mostrarNotificacion && (
+        <GeneralNotif
+          mensaje="Este es el mensaje de la notificación"
+          onClose={handleCloseNotificacion}
+          componente={<div>Componente adicional</div>}
+        />
+      )}
     </div>
   );
 }

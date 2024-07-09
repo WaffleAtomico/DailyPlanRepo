@@ -1,4 +1,4 @@
-import { db } from "../server/connection.js";
+import { db } from "../config/connection.js";
 
 const getUsers = (req, res) => {
   const q = "SELECT * FROM users";
@@ -21,7 +21,7 @@ const getConn = (req, res) => {
 };
 
 const getUser = (req, res) => {
-  // console.log("En back el id: " + req.body.user_id);
+  console.log("(getUser)En back el id: " + req.body.user_id);
   const query = {
     sql: "SELECT * FROM users WHERE `user_id` = ?",
     values: [req.body.user_id],
