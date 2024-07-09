@@ -41,18 +41,18 @@
 .count-input {
   width: 100px;
   margin-right: 1rem;
-  color: #282c34;
+  color: #444953;
   outline: none;
   border: none;
-  font-size: 4.5rem;
-  font-weight: 600;
+  font-size: 2.5rem;
+  font-weight: 300;
   text-align: center;
   padding: 0rem 0.5rem;
   border-radius: 5px;
 }
 
 input:hover {
-  background-color: #928f8f;
+  background-color: #b7b2b2;
 }
 
 .count-d-flex {
@@ -163,6 +163,33 @@ input:hover {
 
 .count-btn-warning-1:hover {
   background: rgba(255, 193, 7, 0.75);
+}
+
+.count-btn-save {
+  background: linear-gradient(to top left, #ffffff, #fbb143);
+  border: 5px solid #fbb143;
+  border-radius: 25px;
+  color: black;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 18px;
+  width: 200px;
+  padding: 10px 20px;
+  transition: 0.2s all;
+}
+
+.count-btn-save:hover {
+  background: linear-gradient(to top left, #f3ca73bf, #fb9643);
+  color: #fff;
+}
+
+.count-btn-save-1 {
+  background-color: #dc3545;
+  color: white;
+}
+
+.count-btn-save-1:hover {
+  background: rgba(220, 53, 69, 0.75);
 }
 
 .count-btn-accept {
