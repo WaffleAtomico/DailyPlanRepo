@@ -30,6 +30,12 @@ const UPDATE_ALARM_URL = '/updatte-alarm';
 const DELETE_ALARM_URL = '/delete-alarm';
 const ALARM_NAME_EXISTS_URL = '/alarms-existsname';
 const USER_ALARM_LIMIT_REACHED_URL = '/alarms-limit-user';
+const ADD_CHRONOMETER_URL = '/add-chronometer';
+const GET_CHRONOMETERS_FOR_USER_URL = '/get-user-chronometers';
+const GET_CHRONOMETER_BY_ID_URL = '/get-chronometer';
+const UPDATE_CHRONOMETER_URL = '/update-chronometer';
+const DELETE_CHRONOMETER_URL = '/delete-chronometer';
+
 
 export {
     ROOT_URL,
@@ -63,5 +69,10 @@ export {
     UPDATE_ALARM_URL,
     DELETE_ALARM_URL,
     ALARM_NAME_EXISTS_URL,
-    USER_ALARM_LIMIT_REACHED_URL
+    USER_ALARM_LIMIT_REACHED_URL,
+    ADD_CHRONOMETER_URL,
+    GET_CHRONOMETERS_FOR_USER_URL,
+    GET_CHRONOMETER_BY_ID_URL,
+    UPDATE_CHRONOMETER_URL,
+    DELETE_CHRONOMETER_URL,
 };
