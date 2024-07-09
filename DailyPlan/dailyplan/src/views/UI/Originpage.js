@@ -134,7 +134,7 @@ export default function OriginPage() {
 
   const secondsPassed = elapsedTime / 1000;
   const chronoTime = timeFormatSec(secondsPassed);
-
+  
   return (
     <div className="main-container">
       <div className="UI-header">
@@ -183,6 +183,7 @@ export default function OriginPage() {
         {selectedOption === 2 && (
           <Chrono
             chronoTimeToChrono={chronoTime}
+            chronoTimeSecond = {secondsPassed}
             isRunningChrono={isRunning}
             handleStaStoChrono={handleStaSto}
             handleResetChrono={handleReset}
@@ -196,6 +197,7 @@ export default function OriginPage() {
         {selectedOption !== 2 && secondsPassed > 0 && (
           <ChronoIndicator
             chronoTimeToChrono={chronoTime}
+            chronoTimeSecond = {secondsPassed}
             handleStaStoToChrono={handleStaSto}
           />
         )}

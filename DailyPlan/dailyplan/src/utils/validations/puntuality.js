@@ -24,7 +24,7 @@ export function calculatePunctuality(timeInMinutes) {
         return 0;
     }
 
-    //Now, with the correct range calculate a giatt level 9999.
+   
     const { min, max, percentageMin, percentageMax } = range;
 
     //Calculate the time
@@ -48,3 +48,41 @@ export function applyLatePenalty(punctuality, timeDifferenceInMinutes) {
     }
     return punctuality;
 }
+
+//Method to get the percentage of all the marks
+export const getDifferencesAndPercentages = (expectedTimes, actualTimes) => {
+    const differences = expectedTimes.map((expectedTime, index) => 
+        calculateDifferenceInSeconds(expectedTime, actualTimes[index])
+    );
+
+
+    const averageDifference = getAverageDifference(differences);
+
+    const  percentages = differences.map(difference => (Math.abs(difference) / averageDifference) * 100);
+
+    return percentages;
+
+};
+
+
+
+//-----------------------
+//Private methods
+//-------------------------
+
+
+//Method to calculate the difference in second of the expected time and the actual time
+const calculateDifferenceInSeconds = (expectedTime, actualTime) => {
+    const [expectedHours, expectedMinutes, expectedSeconds] = expectedTime.split(":").map(Number);
+    const expectedTotalSeconds = expectedHours * 3600 + expectedMinutes * 60 + expectedSeconds;
+    const actualTotalSeconds = Math.floor(actualTime);
+    return actualTotalSeconds - expectedTotalSeconds;
+};
+
+
+//Get the average of all the diferences.
+const getAverageDifference = (differences) => {
+    const totalDifference = differences.reduce((sum, diff) => sum + Math.abs(diff), 0);
+    return totalDifference / differences.length;
+};
+
