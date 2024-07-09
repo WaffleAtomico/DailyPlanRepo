@@ -148,7 +148,12 @@ app.post(urls.DELETE_ALARM_URL, deleteAlarm);
 app.post(urls.ALARM_NAME_EXISTS_URL, isAlarmNameExistForUser);
 app.post(urls.USER_ALARM_LIMIT_REACHED_URL, isUserAlarmLimitReached);
 
-
+/*-------------------------------Timer------------------------- */
+pp.post(urls.ADD_TIMER_URL, addTimer);
+app.get(urls.GET_TIMERS_FOR_USER_URL, getTimersForUser);
+app.get(urls.GET_TIMER_BY_ID_URL, getTimerById);
+app.post(urls.UPDATE_TIMER_URL, updateTimer);
+app.post(urls.DELETE_TIMER_URL, deleteTimer);
 
 
 /*-------------------------------spotify------------------------- */

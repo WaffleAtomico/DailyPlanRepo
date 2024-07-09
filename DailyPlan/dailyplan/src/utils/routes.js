@@ -30,6 +30,13 @@ const USER_EXISTS_NUMBER_URL = `${urlreference}/users-existnumber`;
 const GET_USER_INFO_URL = `${urlreference}/get-userinfo`;
 const GET_USER_BY_MAIL_URL = `${urlreference}/user-bymail`;
 const SEND_MAIL_URL = `${urlreference}/send`;
+const ADD_TIMER_URL = `${urlreference}/add-timer`;
+const GET_TIMERS_FOR_USER_URL = `${urlreference}/get-user-timers`;
+const GET_TIMER_BY_ID_URL = `${urlreference}/get-timer`;
+const UPDATE_TIMER_URL = `${urlreference}/update-timer`;
+const DELETE_TIMER_URL = `${urlreference}/delete-timer`;
+
+
 
 export {
     urlreference,
@@ -55,5 +62,10 @@ export {
     USER_EXISTS_NUMBER_URL,
     GET_USER_INFO_URL,
     GET_USER_BY_MAIL_URL,
-    SEND_MAIL_URL
+    SEND_MAIL_URL,
+    ADD_TIMER_URL,
+    GET_TIMERS_FOR_USER_URL,
+    GET_TIMER_BY_ID_URL,
+    UPDATE_TIMER_URL,
+    DELETE_TIMER_URL,
 };

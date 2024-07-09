@@ -3,9 +3,6 @@ import { FaRegCirclePause, FaRegCirclePlay, FaClockRotateLeft } from "react-icon
 import { TbClockEdit } from "react-icons/tb";
 import '../../../styles/UI/Chronometer/Chrono.css';
 
-//aqui me quede
-
-
 export default function Chrono_view(props) {
     const [timesFromUser, setTimesFromUser] = useState([]); // Las marcas guardadas por el usuario
     const [savedmarks, setSavedmark] = useState([]); // Marcas para saber qué tiempos comparar

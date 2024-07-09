@@ -8,6 +8,9 @@ export default function CountdownTimer() {
   const [seconds, setSeconds] = useState(0);
   const [milliseconds, setMilliseconds] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
+  const [sound, setSound] = useState('');
+  const [soundFile, setSoundFile] = useState(null);
+
 
   const [showEndScreen, setShowEndScreen] = useState({
     show: false,
@@ -72,17 +75,39 @@ export default function CountdownTimer() {
     setHours(0);
   }
 
+  const playSound = () => {
+    const audio = new Audio(sound);
+    audio.play();
+  };
+
+  // const changeMilliseconds = (e) => {
+  //   let value = Number(e.target.value);
+  //   if (value < 0) value = 0;
+  //   if (value > 59) value = 59;
+  //   setMilliseconds(value);
+  // };
+  
   const changeSeconds = (e) => {
-    setSeconds(Number(e.target.value));
+    let value = Number(e.target.value);
+    if (value < 0) value = 0;
+    if (value > 59) value = 59;
+    setSeconds(value);
   };
-
+  
   const changeMinutes = (e) => {
-    setMinutes(Number(e.target.value));
+    let value = Number(e.target.value);
+    if (value < 0) value = 0;
+    if (value > 59) value = 59;
+    setMinutes(value);
   };
-
+  
   const changeHours = (e) => {
-    setHours(Number(e.target.value));
+    let value = Number(e.target.value);
+    if (value < 0) value = 0;
+    if (value > 99) value = 99;
+    setHours(value);
   };
+  
 
   const handleRingDurationChange = (e) => {
     setRingDuration(Number(e.target.value));
@@ -91,6 +116,33 @@ export default function CountdownTimer() {
   const handleRingRepetitionsChange = (e) => {
     setRingRepetitions(Number(e.target.value));
   };
+
+  const handleSoundFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      if (file.type === 'audio/mp3' && file.size <= 5 * 1024 * 1024) { // Verifica que sea .mp3 y no exceda 5 MB
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          // Simulamos la conversión a .ogg
+          const convertedSound = {
+            name: file.name.replace('.mp3', '.ogg'),
+            type: 'audio/ogg',
+            size: file.size, // Aquí deberías ajustar el tamaño real después de la conversión
+            data: reader.result,
+          };
+          setSoundFile(convertedSound);
+        };
+        reader.readAsDataURL(file);
+      } else {
+        alert('El archivo debe ser formato .mp3 y no debe exceder 5 MB.');
+      }
+    }
+  };
+  
+  const getFileName = () => {
+    return soundFile ? soundFile.name : 'Seleccionar archivo .mp3';
+  };
+
 
   return (
     <div className="count-container">
@@ -119,7 +171,7 @@ export default function CountdownTimer() {
           />
           <span>{ringDuration}</span>
         </div>
-        <div className="count-d-flex flex-column">
+        {/* <div className="count-d-flex flex-column">
           <label className="count-label">Repeticiones de timbre</label>
           <input
             className="count-input-range"
@@ -130,6 +182,18 @@ export default function CountdownTimer() {
             onChange={handleRingRepetitionsChange}
           />
           <span>{ringRepetitions}</span>
+        </div> */}
+        <div className="count-d-flex flex-column">
+          <label className="count-label">
+            Sonido:
+            <br />
+            <input style={{ width: "40rem" }}
+              type="file"
+              accept=".mp3"
+              onChange={handleSoundFileChange}
+            />
+          </label>
+          <span>{getFileName()}</span>
         </div>
       </div>
       <br />
@@ -138,7 +202,7 @@ export default function CountdownTimer() {
         <button className="count-btn count-btn-accept count-btn-lg" onClick={startTimer}>
           Iniciar
         </button>
-      ) }
+      )}
       {isRunning && (
         <button className="count-btn count-btn-warning count-btn-lg" onClick={pauseTimer}>
           Pausa
@@ -147,10 +211,14 @@ export default function CountdownTimer() {
       <button className="count-btn count-btn-danger count-btn-lg" onClick={stopTimer}>
         Detener
       </button>
+      <button className="count-btn count-btn-save count-btn-lg" >
+        Guardar
+      </button>
       <br />
-      <button className="count-btn count-btn-lg count-temporizadores">
+      <button className="count-btn count-btn-lg count-temporizadores" >
         TEMPORIZADORES
       </button>
+      
     </div>
   );
 }

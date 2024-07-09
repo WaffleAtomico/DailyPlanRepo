@@ -48,10 +48,16 @@ export default function ProfileOriPage() {
   };
 
   useEffect(() => {
-    const getUserName = async (user_id) => {
-      const response = await getUsrName(user_id);
-      console.log("Response in front " + response.user_name);
-      setUsername(response.user_name);
+    const getUserName = (user_id) => {
+      // const response = await 
+      getUsrName(user_id).then(response => {
+        console.log("Response in front");
+        console.log(response.data);
+        setUsername(response.data[0].user_name);
+      }).catch(error => {
+        console.error(error);
+      });
+
     };
     getUserName(id);
   }, []);
