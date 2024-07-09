@@ -1,7 +1,11 @@
 const ROOT_URL = '/';
+
 const SEND_MAIL_URL = '/send';
+
 const CONN_URL = '/conn';
+
 const LOGIN_URL = '/login';
+
 const GET_USERS_URL = '/users';
 const GET_USER_INFO_URL = '/get-userinfo';
 const CREATE_USER_URL = '/users';
@@ -13,16 +17,20 @@ const USER_EXISTS_NAME_URL = '/users-existname';
 const USER_EXISTS_NUMBER_URL = '/users-existnumber';
 const GET_USER_BY_MAIL_URL = '/user-bymail';
 const GET_USER_BY_NUMBER_URL = '/user-bynumber';
+
 const ADD_CLOCK_URL = '/clock-id';
 const GET_CLOCK_URL = '/clock-byid';
 const DELETE_CLOCK_URL = '/clock-iddel';
 const CLOCK_EXISTS_ZONE_URL = '/clock-existzone';
+
 const ADD_ALL_TITLES_URL = '/title-addAll';
 const GET_USER_TITLES_URL = '/title-getAll';
 const UPDATE_TITLE_STATUS_URL = '/title-updateOne';
+
 const ADD_USER_BLOCKED_URL = '/bloqusr';
 const DELETE_USER_BLOCKED_URL = '/unbloq';
 const GET_USERS_BLOCKED_URL = '/getusrbloq';
+
 const ADD_ALARM_URL = '/add-alarm';
 const GET_ALARMS_FOR_USER_URL = '/get-user-alarms';
 const GET_ALARM_BY_ID_URL = '/get-alarm';
@@ -30,6 +38,12 @@ const UPDATE_ALARM_URL = '/updatte-alarm';
 const DELETE_ALARM_URL = '/delete-alarm';
 const ALARM_NAME_EXISTS_URL = '/alarms-existsname';
 const USER_ALARM_LIMIT_REACHED_URL = '/alarms-limit-user';
+
+const ADD_TIMER_URL = '/add-timer';
+const GET_TIMERS_FOR_USER_URL = '/get-user-timers';
+const GET_TIMER_BY_ID_URL = '/get-timer';
+const UPDATE_TIMER_URL = '/update-timer';
+const DELETE_TIMER_URL = '/delete-timer';
 
 export {
     ROOT_URL,
@@ -63,5 +77,10 @@ export {
     UPDATE_ALARM_URL,
     DELETE_ALARM_URL,
     ALARM_NAME_EXISTS_URL,
-    USER_ALARM_LIMIT_REACHED_URL
+    USER_ALARM_LIMIT_REACHED_URL,
+    ADD_TIMER_URL,
+    GET_TIMERS_FOR_USER_URL,
+    GET_TIMER_BY_ID_URL,
+    UPDATE_TIMER_URL,
+    DELETE_TIMER_URL
 };
