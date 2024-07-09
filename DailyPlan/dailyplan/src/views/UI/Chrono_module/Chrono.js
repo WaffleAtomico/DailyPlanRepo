@@ -5,42 +5,41 @@ import '../../../styles/UI/Chronometer/Chrono.css';
 
 //aqui me quede
 
+
 export default function Chrono_view(props) {
-    const [timesFromUser, setTimesFromUser] = useState([]); //las marcas guardadas por el usuario
-    const [savedmarks, setSavedmark] = useState([]); //marcas para saber que tiempos comparar
+    const [timesFromUser, setTimesFromUser] = useState([]); // Las marcas guardadas por el usuario
+    const [savedmarks, setSavedmark] = useState([]); // Marcas para saber qué tiempos comparar
     const [inputTime, setInputTime] = useState(""); // Nuevo estado para el campo de entrada
 
     const handleMark = () => {
-        console.log(savedmarks);
+        const actualtime = props.chronoTimeSecond;
+        if (savedmarks.length < timesFromUser.length) {
 
-        const actualtime = props.chronoTimeToChrono;
-        console.log(actualtime);      
-        if (timesFromUser.length < savedmarks.length) {
+          
             setSavedmark([...savedmarks, actualtime]);
-            console.log(savedmarks);
+            //console.log(savedmarks);
         }
-      };
-    
+    };
 
     const handleAddTime = () => {
         if (!props.isRunningChrono && inputTime) {
             const newTimes = [...timesFromUser, inputTime].sort((a, b) => a.localeCompare(b));
             setTimesFromUser(newTimes);
-            // setTimesFromUser([...timesFromUser, inputTime]);
-            // const sortedTimes = [...timesFromUser].sort((a, b) => a.localeCompare(b));
-            // setTimesFromUser(sortedTimes);
             setInputTime(""); 
         }
     };
 
     const getDifference = (expectedTime, actualTime) => {
+
+       //console.log(expectedTime);
+     //   console.log(actualTime);
         const [expectedHours, expectedMinutes, expectedSeconds] = expectedTime.split(":").map(Number);
-        const [actualHours, actualMinutes, actualSeconds] = actualTime.split(":").map(Number);
         
         const expectedTotalSeconds = expectedHours * 3600 + expectedMinutes * 60 + expectedSeconds;
-        const actualTotalSeconds = actualHours * 3600 + actualMinutes * 60 + actualSeconds;
-    
-        const differenceInSeconds = actualTotalSeconds - expectedTotalSeconds;
+        const actualTimeSeconds = Math.floor(actualTime);
+        console.log(actualTimeSeconds);
+
+        const differenceInSeconds = actualTimeSeconds - expectedTotalSeconds;
     
         const diffHours = Math.floor(Math.abs(differenceInSeconds) / 3600).toString().padStart(2, '0');
         const diffMinutes = Math.floor((Math.abs(differenceInSeconds) % 3600) / 60).toString().padStart(2, '0');
@@ -50,19 +49,20 @@ export default function Chrono_view(props) {
     };
 
     useEffect(() => {
-        // console.log("Activo");
-        const sortedTimes = [...timesFromUser].sort((a, b) => a.localeCompare(b));
-        setTimesFromUser(sortedTimes);
-        // console.log(sortedTimes);
-      }, [timesFromUser]);
+        // Avoid updating state inside useEffect to prevent infinite loop
+        if (timesFromUser.length > 1) {
+            const sortedTimes = [...timesFromUser].sort((a, b) => a.localeCompare(b));
+            if (JSON.stringify(sortedTimes) !== JSON.stringify(timesFromUser)) {
+                setTimesFromUser(sortedTimes);
+            }
+        }
+    }, [timesFromUser]);
 
     const iconSize = 45;
 
     return (
         <div className="chronometer-container">
             <div className="chronometer-time">{props.chronoTimeToChrono}</div>
-            {/* <div className="input-container">
-            </div> */}
             <table className="times-table">
                 <thead>
                     <tr>
@@ -81,41 +81,39 @@ export default function Chrono_view(props) {
                 </thead>
                 <tbody>
                     <tr>
-                        <td >Tiempo esperado</td>
-                        <td >Diferencia al obtenido s</td>
+                        <td>Tiempo esperado</td>
+                        <td>Diferencia al obtenido</td>
                     </tr>
                     {timesFromUser.map((time, index) => (
                         <tr key={index}>
                             <td>{time}</td>
-                            
-                            {/* <td>{savedmarks[index] ? savedmarks[index] : "-"}</td> */}
-                            <td>{savedmarks[index] ? getDifference(timesFromUser[0], time) : "-"}</td>
+                            <td>{savedmarks[index] ? getDifference(timesFromUser[index], savedmarks[index]) : "-"}</td>
                         </tr>
                     ))}
-                    <tr onClick={handleAddTime} style={{backgroundColor: "#CDDC39", cursor: "pointer"}}>
+                    <tr onClick={handleAddTime} style={{ backgroundColor: "#CDDC39", cursor: "pointer" }}>
                         <td colSpan="2">
-                            <button className="add-button" >
+                            <button className="add-button">
                                 +
                             </button>
                         </td>
                     </tr>
                 </tbody>
             </table>
-            <div className="chronometer-controls">                
-                <div class="time-input-item" style={{backgroundColor: "#2196F3 "}} onClick={props.handleResetChrono}>
+            <div className="chronometer-controls">
+                <div className="time-input-item" style={{ backgroundColor: "#2196F3" }} onClick={props.handleResetChrono}>
                     <div className='time-input-item-front'>
                         <FaClockRotateLeft size={iconSize} />
                     </div>
                 </div>
-                <div class="time-input-item" style={props.isRunningChrono ? {backgroundColor: "#4CAF50"} : {backgroundColor: "#B43F61"}} onClick={props.handleStaStoChrono}>
+                <div className="time-input-item" style={props.isRunningChrono ? { backgroundColor: "#4CAF50" } : { backgroundColor: "#B43F61" }} onClick={props.handleStaStoChrono}>
                     <div className='time-input-item-front'>
                         {props.isRunningChrono ?
                             <FaRegCirclePause size={iconSize} /> :
                             <FaRegCirclePlay size={iconSize} />
-                        }
+                         }
                     </div>
                 </div>
-                <div class="time-input-item" style={{backgroundColor: "#FFC107"}} onClick={handleMark}>
+                <div className="time-input-item" style={{ backgroundColor: "#FFC107" }} onClick={handleMark}>
                     <div className='time-input-item-front'>
                         <TbClockEdit size={iconSize} />
                     </div>
