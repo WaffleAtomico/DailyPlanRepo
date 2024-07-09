@@ -53,6 +53,8 @@ import {
 } from './requests/alarm.js';
 
 
+
+
 import { sendMailrest } from "./requests/mail.js";
 
 const app = express();
@@ -155,6 +157,12 @@ app.get(urls.GET_TIMER_BY_ID_URL, getTimerById);
 app.post(urls.UPDATE_TIMER_URL, updateTimer);
 app.post(urls.DELETE_TIMER_URL, deleteTimer);
 
+/*-------------------------------Chrono-----------------------------*/
+app.post(ADD_CHRONOMETER_URL, addChronometer);
+app.get(GET_CHRONOMETERS_FOR_USER_URL, getChronometersForUser);
+app.get(GET_CHRONOMETER_BY_ID_URL, getChronometerById);
+app.post(UPDATE_CHRONOMETER_URL, updateChronometer);
+app.post(DELETE_CHRONOMETER_URL, deleteChronometer);
 
 /*-------------------------------spotify------------------------- */
 

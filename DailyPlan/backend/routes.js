@@ -39,6 +39,13 @@ const DELETE_ALARM_URL = '/delete-alarm';
 const ALARM_NAME_EXISTS_URL = '/alarms-existsname';
 const USER_ALARM_LIMIT_REACHED_URL = '/alarms-limit-user';
 
+const ADD_CHRONOMETER_URL = '/add-chronometer';
+const GET_CHRONOMETERS_FOR_USER_URL = '/get-user-chronometers';
+const GET_CHRONOMETER_BY_ID_URL = '/get-chronometer';
+const UPDATE_CHRONOMETER_URL = '/update-chronometer';
+const DELETE_CHRONOMETER_URL = '/delete-chronometer';
+
+
 const ADD_TIMER_URL = '/add-timer';
 const GET_TIMERS_FOR_USER_URL = '/get-user-timers';
 const GET_TIMER_BY_ID_URL = '/get-timer';
@@ -82,5 +89,10 @@ export {
     GET_TIMERS_FOR_USER_URL,
     GET_TIMER_BY_ID_URL,
     UPDATE_TIMER_URL,
-    DELETE_TIMER_URL
+    DELETE_TIMER_URL,
+    ADD_CHRONOMETER_URL,
+    GET_CHRONOMETERS_FOR_USER_URL,
+    GET_CHRONOMETER_BY_ID_URL,
+    UPDATE_CHRONOMETER_URL,
+    DELETE_CHRONOMETER_URL,
 };

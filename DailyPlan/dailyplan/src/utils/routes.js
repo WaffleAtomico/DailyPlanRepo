@@ -35,7 +35,11 @@ const GET_TIMERS_FOR_USER_URL = `${urlreference}/get-user-timers`;
 const GET_TIMER_BY_ID_URL = `${urlreference}/get-timer`;
 const UPDATE_TIMER_URL = `${urlreference}/update-timer`;
 const DELETE_TIMER_URL = `${urlreference}/delete-timer`;
-
+const ADD_CHRONOMETER_URL = `${urlreference}/add-chronometer`;
+const GET_CHRONOMETERS_FOR_USER_URL = `${urlreference}/get-user-chronometers`;
+const GET_CHRONOMETER_BY_ID_URL = `${urlreference}/get-chronometer`;
+const UPDATE_CHRONOMETER_URL = `${urlreference}/update-chronometer`;
+const DELETE_CHRONOMETER_URL = `${urlreference}/delete-chronometer`;
 
 
 export {
@@ -68,4 +72,9 @@ export {
     GET_TIMER_BY_ID_URL,
     UPDATE_TIMER_URL,
     DELETE_TIMER_URL,
+    ADD_CHRONOMETER_URL,
+    GET_CHRONOMETERS_FOR_USER_URL,
+    GET_CHRONOMETER_BY_ID_URL,
+    UPDATE_CHRONOMETER_URL,
+    DELETE_CHRONOMETER_URL,
 };
