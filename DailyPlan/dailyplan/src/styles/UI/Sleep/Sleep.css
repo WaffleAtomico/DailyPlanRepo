@@ -1,0 +1,123 @@
+/* Estilo general */
+.sleep-body-nolink {
+    font-family: Arial;
+    background-color: #ffecd4;
+    font-size: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    overflow-y: auto;
+    height: 100vh;
+    min-height: 100vh;
+}
+.sleep-body-link{
+    padding-top: 20rem;
+    padding-bottom: 7rem;
+    font-family: Arial;
+    background-color: #ffecd4;
+    font-size: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    overflow-y: auto;
+    height: 100vh;
+    min-height: 100vh;
+}
+
+.sleep-content-wrapper {
+    width: 100%;
+    max-width: 850px;
+    gap: 2rem;
+}
+
+.sleep-alarma {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    width: 100%;
+}
+
+.sleep-alarma-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.sleep-horas-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-left: 2rem; /* Ajuste para separarlo del formulario */
+}
+
+.sleep-horas {
+    font-size: 120px;
+    margin-right: 10px; /* Ajuste para separar el número del texto */
+}
+
+.sleep-texto {
+    font-size: 40px;
+}
+
+.sleep-toggle-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.sleep-time-input {
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+}
+
+.sleep-confirmar-button-container {
+    margin-top: -1rem;
+    margin-bottom: 1rem;
+}
+
+.sleep-confirm {
+    background: linear-gradient(to top left, #ffffff, #e6f9c7);
+    border: 5px solid #4FBD40;
+    border-radius: 25px;
+    color: black;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 18px;
+    width: 280px;
+    padding: 10px 20px;
+    transition: 0.2s all;
+}
+
+.sleep-confirm:hover {
+    background: linear-gradient(to top left, #a2e65e, #3fb232);
+    color: #fff;
+}
+
+.sleep-input[type="time"], .sleep-input[type="text"] {
+    width: 280px;
+    height: 40px;
+    padding: 0.5rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.sleep-media-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 2rem;
+}
+
+.sleep-media-container {
+    margin-top: 2rem;
+}
