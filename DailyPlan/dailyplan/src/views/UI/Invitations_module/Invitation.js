@@ -12,6 +12,7 @@ export default function Invitation_view() {
         {
             name: 'Invitaciones pendientes',
             color: '#EE7D02',
+        
             icon: FaUserFriends,
             content: [
                 'Invitación 1',
@@ -19,7 +20,17 @@ export default function Invitation_view() {
                 'Invitación 3',
                 'Invitación 4',
                 'Invitación 5',
+                'Invitación 6',
+                'Invitación 3',
+                'Invitación 4',
+                'Invitación 5',
+                'Invitación 6',
+                'Invitación 3',
+                'Invitación 4',
+                'Invitación 5',
+                'Invitación 6',
             ],
+            flag: 1
         },
         {
             name: 'Invitaciones activas',
@@ -30,8 +41,10 @@ export default function Invitation_view() {
                 'Invitación activa 2',
                 'Invitación activa 3',
             ],
+            flag: 2
         },
         {
+            
             name: 'Invitaciones creadas',
             color: '#5368DC',
             icon: FaUserPlus,
@@ -41,6 +54,7 @@ export default function Invitation_view() {
                 'Invitación creada 3',
                 'Invitación creada 4',
             ],
+           flag: 3
         },
     ]);
 
@@ -54,6 +68,7 @@ export default function Invitation_view() {
                             color={invitation.color}
                             Icon={invitation.icon}
                             content={invitation.content}
+                            flag= {invitation.flag}
                         />
                     </Col>
                 ))}
