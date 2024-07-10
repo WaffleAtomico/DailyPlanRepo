@@ -1,6 +1,5 @@
 import { db } from '../config/connection.js';
 
-import { db } from "../config/connection.js";
 
 const addChronometer = (req, res) => {
     const query = {
