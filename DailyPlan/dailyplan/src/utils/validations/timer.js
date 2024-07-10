@@ -3,7 +3,7 @@ import {
     ADD_TIMER_URL,
     GET_TIMERS_FOR_USER_URL,
     GET_TIMER_BY_ID_URL,
-    GET_TIMER_BY_ID_URL,
+    UPDATE_TIMER_URL,
     DELETE_TIMER_URL
 } from '../routes';
 
@@ -17,9 +17,9 @@ const addTimer = async (timerData) => {
     }
 };
 
-const getTimersForUser = async (userId) => {
+const getTimersForUser = async (user_id) => {
     try {
-        const response = await axios.get(`${GET_TIMERS_FOR_USER_URL}/${userId}`);
+        const response = await axios.post(GET_TIMERS_FOR_USER_URL, { user_id });
         return response.data;
     } catch (err) {
         console.log(err);
@@ -27,9 +27,9 @@ const getTimersForUser = async (userId) => {
     }
 };
 
-const getTimerById = async (timerId) => {
+const getTimerById = async (timer_id) => {
     try {
-        const response = await axios.get(`${GET_TIMER_BY_ID_URL}/${timerId}`);
+        const response = await axios.post(GET_TIMER_BY_ID_URL, { timer_id });
         return response.data;
     } catch (err) {
         console.log(err);
@@ -37,9 +37,9 @@ const getTimerById = async (timerId) => {
     }
 };
 
-const updateTimer = async (timerId, timerData) => {
+const updateTimer = async (timer_id, timerData) => {
     try {
-        const response = await axios.post(`${UPDATE_TIMER_URL}/${timerId}`, timerData);
+        const response = await axios.post(UPDATE_TIMER_URL, { timer_id, ...timerData });
         return response.data;
     } catch (err) {
         console.log(err);
@@ -47,9 +47,9 @@ const updateTimer = async (timerId, timerData) => {
     }
 };
 
-const deleteTimer = async (timerId) => {
+const deleteTimer = async (timer_id) => {
     try {
-        const response = await axios.post(`${urls.DELETE_TIMER_URL}/${timerId}`);
+        const response = await axios.post(DELETE_TIMER_URL, { timer_id });
         return response.data;
     } catch (err) {
         console.log(err);

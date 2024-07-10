@@ -78,4 +78,9 @@ const deleteChronometer = (req, res) => {
     });
 };
 
-export { addChronometer, getChronometersForUser, getChronometerById, updateChronometer, deleteChronometer };
+export { 
+    addChronometer,
+    getChronometersForUser, 
+    getChronometerById, 
+    updateChronometer,
+    deleteChronometer };
