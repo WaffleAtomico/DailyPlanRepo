@@ -1,5 +1,6 @@
 import { db } from '../config/connection.js';
 
+
 const addChronometer = (req, res) => {
     const query = {
         sql: "INSERT INTO `chronometers`(`chrono_name`, `chrono_hour`, `chrono_min`, `chrono_sec`, `user_id`) VALUES (?, ?, ?, ?, ?)",

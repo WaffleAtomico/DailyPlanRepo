@@ -1,4 +1,4 @@
-import db from '../db';
+import { db } from '../config/connection.js';
 
 const addTimer = async (req, res) => {
     const query = {
