@@ -212,8 +212,8 @@ export default function OriginPage() {
           mensaje="Este es el mensaje de la notificación"
           
           onClose={handleCloseNotificacion}
-          src={"../tap-notification.mp3"}
-          repeticions={5}
+          // src={"../tap-notification.mp3"}
+          // repeticions={5}
           
           componente={<div>Componente adicional</div>}
           

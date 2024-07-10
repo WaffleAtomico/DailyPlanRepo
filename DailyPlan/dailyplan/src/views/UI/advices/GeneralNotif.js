@@ -1,20 +1,20 @@
 // GeneralNotif.jsx
 import React, { useEffect } from 'react';
 import { FaTimes } from 'react-icons/fa';
-import { playAudio } from '../../../utils/sounds';
+import { playRingtone } from '../../../utils/sounds';
 import '../../../styles/advices/GeneralNotif.css'; // Importamos el archivo CSS
 
-export default function GeneralNotif({ mensaje, onClose, componente, src, repeticions  }) {
+export default function GeneralNotif({ mensaje, onClose, componente  }) {
 
 useEffect(() =>
 {
-    playAudio(src, repeticions);
-}, [src, repeticions])
+    playRingtone();
+}, [])
 
     return (
         <div className="overlay">
             <div className="notificacion">
-                <button className="boton-rojo" onClick={playAudio(src, repeticions)}>
+                <button className="boton-rojo">
                     <FaTimes />
                 </button>
                 <div className="contenido">
