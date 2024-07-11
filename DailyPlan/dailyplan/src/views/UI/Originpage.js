@@ -26,6 +26,12 @@ import { FaUserClock } from "react-icons/fa6";
 import { getUsrName } from "../../utils/validations/user";
 import { AuthContext } from "../../services/AuthContext";
 
+//-------------
+//import CRUD function
+import { addChronometer } from "../../utils/validations/chrono";
+
+
+
 export default function OriginPage() {
   /* --------------------ORIGIN BASE-------------------- */
   const { id } = useParams();
@@ -128,7 +134,12 @@ export default function OriginPage() {
     setElapsedTime(0);
   }
 
+
+
   const GoToProfileModule = () => {
+
+
+
     navigate(`/dailyplanconfig/${id}`);
   };
 
@@ -182,6 +193,7 @@ export default function OriginPage() {
         {selectedOption === 1 && <Alarm />}
         {selectedOption === 2 && (
           <Chrono
+            id_user={id}
             chronoTimeToChrono={chronoTime}
             chronoTimeSecond = {secondsPassed}
             isRunningChrono={isRunning}

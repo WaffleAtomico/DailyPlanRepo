@@ -39,8 +39,10 @@ const getPuntuality = (req, res) => {
 
 const getPuntualityById = (req, res) => {
     const query = {
-        sql: "SELECT `punt_id`, `user_id`, `punt_date`, `punt_value`, `punt_num_rem`, `punt_percent_rem`, `punt_num_alar`, `punt_percent_alar`, `punt_num_timer`, `punt_percent_timer`, `punt_num_chro`, `punt_percent_chro` FROM `puntuality` WHERE `punt_id` = ?",
-        values: [req.params.punt_id],
+
+        sql: "SELECT `punt_id`, `user_id`, `punt_date`, `punt_value`, `punt_num_rem`, `punt_percent_rem`, `punt_num_alar`, `punt_percent_alar`, `punt_num_timer`, `punt_percent_timer`, `punt_num_chro`, `punt_percent_chro` FROM `puntuality` WHERE `user_id` = ?",
+        values: [req.body.user_id],
+
     };
     db.query(query.sql, query.values, (err, data) => {
         if (err) {
@@ -79,7 +81,9 @@ const updatePuntuality = (req, res) => {
 const deletePuntuality = (req, res) => {
     const query = {
         sql: "DELETE FROM `puntuality` WHERE `punt_id` = ?",
-        values: [req.params.punt_id],
+
+        values: [req.body.punt_id],
+
     };
     db.query(query.sql, query.values, (err, data) => {
         if (err) {
