@@ -18,7 +18,10 @@ export default function Calendar_Adapted() {
       case 'year':
         return <YearView date={date} setDate={setDate} setView={setView}/>;
       case 'month':
-        return <MonthView date={date} setDate={setDate} setView={setView}/>;
+        return (
+          <MonthView date={date} setDate={setDate} setView={setView}/>
+
+        );
       case 'week':
         return <WeekView date={date} setDate={setDate} />;
       default:
@@ -27,13 +30,15 @@ export default function Calendar_Adapted() {
   };
 
   return (
-    <div>
+    <div >
       <select onChange={(e) => setView(e.target.value)} value={view}>
         <option value="year">Año</option>
         <option value="month">Mes</option>
         <option value="week">Semana</option>
       </select>
-      {renderView()}
+      <div className='fullcalendar-container'>
+        {renderView()}
+      </div>
     </div>
   );
 };

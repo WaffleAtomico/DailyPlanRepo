@@ -26,6 +26,12 @@ import { FaUserClock } from "react-icons/fa6";
 import { getUsrName } from "../../utils/validations/user";
 import { AuthContext } from "../../services/AuthContext";
 
+//-------------
+//import CRUD function
+import { addChronometer } from "../../utils/validations/chrono";
+
+
+
 export default function OriginPage() {
   /* --------------------ORIGIN BASE-------------------- */
   const { id } = useParams();
@@ -128,13 +134,18 @@ export default function OriginPage() {
     setElapsedTime(0);
   }
 
+
+
   const GoToProfileModule = () => {
+
+
+
     navigate(`/dailyplanconfig/${id}`);
   };
 
   const secondsPassed = elapsedTime / 1000;
   const chronoTime = timeFormatSec(secondsPassed);
-
+  
   return (
     <div className="main-container">
       <div className="UI-header">
@@ -182,7 +193,9 @@ export default function OriginPage() {
         {selectedOption === 1 && <Alarm />}
         {selectedOption === 2 && (
           <Chrono
+            id_user={id}
             chronoTimeToChrono={chronoTime}
+            chronoTimeSecond = {secondsPassed}
             isRunningChrono={isRunning}
             handleStaStoChrono={handleStaSto}
             handleResetChrono={handleReset}
@@ -196,6 +209,7 @@ export default function OriginPage() {
         {selectedOption !== 2 && secondsPassed > 0 && (
           <ChronoIndicator
             chronoTimeToChrono={chronoTime}
+            chronoTimeSecond = {secondsPassed}
             handleStaStoToChrono={handleStaSto}
           />
         )}
@@ -208,8 +222,13 @@ export default function OriginPage() {
       {mostrarNotificacion && (
         <GeneralNotif
           mensaje="Este es el mensaje de la notificación"
+          
           onClose={handleCloseNotificacion}
+          // src={"../tap-notification.mp3"}
+          // repeticions={5}
+          
           componente={<div>Componente adicional</div>}
+          
         />
       )}
     </div>

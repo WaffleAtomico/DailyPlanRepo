@@ -4,9 +4,10 @@ import ReactPlayer from 'react-player';
 import moment from 'moment-timezone/builds/moment-timezone-with-data-10-year-range.js';
 // import SpotifyPlayer from '../../components/alarm/SpoRepro';
 
-import '../../../styles/UI/Alarm/Sleep.css'
+import '../../../styles/UI/Sleep/Sleep.css'
 
-export default function SleepAlarm() { const [isToggled, setIsToggled] = useState(false);
+export default function SleepAlarm() {
+    const [isToggled, setIsToggled] = useState(false);
     const [isPlaying, setIsPlaying] = useState(true);
     const [horaActual, setHoraActual] = useState(moment().format('HH:mm:ss'));
     const [horaDormir, setHoraDormir] = useState('');
@@ -30,26 +31,25 @@ export default function SleepAlarm() { const [isToggled, setIsToggled] = useStat
         setHoradiff(horas);
         return horas;
     };
-    
+
 
     useEffect(() => {
         const interval = setInterval(() => {
             const horaActual = moment().format('HH:mm');
 
-            if(isToggled)
-            {
+            if (isToggled) {
                 // console.log("Es menor la actual a despertar: " + (horaActual <= horaDespertar) );
                 // console.log("Es mayor la actual a dormir: " + (horaActual > horaDormir) );
-                if (  (horaActual < horaDespertar) && (horaActual >= horaDormir) ) {
+                if ((horaActual < horaDespertar) && (horaActual >= horaDormir)) {
                     // console.log("es true")
-                    setIsPlaying(true); 
+                    setIsPlaying(true);
                 } else {
                     // console.log("es false")
-                    setIsPlaying(false); 
+                    setIsPlaying(false);
                 }
-            }else{
+            } else {
                 // console.log("es false toggle")
-                setIsPlaying(false); 
+                setIsPlaying(false);
             }
         }, 1000);
         return () => clearInterval(interval);
@@ -57,79 +57,74 @@ export default function SleepAlarm() { const [isToggled, setIsToggled] = useStat
 
     return (
         <div className={mediaLink ? "sleep-body-link" : "sleep-body-nolink"}>
-            <div className="content-wrapper">
-                <div className="sleep-alarma">
-                    <div className="sleep-alarma-container">
-                        <div className="sleep-toggle-container">
-                            Desactivar
-                            <ToggleButton
-                                handleChange={() => setIsToggled(!isToggled)}
-                                isToggled={isToggled}
+        <div className="sleep-content-wrapper">
+            <div className="sleep-alarma">
+                <div className="sleep-alarma-container">
+                    <div className="sleep-toggle-container">
+                        Desactivar
+                        <ToggleButton
+                            handleChange={() => setIsToggled(!isToggled)}
+                            isToggled={isToggled}
+                        />
+                        Activar
+                    </div>
+                    <div className="sleep-input-container">
+                        <div className="sleep-time-input">
+                            <input
+                                className="sleep-input"
+                                type="time"
+                                placeholder="Hora para dormir"
+                                value={horaDormir}
+                                onChange={(e) => setHoraDormir(e.target.value)}
                             />
-                            Activar
                         </div>
-                        <div className="sleep-input-container">
-                            <div className="sleep-time-input">
-                                <input
-                                    className="sleep-input"
-                                    type="time"
-                                    placeholder="Hora para dormir"
-                                    value={horaDormir}
-                                    onChange={(e) => setHoraDormir(e.target.value)}
-                                />
-                            </div>
-                            <div className="sleep-time-input">
-                                <input
-                                    className="sleep-input"
-                                    type="time"
-                                    placeholder="Hora para despertar"
-                                    value={horaDespertar}
-                                    onChange={(e) => setHoraDespertar(e.target.value)}
-                                />
-                            </div>
-                        </div>
-                        <div className="sleep-confirmar-button-container">
-                            <button className="sleep-confirm" onClick={() => calcularDiferenciaHoras()}>
-                                Confirmar hora de dormir
-                            </button>
+                        <div className="sleep-time-input">
+                            <input
+                                className="sleep-input"
+                                type="time"
+                                placeholder="Hora para despertar"
+                                value={horaDespertar}
+                                onChange={(e) => setHoraDespertar(e.target.value)}
+                            />
                         </div>
                     </div>
+                    <div className="sleep-confirmar-button-container">
+                        <button className="sleep-confirm" onClick={() => calcularDiferenciaHoras()}>
+                            Confirmar hora de dormir
+                        </button>
+                    </div>
                 </div>
-
                 <div className="sleep-horas-container">
-                    <label className='sleep-horas' style={{ fontSize: "120px" }}> {horadiff} </label>
-                    <label className='sleep-texto' style={{ fontSize: "40px" }}> Horas <br /> de <br /> Sueño </label>
+                    <label className='sleep-horas'>{horadiff > 0 || isNaN(horadiff) ? "" : horadiff}</label>
+                    <label className='sleep-texto'>Horas<br />de<br />Sueño</label>
                 </div>
-
-                <form onSubmit={handleMediaSubmit} className="media-form">
-                    <input
-                        className="sleep-input media-input"
-                        type="text"
-                        placeholder="Inserta un Link de Youtube o de Spotify para reproducirlo mientras duermes"
-                        value={mediaLink}
-                        onChange={(e) => setMediaLink(e.target.value)}
-                    />
-                </form>
-
-                {mediaLink && (
-                    <div className="media-container">
-                        {mediaLink.includes('youtube.com') ? (
-
-                            <ReactPlayer
-                                url={mediaLink}
-                                loop={true}
-                                playing={isPlaying} 
-                            />
-                        ) : mediaLink.includes('spotify.com') ? (
-                            <></>
-                            // <SpotifyPlayer mediaLink={mediaLink} />
-
-                        ) : (
-                            <p>El enlace proporcionado no es válido</p>
-                        )}
-                    </div>
-                )}
             </div>
+            <form onSubmit={handleMediaSubmit} className="sleep-media-form">
+                <input
+                    className="sleep-input sleep-media-input"
+                    type="text"
+                    placeholder="Inserta un Link de Youtube o de Spotify para reproducirlo mientras duermes"
+                    value={mediaLink}
+                    onChange={(e) => setMediaLink(e.target.value)}
+                />
+            </form>
+            {mediaLink && (
+                <div className="sleep-media-container">
+                    {mediaLink.includes('youtube.com') ? (
+                        <ReactPlayer
+                            url={mediaLink}
+                            loop={true}
+                            playing={isPlaying}
+                        />
+                    ) : mediaLink.includes('spotify.com') ? (
+                        <></>
+                        // <SpotifyPlayer mediaLink={mediaLink} />
+                    ) : (
+                        <p>El enlace proporcionado no es válido</p>
+                    )}
+                </div>
+            )}
         </div>
+    </div>
     );
 }

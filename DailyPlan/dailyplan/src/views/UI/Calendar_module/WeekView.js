@@ -1,7 +1,7 @@
 import React from 'react';
 import { startOfWeek, addDays, format } from 'date-fns';
+import HourBlock from './HourBlock';
 import '../../../styles/UI/Calendar/Calendar_view.css';
-
 
 const WeekView = ({ date, setDate }) => {
   const startOfCurrentWeek = startOfWeek(date, { weekStartsOn: 1 });
@@ -12,6 +12,10 @@ const WeekView = ({ date, setDate }) => {
 
   const nextWeek = () => setDate(addDays(date, 7));
   const previousWeek = () => setDate(addDays(date, -7));
+
+  const handleHourClick = (day, hour) => {
+    console.log(`Selected hour: ${hour} on ${format(day, 'yyyy-MM-dd')}`);
+  };
 
   const locale = {
     localize: {
@@ -33,7 +37,6 @@ const WeekView = ({ date, setDate }) => {
       }
     }
   };
-  
 
   return (
     <div>
@@ -46,6 +49,11 @@ const WeekView = ({ date, setDate }) => {
           <div key={day.toISOString()} className="day-box">
             <strong>{format(day, 'EEEE', { locale })}</strong>
             <p>{format(day, 'yyyy-MM-dd')}</p>
+            <div className="hours-container">
+              {Array.from({ length: 24 }).map((_, hour) => (
+                <HourBlock key={hour} hour={hour} day={day} onHourClick={handleHourClick} />
+              ))}
+            </div>
           </div>
         ))}
       </div>
