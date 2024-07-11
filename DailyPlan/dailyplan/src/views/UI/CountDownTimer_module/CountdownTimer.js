@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Timer from "./Timer";
 import '../../../styles/UI/Countdowntimer/countdown.css';
+import { addTimer, getTimersForUser } from "../../../utils/validations/timer";
 
-export default function CountdownTimer() {
+export default function CountdownTimer(props) {
   const [hours, setHours] = useState(0);
   const [minutes, setMinutes] = useState(0);
   const [seconds, setSeconds] = useState(0);
@@ -11,7 +12,6 @@ export default function CountdownTimer() {
   const [sound, setSound] = useState('');
   const [soundFile, setSoundFile] = useState(null);
 
-
   const [showEndScreen, setShowEndScreen] = useState({
     show: false,
     message: "Tiempo agotado",
@@ -19,6 +19,7 @@ export default function CountdownTimer() {
 
   const [ringDuration, setRingDuration] = useState(1);
   const [ringRepetitions, setRingRepetitions] = useState(1);
+  const [timers, setTimer] = useState([]);
 
   useEffect(() => {
     let interval;
@@ -144,6 +145,44 @@ export default function CountdownTimer() {
   };
 
 
+
+
+  //save a timer
+  const handleSaveTimer = () => {
+
+
+    const timer = 
+    {
+        time_hour: hours,
+        timer_min: minutes,
+        timer_sec: seconds,
+        timer_duration: ringDuration,
+        tone_id: 1,
+        user_id: props.user_id
+
+    }
+
+
+    addTimer(timer).then(() => {console.log("Exito")})
+    .catch(error => {console.log("fallo lol.")})
+
+
+
+  };
+
+
+
+  //load the timers that the user have
+  const handleLoadTimer = () => 
+  {
+    getTimersForUser(props.user_id).then((data) => {setTimer(data)})
+    .catch(error => {console.log("Fallo")})
+
+
+
+  }
+
+
   return (
     <div className="count-container">
       {showEndScreen.show && (
@@ -216,9 +255,12 @@ export default function CountdownTimer() {
       </button>
       <br />
       <button className="count-btn count-btn-lg count-temporizadores" >
-        TEMPORIZADORES
+        Guardar
       </button>
       
+      <button className="count-btn count-btn-lg count-temporizadores" >
+        Cargar
+      </button>
     </div>
   );
 }

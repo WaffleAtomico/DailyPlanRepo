@@ -72,6 +72,16 @@
     font-size: 36px;
 }
 
+.general-button {
+
+    flex: auto;
+    border-radius: 10%;
+}
+
+.general-div {
+
+    margin: 10;
+}
 
 .time-input-container {
     display: flex;

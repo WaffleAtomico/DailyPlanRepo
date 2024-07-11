@@ -62,15 +62,6 @@ import {
 } from './requests/timer.js';
 
 
-import { 
-  addChronometer,
-   getChronometersForUser, 
-   getChronometerById, 
-   updateChronometer, 
-   deleteChronometer
-} from './requests/chrono.js';
-
-
 import { sendMailrest } from "./requests/mail.js";
 
 const app = express();

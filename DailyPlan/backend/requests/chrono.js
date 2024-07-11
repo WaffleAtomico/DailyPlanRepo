@@ -2,8 +2,10 @@ import { db } from '../config/connection.js';
 
 
 const addChronometer = (req, res) => {
+    console.log(req.body);
+
     const query = {
-        sql: "INSERT INTO `chronometers`(`chrono_name`, `chrono_hour`, `chrono_min`, `chrono_sec`, `user_id`) VALUES (?, ?, ?, ?, ?)",
+        sql: "INSERT INTO `chronometers`(`chrono_name`, `chrono_hour`, `chrono_min`, `chrono_sec`, `user_id`) VALUES (?,?,?,?,?)",
         values: [
             req.body.chrono_name,
             req.body.chrono_hour,
@@ -23,10 +25,11 @@ const addChronometer = (req, res) => {
 const getChronometersForUser = (req, res) => {
     const query = {
         sql: "SELECT `chrono_id`, `chrono_name`, `chrono_hour`, `chrono_min`, `chrono_sec`, `user_id` FROM `chronometers` WHERE `user_id` = ?",
-        values: [req.params.user_id],
+        values: [req.body.user_id],
     };
     db.query(query.sql, query.values, (err, data) => {
         if (err) {
+            console.log(res);
             return res.json({ message: "Error retrieving chronometers", error: err });
         }
         return res.json(data);
@@ -36,7 +39,7 @@ const getChronometersForUser = (req, res) => {
 const getChronometerById = (req, res) => {
     const query = {
         sql: "SELECT `chrono_id`, `chrono_name`, `chrono_hour`, `chrono_min`, `chrono_sec`, `user_id` FROM `chronometers` WHERE `chrono_id` = ?",
-        values: [req.params.chrono_id],
+        values: [req.body.chrono_id],
     };
     db.query(query.sql, query.values, (err, data) => {
         if (err) {
