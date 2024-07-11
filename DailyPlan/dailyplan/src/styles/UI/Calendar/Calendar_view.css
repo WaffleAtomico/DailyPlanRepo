@@ -1,3 +1,5 @@
+
+
 .app-container {
   display: flex;
   flex-direction: column;
@@ -35,7 +37,6 @@ select {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  
 }
 
 .day-box {
@@ -44,6 +45,26 @@ select {
   width: 14%;
   background-color: aliceblue;
   box-sizing: border-box;
+  overflow-y: auto; 
+  max-height: 400px; 
+}
+
+.hours-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.hour-block {
+  background-color: #e0e0e0;
+  border: 1px solid #ccc;
+  padding: 5px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.hour-block:hover {
+  background-color: #d0d0d0;
 }
 
 @media (max-width: 768px) {
@@ -52,6 +73,5 @@ select {
     width: 100%;
     margin-bottom: 10px;
     font-size: small;
-    
   }
 }

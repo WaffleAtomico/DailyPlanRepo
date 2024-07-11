@@ -53,13 +53,150 @@ import {
 } from './requests/alarm.js';
 
 import {
-
   addTimer,
   getTimersForUser,
   getTimerById,
   updateTimer,
   deleteTimer
-} from './requests/timer.js';
+
+} from './requests/timer.js'
+
+
+import { 
+  addChronometer,
+  getChronometersForUser, 
+  getChronometerById, 
+  updateChronometer,
+  deleteChronometer 
+} from './requests/chrono.js'
+
+import {
+  addAlarmShare,
+  getAlarmShares,
+  getAlarmShareById,
+  updateAlarmShare,
+  deleteAlarmShare
+} from './requests/alarmShare.js';
+
+import {
+  addDayselected,
+  getDayselecteds,
+  getDayselectedById,
+  updateDayselected,
+  deleteDayselected
+} from './requests/dayselected.js';
+
+import {
+  addInvitation,
+  getInvitations,
+  getInvitationById,
+  updateInvitation,
+  deleteInvitation
+} from './requests/invitations.js';
+
+import {
+  addLocation,
+  getLocations,
+  getLocationById,
+  updateLocation,
+  deleteLocation
+} from './requests/locations.js';
+
+import {
+  addObjective,
+  getObjectives,
+  getObjectiveById,
+  updateObjective,
+  deleteObjective
+} from './requests/objectives.js';
+
+import {
+  addObjectivesBlock,
+  getObjectivesBlocks,
+  getObjectivesBlockById,
+  updateObjectivesBlock,
+  deleteObjectivesBlock
+} from './requests/objectivesblock.js';
+
+import {
+  addPermision,
+  getPermisions,
+  getPermisionById,
+  updatePermision,
+  deletePermision
+} from './requests/permissions.js';
+
+import {
+  addPomodoro,
+  getPomodoros,
+  getPomodoroById,
+  updatePomodoro,
+  deletePomodoro
+} from './requests/pomodoro.js';
+
+import {
+  addPuntuality,
+  getPuntuality,
+  getPuntualityById,
+  updatePuntuality,
+  deletePuntuality 
+} from './requests/puntuality.js'
+
+import {
+  addReminder,
+  getReminders,
+  getReminderById,
+  updateReminder,
+  deleteReminder
+} from './requests/reminder.js';
+
+import {
+  addReminderShare,
+  getReminderShares,
+  getReminderShareById,
+  updateReminderShare,
+  deleteReminderShare
+} from './requests/remindershare.js';
+
+import {
+  addRepetitionDay,
+  getRepetitionDays,
+  getRepetitionDayById,
+  updateRepetitionDay,
+  deleteRepetitionDay
+} from './requests/repetitionsdays.js';
+
+import {
+  addSchedule,
+  getSchedules,
+  getScheduleById,
+  updateSchedule,
+  deleteSchedule
+} from './requests/schedule.js';
+
+import {
+  addSleepmode,
+  getSleepmodes,
+  getSleepmodeById,
+  updateSleepmode,
+  deleteSleepmode
+} from './requests/sleepmode.js';
+
+import {
+  addSleepQuality,
+  getSleepQualities,
+  getSleepQualityById,
+  updateSleepQuality,
+  deleteSleepQuality
+} from './requests/sleepquality.js';
+
+import {
+  addTone,
+  getTones,
+  getToneById,
+  updateTone,
+  deleteTone
+} from './requests/tone.js';
 
 
 import { sendMailrest } from "./requests/mail.js";
@@ -170,6 +307,119 @@ app.get(urls.GET_CHRONOMETERS_FOR_USER_URL, getChronometersForUser);
 app.get(urls.GET_CHRONOMETER_BY_ID_URL, getChronometerById);
 app.post(urls.UPDATE_CHRONOMETER_URL, updateChronometer);
 app.post(urls.DELETE_CHRONOMETER_URL, deleteChronometer);
+
+/*-------------------------------AlarmShare-------------------------*/
+app.post(urls.ADD_ALARMSHARE_URL, addAlarmShare);
+app.post(urls.GET_ALARMSHARES_URL, getAlarmShares);
+app.post(urls.GET_ALARMSHARE_BY_ID_URL, getAlarmShareById);
+app.post(urls.UPDATE_ALARMSHARE_URL, updateAlarmShare);
+app.post(urls.DELETE_ALARMSHARE_URL, deleteAlarmShare);
+
+/*-------------------------------Dayselected-------------------------*/
+app.post(urls.ADD_DAYSELECTED_URL, addDayselected);
+app.post(urls.GET_DAYSELECTEDS_URL, getDayselecteds);
+app.post(urls.GET_DAYSELECTED_BY_ID_URL, getDayselectedById);
+app.post(urls.UPDATE_DAYSELECTED_URL, updateDayselected);
+app.post(urls.DELETE_DAYSELECTED_URL, deleteDayselected);
+
+/*-------------------------------Invitations-------------------------*/
+app.post(urls.ADD_INVITATION_URL, addInvitation);
+app.post(urls.GET_INVITATIONS_URL, getInvitations);
+app.post(urls.GET_INVITATION_BY_ID_URL, getInvitationById);
+app.post(urls.UPDATE_INVITATION_URL, updateInvitation);
+app.post(urls.DELETE_INVITATION_URL, deleteInvitation);
+
+/*-------------------------------Locations-------------------------*/
+app.post(urls.ADD_LOCATION_URL, addLocation);
+app.post(urls.GET_LOCATIONS_URL, getLocations);
+app.post(urls.GET_LOCATION_BY_ID_URL, getLocationById);
+app.post(urls.UPDATE_LOCATION_URL, updateLocation);
+app.post(urls.DELETE_LOCATION_URL, deleteLocation);
+
+/*-------------------------------Objectives-------------------------*/
+app.post(urls.ADD_OBJECTIVE_URL, addObjective);
+app.post(urls.GET_OBJECTIVES_URL, getObjectives);
+app.post(urls.GET_OBJECTIVE_BY_ID_URL, getObjectiveById);
+app.post(urls.UPDATE_OBJECTIVE_URL, updateObjective);
+app.post(urls.DELETE_OBJECTIVE_URL, deleteObjective);
+
+/*-------------------------------ObjectivesBlock-------------------------*/
+app.post(urls.ADD_OBJECTIVESBLOCK_URL, addObjectivesBlock);
+app.post(urls.GET_OBJECTIVESBLOCKS_URL, getObjectivesBlocks);
+app.post(urls.GET_OBJECTIVESBLOCK_BY_ID_URL, getObjectivesBlockById);
+app.post(urls.UPDATE_OBJECTIVESBLOCK_URL, updateObjectivesBlock);
+app.post(urls.DELETE_OBJECTIVESBLOCK_URL, deleteObjectivesBlock);
+
+/*-------------------------------Permissions-------------------------*/
+app.post(urls.ADD_PERMISSION_URL, addPermision);
+app.post(urls.GET_PERMISSIONS_URL, getPermisions);
+app.post(urls.GET_PERMISSION_BY_ID_URL, getPermisionById);
+app.post(urls.UPDATE_PERMISSION_URL, updatePermision);
+app.post(urls.DELETE_PERMISSION_URL, deletePermision);
+
+/*-------------------------------Pomodoros-------------------------*/
+app.post(urls.ADD_POMODORO_URL, addPomodoro);
+app.post(urls.GET_POMODOROS_URL, getPomodoros);
+app.post(urls.GET_POMODORO_BY_ID_URL, getPomodoroById);
+app.post(urls.UPDATE_POMODORO_URL, updatePomodoro);
+app.post(urls.DELETE_POMODORO_URL, deletePomodoro);
+
+/*-------------------------------Puntuality-------------------------*/
+app.post(urls.ADD_PUNTUALITY_URL, addPuntuality);
+app.post(urls.GET_PUNTUALITIES_URL, getPuntuality);
+app.post(urls.GET_PUNTUALITY_BY_ID_URL, getPuntualityById);
+app.post(urls.UPDATE_PUNTUALITY_URL, updatePuntuality);
+app.post(urls.DELETE_PUNTUALITY_URL, deletePuntuality);
+
+/*-------------------------------Reminders-------------------------*/
+app.post(urls.ADD_REMINDER_URL, addReminder);
+app.post(urls.GET_REMINDERS_URL, getReminders);
+app.post(urls.GET_REMINDER_BY_ID_URL, getReminderById);
+app.post(urls.UPDATE_REMINDER_URL, updateReminder);
+app.post(urls.DELETE_REMINDER_URL, deleteReminder);
+
+/*-------------------------------ReminderShare-------------------------*/
+app.post(urls.ADD_REMINDERSHARE_URL, addReminderShare);
+app.post(urls.GET_REMINDERSHARES_URL, getReminderShares);
+app.post(urls.GET_REMINDERSHARE_BY_ID_URL, getReminderShareById);
+app.post(urls.UPDATE_REMINDERSHARE_URL, updateReminderShare);
+app.post(urls.DELETE_REMINDERSHARE_URL, deleteReminderShare);
+
+
+/*-------------------------------RepetitionDay-------------------------*/
+app.post(urls.ADD_REPETITIONDAY_URL, addRepetitionDay);
+app.post(urls.GET_REPETITIONDAYS_URL, getRepetitionDays);
+app.post(urls.GET_REPETITIONDAY_BY_ID_URL, getRepetitionDayById);
+app.post(urls.UPDATE_REPETITIONDAY_URL, updateRepetitionDay);
+app.post(urls.DELETE_REPETITIONDAY_URL, deleteRepetitionDay);
+
+/*-------------------------------Schedules-------------------------*/
+app.post(urls.ADD_SCHEDULE_URL, addSchedule);
+app.post(urls.GET_SCHEDULES_URL, getSchedules);
+app.post(urls.GET_SCHEDULE_BY_ID_URL, getScheduleById);
+app.post(urls.UPDATE_SCHEDULE_URL, updateSchedule);
+app.post(urls.DELETE_SCHEDULE_URL, deleteSchedule);
+
+/*-------------------------------SleepMode-------------------------*/
+app.post(urls.ADD_SLEEP_MODE_URL, addSleepmode);
+app.post(urls.GET_SLEEP_MODES_URL, getSleepmodes);
+app.post(urls.GET_SLEEP_MODE_BY_ID_URL, getSleepmodeById);
+app.post(urls.UPDATE_SLEEP_MODE_URL, updateSleepmode);
+app.post(urls.DELETE_SLEEP_MODE_URL, deleteSleepmode);
+
+/*-------------------------------SleepQuality-------------------------*/
+app.post(urls.ADD_SLEEP_QUALITY_URL, addSleepQuality);
+app.post(urls.GET_SLEEP_QUALITIES_URL, getSleepQualities);
+app.post(urls.GET_SLEEP_QUALITY_BY_ID_URL, getSleepQualityById);
+app.post(urls.UPDATE_SLEEP_QUALITY_URL, updateSleepQuality);
+app.post(urls.DELETE_SLEEP_QUALITY_URL, deleteSleepQuality);
+
+/*-------------------------------Tones-------------------------*/
+app.post(urls.ADD_TONE_URL, addTone);
+app.post(urls.GET_TONES_URL, getTones);
+app.post(urls.GET_TONE_BY_ID_URL, getToneById);
+app.post(urls.UPDATE_TONE_URL, updateTone);
+app.post(urls.DELETE_TONE_URL, deleteTone);
 
 /*-------------------------------spotify------------------------- */
 

@@ -5,6 +5,7 @@ export default function Calendar_view() {
     return(
         <>
             <Calendar_Adapted />
+            
         </>
     );
 }
