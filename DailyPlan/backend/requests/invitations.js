@@ -35,7 +35,7 @@ const getInvitations = (req, res) => {
 const getInvitationById = (req, res) => {
     const query = {
         sql: "SELECT `inv_id`, `reminder_id`, `alarm_id`, `user_id_owner`, `user_id_target`, `inv_state`, `inv_reason` FROM `invitations` WHERE `inv_id` = ?",
-        values: [req.params.inv_id],
+        values: [req.body.inv_id],
     };
     db.query(query.sql, query.values, (err, data) => {
         if (err) {
@@ -44,6 +44,28 @@ const getInvitationById = (req, res) => {
         return res.json(data);
     });
 };
+
+
+const getInvitationByUser = (req, res) => {
+
+    console.log(req.body)
+    const query = {
+        sql: "SELECT `inv_id`, `reminder_id`, `alarm_id`, `user_id_owner`, `user_id_target`, `inv_state`, `inv_reason` FROM `invitations` WHERE `user_id_owner` = ? OR `user_id_target` = ?",
+        values: [req.body.user_id, req.body.user_id],
+        
+    };
+    db.query(query.sql, query.values, (err, data) => {
+        if (err) {
+            console.log("Hubo un error", err);
+
+            return res.json({ message: "Error retrieving invitation", error: err });
+        }
+
+        console.log("Datos obtenidos",data);
+        return res.json(data);
+    });
+};
+
 
 const updateInvitation = (req, res) => {
     const query = {
@@ -69,7 +91,7 @@ const updateInvitation = (req, res) => {
 const deleteInvitation = (req, res) => {
     const query = {
         sql: "DELETE FROM `invitations` WHERE `inv_id` = ?",
-        values: [req.params.inv_id],
+        values: [req.body.inv_id],
     };
     db.query(query.sql, query.values, (err, data) => {
         if (err) {
@@ -83,6 +105,7 @@ export {
     addInvitation,
     getInvitations, 
     getInvitationById, 
+    getInvitationByUser,
     updateInvitation,
-    deleteInvitation 
+    deleteInvitation
 };

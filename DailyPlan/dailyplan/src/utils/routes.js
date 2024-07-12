@@ -56,6 +56,7 @@ const DELETE_DAYSELECTED_URL = `${urlreference}/delete-dayselected`;
 
 const ADD_INVITATION_URL = `${urlreference}/add-invitation`;
 const GET_INVITATIONS_URL = `${urlreference}/get-invitations`;
+const GET_INVITATION_BY_USER_URL = `${urlreference}/get-invitation-user`;
 const GET_INVITATION_BY_ID_URL = `${urlreference}/get-invitation`;
 const UPDATE_INVITATION_URL = `${urlreference}/update-invitation`;
 const DELETE_INVITATION_URL = `${urlreference}/delete-invitation`;
@@ -184,6 +185,7 @@ export {
     DELETE_DAYSELECTED_URL,
     ADD_INVITATION_URL,
     GET_INVITATIONS_URL,
+    GET_INVITATION_BY_USER_URL,
     GET_INVITATION_BY_ID_URL,
     UPDATE_INVITATION_URL,
     DELETE_INVITATION_URL,

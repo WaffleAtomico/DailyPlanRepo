@@ -201,11 +201,11 @@ export default function OriginPage() {
             handleResetChrono={handleReset}
           />
         )}
-        {selectedOption === 3 && <CountdownTimer />}
+        {selectedOption === 3 && <CountdownTimer user_id={id} />}
         {selectedOption === 4 && <Clock id_user={id} />}
-        {selectedOption === 5 && <Invitation />}
-        {selectedOption === 7 && <Sleep />}
-        {selectedOption === 8 && <Pomodoro />}
+        {selectedOption === 5 && <Invitation user_id={id}/>}
+        {selectedOption === 7 && <Sleep id_user={id}/>}
+        {selectedOption === 8 && <Pomodoro id_user={id}/>}
         {selectedOption !== 2 && secondsPassed > 0 && (
           <ChronoIndicator
             chronoTimeToChrono={chronoTime}

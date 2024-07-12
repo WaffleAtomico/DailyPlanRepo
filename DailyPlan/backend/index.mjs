@@ -90,6 +90,7 @@ import {
   addInvitation,
   getInvitations,
   getInvitationById,
+  getInvitationByUser,
   updateInvitation,
   deleteInvitation
 } from './requests/invitations.js';
@@ -199,6 +200,7 @@ import {
 } from './requests/tone.js';
 
 
+
 import { sendMailrest } from "./requests/mail.js";
 
 const app = express();
@@ -287,8 +289,8 @@ app.post(urls.GET_USERS_BLOCKED_URL, getUsersBlocked);
 
 /*-------------------------------Alarm------------------------- */
 app.post(urls.ADD_ALARM_URL, addAlarm);
-app.get(urls.GET_ALARMS_FOR_USER_URL, getAlarmsForUser);
-app.get(urls.GET_ALARM_BY_ID_URL, getAlarmById);
+app.post(urls.GET_ALARMS_FOR_USER_URL, getAlarmsForUser);
+app.post(urls.GET_ALARM_BY_ID_URL, getAlarmById);
 app.post(urls.UPDATE_ALARM_URL, updateAlarm);
 app.post(urls.DELETE_ALARM_URL, deleteAlarm);
 app.post(urls.ALARM_NAME_EXISTS_URL, isAlarmNameExistForUser);
@@ -296,15 +298,15 @@ app.post(urls.USER_ALARM_LIMIT_REACHED_URL, isUserAlarmLimitReached);
 
 /*-------------------------------Timer------------------------- */
 app.post(urls.ADD_TIMER_URL, addTimer);
-app.get(urls.GET_TIMERS_FOR_USER_URL, getTimersForUser);
-app.get(urls.GET_TIMER_BY_ID_URL, getTimerById);
+app.post(urls.GET_TIMERS_FOR_USER_URL, getTimersForUser);
+app.post(urls.GET_TIMER_BY_ID_URL, getTimerById);
 app.post(urls.UPDATE_TIMER_URL, updateTimer);
 app.post(urls.DELETE_TIMER_URL, deleteTimer);
 
 /*-------------------------------Chrono-----------------------------*/
 app.post(urls.ADD_CHRONOMETER_URL, addChronometer);
-app.get(urls.GET_CHRONOMETERS_FOR_USER_URL, getChronometersForUser);
-app.get(urls.GET_CHRONOMETER_BY_ID_URL, getChronometerById);
+app.post(urls.GET_CHRONOMETERS_FOR_USER_URL, getChronometersForUser);
+app.post(urls.GET_CHRONOMETER_BY_ID_URL, getChronometerById);
 app.post(urls.UPDATE_CHRONOMETER_URL, updateChronometer);
 app.post(urls.DELETE_CHRONOMETER_URL, deleteChronometer);
 
@@ -326,6 +328,7 @@ app.post(urls.DELETE_DAYSELECTED_URL, deleteDayselected);
 app.post(urls.ADD_INVITATION_URL, addInvitation);
 app.post(urls.GET_INVITATIONS_URL, getInvitations);
 app.post(urls.GET_INVITATION_BY_ID_URL, getInvitationById);
+app.post(urls.GET_INVITATION_BY_USER_URL, getInvitationByUser);
 app.post(urls.UPDATE_INVITATION_URL, updateInvitation);
 app.post(urls.DELETE_INVITATION_URL, deleteInvitation);
 

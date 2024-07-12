@@ -29,38 +29,94 @@ export function playRingtone(repetitions = 1, durationInSeconds = 1, repeatInter
   playAudio();
 }
 
+export function base64ToBlob(base64, contentType) {
+  const byteCharacters = atob(base64);
+  const byteArrays = [];
+
+  for (let offset = 0; offset < byteCharacters.length; offset += 512) {
+    const slice = byteCharacters.slice(offset, offset + 512);
+    const byteNumbers = new Array(slice.length);
+    for (let i = 0; i < slice.length; i++) {
+      byteNumbers[i] = slice.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    byteArrays.push(byteArray);
+  }
+
+  return new Blob(byteArrays, { type: contentType });
+}
 
 
-// import { Howl } from "howler";
+export function playBase64Audio(base64Audio, contentType, repetitions = 1, durationInSeconds = 1, repeatIntervalInSeconds = 1) {
+  const blob = base64ToBlob(base64Audio, contentType);
+  const audioURL = URL.createObjectURL(blob);
+  const audio = new Audio(audioURL);
 
-// //Play the sound N repetitions assigned. 
-// export const playAudio = (src, repetitions) => 
-//     {
-//         console.log('playAudio called with src:', src, 'and repetitions:', repetitions);
-        
-//         const sound = new Howl({
-//             loop: false,
-          
-//             src: [src],
-            
-//         });
-    
-//         console.log('Howl object state', sound.state());
-    
-//         let playCount = 0;
-    
-//         sound.on('end', () => {
-//             playCount += 1;
-//             console.log('Sound ended, playCount:', playCount);
-//             if (playCount < repetitions) {
-//                 console.log('Replaying sound');
-//                 sound.play();
-//             } else {
-//                 console.log('Finished all repetitions');
-//             }
-//         });
-//         console.log('Howl object state', sound.state());
-    
-//         sound.play();
-//         console.log('Sound started playing');
-//     }
+  let currentRepetitions = 0;
+
+  const playAudio = () => {
+    audio.currentTime = 0;
+    audio.play();
+    currentRepetitions++;
+
+    if (currentRepetitions < repetitions) {
+      setTimeout(playAudio, repeatIntervalInSeconds * 1000);
+    }
+  };
+
+  const totalDurationInSeconds = repetitions * durationInSeconds;
+  const totalAudioDurationInSeconds = audio.duration;
+
+  if (totalDurationInSeconds > totalAudioDurationInSeconds) {
+    const requiredRepetitions = totalDurationInSeconds / totalAudioDurationInSeconds;
+    repetitions = Math.ceil(requiredRepetitions);
+  }
+
+  playAudio();
+}
+
+
+
+export function playBlobAudio(blob, repetitions = 1, durationInSeconds = 1, repeatIntervalInSeconds = 1) {
+  const audioURL = URL.createObjectURL(blob);
+  const audio = new Audio(audioURL);
+
+  let currentRepetitions = 0;
+
+  const playAudio = () => {
+    audio.currentTime = 0;
+    audio.play();
+    currentRepetitions++;
+
+    if (currentRepetitions < repetitions) {
+      setTimeout(playAudio, repeatIntervalInSeconds * 1000);
+    }
+  };
+
+  audio.onloadedmetadata = () => {
+    const totalDurationInSeconds = repetitions * durationInSeconds;
+    const totalAudioDurationInSeconds = audio.duration;
+
+    if (totalDurationInSeconds > totalAudioDurationInSeconds) {
+      const requiredRepetitions = totalDurationInSeconds / totalAudioDurationInSeconds;
+      repetitions = Math.ceil(requiredRepetitions);
+    }
+
+    playAudio();
+  };
+
+  audio.onerror = (e) => {
+    console.error("Error playing audio:", e);
+  };
+}
+
+//Function to translate the base64 to a file
+export function base64ToFile (base64String, filename, mimeType)  {
+  const byteString = atob(base64String);
+  const ab = new ArrayBuffer(byteString.length);
+  const ia = new Uint8Array(ab);
+  for (let i = 0; i < byteString.length; i++) {
+      ia[i] = byteString.charCodeAt(i);
+  }
+  return new File([ab], filename, { type: mimeType });
+};

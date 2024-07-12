@@ -258,3 +258,27 @@ input:hover {
 .count-temporizadores:hover {
   background-color: #45a049;
 }
+
+
+.timer-table {
+  width: 300px;
+  margin-left: 20px;
+}
+
+.timer-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.timer-table table, .timer-table th, .timer-table td {
+  border: 1px solid black;
+}
+
+.timer-table th, .timer-table td {
+  padding: 8px;
+  text-align: left;
+}
+
+.timer-table th {
+  background-color: #f2f2f2;
+}
