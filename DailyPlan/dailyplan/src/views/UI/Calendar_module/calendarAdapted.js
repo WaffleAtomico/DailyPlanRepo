@@ -5,13 +5,19 @@ import YearView from './YearView.js';
 import MonthView from './MonthView.js';
 import WeekView from './WeekView.js';
 import '../../../styles/UI/Calendar/Calendar_view.css';
+import ReminderFormView from './Reminder_formCrea.js';
 
+// Queda pendiente cambiar el formulario para poder hacer la query correcta y poder publicar/
+// Crear un registro que tenga la informacion completa que se necesita
 
 export default function Calendar_Adapted() {
   const [view, setView] = useState('year'); // Inicializa la vista en "year"
   const [date, setDate] = useState(new Date());
+  const [visible, setVisibilty] = useState(false);
 
-    console.log(view);
+
+  console.log(view);
+  
 
   const renderView = () => {
     switch(view) {
@@ -19,26 +25,33 @@ export default function Calendar_Adapted() {
         return <YearView date={date} setDate={setDate} setView={setView}/>;
       case 'month':
         return (
-          <MonthView date={date} setDate={setDate} setView={setView}/>
-
+          <MonthView date={date} setDate={setDate} setView={setView} />
+          
         );
       case 'week':
-        return <WeekView date={date} setDate={setDate} />;
+        return <WeekView date={date} setDate={setDate} showform={()=>setVisibilty(true)} />;
       default:
         return <YearView date={date} setDate={setDate} setView={setView}/>;
     }
   };
 
+
+
   return (
+
     <div >
       <select onChange={(e) => setView(e.target.value)} value={view}>
         <option value="year">Año</option>
         <option value="month">Mes</option>
         <option value="week">Semana</option>
       </select>
-      <div className='fullcalendar-container'>
+      <div className="calendar-view-container">
         {renderView()}
       </div>
+  {visible && (
+    
+      <ReminderFormView showform = {()=>setVisibilty(false)} />
+    )} 
     </div>
   );
 };

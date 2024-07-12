@@ -110,9 +110,12 @@ const DELETE_PUNTUALITY_URL = '/delete-puntuality';
 
 const ADD_REMINDER_URL = '/add-reminder';
 const GET_REMINDERS_URL = '/get-reminders';
+const GET_REMINDERS_BY_MONTH_URL = '/get-reminders-by-month';
+const GET_REMINDERS_BY_WEEK_URL = '/get-reminders-by-week';
 const GET_REMINDER_BY_ID_URL = '/get-reminder';
 const UPDATE_REMINDER_URL = '/update-reminder';
 const DELETE_REMINDER_URL = '/delete-reminder';
+
 
 const ADD_REMINDERSHARE_URL = '/add-remindershare';
 const GET_REMINDERSHARES_URL = '/get-remindershares';
@@ -241,6 +244,8 @@ export {
     DELETE_PUNTUALITY_URL,
     ADD_REMINDER_URL,
     GET_REMINDERS_URL,
+    GET_REMINDERS_BY_MONTH_URL,
+    GET_REMINDERS_BY_WEEK_URL,
     GET_REMINDER_BY_ID_URL,
     UPDATE_REMINDER_URL,
     DELETE_REMINDER_URL,

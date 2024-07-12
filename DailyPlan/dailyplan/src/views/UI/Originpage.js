@@ -79,7 +79,7 @@ export default function OriginPage() {
   };
 
   /*-------------------- Notifications --------------------*/
-  const [mostrarNotificacion, setMostrarNotificacion] = useState(true);
+  const [mostrarNotificacion, setMostrarNotificacion] = useState(false);
 
   const handleShowNotificacion = () => {
     setMostrarNotificacion(true);
@@ -222,13 +222,8 @@ export default function OriginPage() {
       {mostrarNotificacion && (
         <GeneralNotif
           mensaje="Este es el mensaje de la notificación"
-          
           onClose={handleCloseNotificacion}
-          // src={"../tap-notification.mp3"}
-          // repeticions={5}
-          
           componente={<div>Componente adicional</div>}
-          
         />
       )}
     </div>

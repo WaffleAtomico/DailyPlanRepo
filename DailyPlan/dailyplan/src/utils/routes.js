@@ -41,6 +41,20 @@ const GET_CHRONOMETER_BY_ID_URL = `${urlreference}/get-chronometer`;
 const UPDATE_CHRONOMETER_URL = `${urlreference}/update-chronometer`;
 const DELETE_CHRONOMETER_URL = `${urlreference}/delete-chronometer`;
 
+const ADD_REMINDER_URL = `${urlreference}/add-reminder`;
+const GET_REMINDERS_FOR_USER_URL = `${urlreference}/get-user-reminders`;
+const GET_REMINDER_BY_ID_URL = `${urlreference}/get-reminder`;
+const UPDATE_REMINDER_URL = `${urlreference}/update-reminder`;
+const DELETE_REMINDER_URL = `${urlreference}/delete-reminder`;
+const GET_REMINDERS_BY_MONTH_URL = `${urlreference}/get-reminders-by-month`;
+const GET_REMINDERS_BY_WEEK_URL = `${urlreference}/get-reminders-by-week`;
+
+const ADD_REMINDERSHARE_URL = `${urlreference}/add-remindershare`;
+const GET_REMINDERSHARES_FOR_USER_URL = `${urlreference}/get-user-remindershares`;
+const GET_REMINDERSHARE_BY_ID_URL = `${urlreference}/get-remindershare`;
+const UPDATE_REMINDERSHARE_URL = `${urlreference}/update-remindershare`;
+const DELETE_REMINDERSHARE_URL = `${urlreference}/delete-remindershare`;
+
 
 const ADD_ALARMSHARE_URL = `${urlreference}/add-alarmshare`;
 const GET_ALARMSHARES_URL = `${urlreference}/get-alarmshares`;
@@ -224,11 +238,14 @@ export {
     GET_REMINDER_BY_ID_URL,
     UPDATE_REMINDER_URL,
     DELETE_REMINDER_URL,
+    GET_REMINDERS_BY_MONTH_URL,
+    GET_REMINDERS_BY_WEEK_URL,
     ADD_REMINDERSHARE_URL,
     GET_REMINDERSHARES_URL,
     GET_REMINDERSHARE_BY_ID_URL,
     UPDATE_REMINDERSHARE_URL,
     DELETE_REMINDERSHARE_URL,
+  
     ADD_REPETITIONDAY_URL,
     GET_REPETITIONDAYS_URL,
     GET_REPETITIONDAY_BY_ID_URL,
@@ -254,4 +271,5 @@ export {
     GET_TONE_BY_ID_URL,
     UPDATE_TONE_URL,
     DELETE_TONE_URL,
+
 };
