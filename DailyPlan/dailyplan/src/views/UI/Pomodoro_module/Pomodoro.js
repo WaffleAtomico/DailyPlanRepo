@@ -2,7 +2,9 @@
 import React, { useState, useEffect } from 'react';
 import BreakOverlay from './BreakOverlay';
 import { GiTomato } from "react-icons/gi";
+
 import '../../../styles/UI/Pomodoro/pomodoro.css';
+import { playRingtone } from '../../../utils/sounds';
 
 const Pomodoro_view = () => {
     const [workTime, setWorkTime] = useState(25);
@@ -35,8 +37,7 @@ const Pomodoro_view = () => {
     }, [timeRemaining, isBreak, workTime, shortBreak, longBreak, isLongBreak]);
 
     const playSound = () => {
-        const audio = new Audio(sound);
-        audio.play();
+        playRingtone();
     };
 
     const handleSoundFileChange = (e) => {

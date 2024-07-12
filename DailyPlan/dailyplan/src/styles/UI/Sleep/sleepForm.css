@@ -1,0 +1,39 @@
+/* Sleep.css */
+.sleep-survey-container {
+    font-family: Arial;
+    background-color: #ffecd4;
+    font-size: 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    min-height: 100vh;
+  }
+  
+  .sleep-rating-options {
+    display: flex;
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+  
+  .sleep-rating-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  .sleep-rating-option.selected {
+    transform: scale(1.1);
+  }
+  
+  .sleep-rating-option:hover {
+    transform: scale(1.05);
+  }
+  
+  .sleep-rating-option span {
+    margin-top: 0.5rem;
+  }
+  

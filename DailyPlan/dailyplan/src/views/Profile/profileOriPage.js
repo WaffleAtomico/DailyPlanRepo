@@ -9,6 +9,7 @@ import "../../styles/UI/profile/profGeneral.css";
 
 import { IoIosArrowBack } from "react-icons/io";
 import { FaUserClock } from "react-icons/fa6";
+import GeneralNotif from "../UI/advices/GeneralNotif";
 
 export default function ProfileOriPage() {
   const { id } = useParams();
@@ -67,6 +68,18 @@ export default function ProfileOriPage() {
     navigate(`/dailyplan/${id}/`);
   };
 
+
+    /*-------------------- Notifications --------------------*/
+    const [mostrarNotificacion, setMostrarNotificacion] = useState(false);
+
+    const handleShowNotificacion = () => {
+      setMostrarNotificacion(true);
+    };
+  
+    const handleCloseNotificacion = () => {
+      setMostrarNotificacion(false);
+    };
+
   return (
     <div className="prof-main-container">
       <div className="prof-UI-header">
@@ -91,6 +104,14 @@ export default function ProfileOriPage() {
       </div>
 
       <div className="prof-UI-background">{renderOption(selectedOption)}</div>
+
+      {mostrarNotificacion && (
+        <GeneralNotif
+          mensaje="Este es el mensaje de la notificación"
+          onClose={handleCloseNotificacion}
+          componente={<div>Componente adicional</div>}
+        />
+      )}
     </div>
   );
 }
