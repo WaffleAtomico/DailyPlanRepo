@@ -1,0 +1,97 @@
+/* ReminderFormView.css */
+.reminder-view-container {
+    position: fixed;
+    margin-top: 7rem;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    padding-bottom: 7rem;
+
+    /* position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* background-color: rgba(0, 0, 0, 0.5); */
+    /* z-index: 2500; */ 
+}
+
+.reminder-view {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    width: 90%;
+    max-width: 800px;
+    max-height: 90%;
+    overflow-y: auto;
+    padding: 1.5rem;
+}
+
+.reminder-view-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.close-button {
+    background-color: rgb(193, 0, 0);
+    border-radius: 35px;
+    width: 30px;
+    height: 30px;
+    margin-bottom: -50px;
+    border: none;
+    font-size: 1rem;
+    color: #fff;
+    cursor: pointer;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.btn {
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background: linear-gradient(to top left, #168f81, #1cebd3);
+    border: none;
+    color: white;
+    transition: 0.2s all;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(to top left, #1cebd3, #168f81);
+}
+
+.btn-secondary {
+    background-color: #ff9800;
+    color: #fff;
+    border: none;
+}
+
+.btn-secondary:hover {
+    background-color: #f57c00;
+}
+
+@media (max-width: 767px) {
+    .reminder-view {
+        width: 95%;
+        padding: 1rem;
+    }
+}

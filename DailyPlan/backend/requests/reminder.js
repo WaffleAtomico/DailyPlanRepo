@@ -39,6 +39,37 @@ const getReminders = (req, res) => {
     });
 };
 
+const getRemindersByMonth = (req, res) => {
+    const month = req.params.month;  // Espera 'YYYY-MM'
+    const userId = req.params.userId;  // Espera el ID del usuario
+    const query = {
+        sql: "SELECT `reminder_name`, `reminder_date`, `reminder_hour`, `reminder_min` FROM `reminders` WHERE `user_id` = ? AND `reminder_date` BETWEEN ? AND ? ORDER BY `reminder_date`, `reminder_hour`",
+        values: [userId, `${month}-01`, `${month}-31`],
+    };
+    db.query(query.sql, query.values, (err, data) => {
+        if (err) {
+            return res.json({ message: "Error retrieving reminders for month", error: err });
+        }
+        return res.json(data);
+    });
+};
+
+const getRemindersByWeek = (req, res) => {
+    const startDate = req.params.startDate;  // Espera 'YYYY-MM-DD'
+    const endDate = req.params.endDate;  // Espera 'YYYY-MM-DD'
+    const userId = req.params.userId;  // Espera el ID del usuario
+    const query = {
+        sql: "SELECT `reminder_name`, `reminder_hour` FROM `reminders` WHERE `user_id` = ? AND `reminder_date` BETWEEN ? AND ? ORDER BY `reminder_date`, `reminder_hour`",
+        values: [userId, startDate, endDate],
+    };
+    db.query(query.sql, query.values, (err, data) => {
+        if (err) {
+            return res.json({ message: "Error retrieving reminders for week", error: err });
+        }
+        return res.json(data);
+    });
+};
+
 const getReminderById = (req, res) => {
     const query = {
         sql: "SELECT `reminder_id`, `reminder_name`, `reminder_date`, `reminder_hour`, `reminder_min`, `reminder_active`, `repdays_id`, `reminder_tone_duration_sec`, `reminder_advance_min`, `reminder_img`, `reminder_desc`, `reminder_days_suspended`, `reminder_share`, `reminder_sourse_id` FROM `reminders` WHERE `reminder_id` = ?",
@@ -96,6 +127,8 @@ const deleteReminder = (req, res) => {
 export { 
     addReminder,
     getReminders,
+    getRemindersByMonth,
+    getRemindersByWeek,
     getReminderById,
     updateReminder,
     deleteReminder 

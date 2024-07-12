@@ -145,6 +145,8 @@ import {
 import {
   addReminder,
   getReminders,
+  getRemindersByMonth,
+  getRemindersByWeek,
   getReminderById,
   updateReminder,
   deleteReminder
@@ -374,6 +376,8 @@ app.post(urls.DELETE_PUNTUALITY_URL, deletePuntuality);
 /*-------------------------------Reminders-------------------------*/
 app.post(urls.ADD_REMINDER_URL, addReminder);
 app.post(urls.GET_REMINDERS_URL, getReminders);
+app.post(urls.GET_REMINDERS_BY_MONTH_URL, getRemindersByMonth);
+app.post(urls.GET_REMINDERS_BY_WEEK_URL, getRemindersByWeek);
 app.post(urls.GET_REMINDER_BY_ID_URL, getReminderById);
 app.post(urls.UPDATE_REMINDER_URL, updateReminder);
 app.post(urls.DELETE_REMINDER_URL, deleteReminder);
