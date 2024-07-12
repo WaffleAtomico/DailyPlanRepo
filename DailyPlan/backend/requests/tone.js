@@ -1,18 +1,28 @@
 import { db } from '../config/connection.js';
 
+
+// Function to handle adding tone
 const addTone = (req, res) => {
+    const file = req.file;
+    const { tone_name } = req.body;
+
+    if (!file) {
+        return res.status(400).json({ message: "File is required" });
+    }
+
+    // Convert the file buffer to a base64 string or save it directly to your database
+    const tone_location = file.buffer.toString('base64'); // Example conversion to base64
+
     const query = {
         sql: "INSERT INTO `tones`(`tone_name`, `tone_location`) VALUES (?, ?)",
-        values: [
-            req.body.tone_name,
-            req.body.tone_location,
-        ],
+        values: [tone_name, tone_location],
     };
-    db.query(query.sql, query.values, (err, data) => {
+
+    db.query(query.sql, query.values, (err, result) => {
         if (err) {
-            return res.json({ message: "Error adding tone", error: err });
+            return res.status(500).json({ message: "Error adding tone", error: err });
         }
-        return res.json({ message: "Tone added successfully" });
+        return res.status(200).json({ message: "Tone added successfully", tone_id: result.insertId });
     });
 };
 

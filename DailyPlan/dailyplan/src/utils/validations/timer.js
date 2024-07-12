@@ -19,8 +19,9 @@ const addTimer = async (timerData) => {
 
 const getTimersForUser = async (user_id) => {
     try {
-        const response = await axios.post(GET_TIMERS_FOR_USER_URL, { user_id });
-        return response.data;
+        const response = await axios.post(GET_TIMERS_FOR_USER_URL, {user_id });
+        console.log(response.data);
+        return response;
     } catch (err) {
         console.log(err);
         throw err;

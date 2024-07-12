@@ -3,6 +3,7 @@ import {
     ADD_INVITATION_URL,
     GET_INVITATIONS_URL,
     GET_INVITATION_BY_ID_URL,
+    GET_INVITATION_BY_USER_URL,
     UPDATE_INVITATION_URL,
     DELETE_INVITATION_URL
 } from '../routes';
@@ -21,7 +22,7 @@ export const addInvitation = async (invitationInfo) => {
 // Function to get all invitations
 export const getInvitations = async () => {
     try {
-        const response = await axios.get(GET_INVITATIONS_URL);
+        const response = await axios.post(GET_INVITATIONS_URL);
         return response;
     } catch (err) {
         console.log("Error retrieving invitations:", err);
@@ -32,13 +33,28 @@ export const getInvitations = async () => {
 // Function to get an invitation by ID
 export const getInvitationById = async (inv_id) => {
     try {
-        const response = await axios.get(`${GET_INVITATION_BY_ID_URL}/${inv_id}`);
+        const response = await axios.post(GET_INVITATION_BY_ID_URL, {inv_id});
         return response;
     } catch (err) {
         console.log("Error retrieving invitation:", err);
         return "Error retrieving invitation";
     }
 };
+
+
+//function to get the invitation by USer
+export const getInvitationByUser = async (user_id) => {
+    try {
+        const response = await axios.post(GET_INVITATION_BY_USER_URL, {user_id});
+        return response;
+    } catch (err) {
+        console.log("Error retrieving invitation:", err);
+        return "Error retrieving invitation";
+    }
+};
+
+
+
 
 // Function to update an invitation
 export const updateInvitation = async (inv_id, invitationInfo) => {
