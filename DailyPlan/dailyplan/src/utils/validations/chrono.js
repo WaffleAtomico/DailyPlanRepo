@@ -9,6 +9,8 @@ import {
 
 const getChronometersForUser = async (userId) => {
     try {
+console.log("Se llamo por cronometros");
+
         const response = await axios.post(GET_CHRONOMETERS_FOR_USER_URL, { user_id: userId });
         return response;
     } catch (err) {
@@ -19,7 +21,7 @@ const getChronometersForUser = async (userId) => {
 
 const getChronometerById = async (chronoId) => {
     try {
-        const response = await axios.get(GET_CHRONOMETER_BY_ID_URL, {chronoId});
+        const response = await axios.gost(GET_CHRONOMETER_BY_ID_URL, {chronoId});
         return response;
     } catch (err) {
         console.log(err);
@@ -28,6 +30,8 @@ const getChronometerById = async (chronoId) => {
 };
 
 const addChronometer = async (chronoData) => {
+    console.log(chronoData);
+
     try {
         const response = await axios.post(ADD_CHRONOMETER_URL, chronoData);
         return response;
@@ -37,7 +41,7 @@ const addChronometer = async (chronoData) => {
     }
 };
 
-const updateChronometer = async (chronoId, chronoData) => {
+const updateChronometer = async ( chronoData) => {
     try {
         const response = await axios.post(UPDATE_CHRONOMETER_URL, chronoData);
         return response;
