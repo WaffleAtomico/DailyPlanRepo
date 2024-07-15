@@ -1,5 +1,5 @@
 /* GeneralNotif.css */
-.overlay {
+.genotif-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -12,7 +12,7 @@
     z-index: 3000;
   }
   
-  .notificacion {
+  .genotif-notificacion {
     background-color: #FFEDD3;
     border: 0.2rem solid black;
     border-radius: 1rem;
@@ -23,17 +23,17 @@
     position: relative;
   }
   
-  .contenido {
+  .genotif-contenido {
     margin: 2rem 1rem;
-    font-size: x-large;
+    font-size: xx-large;
   }
   
-  .botones {
+  .genotif-botones {
     display: flex;
     justify-content: space-between;
   }
   
-  .boton-verde {
+  .genotif-boton-verde {
     background-color: green;
     color: white;
     border: none;
@@ -44,7 +44,7 @@
     font-size: 1rem;
   }
   
-  .boton-rojo {
+  .genotif-boton-rojo {
     position: absolute;
     top: 1rem;
     right: 1rem;

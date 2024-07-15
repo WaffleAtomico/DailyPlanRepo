@@ -9,6 +9,10 @@ import "../../../styles/UI/profile/proftitles.css";
 
 
 const PersoInfo = (props) => {
+
+
+    //debe de permtir al usuario ver su info personal, y cambiar su usuario unas cuentas veces
+    //Revisar el requerimiento funcional o no funcional
   return (
     <div style={{ backgroundColor: "#f0f0f0" }}>
       <h2>Información personal</h2>
@@ -17,19 +21,18 @@ const PersoInfo = (props) => {
 };
 
 const BloqUser = (props) => {
+    //Falta poder desbloquear usuarios dando a un boton, ya los obtenemos, ahora falta hacer un onclick que los quite
     const [blockedUsers, setBlockedUsers] = useState([]);
     
     useEffect(() => {
       getBlockedUsers(props.id);
     }, [props.id]);
   
-    const getBlockedUsers = async (user_id) => {
-      try {
-        const blockedUsersData = await getUsersBlocked(user_id);
-        setBlockedUsers(blockedUsersData);
-      } catch (error) {
-        console.error("Error fetching blocked users:", error);
-      }
+    const getBlockedUsers = (user_id) => {
+          getUsersBlocked(user_id).then(blockedUsersData=>
+          {
+            setBlockedUsers(blockedUsersData);
+          }).catch(err => {console.log(err)});
     };
   
     return (
@@ -62,6 +65,7 @@ const BloqUser = (props) => {
 };
 
 const UserNodif = (props) => {
+  //mostrar avisos, como: Invitaciones, Titulos, y como + Reinicios semanales
   return (
     <div style={{ backgroundColor: "#f0f0f0" }}>
       <h2>Notificaciones</h2>
@@ -70,6 +74,12 @@ const UserNodif = (props) => {
 };
 
 const UserPermissions = () => {
+  //Preguntar solo 1 vez, si permite acceder a la ubicacion, de hecho
+  //IDEA: Solo cuando funcione la API de google maps, va a preguntar, si en este campo
+  //lo marco como denegado, significa que no esta permitido, por medio del sistema
+  /*Explico a detalle, no es solo el permiso del navegador, es saber si permite
+    el usuario usar esa informacion, aunque ya se haya propiciado por el usuario
+  */
   return (
     <div>
       <h1>Ubicación en tiempo real</h1>
@@ -143,6 +153,7 @@ const UserPermissions = () => {
 };
 
 const UserTitles = (props) => {
+  //Se muestran los titulos, ademas de poder elegir uno a preferencia para que el usuario se muestre
   const [titles, setTitles] = useState([]);
 
   useEffect(() => {

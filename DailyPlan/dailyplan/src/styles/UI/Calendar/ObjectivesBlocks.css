@@ -1,0 +1,104 @@
+/* .reminder-view-container {
+    padding: 20px;
+} */
+
+.reminder-view {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+.reminder-view-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.reminder-title {
+    margin: 0;
+    font-size: 24px;
+}
+
+.close-button {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.map-placeholder {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.block-container {
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+}
+
+.block-container .form-group {
+    margin-bottom: 15px;
+}
+
+.goals-module-container {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.block-container {
+    margin-bottom: 20px;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.block-header {
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.objective-container {
+    margin-bottom: 5px;
+    padding: 5px;
+    border-radius: 4px;
+}
+
+.add-objective-button {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+.add-block-button {
+    margin-top: 10px;
+    width: 100%;
+}
+
+.goals-module-actions {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.save-button {
+    background-color: #007bff;
+    border: none;
+}
+
+.close-button {
+    background-color: #6c757d;
+    border: none;
+}
