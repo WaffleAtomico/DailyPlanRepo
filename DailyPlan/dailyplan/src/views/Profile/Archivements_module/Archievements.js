@@ -88,22 +88,22 @@ export default function Archivement_view(props) {
         getUserArchivement(props.user_id);
     }, [props.user_id]);
 
-    useEffect(() => {
-        if (titlesfromuser.length > 0) {
-            console.log("Titles from user", titlesfromuser[0].title_id);
-            console.log("Titles from user", titlesfromuser[0].title_name);
-            console.log("Titles from user", titlesfromuser[0].title_done);
-        }
-    }, [titlesfromuser]);
+    // useEffect(() => {
+    //     if (titlesfromuser.length > 0) {
+    //         console.log("Titles from user", titlesfromuser[0].title_id);
+    //         console.log("Titles from user", titlesfromuser[0].title_name);
+    //         console.log("Titles from user", titlesfromuser[0].title_done);
+    //     }
+    // }, [titlesfromuser]);
 
     const checkAllAchievementsDone = (achievements) => {
         return achievements.every(achievement => achievement.title_done);
     };
 
     const grant16Archivement = (user_id) => {
-        grantArchivement(user_id, 16).then(response =>{}).catch(error => {
-                console.error("Error granting achievement:", error);
-            });
+        grantArchivement(user_id, 16).then(response => { }).catch(error => {
+            console.error("Error granting achievement:", error);
+        });
         // try {
         //     await grantArchivement(user_id, 16);
         // } catch (error) {

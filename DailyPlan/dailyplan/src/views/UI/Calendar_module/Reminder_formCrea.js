@@ -1,12 +1,9 @@
-// ReminderFormView.js
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import '../../../styles/UI/Calendar/Reminder_formCrea.css';
+import ObjectiveBlocks from './ObjectivesBlocks';
 
 const ReminderFormView = (props) => {
-
-    console.log("Entre");
-
     const [formData, setFormData] = useState({
         date: '',
         time: '',
@@ -18,12 +15,25 @@ const ReminderFormView = (props) => {
         reminderAdvance: '',
         arrivalPlace: '',
         departurePlace: '',
-        share: false,
         image: null,
         description: '',
         snooze: '',
-        goalList: ''
+        goalList: []
     });
+      
+    const [showObjectiveBlocks, setShowObjectiveBlocks] = useState(false);
+
+    useEffect(() => {
+        if (props.SelectDate && props.SelectHour !== null && props.SelectHour !== undefined) {
+          const updatedDate = props.SelectDate.toISOString().split('T')[0];
+          const updatedTime = `${props.SelectHour.toString().padStart(2, '0')}:00`;
+          setFormData(prevFormData => ({
+            ...prevFormData,
+            date: updatedDate,
+            time: updatedTime
+          }));
+        }
+      }, [props.SelectHour, props.SelectDate]);
 
     const handleChange = (event) => {
         const { name, value, type, checked } = event.target;
@@ -41,10 +51,27 @@ const ReminderFormView = (props) => {
         }));
     };
 
+    const handleObjectiveBlocksChange = (objectiveBlocks) => {
+        setFormData((prevData) => ({
+            ...prevData,
+            goalList: objectiveBlocks
+        }));
+    };
+
     const handleSubmit = (event) => {
         event.preventDefault();
-        // Aquí puedes agregar la lógica para enviar los datos al servidor
         console.log('Datos del formulario:', formData);
+        console.log("goal list", formData.goalList)
+
+        /*
+        Campos dependientes de otras tablas
+        Repdaysid  se obtiene de distintos dias con un mismo id, pero el recordatorio obtiene ese id antes
+        locations se pobla una vez que existe un id del recordatorio
+        Bloque de objetivos de pobla una vez que ya existe un recordatorio
+        XXXX -Reminder share se pobla una vez creado el recordatorio (y luego una invitacion)
+        Objectives se pobla una vez creado el bloque de objetivos
+        */
+
     };
 
     return (
@@ -58,68 +85,7 @@ const ReminderFormView = (props) => {
                     <Container fluid className="reminder-view">
                         <Form onSubmit={handleSubmit}>
                             <Row>
-                                <Col xs={12} sm={6}>
-                                    <Form.Group controlId="formDate">
-                                        <Form.Label>Asignar Fecha</Form.Label>
-                                        <Form.Control
-                                            type="date"
-                                            name="date"
-                                            value={formData.date}
-                                            onChange={handleChange}
-                                            required
-                                        />
-                                    </Form.Group>
-                                </Col>
-                                <Col xs={12} sm={6}>
-                                    <Form.Group controlId="formTime">
-                                        <Form.Label>Asignar Hora</Form.Label>
-                                        <Form.Control
-                                            type="time"
-                                            name="time"
-                                            value={formData.time}
-                                            onChange={handleChange}
-                                            required
-                                        />
-                                    </Form.Group>
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col xs={12} sm={6}>
-                                    <Form.Group controlId="formAlarmActive">
-                                        <Form.Check
-                                            type="checkbox"
-                                            label="Activar Alarma"
-                                            name="alarmActive"
-                                            checked={formData.alarmActive}
-                                            onChange={handleChange}
-                                        />
-                                    </Form.Group>
-                                </Col>
-                                <Col xs={12} sm={6}>
-                                    <Form.Group controlId="formRepeat">
-                                        <Form.Label>Asignar Repetición</Form.Label>
-                                        <Form.Control
-                                            type="text"
-                                            name="repeat"
-                                            value={formData.repeat}
-                                            onChange={handleChange}
-                                        />
-                                    </Form.Group>
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col xs={12} sm={6}>
-                                    <Form.Group controlId="formAlarmTone">
-                                        <Form.Label>Configurar Tono de Alarma</Form.Label>
-                                        <Form.Control
-                                            type="file"
-                                            name="alarmTone"
-                                            accept=".mp3"
-                                            onChange={handleFileChange}
-                                        />
-                                    </Form.Group>
-                                </Col>
-                                <Col xs={12} sm={6}>
+                                <Col xs={12}>
                                     <Form.Group controlId="formName">
                                         <Form.Label>Cambiar Nombre</Form.Label>
                                         <Form.Control
@@ -133,34 +99,33 @@ const ReminderFormView = (props) => {
                                 </Col>
                             </Row>
                             <Row>
-                                <Col xs={12} sm={6}>
-                                    <Form.Group controlId="formDuration">
-                                        <Form.Label>Duración del Timbre</Form.Label>
+                                <Col xs={6}>
+                                    <Form.Group controlId="formDate">
+                                        <Form.Label>Asignar Fecha</Form.Label>
                                         <Form.Control
-                                            type="range"
-                                            name="duration"
-                                            min={1}
-                                            max={30}
-                                            value={formData.duration}
+                                            type="date"
+                                            name="date"
+                                            value={formData.date}
                                             onChange={handleChange}
+                                            required
                                         />
-                                        <div className="duration-value">{formData.duration} segundos</div>
                                     </Form.Group>
                                 </Col>
-                                <Col xs={12} sm={6}>
-                                    <Form.Group controlId="formReminderAdvance">
-                                        <Form.Label>Antelación de Recordatorio</Form.Label>
+                                <Col xs={6}>
+                                    <Form.Group controlId="formTime">
+                                        <Form.Label>Asignar Hora</Form.Label>
                                         <Form.Control
                                             type="time"
-                                            name="reminderAdvance"
-                                            value={formData.reminderAdvance}
+                                            name="time"
+                                            value={formData.time}
                                             onChange={handleChange}
+                                            required
                                         />
                                     </Form.Group>
                                 </Col>
                             </Row>
                             <Row>
-                                <Col xs={12} sm={6}>
+                                <Col xs={6}>
                                     <Form.Group controlId="formArrivalPlace">
                                         <Form.Label>Asignar Lugar de Llegada</Form.Label>
                                         <Form.Control
@@ -171,7 +136,7 @@ const ReminderFormView = (props) => {
                                         />
                                     </Form.Group>
                                 </Col>
-                                <Col xs={12} sm={6}>
+                                <Col xs={6}>
                                     <Form.Group controlId="formDeparturePlace">
                                         <Form.Label>Asignar Lugar de Salida</Form.Label>
                                         <Form.Control
@@ -185,19 +150,75 @@ const ReminderFormView = (props) => {
                             </Row>
                             <Row>
                                 <Col xs={12}>
-                                    <Form.Group controlId="formShare">
+                                    <div className="map-placeholder" style={{ height: '200px', backgroundColor: '#f0f0f0', margin: '1rem 0' }}>
+                                        <p>Mapa aquí</p>
+                                    </div>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col xs={6}>
+                                    <Form.Group controlId="formAlarmActive">
                                         <Form.Check
                                             type="checkbox"
-                                            label="Compartir"
-                                            name="share"
-                                            checked={formData.share}
+                                            label="Activar Alarma"
+                                            name="alarmActive"
+                                            checked={formData.alarmActive}
+                                            onChange={handleChange}
+                                        />
+                                    </Form.Group>
+                                </Col>
+                                <Col xs={6}>
+                                    <Form.Group controlId="formRepeat">
+                                        <Form.Label>Asignar Repetición</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            name="repeat"
+                                            value={formData.repeat}
                                             onChange={handleChange}
                                         />
                                     </Form.Group>
                                 </Col>
                             </Row>
                             <Row>
-                                <Col xs={12} sm={6}>
+                                <Col xs={6}>
+                                    <Form.Group controlId="formDuration">
+                                        <Form.Label>Duración del Timbre</Form.Label>
+                                        <Form.Control
+                                            type="range"
+                                            name="duration"
+                                            min={1}
+                                            max={30}
+                                            value={formData.duration}
+                                            onChange={handleChange}
+                                        />
+                                        <div className="duration-value">{formData.duration} segundos</div>
+                                    </Form.Group>
+                                </Col>
+                                <Col xs={6}>
+                                    <Form.Group controlId="formReminderAdvance">
+                                        <Form.Label>Antelación de Recordatorio</Form.Label>
+                                        <Form.Control
+                                            type="time"
+                                            name="reminderAdvance"
+                                            value={formData.reminderAdvance}
+                                            onChange={handleChange}
+                                        />
+                                    </Form.Group>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col xs={6}>
+                                    <Form.Group controlId="formAlarmTone">
+                                        <Form.Label>Configurar Tono de Alarma</Form.Label>
+                                        <Form.Control
+                                            type="file"
+                                            name="alarmTone"
+                                            accept=".mp3"
+                                            onChange={handleFileChange}
+                                        />
+                                    </Form.Group>
+                                </Col>
+                                <Col xs={6}>
                                     <Form.Group controlId="formImage">
                                         <Form.Label>Agregar Imagen</Form.Label>
                                         <Form.Control
@@ -208,7 +229,9 @@ const ReminderFormView = (props) => {
                                         />
                                     </Form.Group>
                                 </Col>
-                                <Col xs={12} sm={6}>
+                            </Row>
+                            <Row>
+                                <Col xs={12}>
                                     <Form.Group controlId="formDescription">
                                         <Form.Label>Agregar Descripción</Form.Label>
                                         <Form.Control
@@ -223,40 +246,50 @@ const ReminderFormView = (props) => {
                                 </Col>
                             </Row>
                             <Row>
-                                <Col xs={12} sm={6}>
+                                <Col xs={12}>
                                     <Form.Group controlId="formSnooze">
-                                        <Form.Label>Posponer por un Periodo de Tiempo</Form.Label>
+                                        <Form.Label>Posponer por un Periodo de Tiempo (días)</Form.Label>
                                         <Form.Control
-                                            type="text"
+                                            type="number"
                                             name="snooze"
                                             value={formData.snooze}
                                             onChange={handleChange}
+                                            min={0}
+                                            max={7}
                                         />
                                     </Form.Group>
                                 </Col>
-                                <Col xs={12} sm={6}>
-                                    <Form.Group controlId="formGoalList">
-                                        <Form.Label>Lista de Objetivos</Form.Label>
-                                        <Form.Control
-                                            type="text"
-                                            name="goalList"
-                                            value={formData.goalList}
-                                            onChange={handleChange}
-                                        />
-                                    </Form.Group>
+                            </Row>
+                            <br/>
+                            <Row>
+                                <Col xs={12}>
+                                    <Button
+                                        type="button"
+                                        className="btn btn-secondary"
+                                        onClick={() => setShowObjectiveBlocks(true)}
+                                    >
+                                        Lista de Objetivos
+                                    </Button>
                                 </Col>
                             </Row>
                         </Form>
                     </Container>
                     <div className="form-actions">
-                        <button type="submit" className="btn btn-primary">
+                        <Button type="submit" className="btn btn-primary">
                             Guardar
-                        </button>
-                        <button type="button" className="btn btn-secondary">
+                        </Button>
+                        <Button type="button" className="btn btn-secondary">
                             Compartir
-                        </button>
+                        </Button>
                     </div>
                 </form>
+                {showObjectiveBlocks && (
+                    <ObjectiveBlocks
+                        initialBlocks={formData.goalList}
+                        onSave={handleObjectiveBlocksChange}
+                        onClose={() => setShowObjectiveBlocks(false)}
+                    />
+                )}
             </div>
         </div>
     );

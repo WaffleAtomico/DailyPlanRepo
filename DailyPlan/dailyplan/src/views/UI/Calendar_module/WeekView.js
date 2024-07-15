@@ -5,7 +5,7 @@ import '../../../styles/UI/Calendar/Calendar_view.css';
 import { getRemindersByWeek } from '../../../utils/validations/reminders';
 import { useParams } from "react-router-dom";
 
-const WeekView = ({ date, setDate, showform }) => {
+const WeekView = ({ date, setDate, showform, setHour, setSelectDate }) => {
   const { id } = useParams();
   const startOfCurrentWeek = startOfWeek(date, { weekStartsOn: 1 });
 
@@ -19,6 +19,8 @@ const WeekView = ({ date, setDate, showform }) => {
   const handleHourClick = (day, hour) => {
     console.log(`Selected hour: ${hour} on ${format(day, 'yyyy-MM-dd')}`);
     // Aquí se abrirá el formulario para llenar el recordatorio
+    setHour(hour);
+    setSelectDate(day);
     showform();
   };
 
