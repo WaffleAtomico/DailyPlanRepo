@@ -11,7 +11,7 @@ import Form from "react-bootstrap/Form";
 import { IoReturnUpBackSharp } from "react-icons/io5";
 import "../../styles/start/general.css";
 import "../../styles/start/createacc.css";
-import { urlreference } from "../../utils/routes";
+import { CREATE_ALL_TITLES } from "../../utils/routes";
 
 // NOTA: Puedes pasar la informacion necesaria para iniciar sesión cuando la información de crear cuenta es correcta
 // Para que sea mas facil para el usuario acceder a la cuenta que acaba de crear
@@ -91,7 +91,7 @@ testusr3@gmail.com
                   const user_id = response.data.id;
                   if (user_id >= 0) {
                     console.log(user_id);
-                    axios.post(`${urlreference}/title-addAll`, { user_id }).then(response => {
+                    axios.post(CREATE_ALL_TITLES, { user_id }).then(response => {
                       navigate("/login");
                     }).catch(error => {
                       console.error(error);
