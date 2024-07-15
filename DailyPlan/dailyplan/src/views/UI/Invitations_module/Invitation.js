@@ -1,62 +1,61 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import { FaUserFriends, FaUserCheck, FaUserPlus } from 'react-icons/fa';
 import InvitationCard from './invitation_card';
 
 import '../../../styles/UI/Invitations/invitation_view.css';
+import { getInvitationByUser } from '../../../utils/validations/invitation';
 
+export default function InvitationView(props) {
+    const [data, setData] = useState([]);
 
-export default function Invitation_view() {
+    useEffect(() => {
+        // Function to fetch invitations from the API
+        const fetchInvitations = () => {
+            getInvitationByUser(parseInt(props.user_id, 10))
+                .then(response => {
+                    setData(response.data);
+                })
+                .catch(error => {
+                    console.error('Error fetching invitations:', error);
+                });
+        };
 
-    const [invitations, setInvitations] = useState([
-        {
-            name: 'Invitaciones pendientes',
-            color: '#EE7D02',
-            icon: FaUserFriends,
-            content: [
-                'Invitación 1',
-                'Invitación 2',
-                'Invitación 3',
-                'Invitación 4',
-                'Invitación 5',
-            ],
-        },
-        {
-            name: 'Invitaciones activas',
-            color: '#00B85A',
-            icon: FaUserCheck,
-            content: [
-                'Invitación activa 1',
-                'Invitación activa 2',
-                'Invitación activa 3',
-            ],
-        },
-        {
-            name: 'Invitaciones creadas',
-            color: '#5368DC',
-            icon: FaUserPlus,
-            content: [
-                'Invitación creada 1',
-                'Invitación creada 2',
-                'Invitación creada 3',
-                'Invitación creada 4',
-            ],
-        },
-    ]);
+        fetchInvitations();
+    }, [props.user_id]); // Add props.user_id as a dependency
 
     return (
         <Container fluid className="invitation-view">
             <Row className="invitation-cards-container">
-                {invitations.map((invitation, index) => (
-                    <Col key={index} xs={12} className="invitation-card-container">
-                        <InvitationCard
-                            name={invitation.name}
-                            color={invitation.color}
-                            Icon={invitation.icon}
-                            content={invitation.content}
-                        />
-                    </Col>
-                ))}
+                <Col xs={12} className="invitation-card-container">
+                    <InvitationCard
+                        name="Invitaciones pendientes"
+                        color="#EE7D02"
+                        Icon={FaUserFriends}
+                        content={data.filter(invitation => invitation.state !== 1 
+                            && invitation.user_id_owner != parseInt(props.user_id, 10))}
+                        flag={1}
+                    />
+                </Col>
+                <Col xs={12} className="invitation-card-container">
+                    <InvitationCard
+                        name="Invitaciones activas"
+                        color="#00B85A"
+                        Icon={FaUserCheck}
+                        content={data.filter(invitation => invitation.state === 1 
+                            && invitation.user_id_owner != parseInt(props.user_id, 10))}
+                        flag={2}
+                    />
+                </Col>
+                <Col xs={12} className="invitation-card-container">
+                    <InvitationCard
+                        name="Invitaciones creadas"
+                        color="#5368DC"
+                        Icon={FaUserPlus}
+                        content={data.filter(invitation => invitation.user_id_owner === parseInt(props.user_id, 10))}
+                        flag={3}
+                    />
+                </Col>
             </Row>
         </Container>
     );

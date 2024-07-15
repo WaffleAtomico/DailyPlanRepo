@@ -9,6 +9,7 @@ import "../../styles/UI/profile/profGeneral.css";
 
 import { IoIosArrowBack } from "react-icons/io";
 import { FaUserClock } from "react-icons/fa6";
+import GeneralNotif from "../UI/advices/GeneralNotif";
 
 export default function ProfileOriPage() {
   const { id } = useParams();
@@ -48,10 +49,16 @@ export default function ProfileOriPage() {
   };
 
   useEffect(() => {
-    const getUserName = async (user_id) => {
-      const response = await getUsrName(user_id);
-      console.log("Response in front " + response.user_name);
-      setUsername(response.user_name);
+    const getUserName = (user_id) => {
+      // const response = await 
+      getUsrName(user_id).then(response => {
+        console.log("Response in front");
+        console.log(response.data);
+        setUsername(response.data[0].user_name);
+      }).catch(error => {
+        console.error(error);
+      });
+
     };
     getUserName(id);
   }, []);
@@ -60,6 +67,18 @@ export default function ProfileOriPage() {
     // e.preventDefault();
     navigate(`/dailyplan/${id}/`);
   };
+
+
+    /*-------------------- Notifications --------------------*/
+    const [mostrarNotificacion, setMostrarNotificacion] = useState(false);
+
+    const handleShowNotificacion = () => {
+      setMostrarNotificacion(true);
+    };
+  
+    const handleCloseNotificacion = () => {
+      setMostrarNotificacion(false);
+    };
 
   return (
     <div className="prof-main-container">
@@ -85,6 +104,14 @@ export default function ProfileOriPage() {
       </div>
 
       <div className="prof-UI-background">{renderOption(selectedOption)}</div>
+
+      {mostrarNotificacion && (
+        <GeneralNotif
+          mensaje="Este es el mensaje de la notificación"
+          onClose={handleCloseNotificacion}
+          componente={<div>Componente adicional</div>}
+        />
+      )}
     </div>
   );
 }

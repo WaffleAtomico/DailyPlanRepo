@@ -1,3 +1,45 @@
+/* general.css */
+.calendar-main-container {
+  max-height: 100vh;
+  overflow-y: auto;
+  margin-bottom: 20rem;
+}
+
+/* Calendar_view.css */
+.calendar-view-container {
+  height: 100%;
+  overflow-y: auto;
+}
+
+.month-view-container {
+  height: 100%;
+  overflow-y: auto;
+  margin-bottom: 8rem;
+}
+
+.reminders-table-container {
+  margin-top: 10px;
+  overflow-y: auto; 
+  max-height: 150px; 
+  margin-bottom: 8rem;
+}
+
+.reminders-table-container table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: bisque;
+}
+
+.reminders-table-container th, .reminders-table-container td {
+  border: 2px solid #2a0000;
+  padding: 8px;
+  text-align: left;
+}
+
+.reminders-table-container th {
+  background-color: #06a7c4;
+}
+
 .app-container {
   display: flex;
   flex-direction: column;
@@ -33,25 +75,45 @@ select {
 
 .week-days {
   display: flex;
-  flex-wrap: wrap;
   justify-content: space-between;
-  
 }
 
 .day-box {
   border: 1px solid black;
   padding: 10px;
-  width: 14%;
+  width: 100%;
   background-color: aliceblue;
   box-sizing: border-box;
+  overflow-y: auto; 
+  max-height: 600px; 
+}
+
+.hours-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.hour-block {
+  background-color: #e0e0e0;
+  border: 1px solid #ccc;
+  padding: 5px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.hour-block:hover {
+  background-color: #d0d0d0;
 }
 
 @media (max-width: 768px) {
+  .week-days {
+    flex-direction: column;
+  }
   .day-box {
     padding: 0px;
     width: 100%;
     margin-bottom: 10px;
     font-size: small;
-    
   }
 }

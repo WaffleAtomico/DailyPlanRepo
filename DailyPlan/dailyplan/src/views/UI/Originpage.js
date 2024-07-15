@@ -26,6 +26,12 @@ import { FaUserClock } from "react-icons/fa6";
 import { getUsrName } from "../../utils/validations/user";
 import { AuthContext } from "../../services/AuthContext";
 
+//-------------
+//import CRUD function
+import { addChronometer } from "../../utils/validations/chrono";
+
+
+
 export default function OriginPage() {
   /* --------------------ORIGIN BASE-------------------- */
   const { id } = useParams();
@@ -73,7 +79,7 @@ export default function OriginPage() {
   };
 
   /*-------------------- Notifications --------------------*/
-  const [mostrarNotificacion, setMostrarNotificacion] = useState(true);
+  const [mostrarNotificacion, setMostrarNotificacion] = useState(false);
 
   const handleShowNotificacion = () => {
     setMostrarNotificacion(true);
@@ -128,13 +134,18 @@ export default function OriginPage() {
     setElapsedTime(0);
   }
 
+
+
   const GoToProfileModule = () => {
+
+
+
     navigate(`/dailyplanconfig/${id}`);
   };
 
   const secondsPassed = elapsedTime / 1000;
   const chronoTime = timeFormatSec(secondsPassed);
-
+  
   return (
     <div className="main-container">
       <div className="UI-header">
@@ -182,20 +193,23 @@ export default function OriginPage() {
         {selectedOption === 1 && <Alarm />}
         {selectedOption === 2 && (
           <Chrono
+            id_user={id}
             chronoTimeToChrono={chronoTime}
+            chronoTimeSecond = {secondsPassed}
             isRunningChrono={isRunning}
             handleStaStoChrono={handleStaSto}
             handleResetChrono={handleReset}
           />
         )}
-        {selectedOption === 3 && <CountdownTimer />}
+        {selectedOption === 3 && <CountdownTimer user_id={id} />}
         {selectedOption === 4 && <Clock id_user={id} />}
-        {selectedOption === 5 && <Invitation />}
-        {selectedOption === 7 && <Sleep />}
-        {selectedOption === 8 && <Pomodoro />}
+        {selectedOption === 5 && <Invitation user_id={id}/>}
+        {selectedOption === 7 && <Sleep id_user={id}/>}
+        {selectedOption === 8 && <Pomodoro id_user={id}/>}
         {selectedOption !== 2 && secondsPassed > 0 && (
           <ChronoIndicator
             chronoTimeToChrono={chronoTime}
+            chronoTimeSecond = {secondsPassed}
             handleStaStoToChrono={handleStaSto}
           />
         )}
