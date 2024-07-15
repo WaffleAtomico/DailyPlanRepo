@@ -73,7 +73,9 @@ const UserPermissions = () => {
   return (
     <div>
       <h1>Ubicación en tiempo real</h1>
-      <RealTimeLocationComponent />
+      {/* cambiar en un tiempo */}
+      {/* <RealTimeLocationComponent /> */}
+
     </div>
   );
   /*const [locationPermission, setLocationPermission] = useState(false);

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { urllocalhost } from "../urlrequest";
+import { urlreference } from "../routes";
 //solo se envia la info
 
 const iscompleted = async (user_id, title_id) => {
@@ -20,10 +20,11 @@ export const grantArchivement = async (user_id, title_id) => {
   if (iscompleted(user_id)) {
     try {
       const response = await axios.post(
-        `${urllocalhost}/updateOne`,
+        `${urlreference}/updateOne`,
         archivement_info
       );
-      return response.data;
+      return response
+      // return response.data;
     } catch (err) {
       console.log(err);
     }
@@ -33,7 +34,7 @@ export const grantArchivement = async (user_id, title_id) => {
 export const getAllArchivements = async (user_id) => {
   try {
     //mapear en torno a la info que se envie
-    const response = await axios.post(`${urllocalhost}/title-getAll`, {
+    const response = await axios.post(`${urlreference}/title-getAll`, {
       user_id,
     });
     // console.log("data "+response.data);
@@ -41,7 +42,9 @@ export const getAllArchivements = async (user_id) => {
     // console.log("titlename "+response.data.titles);
     // console.log(response.data.titles[0].title_name);
     // console.log("alltitles in response " + response.data.titles);
-    return response.data;
+
+    // return response.data;
+    return response;
   } catch (err) {
     console.log(err);
   }
