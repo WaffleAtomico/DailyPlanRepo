@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FaRegCirclePause, FaRegCirclePlay, FaClockRotateLeft } from "react-icons/fa6";
 import { addChronometer, deleteChronometer, getChronometersForUser } from '../../../utils/validations/chrono';
-import { getPercentages, getPuntuality, getPuntualityById } from '../../../utils/validations/puntuality';
+import { getPercentages, getPuntuality, getPuntualityById, updatePuntuality } from '../../../utils/validations/puntuality';
 import { TbClockEdit } from "react-icons/tb";
 import '../../../styles/UI/Chronometer/Chrono.css';
 import { timeFormatHHMMSS, timeFormatSec } from '../../../utils/timeFormat';
@@ -14,6 +14,8 @@ import { grantArchivement, isCompleted } from '../../../utils/archivements/grant
 export default function Chrono_view(props) {
     const [timesFromUser, setTimesFromUser] = useState([]); // Las marcas guardadas por el usuario
     const [savedmarks, setSavedmark] = useState([]); // Marcas para saber qué tiempos comparar
+    const [puntuality, setPuntuality] = useState([]);
+    const [showList, setShowList] = useState(false); //Show the list or not
     const [inputTime, setInputTime] = useState(""); // Nuevo estado para el campo de entrada
     const [chronos, setChronos] = useState([]); // List of chronometers from the user
     const [isCompletedArchivement, setIsCompletedArchivement] = useState(true);
@@ -95,7 +97,9 @@ export default function Chrono_view(props) {
         // Variables
         const timeFormat = timeFormatHHMMSS(props.chronoTimeSecond);
         const date = new Date();
-        const dateF = date.getDate();
+
+        const formattedDate = formatDateToHHMMSS(date);
+    
 
         // Check if seconds are zero
         if (timeFormat.seconds === 0) {
@@ -110,7 +114,7 @@ export default function Chrono_view(props) {
 
         // Create new object to store
         const chrono = {
-            chrono_name: dateF,
+            chrono_name: formattedDate,
             chrono_hour: timeFormat.hours,
             chrono_min: timeFormat.minutes,
             chrono_sec: timeFormat.seconds,
@@ -118,32 +122,80 @@ export default function Chrono_view(props) {
         };
         console.log(chrono);
 
-        addChronometer(chrono).then(() => {
-            if (timesFromUser.length >= 5) {
-                grant15Archivement(props.id_user);
-            }
-            getPuntualityById(props.id_user).then(puntuality => {
-                console.log("Se obtuvo la informacion de puntualidad");
-                if (puntuality.punt_percent_chro == null) return;
+        try {
+            // Save the chrono
+            await addChronometer(chrono);
+    
+            // Update the punctuality
+             getPuntualityById(props.id_user).then(response => {
 
-                if (puntuality.punt_percent_chro != 0) {
-                    const newPunctuality = (puntuality.punt_percent_chro + getPercentages(savedmarks, timesFromUser)) / 2;
-                    puntuality.punt_percent_chro = newPunctuality;
-                }
-            }).catch(error => { console.log(error) })
-        }).catch(error => { console.log(error) });
+                setPuntuality(response.data)
+                
+            })
+            .catch(error => {
+                console.log("error", error);
+            });
+           
+
+           
+
+            if (puntuality[0] == null && puntuality[0].punt_percent_chro == null) return;
+
+            const punt = puntuality[0];
+        
+
+            console.log("Puntualidad antigua", punt.punt_percent_chro);
+            if (punt.punt_percent_chro != 0) {
+                const newPunctuality = (punt.punt_percent_chro + getPercentages(savedmarks, timesFromUser)) / 2;
+                punt.punt_percent_chro = newPunctuality;
+            }
+            
+            console.log("Nueva puntualidad", punt.punt_percent_chro);
+            updatePuntuality(punt.punt_id, punt);
+
+
+        } catch (error) {
+            console.log("Error occurred: ", error);
+        }
+
     };
 
     //Function to list al the chrono
-    const handleListChrono = ([elements]) => {
-        //  visible = true;
+
+    const handleListChrono = () => 
+    {
+        setShowList(!showList);
+
+        if(!showList == false) return;
+        getChronometersForUser(props.id_user)
+        .then(response => {
+            if (response.data ) {
+                console.log(response.data)
+                setChronos(response.data);
+            } else {
+               // console.error("Unexpected response format:", data);
+            }
+        })
+        .catch(error => {
+          //  console.error("Error fetching the user's chronometers:", error);
+        });
+
+
+        console.log("los crono:", chronos);
+
+        
+
     }
 
 
     //function to eliminate a chrono
-    const handleDeleteChrono = ([id_chrono]) => {
-        deleteChronometer(id_chrono).then(() => { console.log("Éxito") })
-            .catch(error => { console.error("Error:", error) })
+
+    const handleDeleteChrono =(id_chrono) =>
+    {
+
+        deleteChronometer(id_chrono).then(() =>{console.log("Éxito")})
+        .catch(error => {console.error("Error:", error)})
+
     }
 
     const getDifference = (expectedTime, actualTime) => {
@@ -163,6 +215,32 @@ export default function Chrono_view(props) {
         return `${differenceInSeconds < 0 ? '-' : '+'}${diffHours}:${diffMinutes}:${diffSeconds}`;
     };
 
+
+    useEffect(() => {
+      
+        if (timesFromUser.length > 1) {
+            const sortedTimes = [...timesFromUser].sort((a, b) => a.localeCompare(b));
+            if (JSON.stringify(sortedTimes) !== JSON.stringify(timesFromUser)) {
+                setTimesFromUser(sortedTimes);
+            }
+        }
+
+     
+        
+        //execute only
+
+    });
+
+
+//utils
+const formatDateToHHMMSS = (date) => {
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const seconds = String(date.getSeconds()).padStart(2, '0');
+    return `${hours}:${minutes}:${seconds}`;
+};
+
+
     const iconSize = 45;
 
     return (
@@ -172,9 +250,8 @@ export default function Chrono_view(props) {
             <div className="general-div">
                 <button className="general-button" onClick={() => handleSaveChrono()} >Guardar</button>
                 <button className="general-button" onClick={() => handleListChrono()}>Listado</button>
-                <ChronoList chronos={chronos} handleDeleteChrono={handleDeleteChrono} />
+            {showList && (<ChronoList chronos={chronos} handleDeleteChrono={handleDeleteChrono}/>)}
             </div>
-
             <table className="times-table">
                 <thead>
                     <tr>
