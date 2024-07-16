@@ -140,8 +140,11 @@ export const getPercentages = (expectedTimes, actualTimes) => {
         calculateDifferenceInSeconds(expectedTime, actualTimes[index])
     );
 
+    console.log("la diferencia:", differences);
 
     const averageDifference = getAverageDifference(differences);
+
+    console.log("El promedio es:", averageDifference);
 
     const  percentages = differences.map(difference => (Math.abs(difference) / averageDifference) * 100);
 
@@ -164,6 +167,8 @@ const calculateDifferenceInSeconds = (expectedTime, actualTime) => {
     const [expectedHours, expectedMinutes, expectedSeconds] = expectedTime.split(":").map(Number);
     const expectedTotalSeconds = expectedHours * 3600 + expectedMinutes * 60 + expectedSeconds;
     const actualTotalSeconds = Math.floor(actualTime);
+
+    console.log("La diferencia es:", actualTotalSeconds - expectedTotalSeconds);
     return actualTotalSeconds - expectedTotalSeconds;
 };
 

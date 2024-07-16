@@ -84,7 +84,7 @@ export default function Chrono_view(props) {
 
             console.log("Puntualidad antigua", punt.punt_percent_chro);
             if (punt.punt_percent_chro != 0) {
-                const newPunctuality = (punt.punt_percent_chro + getPercentages(savedmarks, timesFromUser)) / 2;
+                const newPunctuality = (punt.punt_percent_chro + getPercentages( timesFromUser, savedmarks,)) / 2;
                 punt.punt_percent_chro = newPunctuality;
             }
             
