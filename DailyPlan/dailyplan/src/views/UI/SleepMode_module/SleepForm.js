@@ -16,15 +16,15 @@ const SleepForm = ({ onClose }) => {
       <h2>¿Cómo dormiste?</h2>
       <div className="sleep-rating-options">
         <div className={`sleep-rating-option ${sleepRating === 'bien' ? 'selected' : ''}`} onClick={() => handleRatingSelect('bien')}>
-          <FaRegSmile size={50} />
+          <FaRegSmile size={150} />
           <span>Bien</span>
         </div>
         <div className={`sleep-rating-option ${sleepRating === 'regular' ? 'selected' : ''}`} onClick={() => handleRatingSelect('regular')}>
-          <FaMeh size={50} />
+          <FaMeh size={150} />
           <span>Regular</span>
         </div>
         <div className={`sleep-rating-option ${sleepRating === 'mal' ? 'selected' : ''}`} onClick={() => handleRatingSelect('mal')}>
-          <FaRegFrown size={50} />
+          <FaRegFrown size={150} />
           <span>Mal</span>
         </div>
       </div>

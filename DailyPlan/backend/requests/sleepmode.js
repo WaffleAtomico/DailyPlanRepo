@@ -2,8 +2,9 @@ import { db } from '../config/connection.js';
 
 const addSleepmode = (req, res) => {
     const query = {
-        sql: "INSERT INTO `sleepmode`(`sleep_starthour`, `sleep_endhour`, `sleep_active`, `sleep_rep`, `sleep_video_url`, `sleep_rep_stopped`, `tone_id`, `quality_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+        sql: "INSERT INTO `sleepmode`(`sleep_id`, `sleep_starthour`, `sleep_endhour`, `sleep_active`, `sleep_rep`, `sleep_video_url`, `sleep_rep_stopped`, `tone_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
         values: [
+            req.body.sleep_id,
             req.body.sleep_starthour,
             req.body.sleep_endhour,
             req.body.sleep_active,
@@ -11,7 +12,6 @@ const addSleepmode = (req, res) => {
             req.body.sleep_video_url,
             req.body.sleep_rep_stopped,
             req.body.tone_id,
-            req.body.quality_id,
         ],
     };
     db.query(query.sql, query.values, (err, data) => {
@@ -24,7 +24,7 @@ const addSleepmode = (req, res) => {
 
 const getSleepmodes = (req, res) => {
     const query = {
-        sql: "SELECT `sleep_id`, `sleep_starthour`, `sleep_endhour`, `sleep_active`, `sleep_rep`, `sleep_video_url`, `sleep_rep_stopped`, `tone_id`, `quality_id` FROM `sleepmode` WHERE 1",
+        sql: "SELECT `sleep_id`, `sleep_starthour`, `sleep_endhour`, `sleep_active`, `sleep_rep`, `sleep_video_url`, `sleep_rep_stopped`, `tone_id` FROM `sleepmode` WHERE 1",
     };
     db.query(query.sql, (err, data) => {
         if (err) {
@@ -36,7 +36,7 @@ const getSleepmodes = (req, res) => {
 
 const getSleepmodeById = (req, res) => {
     const query = {
-        sql: "SELECT `sleep_id`, `sleep_starthour`, `sleep_endhour`, `sleep_active`, `sleep_rep`, `sleep_video_url`, `sleep_rep_stopped`, `tone_id`, `quality_id` FROM `sleepmode` WHERE `sleep_id` = ?",
+        sql: "SELECT `sleep_id`, `sleep_starthour`, `sleep_endhour`, `sleep_active`, `sleep_rep`, `sleep_video_url`, `sleep_rep_stopped`, `tone_id` FROM `sleepmode` WHERE `sleep_id` = ?",
         values: [req.params.sleep_id],
     };
     db.query(query.sql, query.values, (err, data) => {
@@ -49,7 +49,7 @@ const getSleepmodeById = (req, res) => {
 
 const updateSleepmode = (req, res) => {
     const query = {
-        sql: "UPDATE `sleepmode` SET `sleep_starthour` = ?, `sleep_endhour` = ?, `sleep_active` = ?, `sleep_rep` = ?, `sleep_video_url` = ?, `sleep_rep_stopped` = ?, `tone_id` = ?, `quality_id` = ? WHERE `sleep_id` = ?",
+        sql: "UPDATE `sleepmode` SET `sleep_starthour` = ?, `sleep_endhour` = ?, `sleep_active` = ?, `sleep_rep` = ?, `sleep_video_url` = ?, `sleep_rep_stopped` = ?, `tone_id` = ? WHERE `sleep_id` = ?",
         values: [
             req.body.sleep_starthour,
             req.body.sleep_endhour,
@@ -58,7 +58,6 @@ const updateSleepmode = (req, res) => {
             req.body.sleep_video_url,
             req.body.sleep_rep_stopped,
             req.body.tone_id,
-            req.body.quality_id,
             req.params.sleep_id,
         ],
     };
@@ -83,10 +82,10 @@ const deleteSleepmode = (req, res) => {
     });
 };
 
-export { 
+export {
     addSleepmode,
     getSleepmodes,
     getSleepmodeById,
     updateSleepmode,
-    deleteSleepmode 
+    deleteSleepmode
 };

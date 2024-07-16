@@ -26,7 +26,7 @@ const CLOCK_EXISTS_ZONE_URL = `${urlreference}/clock-existzone`;
 
 const CONN_URL = `${urlreference}/conn`;
 
-const CREATE_ALL_TITLES = `${urlreference}//title-addAll`;
+const CREATE_ALL_TITLES = `${urlreference}/title-addAll`;
 const GET_ALL_TITLES = `${urlreference}/title-getAll`;
 const UPDATE_ONE_TITLE = `${urlreference}/title-updateone`;
 
@@ -145,6 +145,7 @@ const DELETE_SLEEP_MODE_URL = `${urlreference}/delete-sleepmode`;
 const ADD_SLEEP_QUALITY_URL = `${urlreference}/add-sleepquality`;
 const GET_SLEEP_QUALITIES_URL = `${urlreference}/get-sleepqualities`;
 const GET_SLEEP_QUALITY_BY_ID_URL = `${urlreference}/get-sleepquality`;
+const GET_SLEEPQUALITIES_BY_DATE_RANGE_URL = `${urlreference}/get-sleepqualities-by-date-range`;
 const UPDATE_SLEEP_QUALITY_URL = `${urlreference}/update-sleepquality`;
 const DELETE_SLEEP_QUALITY_URL = `${urlreference}/delete-sleepquality`;
 
@@ -267,6 +268,7 @@ export {
     ADD_SLEEP_QUALITY_URL,
     GET_SLEEP_QUALITIES_URL,
     GET_SLEEP_QUALITY_BY_ID_URL,
+    GET_SLEEPQUALITIES_BY_DATE_RANGE_URL,
     UPDATE_SLEEP_QUALITY_URL,
     DELETE_SLEEP_QUALITY_URL,
     ADD_TONE_URL,
