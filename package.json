@@ -9,6 +9,8 @@
     "start:backend": "cd DailyPlan/backend && node index.js"
   },
   "dependencies": {
-    "howler": "^2.2.4"
+    "chart.js": "^4.4.3",
+    "howler": "^2.2.4",
+    "react-chartjs-2": "^5.2.0"
   }
 }
