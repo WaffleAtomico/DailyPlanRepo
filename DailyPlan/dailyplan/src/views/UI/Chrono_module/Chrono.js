@@ -250,16 +250,19 @@ const formatDateToHHMMSS = (date) => {
             <div className="general-div">
                 <button className="general-button" onClick={() => handleSaveChrono()} >Guardar</button>
                 <button className="general-button" onClick={() => handleListChrono()}>Listado</button>
-
             {showList && (<ChronoList chronos={chronos} handleDeleteChrono={handleDeleteChrono}/>)}
-
-
             </div>
             <table className="times-table">
                 <thead>
                     <tr>
                         <th colSpan="2">
-                            <input
+                            <input 
+                                style={{
+                                    width: "70rem",
+                                    textAlign: "center",
+                                    padding: "10px", 
+                                    fontSize: "xx-large"
+                                  }}
                                 type="time"
                                 step="1"
                                 placeholder="Ingrese un tiempo"
@@ -311,6 +314,8 @@ const formatDateToHHMMSS = (date) => {
                     </div>
                 </div>
             </div>
+            
+            
         </div>
     );
 }

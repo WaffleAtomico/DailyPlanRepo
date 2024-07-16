@@ -3,19 +3,65 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start; /* Cambiado de center a flex-start */
     padding: 1rem;
-    overflow-y: auto;
+    height: 100vh; /* Asegura que el contenedor tome la altura completa de la vista */
+    overflow-y: auto; /* Habilita el scroll vertical */
 }
 
 .chronometer-time {
-    font-size: 2rem;
+    font-size: 5rem;
     margin-bottom: 1rem;
+}
+
+.general-div {
+    margin-bottom: 1rem;
+}
+
+.table-container {
+    max-height: 50vh; /* Limita la altura del contenedor de la tabla */
+    overflow-y: auto; /* Habilita el scroll vertical */
+    width: 100%;
+}
+
+.times-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 2px solid #000000;
+}
+
+.times-table th,
+.times-table td {
+    padding: 0.5rem;
+    text-align: center;
+    border: 2px solid #000000;
+}
+
+.times-table th {
+    background-color: #FFFFFF;
+    color: #000000;
+}
+
+.add-button {
+    background-color: #CDDC39;
+    border: none;
+    color: #000000; 
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 36px;
+}
+
+.general-button {
+    flex: auto;
+    border-radius: 10%;
 }
 
 .chronometer-controls {
     display: flex;
     gap: 1rem;
+    margin-top: 1rem;
+    margin-bottom: 6rem; /* Aumenta el margen inferior */
 }
 
 .input-container {
@@ -35,79 +81,25 @@
     width: 200px;
 }
 
-
-
-.times-table {
-    width: 100%;
-    border-collapse: collapse;
-    border: 2px solid #000000;
-    margin-top: 1rem;
-}
-
-.times-table th,
-.times-table td {
-    padding: 0.5rem;
-    text-align: center;
-    border: 2px solid #000000;
-}
-
-.times-table th {
-    background-color: #FFFFFF;
-    color: #000000;
-}
-
-.times-table tbody {
-    max-height: 200px;
-    overflow-y: auto;
-}
-
-
-.add-button {
-    background-color: #CDDC39;
-    border: none;
-    color: #000000; 
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 36px;
-}
-
-.general-button {
-
-    flex: auto;
-    border-radius: 10%;
-}
-
-.general-div {
-
-    margin: 10;
-}
-
 .time-input-container {
     display: flex;
     justify-content: center;
     gap: 20px;
-  }
-  
-  .time-input-item {
-    /* background-color: gray; */
+}
+
+.time-input-item {
     padding: 10px 10px;
     border-radius: 50px;
     cursor: pointer;
     position: relative;
     overflow: hidden;
-  }
-  
-  .time-input-item-front {
+}
+
+.time-input-item-front {
     width: 100%;
     height: 100%;
     padding: 5px 5px;
     border-radius: 30px;
     background-color: white;
     z-index: 10;
-  }
-
-  .chronometer-controls{
-    margin-top: 1rem;
-  }
-  
+}
