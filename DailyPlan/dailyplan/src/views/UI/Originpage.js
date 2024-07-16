@@ -105,14 +105,6 @@ export default function OriginPage() {
     return () => clearInterval(interval);
   }, []);
 
-  // const handleShowNotificacion = () => {
-  //   setMostrarNotificacion(true);
-  // };
-
-  // const handleCloseNotificacion = () => {
-  //   setMostrarNotificacion(false);
-  // };
-
   /*  --------------------CHRONO IN ALL-------------------- */
 
   const [startTime, setStartTime] = useState(null);
@@ -158,12 +150,7 @@ export default function OriginPage() {
     setElapsedTime(0);
   }
 
-
-
   const GoToProfileModule = () => {
-
-
-
     navigate(`/dailyplanconfig/${id}`);
   };
 

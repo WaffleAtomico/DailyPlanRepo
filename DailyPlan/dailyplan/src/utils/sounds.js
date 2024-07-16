@@ -57,8 +57,6 @@ export function playBase64Audio(base64Audio, contentType, repetitions = 1, durat
   playAudio();
 }
 
-
-
 export function playBlobAudio(blob, repetitions = 1, durationInSeconds = 1, repeatIntervalInSeconds = 1) {
   const audioURL = URL.createObjectURL(blob);
   const audio = new Audio(audioURL);

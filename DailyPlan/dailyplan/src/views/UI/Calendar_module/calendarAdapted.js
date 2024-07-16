@@ -18,7 +18,7 @@ export default function Calendar_Adapted() {
   const [selectDate, setSelectDate] = useState("2024-01-01");
 
 
-  console.log(view);
+  // console.log(view);
   
 
   const renderView = () => {

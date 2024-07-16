@@ -31,7 +31,7 @@ export default function Archivement_view(props) {
         10: { description: "Completa todas tus actividades a tiempo teniendo activa la preparación", image: <MdOutlineTimelapse size={sizeicon} /> },
         11: { description: "No dejes que baje tu puntualidad por una semana", image: <BsCalendarWeek size={sizeicon} /> },
         12: { description: "Crea un recordatorio compartido e invita otros usuarios", image: <MdDomainVerification size={sizeicon} /> },
-        13: { description: "Cambia tu titulo des configuración", image: <GoGear size={sizeicon} /> },
+        13: { description: "Cambia tu titulo desde configuración", image: <GoGear size={sizeicon} /> },
         14: { description: "Agrega un nuevo reloj", image: <TbClockCheck size={sizeicon} /> },
         15: { description: "Guarda un cronómetro con al menos 5 marcas de tiempo", image: <BsClockHistory size={sizeicon} /> },
         16: { description: "Obten todos los logros", image: <FaHourglassStart size={sizeicon} /> },

@@ -5,7 +5,7 @@ import { MdBlock } from "react-icons/md";
 import { ImCross } from 'react-icons/im';
 import '../../../styles/UI/Invitations/invitation_card.css';
 
-const InvitationCard = ({ name, color, Icon, content, flag }) => {
+const InvitationCard = ({ name, color, Icon, content, flag, grant4Archivement }) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 10;
@@ -42,7 +42,7 @@ const InvitationCard = ({ name, color, Icon, content, flag }) => {
                             <div className="invitation-buttons">
                                 {flag === 1 && (
                                     <>
-                                        <button className="button-large"><FaCheck /> Aceptar</button>
+                                        <button className="button-large" onClick={()=>grant4Archivement()}><FaCheck /> Aceptar</button>
                                         <button className="button-large"><ImCross /> Cancelar</button>
                                     </>
                                 )}
