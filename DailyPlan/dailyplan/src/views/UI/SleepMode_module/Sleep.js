@@ -37,7 +37,6 @@ export default function SleepAlarm() {
     useEffect(() => {
         const interval = setInterval(() => {
             const horaActual = moment().format('HH:mm');
-
             if (isToggled) {
                 if ((horaActual < horaDespertar) && (horaActual >= horaDormir)) {
                     setIsPlaying(true);
@@ -45,6 +44,7 @@ export default function SleepAlarm() {
                     setIsPlaying(false);
                     //Debe el sistema de asegurarse que ya contesto la encuesta para poder preguntarle
                     if (horaActual >= horaDespertar && horaActual+1) {
+                        //asignar que si la del dia ya se contesto, ya no la agregue
                         setShowSurvey(true);
                     }
                 }

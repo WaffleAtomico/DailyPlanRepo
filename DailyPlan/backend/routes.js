@@ -17,6 +17,7 @@ const USER_EXISTS_NAME_URL = '/users-existname';
 const USER_EXISTS_NUMBER_URL = '/users-existnumber';
 const GET_USER_BY_MAIL_URL = '/user-bymail';
 const GET_USER_BY_NUMBER_URL = '/user-bynumber';
+const UPDATE_USER_TITLE_URL = '/user-updtitle';
 
 const ADD_CLOCK_URL = '/clock-id';
 const GET_CLOCK_URL = '/clock-byid';
@@ -143,6 +144,7 @@ const DELETE_SLEEP_MODE_URL = '/delete-sleepmode';
 
 const ADD_SLEEP_QUALITY_URL = '/add-sleepquality';
 const GET_SLEEP_QUALITIES_URL = '/get-sleepqualities';
+const GET_SLEEPQUALITIES_BY_DATE_RANGE_URL = '/get-sleepqualities-by-date-range'
 const GET_SLEEP_QUALITY_BY_ID_URL = '/get-sleepquality';
 const UPDATE_SLEEP_QUALITY_URL = '/update-sleepquality';
 const DELETE_SLEEP_QUALITY_URL = '/delete-sleepquality';
@@ -167,6 +169,7 @@ export {
     USER_EXISTS_MAIL_URL,
     USER_EXISTS_NAME_URL,
     USER_EXISTS_NUMBER_URL,
+    UPDATE_USER_TITLE_URL,
     GET_USER_BY_MAIL_URL,
     GET_USER_BY_NUMBER_URL,
     ADD_CLOCK_URL,
@@ -271,6 +274,7 @@ export {
     DELETE_SLEEP_MODE_URL,
     ADD_SLEEP_QUALITY_URL,
     GET_SLEEP_QUALITIES_URL,
+    GET_SLEEPQUALITIES_BY_DATE_RANGE_URL,
     GET_SLEEP_QUALITY_BY_ID_URL,
     UPDATE_SLEEP_QUALITY_URL,
     DELETE_SLEEP_QUALITY_URL,

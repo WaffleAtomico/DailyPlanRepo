@@ -3,7 +3,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start; /* Cambiado de center a flex-start */
+    justify-content: flex-start;
     padding: 1rem;
     height: 100vh; /* Asegura que el contenedor tome la altura completa de la vista */
     overflow-y: auto; /* Habilita el scroll vertical */
@@ -45,7 +45,7 @@
 .add-button {
     background-color: #CDDC39;
     border: none;
-    color: #000000; 
+    color: #000000;
     text-align: center;
     text-decoration: none;
     display: inline-block;
@@ -78,7 +78,7 @@
     background-color: #FFFFFF;
     color: #000000;
     margin-right: 0.5rem;
-    width: 200px;
+    text-align: center; /* Centra el texto del input */
 }
 
 .time-input-container {
@@ -102,4 +102,47 @@
     border-radius: 30px;
     background-color: white;
     z-index: 10;
+}
+
+@media (max-width: 768px) {
+    .chronometer-time {
+        font-size: 3rem;
+    }
+    
+    .add-button {
+        font-size: 24px;
+    }
+    
+    .times-table th,
+    .times-table td {
+        padding: 0.25rem;
+    }
+
+    .input-container input {
+        width: 100px;
+    }
+    
+    .chronometer-controls {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .time-input-container {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .table-container {
+        max-height: 30vh; 
+    }
+
+    .times-table {
+        font-size: 0.8rem; 
+    }
+
+    .times-table th,
+    .times-table td {
+        padding: 0.2rem;
+        word-break: break-word; 
+    }
 }

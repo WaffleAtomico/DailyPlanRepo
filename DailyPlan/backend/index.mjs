@@ -20,7 +20,8 @@ import {
   userExistsByName,
   userExistsByNumber,
   getUserByMail,
-  getUserByNumber
+  getUserByNumber,
+  updateUserTitle
 } from './requests/users.js';
 
 import {
@@ -188,6 +189,7 @@ import {
 import {
   addSleepQuality,
   getSleepQualities,
+  getSleepQualitiesByDateRange,
   getSleepQualityById,
   updateSleepQuality,
   deleteSleepQuality
@@ -297,6 +299,7 @@ app.post(urls.USER_EXISTS_NAME_URL, userExistsByName);
 app.post(urls.USER_EXISTS_NUMBER_URL, userExistsByNumber);
 app.post(urls.GET_USER_BY_MAIL_URL, getUserByMail);
 app.post(urls.GET_USER_BY_NUMBER_URL, getUserByNumber);
+app.post(urls.UPDATE_USER_TITLE_URL, updateUserTitle);
 
 /*-------------------------- Clocks --------------------------*/
 app.post(urls.ADD_CLOCK_URL, addClock);
@@ -439,9 +442,11 @@ app.post(urls.GET_SLEEP_MODE_BY_ID_URL, getSleepmodeById);
 app.post(urls.UPDATE_SLEEP_MODE_URL, updateSleepmode);
 app.post(urls.DELETE_SLEEP_MODE_URL, deleteSleepmode);
 
+
 /*-------------------------------SleepQuality-------------------------*/
 app.post(urls.ADD_SLEEP_QUALITY_URL, addSleepQuality);
 app.post(urls.GET_SLEEP_QUALITIES_URL, getSleepQualities);
+app.post(urls.GET_SLEEPQUALITIES_BY_DATE_RANGE_URL ,getSleepQualitiesByDateRange);
 app.post(urls.GET_SLEEP_QUALITY_BY_ID_URL, getSleepQualityById);
 app.post(urls.UPDATE_SLEEP_QUALITY_URL, updateSleepQuality);
 app.post(urls.DELETE_SLEEP_QUALITY_URL, deleteSleepQuality);
