@@ -219,8 +219,8 @@ app.listen(3001, () => {
 });
 
 /**--------------------- MAIL ------------------ */
-/*
-export const transporter = nodemailer.createTransport({
+
+export const transporterjt = nodemailer.createTransport({
   pool: true,
   host: "mail.javateam.com.mx",
   port: 587,
@@ -234,8 +234,8 @@ export const transporter = nodemailer.createTransport({
   }
 });
 
-export var mailsender = '"DailyPlan" <dailyplan@javateam.com.mx>';
-*/
+export var mailsenderjt = '"DailyPlan" <dailyplan@javateam.com.mx>';
+
 
 export const transporter = nodemailer.createTransport({
   pool: true,

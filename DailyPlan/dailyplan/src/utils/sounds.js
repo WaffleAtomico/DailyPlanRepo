@@ -29,24 +29,6 @@ export function playRingtone(repetitions = 1, durationInSeconds = 1, repeatInter
   playAudio();
 }
 
-export function base64ToBlob(base64, contentType) {
-  const byteCharacters = atob(base64);
-  const byteArrays = [];
-
-  for (let offset = 0; offset < byteCharacters.length; offset += 512) {
-    const slice = byteCharacters.slice(offset, offset + 512);
-    const byteNumbers = new Array(slice.length);
-    for (let i = 0; i < slice.length; i++) {
-      byteNumbers[i] = slice.charCodeAt(i);
-    }
-    const byteArray = new Uint8Array(byteNumbers);
-    byteArrays.push(byteArray);
-  }
-
-  return new Blob(byteArrays, { type: contentType });
-}
-
-
 export function playBase64Audio(base64Audio, contentType, repetitions = 1, durationInSeconds = 1, repeatIntervalInSeconds = 1) {
   const blob = base64ToBlob(base64Audio, contentType);
   const audioURL = URL.createObjectURL(blob);
@@ -118,6 +100,23 @@ export function base64ToFile (base64String, filename, mimeType)  {
   }
   return new File([ab], filename, { type: mimeType });
 };
+
+export function base64ToBlob(base64, contentType) {
+  const byteCharacters = atob(base64);
+  const byteArrays = [];
+
+  for (let offset = 0; offset < byteCharacters.length; offset += 512) {
+    const slice = byteCharacters.slice(offset, offset + 512);
+    const byteNumbers = new Array(slice.length);
+    for (let i = 0; i < slice.length; i++) {
+      byteNumbers[i] = slice.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    byteArrays.push(byteArray);
+  }
+
+  return new Blob(byteArrays, { type: contentType });
+}
 
 // Ejemplo de uso
 const base64Audio = "TU_BASE64_STRING_AQUÍ"; // Reemplaza esta cadena con tu audio en base64
