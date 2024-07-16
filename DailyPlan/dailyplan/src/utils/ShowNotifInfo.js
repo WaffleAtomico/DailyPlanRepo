@@ -33,15 +33,15 @@ let myPojo = {
   },
 
   setNotif(newHeadText = '', newContent = (<></>)) {
-    if (!this._isShow) { // Si isShow es falso, mostrar notificación
+    if (newHeadText != '' && newContent != (<></>)) { 
       this._isShow = true;
       this._HeadText = newHeadText;
       this._content = newContent;
     //   console.log("True: ", this);
-    } else { // Si isShow es verdadero, ocultar notificación y limpiar variables
+    } else {
       this._isShow = false;
-      this._HeadText = '';
-      this._content = (<></>);
+      this._HeadText = newHeadText;
+      this._content = newContent;
     //   console.log("false: ", this);
     }
     changeCounter++;

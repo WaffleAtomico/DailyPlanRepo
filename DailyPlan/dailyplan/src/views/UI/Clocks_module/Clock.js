@@ -58,7 +58,7 @@ export default function ClockView(props) {
     useEffect(() => {
         getAllUserClocks();
         confirmArchivement(props.id_user);
-        console.log(confirmArchivement)
+        console.log(isCompletedArchivement)
         // console.log(clocksOfUser);
         const interval = setInterval(() => {
             setHoraActual(moment().format('HH:mm:ss'));
@@ -148,7 +148,6 @@ export default function ClockView(props) {
                 });
             }
         // }).catch(err => { console.log(err) })
-
     };
 
     const AddUserClock = () => {

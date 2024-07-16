@@ -16,38 +16,55 @@ const PuntButton = (props) => {
   const [isCompletedArchivement3, setIsCompletedArchivement3] = useState(true);
 
   useEffect(() => {
-    setPuntuality(95);
+    // setPuntuality(95);
     const grant_title_id1 = 0;
     const grant_title_id2 = 1;
     const grant_title_id3 = 2;
-    setIsCompletedArchivement1(confirmArchivement(props.id_user, grant_title_id1));
-    setIsCompletedArchivement2(confirmArchivement(props.id_user, grant_title_id2));
-    setIsCompletedArchivement3(confirmArchivement(props.id_user, grant_title_id3));
+    confirmArchivement(props.id_user, grant_title_id1, 1);
+    confirmArchivement(props.id_user, grant_title_id2, 2);
+    confirmArchivement(props.id_user, grant_title_id3, 3);
+
+    // console.log("Hice la confirmacion antes?");
+
     if (!isCompletedArchivement1 && puntuality > 80) {
+      // console.log("asegurado")
       sendGrantRequest(props.id_user, (grant_title_id1 + 1),
-       "Logro: Asegurado", <TbNumber29Small size={220} />);
+        "Logro: Asegurado", <TbNumber29Small size={220} />);
     }
     if (!isCompletedArchivement2 && puntuality > 90) {
+      // console.log("Plani")
       sendGrantRequest(props.id_user, (grant_title_id2 + 1),
-       "Logro: Planificador", <MdOutlineTimer10Select size={220} />);
+        "Logro: Planificador", <MdOutlineTimer10Select size={220} />);
     }
     if (!isCompletedArchivement3 && puntuality > 95) {
-      sendGrantRequest(props.id_user, (grant_title_id3 + 1), 
-      "Logro: Liebre", <MdOutlineTimer3Select size={220} />);
+      // console.log("Liebre")
+      sendGrantRequest(props.id_user, (grant_title_id3 + 1),
+        "Logro: Liebre", <MdOutlineTimer3Select size={220} />);
     }
-  }, [props.id_user]);
+  }, [puntuality, isCompletedArchivement1, isCompletedArchivement2, isCompletedArchivement3]);
 
-  // useEffect(()=>
-  // {
-  //   setPuntuality(95);
-  // },[props.id_user]);
+  useEffect(() => {
+    setPuntuality(95);
+  }, []);
 
-  const confirmArchivement = (user_id, grant_title_id) => {
+  const confirmArchivement = (user_id, grant_title_id, idArchive) => {
     isCompleted(user_id, grant_title_id).then(response => {
-      console.log("IsCompleted", response);
+      // console.log("IsCompleted "+grant_title_id, response);
       if (response == false) {
-        console.log("Si es falso?", response)
-        return response;
+        // console.log("Si es falso?", response)
+        switch (idArchive) {
+          case 1:
+            setIsCompletedArchivement1(response);
+            break;
+          case 2:
+            setIsCompletedArchivement2(response);
+            break;
+          case 3:
+            setIsCompletedArchivement3(response);
+            break;
+          default:
+            break;
+        }
       }
     }).catch(error => {
       console.error("Error confirming achievement: ", error);
@@ -56,7 +73,8 @@ const PuntButton = (props) => {
 
   const sendGrantRequest = (user_id, grant_title_id, text, icon) => {
     grantArchivement(user_id, grant_title_id).then(res => {
-      console.log(res);
+      // console.log(res);
+      // console.log("Debe de haberse ejecutado la notificacion");
       myPojo.setNotif(text, icon);
     }).catch(error => {
       console.error("Error granting achievement:", error);

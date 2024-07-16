@@ -9,10 +9,10 @@ export const isCompleted = async (user_id, title_id) => {
     // console.log(response.data[title_id]);
     const titleInfo = response.data[title_id];
     if (titleInfo.title_done == 0) {
-      console.log("El título no está completado");
+      // console.log("El título no está completado");
       return false;
     } else {
-      console.log("El título está completado");
+      // console.log("El título está completado");
       return true;
     }
   } catch (err) {
