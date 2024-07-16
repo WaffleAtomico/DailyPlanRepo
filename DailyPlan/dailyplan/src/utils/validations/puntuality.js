@@ -23,7 +23,7 @@ export const addPuntuality = async (puntualityInfo) => {
 // Function to get all punctualities
 export const getPuntuality = async () => {
     try {
-        const response = await axios.get(GET_PUNTUALITIES_URL);
+        const response = await axios.post(GET_PUNTUALITIES_URL);
         return response;
     } catch (err) {
         console.log("Error retrieving punctualities:", err);
@@ -32,9 +32,9 @@ export const getPuntuality = async () => {
 };
 
 // Function to get punctuality by ID
-export const getPuntualityById = async (punt_id) => {
+export const getPuntualityById = async (user_id) => {
     try {
-        const response = await axios.get(`${GET_PUNTUALITY_BY_ID_URL}/${punt_id}`);
+        const response = await axios.post(GET_PUNTUALITY_BY_ID_URL, {user_id});
         return response;
     } catch (err) {
         console.log("Error retrieving punctuality:", err);
@@ -44,8 +44,10 @@ export const getPuntualityById = async (punt_id) => {
 
 // Function to update punctuality
 export const updatePuntuality = async (punt_id, puntualityInfo) => {
+
+    
     try {
-        const response = await axios.put(`${UPDATE_PUNTUALITY_URL}/${punt_id}`, puntualityInfo);
+        const response = await axios.post(UPDATE_PUNTUALITY_URL, {punt_id}, puntualityInfo);
         return response;
     } catch (err) {
         console.log("Error updating punctuality:", err);
@@ -56,7 +58,7 @@ export const updatePuntuality = async (punt_id, puntualityInfo) => {
 // Function to delete punctuality
 export const deletePuntuality = async (punt_id) => {
     try {
-        const response = await axios.delete(`${DELETE_PUNTUALITY_URL}/${punt_id}`);
+        const response = await axios.delete(DELETE_PUNTUALITY_URL, {punt_id});
         return response;
     } catch (err) {
         console.log("Error deleting punctuality:", err);
@@ -129,6 +131,11 @@ export function applyLatePenalty(punctuality, timeDifferenceInMinutes) {
 
 //Method to get the percentage of all the marks
 export const getPercentages = (expectedTimes, actualTimes) => {
+
+    console.log("La info de las marcas;", expectedTimes);
+    console.log("La info de las marcas;", actualTimes);
+    
+
     const differences = expectedTimes.map((expectedTime, index) => 
         calculateDifferenceInSeconds(expectedTime, actualTimes[index])
     );
@@ -151,6 +158,9 @@ export const getPercentages = (expectedTimes, actualTimes) => {
 
 //Method to calculate the difference in second of the expected time and the actual time
 const calculateDifferenceInSeconds = (expectedTime, actualTime) => {
+
+
+    console.log("los tiempos ", actualTime, expectedTime);
     const [expectedHours, expectedMinutes, expectedSeconds] = expectedTime.split(":").map(Number);
     const expectedTotalSeconds = expectedHours * 3600 + expectedMinutes * 60 + expectedSeconds;
     const actualTotalSeconds = Math.floor(actualTime);

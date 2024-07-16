@@ -120,6 +120,7 @@ export function base64ToFile (base64String, filename, mimeType)  {
   }
   return new File([ab], filename, { type: mimeType });
 };
+/*
 function base64ToBlob(base64, contentType) {
   const byteCharacters = atob(base64);
   const byteArrays = [];
@@ -136,8 +137,9 @@ function base64ToBlob(base64, contentType) {
 
   return new Blob(byteArrays, { type: contentType });
 }
+*/
 
-
+/*
 export function playBase64Audio(base64Audio, contentType, repetitions = 1, durationInSeconds = 1, repeatIntervalInSeconds = 1) {
   const blob = base64ToBlob(base64Audio, contentType);
   const audioURL = URL.createObjectURL(blob);
@@ -165,6 +167,7 @@ export function playBase64Audio(base64Audio, contentType, repetitions = 1, durat
 
   playAudio();
 }
+*/
 
 // Ejemplo de uso
 const base64Audio = "TU_BASE64_STRING_AQUÍ"; // Reemplaza esta cadena con tu audio en base64

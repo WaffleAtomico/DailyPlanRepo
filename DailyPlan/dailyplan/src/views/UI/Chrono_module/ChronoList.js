@@ -16,7 +16,7 @@ const ChronoList = ({ chronos, handleDeleteChrono }) => {
                     <tr>
                         <th>Cronometro</th>
                         <th>Tiempo</th>
-                        <th>Promedio</th>
+                       
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -25,7 +25,7 @@ const ChronoList = ({ chronos, handleDeleteChrono }) => {
                         <tr key={chrono.chrono_id}>
                             <td>{chrono.chrono_name}</td>
                             <td>{`${chrono.chrono_hour}:${chrono.chrono_min}:${chrono.chrono_sec}`}</td>
-                            <td>{chrono.average}</td>
+               
                             <td>
                                 <Button variant="danger" onClick={() => handleDeleteChrono(chrono.chrono_id)}>Eliminar</Button>
                             </td>
