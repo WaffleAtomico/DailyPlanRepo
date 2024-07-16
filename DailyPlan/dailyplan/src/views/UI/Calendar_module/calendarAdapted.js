@@ -14,9 +14,11 @@ export default function Calendar_Adapted() {
   const [view, setView] = useState('year'); // Inicializa la vista en "year"
   const [date, setDate] = useState(new Date());
   const [visible, setVisibilty] = useState(false);
+  const [hour, setHour] = useState(0);
+  const [selectDate, setSelectDate] = useState("2024-01-01");
 
 
-  console.log(view);
+  // console.log(view);
   
 
   const renderView = () => {
@@ -24,18 +26,27 @@ export default function Calendar_Adapted() {
       case 'year':
         return <YearView date={date} setDate={setDate} setView={setView}/>;
       case 'month':
-        return (
-          <MonthView date={date} setDate={setDate} setView={setView} />
-          
-        );
+        return <MonthView 
+                date={date} 
+                setDate={setDate} 
+                setView={setView}
+                />;
       case 'week':
-        return <WeekView date={date} setDate={setDate} showform={()=>setVisibilty(true)} />;
+        return <WeekView 
+                date={date}
+                setDate={setDate}
+                showform={()=>setVisibilty(true)}
+                setHour={setHour}
+                setSelectDate={setSelectDate}
+                />;
       default:
-        return <YearView date={date} setDate={setDate} setView={setView}/>;
+        return <YearView 
+                date={date} 
+                setDate={setDate} 
+                setView={setView}
+                />;
     }
   };
-
-
 
   return (
 
@@ -50,7 +61,11 @@ export default function Calendar_Adapted() {
       </div>
   {visible && (
     
-      <ReminderFormView showform = {()=>setVisibilty(false)} />
+      <ReminderFormView 
+        showform = {()=>setVisibilty(false)}
+        SelectHour={hour}
+        SelectDate={selectDate}
+       />
     )} 
     </div>
   );

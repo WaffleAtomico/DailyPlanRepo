@@ -31,7 +31,7 @@ export default function Archivement_view(props) {
         10: { description: "Completa todas tus actividades a tiempo teniendo activa la preparación", image: <MdOutlineTimelapse size={sizeicon} /> },
         11: { description: "No dejes que baje tu puntualidad por una semana", image: <BsCalendarWeek size={sizeicon} /> },
         12: { description: "Crea un recordatorio compartido e invita otros usuarios", image: <MdDomainVerification size={sizeicon} /> },
-        13: { description: "Cambia tu titulo des configuración", image: <GoGear size={sizeicon} /> },
+        13: { description: "Cambia tu titulo desde configuración", image: <GoGear size={sizeicon} /> },
         14: { description: "Agrega un nuevo reloj", image: <TbClockCheck size={sizeicon} /> },
         15: { description: "Guarda un cronómetro con al menos 5 marcas de tiempo", image: <BsClockHistory size={sizeicon} /> },
         16: { description: "Obten todos los logros", image: <FaHourglassStart size={sizeicon} /> },
@@ -88,22 +88,22 @@ export default function Archivement_view(props) {
         getUserArchivement(props.user_id);
     }, [props.user_id]);
 
-    useEffect(() => {
-        if (titlesfromuser.length > 0) {
-            console.log("Titles from user", titlesfromuser[0].title_id);
-            console.log("Titles from user", titlesfromuser[0].title_name);
-            console.log("Titles from user", titlesfromuser[0].title_done);
-        }
-    }, [titlesfromuser]);
+    // useEffect(() => {
+    //     if (titlesfromuser.length > 0) {
+    //         console.log("Titles from user", titlesfromuser[0].title_id);
+    //         console.log("Titles from user", titlesfromuser[0].title_name);
+    //         console.log("Titles from user", titlesfromuser[0].title_done);
+    //     }
+    // }, [titlesfromuser]);
 
     const checkAllAchievementsDone = (achievements) => {
         return achievements.every(achievement => achievement.title_done);
     };
 
     const grant16Archivement = (user_id) => {
-        grantArchivement(user_id, 16).then(response =>{}).catch(error => {
-                console.error("Error granting achievement:", error);
-            });
+        grantArchivement(user_id, 16).then(response => { }).catch(error => {
+            console.error("Error granting achievement:", error);
+        });
         // try {
         //     await grantArchivement(user_id, 16);
         // } catch (error) {

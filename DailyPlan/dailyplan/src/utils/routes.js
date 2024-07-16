@@ -14,14 +14,22 @@ const UPDATE_ALARM_URL = `${urlreference}/updatte-alarm`;
 const DELETE_ALARM_URL = `${urlreference}/delete-alarm`;
 const ALARM_NAME_EXISTS_URL = `${urlreference}/alarms-existsname`;
 const USER_ALARM_LIMIT_REACHED_URL = `${urlreference}/alarms-limit-user`;
+
 const ADD_USER_BLOCKED_URL = `${urlreference}/bloqusr`;
 const DELETE_USER_BLOCKED_URL = `${urlreference}/unbloq`;
 const GET_USERS_BLOCKED_URL = `${urlreference}/getusrbloq`;
+
 const ADD_CLOCK_URL = `${urlreference}/clock-id`;
 const GET_CLOCK_URL = `${urlreference}/clock-byid`;
 const DELETE_CLOCK_URL = `${urlreference}/clock-iddel`;
 const CLOCK_EXISTS_ZONE_URL = `${urlreference}/clock-existzone`;
+
 const CONN_URL = `${urlreference}/conn`;
+
+const CREATE_ALL_TITLES = `${urlreference}//title-addAll`;
+const GET_ALL_TITLES = `${urlreference}/title-getAll`;
+const UPDATE_ONE_TITLE = `${urlreference}/title-updateone`;
+
 const CREATE_USER_URL = `${urlreference}/users`;
 const USER_EXISTS_URL = `${urlreference}/users-exist`;
 const USER_EXISTS_MAIL_URL = `${urlreference}/users-existmail`;
@@ -29,7 +37,9 @@ const USER_EXISTS_NAME_URL = `${urlreference}/users-existname`;
 const USER_EXISTS_NUMBER_URL = `${urlreference}/users-existnumber`;
 const GET_USER_INFO_URL = `${urlreference}/get-userinfo`;
 const GET_USER_BY_MAIL_URL = `${urlreference}/user-bymail`;
+
 const SEND_MAIL_URL = `${urlreference}/send`;
+
 const ADD_TIMER_URL = `${urlreference}/add-timer`;
 const GET_TIMERS_FOR_USER_URL = `${urlreference}/get-user-timers`;
 const GET_TIMER_BY_ID_URL = `${urlreference}/get-timer`;
@@ -40,21 +50,6 @@ const GET_CHRONOMETERS_FOR_USER_URL = `${urlreference}/get-user-chronometers`;
 const GET_CHRONOMETER_BY_ID_URL = `${urlreference}/get-chronometer`;
 const UPDATE_CHRONOMETER_URL = `${urlreference}/update-chronometer`;
 const DELETE_CHRONOMETER_URL = `${urlreference}/delete-chronometer`;
-
-const ADD_REMINDER_URL = `${urlreference}/add-reminder`;
-const GET_REMINDERS_FOR_USER_URL = `${urlreference}/get-user-reminders`;
-const GET_REMINDER_BY_ID_URL = `${urlreference}/get-reminder`;
-const UPDATE_REMINDER_URL = `${urlreference}/update-reminder`;
-const DELETE_REMINDER_URL = `${urlreference}/delete-reminder`;
-const GET_REMINDERS_BY_MONTH_URL = `${urlreference}/get-reminders-by-month`;
-const GET_REMINDERS_BY_WEEK_URL = `${urlreference}/get-reminders-by-week`;
-
-const ADD_REMINDERSHARE_URL = `${urlreference}/add-remindershare`;
-const GET_REMINDERSHARES_FOR_USER_URL = `${urlreference}/get-user-remindershares`;
-const GET_REMINDERSHARE_BY_ID_URL = `${urlreference}/get-remindershare`;
-const UPDATE_REMINDERSHARE_URL = `${urlreference}/update-remindershare`;
-const DELETE_REMINDERSHARE_URL = `${urlreference}/delete-remindershare`;
-
 
 const ADD_ALARMSHARE_URL = `${urlreference}/add-alarmshare`;
 const GET_ALARMSHARES_URL = `${urlreference}/get-alarmshares`;
@@ -224,6 +219,7 @@ export {
     UPDATE_PUNTUALITY_URL,
     DELETE_PUNTUALITY_URL,
     ADD_REMINDER_URL,
+
     GET_REMINDERS_FOR_USER_URL,
     GET_REMINDER_BY_ID_URL,
     UPDATE_REMINDER_URL,
@@ -262,4 +258,7 @@ export {
     UPDATE_TONE_URL,
     DELETE_TONE_URL,
 
+    CREATE_ALL_TITLES,
+    GET_ALL_TITLES,
+    UPDATE_ONE_TITLE,
 };
