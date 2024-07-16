@@ -16,6 +16,7 @@ import GeneralNotif from "./advices/GeneralNotif";
 
 
 import { timeFormatSec } from "../../utils/timeFormat";
+import { myPojo, changeCounter  } from "../../utils/ShowNotifInfo";
 
 
 import "../../styles/UI/Origin/UI.css";
@@ -25,6 +26,7 @@ import "../../styles/UI/Countdowntimer/countdown.css";
 import { FaUserClock } from "react-icons/fa6";
 import { getUsrName } from "../../utils/validations/user";
 import { AuthContext } from "../../services/AuthContext";
+
 
 //-------------
 //import CRUD function
@@ -79,15 +81,29 @@ export default function OriginPage() {
   };
 
   /*-------------------- Notifications --------------------*/
+
   const [mostrarNotificacion, setMostrarNotificacion] = useState(false);
+  const [counter, setCounter] = useState(changeCounter);
 
-  const handleShowNotificacion = () => {
-    setMostrarNotificacion(true);
-  };
+  useEffect(() => {
+    // console.log("Usestate "+mostrarNotificacion);
+    // console.log("Pojo ", myPojo._isShow);
+    if (myPojo._isShow === true) {
+      setMostrarNotificacion(true);
+      // console.log("Se muestra");
+    } else if(myPojo._isShow === false) {
+      setMostrarNotificacion(false);
+      // console.log("No se muestra");
+    }
+  }, [counter]);
+  
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCounter(changeCounter);
+    }, 100); // Ajusta el intervalo según sea necesario
 
-  const handleCloseNotificacion = () => {
-    setMostrarNotificacion(false);
-  };
+    return () => clearInterval(interval);
+  }, []);
 
   /*  --------------------CHRONO IN ALL-------------------- */
 
@@ -134,22 +150,17 @@ export default function OriginPage() {
     setElapsedTime(0);
   }
 
-
-
   const GoToProfileModule = () => {
-
-
-
     navigate(`/dailyplanconfig/${id}`);
   };
 
   const secondsPassed = elapsedTime / 1000;
   const chronoTime = timeFormatSec(secondsPassed);
-  
+
   return (
     <div className="main-container">
       <div className="UI-header">
-        <PuntButton />
+        <PuntButton  id_user={id} />
         {/* <button className="left-button">
           Puntualidad
           </button> */}
@@ -195,7 +206,7 @@ export default function OriginPage() {
           <Chrono
             id_user={id}
             chronoTimeToChrono={chronoTime}
-            chronoTimeSecond = {secondsPassed}
+            chronoTimeSecond={secondsPassed}
             isRunningChrono={isRunning}
             handleStaStoChrono={handleStaSto}
             handleResetChrono={handleReset}
@@ -209,7 +220,7 @@ export default function OriginPage() {
         {selectedOption !== 2 && secondsPassed > 0 && (
           <ChronoIndicator
             chronoTimeToChrono={chronoTime}
-            chronoTimeSecond = {secondsPassed}
+            chronoTimeSecond={secondsPassed}
             handleStaStoToChrono={handleStaSto}
           />
         )}
@@ -219,11 +230,19 @@ export default function OriginPage() {
           onClose={handleCloseNotificacion}
           componente={<div>Componente adicional</div>}
         /> */}
+
+      {/* <GeneralNotif
+          mensaje={myPojo.HeadText}
+          // onClose={handleCloseNotificacion}
+          componente={myPojo.content}
+        /> */}
+
       {mostrarNotificacion && (
+        // console.log("IsShow en origin: ", myPojo.isShow),
         <GeneralNotif
-          mensaje="Este es el mensaje de la notificación"
-          onClose={handleCloseNotificacion}
-          componente={<div>Componente adicional</div>}
+          mensaje={myPojo.HeadText}
+          // onClose={handleCloseNotificacion}
+          componente={myPojo.content}
         />
       )}
     </div>

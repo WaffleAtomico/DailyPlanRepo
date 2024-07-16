@@ -25,7 +25,7 @@ const CLOCK_EXISTS_ZONE_URL = '/clock-existzone';
 
 const ADD_ALL_TITLES_URL = '/title-addAll';
 const GET_USER_TITLES_URL = '/title-getAll';
-const UPDATE_TITLE_STATUS_URL = '/title-updateOne';
+const UPDATE_TITLE_STATUS_URL = '/title-updateone';
 
 const ADD_USER_BLOCKED_URL = '/bloqusr';
 const DELETE_USER_BLOCKED_URL = '/unbloq';
