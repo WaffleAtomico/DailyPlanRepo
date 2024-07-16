@@ -38,7 +38,6 @@ export default function Chrono_view(props) {
         const grant_title_id = 15;
         console.log("Is completed:? ", isCompletedArchivement);
         if (!isCompletedArchivement) { //si no esta completado hay que entregarlo
-
             grantArchivement(user_id, grant_title_id).then(res => {
                 console.log(res);
                 myPojo.setNotif("Logro: RELEVOS", <BsClockHistory size={220} />);

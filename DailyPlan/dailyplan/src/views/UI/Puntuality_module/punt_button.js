@@ -29,17 +29,17 @@ const PuntButton = (props) => {
     if (!isCompletedArchivement1 && puntuality > 80) {
       // console.log("asegurado")
       sendGrantRequest(props.id_user, (grant_title_id1 + 1),
-        "Logro: Asegurado", <TbNumber29Small size={220} />);
+        "Logro: ASEGURADO", <TbNumber29Small size={220} />);
     }
     if (!isCompletedArchivement2 && puntuality > 90) {
       // console.log("Plani")
       sendGrantRequest(props.id_user, (grant_title_id2 + 1),
-        "Logro: Planificador", <MdOutlineTimer10Select size={220} />);
+        "Logro: PLANIFICADOR", <MdOutlineTimer10Select size={220} />);
     }
     if (!isCompletedArchivement3 && puntuality > 95) {
       // console.log("Liebre")
       sendGrantRequest(props.id_user, (grant_title_id3 + 1),
-        "Logro: Liebre", <MdOutlineTimer3Select size={220} />);
+        "Logro: LIEBRE", <MdOutlineTimer3Select size={220} />);
     }
   }, [puntuality, isCompletedArchivement1, isCompletedArchivement2, isCompletedArchivement3]);
 
