@@ -101,6 +101,10 @@ export function base64ToFile (base64String, filename, mimeType)  {
   return new File([ab], filename, { type: mimeType });
 };
 
+export function base64ToBlob()
+{
+  
+}
 // Ejemplo de uso
 const base64Audio = "TU_BASE64_STRING_AQUÍ"; // Reemplaza esta cadena con tu audio en base64
 const contentType = "audio/mp3"; // Reemplaza esto con el tipo de contenido adecuado para tu audio
