@@ -73,8 +73,8 @@ export default function InvitationView(props) {
                         name="Invitaciones pendientes"
                         color="#EE7D02"
                         Icon={FaUserFriends}
-                        content={data.filter(invitation => invitation.state !== 1
-                            && invitation.user_id_owner != parseInt(props.user_id, 10))}
+                        content={data ? data.filter(invitation => invitation.state !== 1
+                            && invitation.user_id_owner != parseInt(props.user_id, 10)) : []}
                         flag={1}
                         grant4Archivement ={grant4Archivement}
                     />
@@ -84,8 +84,8 @@ export default function InvitationView(props) {
                         name="Invitaciones activas"
                         color="#00B85A"
                         Icon={FaUserCheck}
-                        content={data.filter(invitation => invitation.state === 1
-                            && invitation.user_id_owner != parseInt(props.user_id, 10))}
+                        content={data ? data.filter(invitation => invitation.state === 1
+                            && invitation.user_id_owner != parseInt(props.user_id, 10)) : []}
                         flag={2}
                     />
                 </Col>
