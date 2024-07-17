@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import nodemailer from "nodemailer";
-
+import bodyParser from "body-parser";
 import * as urls from './routes.js'
 
 import {
@@ -211,6 +211,16 @@ const app = express();
 
 app.use(express.json());
 app.use(cors());
+
+
+//---------------------------Setting-------------------------//
+
+// Aumenta el límite de tamaño de la carga útil
+
+
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
+
 
 app.get(urls.ROOT_URL, (req, res) => {
   res.json("Hello this is the backend");
@@ -457,6 +467,9 @@ app.post(urls.GET_TONES_URL, getTones);
 app.post(urls.GET_TONE_BY_ID_URL, getToneById);
 app.post(urls.UPDATE_TONE_URL, updateTone);
 app.post(urls.DELETE_TONE_URL, deleteTone);
+
+
+
 
 /*-------------------------------spotify------------------------- */
 

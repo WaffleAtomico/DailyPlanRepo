@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
+import { saveUserReminder } from '../../../utils/validations/reminders';
 import '../../../styles/UI/Calendar/Reminder_formCrea.css';
+
 import ObjectiveBlocks from './ObjectivesBlocks';
+import { addTone } from '../../../utils/validations/tone';
+import { saveReminderShare } from '../../../utils/validations/remindershare';
+import { saveObjective } from '../../../utils/validations/objetive';
+import { saveObjectivesBlock } from '../../../utils/validations/objetiveblock';
 
 const ReminderFormView = (props) => {
     const [formData, setFormData] = useState({
@@ -20,6 +26,8 @@ const ReminderFormView = (props) => {
         snooze: '',
         goalList: []
     });
+
+    const [reminder, setReminder] = useState([]);
       
     const [showObjectiveBlocks, setShowObjectiveBlocks] = useState(false);
 
@@ -45,11 +53,23 @@ const ReminderFormView = (props) => {
 
     const handleFileChange = (event) => {
         const { name, files } = event.target;
-        setFormData((prevData) => ({
-            ...prevData,
-            [name]: files[0]
-        }));
+        const file = files[0];
+        
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const base64String = e.target.result.split(',')[1];
+                setFormData((prevData) => ({
+                    ...prevData,
+                    [name]: base64String,
+                    [`${name}Name`]: file.name, // Store the file name
+                    [`${name}Type`]: file.type // Store the file type
+                }));
+            };
+            reader.readAsDataURL(file);
+        }
     };
+    
 
     const handleObjectiveBlocksChange = (objectiveBlocks) => {
         setFormData((prevData) => ({
@@ -57,12 +77,113 @@ const ReminderFormView = (props) => {
             goalList: objectiveBlocks
         }));
     };
-
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log('Datos del formulario:', formData);
-        console.log("goal list", formData.goalList)
+    
+        //--------------------------------------
+        // Almacenar el tono en la base de datos
+        //--------------------------------------
+    /*
+        const tone = {
+            tone_name: formData.alarmToneName,
+            tone_location: formData.alarmTone,
+            tone_type: formData.alarmToneType // If you need to store the type as well
+        };
+    
+        addTone(tone).then(response => {
+            console.log('Tone added successfully:', response.data);
+        }).catch(error => {
+            console.log('Error adding tone:', error);
+        });
+    */
 
+        //--------------------------------------
+        //Almacenar recordatorio
+
+        
+        //tiempo
+        const {hours,  minutes} = convertTimeString(formData.time);
+
+        const reminder = {
+
+            reminder_name: formData.name,
+            reminder_date: formData.date,
+            reminder_hour: hours,
+            reminder_min: minutes,
+            reminder_tone_duration_sec: formData.duration,
+            reminder_advance_min: formData.reminderAdvance,
+            reminder_img: formData.image,
+            reminder_desc: formData.description,
+            reminder_days_suspended: formData.snooze,
+            reminder_share: 0,
+        
+            
+        }
+
+
+    // Save the reminder
+saveUserReminder(reminder).then(
+    response => {
+      // Obtain the reminder_id
+      const { reminder_id } = response.data;
+
+        //Save the reminder share. for this case, the first time is save with the user creator
+        const remindershare = {
+            rs_user_id_target: props.user_id,
+            reminder_id: reminder_id
+        }
+
+        
+    saveReminderShare(remindershare).then(response => {console.log("se guardo el compartido". response.data)})
+    .catch(error => {console.log("Acaba de ocurrir un problema:", error)})
+  
+      // Iterate through the goalList to save each goal
+      formData.goalList.forEach(goal => {
+
+   // Create the object for objective block
+   const objectiveBlockData = {
+    objblo_id: goal.blockId,
+    objblo_name: goal.blockName,
+    reminder_id: reminder_id,
+  };
+
+  // Save the objective block
+  saveObjectivesBlock(objectiveBlockData).then(response => {
+    console.log("Objective block saved:", response.data);
+
+
+    const goalData = {
+         
+        obj_name: goal.name,
+        obj_duration_min: goal.durationMin,
+        obj_durationreal_min: goal.durationRealMin,
+        obj_check: goal.check,
+        objblo_id: response.data.objblo_id,
+        id_user: props.id_user,
+      };
+
+      // Save the objective
+      saveObjective(goalData).then(response => {
+        console.log("Objective saved:", response.data);
+      }).catch(error => {
+        console.error("Error saving objective", error);
+      });
+
+  }).catch(error => {
+    console.error("Error saving objective block", error);
+  });
+
+       
+     
+      });
+    }
+  ).catch(error => {
+    console.error("Hubo un error", error);
+  });
+
+        // Rest of your form submission logic
+        console.log('Datos del formulario:', formData);
+        console.log("goal list", formData.goalList);
         /*
         Campos dependientes de otras tablas
         Repdaysid  se obtiene de distintos dias con un mismo id, pero el recordatorio obtiene ese id antes
@@ -73,6 +194,14 @@ const ReminderFormView = (props) => {
         */
 
     };
+
+
+
+    //Utils
+    function convertTimeString(timeString) {
+        const [minutes, seconds] = timeString.split(':').map(Number);
+        return { minutes, seconds };
+      }
 
     return (
         <div className="reminder-view-container">
@@ -198,7 +327,7 @@ const ReminderFormView = (props) => {
                                     <Form.Group controlId="formReminderAdvance">
                                         <Form.Label>Antelación de Recordatorio</Form.Label>
                                         <Form.Control
-                                            type="time"
+                                            type="number"
                                             name="reminderAdvance"
                                             value={formData.reminderAdvance}
                                             onChange={handleChange}
@@ -275,7 +404,7 @@ const ReminderFormView = (props) => {
                         </Form>
                     </Container>
                     <div className="form-actions">
-                        <Button type="submit" className="btn btn-primary">
+                        <Button type="submit" className="btn btn-primary" >
                             Guardar
                         </Button>
                         <Button type="button" className="btn btn-secondary">
