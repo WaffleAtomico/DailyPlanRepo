@@ -149,15 +149,11 @@ export default function CountdownTimer(props) {
     reader.onloadend = () => {
       const base64String = reader.result.split(',')[1];
       const blobFile = base64ToBlob(base64String, 'audio/mp3');
-      
-
       // Create tone object
       const tone = {
         tone_name: getFileName(),
         tone_location: blobFile
       };
-
-
       addTone(tone).then(response => {
         const tone_id = response.tone_id;
         console.log(tone_id);
@@ -183,7 +179,6 @@ export default function CountdownTimer(props) {
         console.log(error);
       });
     };
-
     if (soundFile) {
       reader.readAsDataURL(soundFile);
     }
@@ -200,8 +195,6 @@ export default function CountdownTimer(props) {
         console.log("Fallo");
       });
       showTimerTables();
-
-
   };
 
   const handleRowClick = (timer) => {
@@ -218,7 +211,6 @@ export default function CountdownTimer(props) {
       }
     setMinutes(timer.timer_min);
     setSeconds(timer.timer_sec);
- 
     setSoundFile( timer.tone_location);
   };
 
