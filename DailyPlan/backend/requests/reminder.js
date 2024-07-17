@@ -46,8 +46,11 @@ const getReminders = (req, res) => {
 };
 
 const getRemindersByMonth = (req, res) => {
-    const month = req.params.month;  // Espera 'YYYY-MM'
-    const userId = req.params.userId;  // Espera el ID del usuario
+
+
+    console.log("Se está pidiendo el mes por medio de: ", req.body);
+    const month = req.body.month;  // Espera 'YYYY-MM'
+    const userId = req.body.user_id;  // Espera el ID del usuario
     const query = {
         sql: "SELECT `reminder_name`, `reminder_date`, `reminder_hour`, `reminder_min` FROM `reminders` WHERE `user_id` = ? AND `reminder_date` BETWEEN ? AND ? ORDER BY `reminder_date`, `reminder_hour`",
         values: [userId, `${month}-01`, `${month}-31`],

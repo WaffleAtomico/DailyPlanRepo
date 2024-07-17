@@ -1,8 +1,6 @@
-// Pomodoro_view.jsx
 import React, { useState, useEffect } from 'react';
 import BreakOverlay from './BreakOverlay';
 import { GiTomato } from "react-icons/gi";
-
 import '../../../styles/UI/Pomodoro/pomodoro.css';
 import { playRingtone } from '../../../utils/sounds';
 import { myPojo } from '../../../utils/ShowNotifInfo';
@@ -15,10 +13,11 @@ const Pomodoro_view = (props) => {
     const [sound, setSound] = useState('');
     const [isBreak, setIsBreak] = useState(false);
     const [isLongBreak, setIsLongBreak] = useState(false);
-    const [timeRemaining, setTimeRemaining] = useState(workTime * 60);
+    const [timeRemaining, setTimeRemaining] = useState(0);
     const [completedCycles, setCompletedCycles] = useState(0);
     const [soundFile, setSoundFile] = useState(null);
     const [isCompletedArchivement, setIsCompletedArchivement] = useState(true);
+    const [isTimerRunning, setIsTimerRunning] = useState(false);
 
     useEffect(() => {
         confirmArchivement(props.id_user);
@@ -36,6 +35,7 @@ const Pomodoro_view = (props) => {
             console.error("Error confirming achievement: ", error);
         });
     }
+
     const grant8Archivement = (user_id) => {
         const grant_title_id = 8;
         console.log("Is completed:? ", isCompletedArchivement);
@@ -58,9 +58,9 @@ const Pomodoro_view = (props) => {
 
     useEffect(() => {
         let timer;
-        if (timeRemaining > 0) {
+        if (isTimerRunning && timeRemaining > 0) {
             timer = setInterval(() => setTimeRemaining(timeRemaining - 1), 1000);
-        } else {
+        } else if (timeRemaining === 0 && isTimerRunning) {
             if (isBreak) {
                 setIsBreak(false);
                 setTimeRemaining(workTime * 60);
@@ -73,7 +73,7 @@ const Pomodoro_view = (props) => {
             }
         }
         return () => clearInterval(timer);
-    }, [timeRemaining, isBreak, workTime, shortBreak, longBreak, isLongBreak]);
+    }, [timeRemaining, isBreak, isTimerRunning, workTime, shortBreak, longBreak, isLongBreak]);
 
     const playSound = () => {
         playRingtone();
@@ -110,6 +110,9 @@ const Pomodoro_view = (props) => {
         e.preventDefault();
         setTimeRemaining(workTime * 60);
         setCompletedCycles(0);
+        setIsBreak(false); // Reset break status
+        setIsLongBreak(false); // Reset long break status
+        setIsTimerRunning(true); // Start the timer
     };
 
     return (
