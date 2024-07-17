@@ -82,11 +82,11 @@ const GET_OBJECTIVE_BY_ID_URL = `${urlreference}/get-objective`;
 const UPDATE_OBJECTIVE_URL = `${urlreference}/update-objective`;
 const DELETE_OBJECTIVE_URL = `${urlreference}/delete-objective`;
 
-const ADD_OBJECTIVESBLOCK_URL = `${urlreference}/add-objectivesblock`;
-const GET_OBJECTIVESBLOCKS_URL = `${urlreference}/get-objectivesblocks`;
-const GET_OBJECTIVESBLOCK_BY_ID_URL = `${urlreference}/get-objectivesblock`;
-const UPDATE_OBJECTIVESBLOCK_URL = `${urlreference}/update-objectivesblock`;
-const DELETE_OBJECTIVESBLOCK_URL = `${urlreference}/delete-objectivesblock`;
+const ADD_OBJECTIVES_BLOCK_URL = `${urlreference}/add-objectivesblock`;
+const GET_OBJECTIVES_BLOCKS_URL = `${urlreference}/get-objectivesblocks`;
+const GET_OBJECTIVES_BLOCK_BY_ID_URL = `${urlreference}/get-objectivesblock`;
+const UPDATE_OBJECTIVES_BLOCK_URL = `${urlreference}/update-objectivesblock`;
+const DELETE_OBJECTIVES_BLOCK_URL = `${urlreference}/delete-objectivesblock`;
 
 const ADD_PERMISSION_URL = `${urlreference}/add-permission`;
 const GET_PERMISSIONS_URL = `${urlreference}/get-permissions`;
@@ -215,11 +215,11 @@ export {
     GET_OBJECTIVE_BY_ID_URL,
     UPDATE_OBJECTIVE_URL,
     DELETE_OBJECTIVE_URL,
-    ADD_OBJECTIVESBLOCK_URL,
-    GET_OBJECTIVESBLOCKS_URL,
-    GET_OBJECTIVESBLOCK_BY_ID_URL,
-    UPDATE_OBJECTIVESBLOCK_URL,
-    DELETE_OBJECTIVESBLOCK_URL,
+    ADD_OBJECTIVES_BLOCK_URL,
+    GET_OBJECTIVES_BLOCKS_URL,
+    GET_OBJECTIVES_BLOCK_BY_ID_URL,
+    UPDATE_OBJECTIVES_BLOCK_URL,
+    DELETE_OBJECTIVES_BLOCK_URL,
     ADD_PERMISSION_URL,
     GET_PERMISSIONS_URL,
     GET_PERMISSION_BY_ID_URL,
