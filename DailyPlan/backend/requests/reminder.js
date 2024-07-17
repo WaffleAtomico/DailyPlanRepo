@@ -23,7 +23,7 @@ const addReminder = (req, res) => {
         if (err) {
             return res.json({ message: "Error adding reminder", error: err });
         }
-        return res.json({ message: "Reminder added successfully" });
+        return res.json(data, { message: "Reminder added successfully" });
     });
 };
 

@@ -64,21 +64,24 @@ const getPuntualityById = (req, res) => {
 };
 
 const updatePuntuality = (req, res) => {
+
+    console.log("Se manda a actualizar:", req.body.puntualityInfo);
+
     const query = {
         sql: "UPDATE `puntuality` SET `user_id` = ?, `punt_date` = ?, `punt_value` = ?, `punt_num_rem` = ?, `punt_percent_rem` = ?, `punt_num_alar` = ?, `punt_percent_alar` = ?, `punt_num_timer` = ?, `punt_percent_timer` = ?, `punt_num_chro` = ?, `punt_percent_chro` = ? WHERE `punt_id` = ?",
         values: [
-            req.body.user_id,
-            req.body.punt_date,
-            req.body.punt_value,
-            req.body.punt_num_rem,
-            req.body.punt_percent_rem,
-            req.body.punt_num_alar,
-            req.body.punt_percent_alar,
-            req.body.punt_num_timer,
-            req.body.punt_percent_timer,
-            req.body.punt_num_chro,
-            req.body.punt_percent_chro,
-            req.params.punt_id,
+            req.body.puntualityInfo.user_id,
+            req.body.puntualityInfo.punt_date,
+            req.body.puntualityInfo.punt_value,
+            req.body.puntualityInfo.punt_num_rem,
+            req.body.puntualityInfo.punt_percent_rem,
+            req.body.puntualityInfo.punt_num_alar,
+            req.body.puntualityInfo.punt_percent_alar,
+            req.body.puntualityInfopunt_num_timer,
+            req.body.puntualityInfo.punt_percent_timer,
+            req.body.puntualityInfo.punt_num_chro,
+            req.body.puntualityInfo.punt_percent_chro,
+            req.body.puntualityInfo.punt_id,
         ],
     };
     db.query(query.sql, query.values, (err, data) => {

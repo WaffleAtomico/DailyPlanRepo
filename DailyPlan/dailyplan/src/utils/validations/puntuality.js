@@ -43,11 +43,12 @@ export const getPuntualityById = async (user_id) => {
 };
 
 // Function to update punctuality
-export const updatePuntuality = async (punt_id, puntualityInfo) => {
+export const updatePuntuality = async ( puntualityInfo) => {
 
+    console.log("actualizar lol" ,puntualityInfo);
     
     try {
-        const response = await axios.post(UPDATE_PUNTUALITY_URL, {punt_id}, puntualityInfo);
+        const response = await axios.post(UPDATE_PUNTUALITY_URL, {puntualityInfo});
         return response;
     } catch (err) {
         console.log("Error updating punctuality:", err);
@@ -130,27 +131,40 @@ export function applyLatePenalty(punctuality, timeDifferenceInMinutes) {
 }
 
 //Method to get the percentage of all the marks
+//Method to get the percentage of all the marks
 export const getPercentages = (expectedTimes, actualTimes) => {
+    if (expectedTimes.length !== actualTimes.length) {
+        throw new Error("The length of expectedTimes and actualTimes must be the same.");
+    }
 
-    console.log("La info de las marcas;", expectedTimes);
-    console.log("La info de las marcas;", actualTimes);
-    
+    console.log("La info de las marcas:", expectedTimes);
+    console.log("La info de las marcas:", actualTimes);
 
     const differences = expectedTimes.map((expectedTime, index) => 
         calculateDifferenceInSeconds(expectedTime, actualTimes[index])
     );
 
-    console.log("la diferencia:", differences);
+    console.log("La diferencia:", differences);
 
-    const averageDifference = getAverageDifference(differences);
+    const totalDifference = differences.reduce((sum, difference) => sum + Math.abs(difference), 0);
+    const averageDifference = totalDifference / differences.length;
+
+    if (averageDifference === 0) {
+        console.error("Average difference is zero, cannot calculate percentage.");
+        return 0; // Return 0 if averageDifference is zero
+    }
 
     console.log("El promedio es:", averageDifference);
 
-    const  percentages = differences.map(difference => (Math.abs(difference) / averageDifference) * 100);
+    // Calculate the percentage based on total and average differences
+    const percentage = (totalDifference / averageDifference) * 10; // Adjusted to a more appropriate scale
 
-    return percentages;
+    console.log("percentage final:", percentage);
 
+    return percentage;
 };
+ 
+// Private methods
 
 
 
@@ -159,23 +173,21 @@ export const getPercentages = (expectedTimes, actualTimes) => {
 //-------------------------
 
 
-//Method to calculate the difference in second of the expected time and the actual time
+// Method to calculate the difference in second of the expected time and the actual time
+
 const calculateDifferenceInSeconds = (expectedTime, actualTime) => {
-
-
     console.log("los tiempos ", actualTime, expectedTime);
     const [expectedHours, expectedMinutes, expectedSeconds] = expectedTime.split(":").map(Number);
     const expectedTotalSeconds = expectedHours * 3600 + expectedMinutes * 60 + expectedSeconds;
     const actualTotalSeconds = Math.floor(actualTime);
 
-    console.log("La diferencia es:", actualTotalSeconds - expectedTotalSeconds);
-    return actualTotalSeconds - expectedTotalSeconds;
+    const difference = actualTotalSeconds - expectedTotalSeconds;
+    console.log("La diferencia es:", difference);
+    return difference;
 };
 
-
-//Get the average of all the diferences.
+// Get the average of all the differences.
 const getAverageDifference = (differences) => {
     const totalDifference = differences.reduce((sum, diff) => sum + Math.abs(diff), 0);
     return totalDifference / differences.length;
 };
-

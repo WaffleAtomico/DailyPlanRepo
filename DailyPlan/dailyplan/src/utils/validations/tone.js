@@ -35,11 +35,7 @@ const addTone = async (toneData) => {
     try {
 
         console.log("los datos que se tienen:", toneData)
-        const response = await axios.post(ADD_TONE_URL, toneData, {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        });
+        const response = await axios.post(ADD_TONE_URL, {toneData});
         return response;
     } catch (err) {
         console.log(err);

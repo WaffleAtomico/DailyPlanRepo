@@ -76,6 +76,25 @@ export default function Chrono_view(props) {
         //execute only
     }, []);
 
+
+
+    useEffect(() => {
+
+        getChronometersForUser(props.id_user)
+        .then(response => {
+            if (response.data) {
+                console.log(response.data)
+                setChronos(response.data);
+            } else {
+                // console.error("Unexpected response format:", data);
+            }
+        })
+        .catch(error => {
+            //  console.error("Error fetching the user's chronometers:", error);
+        });
+
+    }, []);
+
     const handleMark = () => {
         const actualtime = props.chronoTimeSecond;
         if (savedmarks.length < timesFromUser.length) {
@@ -108,10 +127,9 @@ export default function Chrono_view(props) {
         }
 
         // Cannot surpass 20 chronometers
-        if (chronos != null && chronos.length >= 20) { //pero en la bd
+       if (chronos != null && chronos.length >= 20) { //pero en la bd
             return;
         }
-
         // Create new object to store
         const chrono = {
             chrono_name: formattedDate,
@@ -143,15 +161,17 @@ export default function Chrono_view(props) {
 
             const punt = puntuality[0];
 
-
+ 
             console.log("Puntualidad antigua", punt.punt_percent_chro);
             if (punt.punt_percent_chro != 0) {
                 const newPunctuality = (punt.punt_percent_chro + getPercentages( timesFromUser, savedmarks,)) / 2;
                 punt.punt_percent_chro = newPunctuality;
             }
 
-            console.log("Nueva puntualidad", punt.punt_percent_chro);
-            updatePuntuality(punt.punt_id, punt);
+                punt.punt_percent_chro = getPercentages( timesFromUser, savedmarks,)
+
+            console.log("Nueva puntualidad", punt.punt_percent_chro  );
+            updatePuntuality( punt);
 
 
         } catch (error) {
