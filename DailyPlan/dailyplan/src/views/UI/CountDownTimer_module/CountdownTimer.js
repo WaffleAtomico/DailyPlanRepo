@@ -1,9 +1,18 @@
 import React, { useState, useEffect } from "react";
 import Timer from "./Timer";
 import '../../../styles/UI/Countdowntimer/countdown.css';
-import { addTimer, getTimersForUser } from "../../../utils/validations/timer";
+import { addTimer, getTimerById, getTimersForUser } from "../../../utils/validations/timer";
 import { base64ToBlob, playBlobAudio } from "../../../utils/sounds";
 import { addTone } from "../../../utils/validations/tone";
+
+const splitBase64 = (base64) => {
+    const chunkSize = 1024 * 1024; // 1 MB
+    const chunks = [];
+    for (let i = 0; i < base64.length; i += chunkSize) {
+        chunks.push(base64.slice(i, i + chunkSize));
+    }
+    return chunks;
+};
 
 export default function CountdownTimer(props) {
   const [hours, setHours] = useState(0);
@@ -114,7 +123,19 @@ export default function CountdownTimer(props) {
   const handleSoundFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
-      setSoundFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64String = reader.result.split(',')[1];
+        console.log(`File name: ${file.name}`);
+        console.log(`File type: ${file.type}`);
+        console.log(`Base64 string: ${base64String}`);
+        setSoundFile({
+          base64: base64String,
+          name: file.name,
+          type: file.type
+        });
+      };
+      reader.readAsDataURL(file);
     }
   };
 
@@ -122,42 +143,38 @@ export default function CountdownTimer(props) {
     return soundFile ? soundFile.name : 'Seleccionar archivo .mp3';
   };
 
-  // Function to show the save form
   const showSaveTimerForm = () => {
     setShowSaveForm(true);
   };
 
-  // Function to hide the save form
   const hideSaveTimerForm = () => {
     setShowSaveForm(false);
   };
 
-  // Function to show the table
   const showTimerTables = () => {
     setShowTableTimer(true);
   };
 
-  // Function to hide the table
   const hideTableTimer = () => {
     setShowTableTimer(false);
   };
 
-  // Function to save the timer to the database
-  const handleSaveTimer = () => {
-    // Convert audio to blob
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      const base64String = reader.result.split(',')[1];
-      const blobFile = base64ToBlob(base64String, 'audio/mp3');
-      // Create tone object
-      const tone = {
-        tone_name: getFileName(),
-        tone_location: blobFile
-      };
-      addTone(tone).then(response => {
-        const tone_id = response.tone_id;
-        console.log(tone_id);
-        const timer = {
+  const handleSaveTimer = async () => {
+    try {
+      let tone_id = null;
+      if (!soundFile) return;
+
+        const formData = {
+          alarmTone: soundFile.base64,
+          alarmToneName: soundFile.name,
+          alarmToneType: soundFile.type
+        };
+         addTone(formData).then(response => {
+
+         const tone_id = response.tone_id;
+
+  
+         const timer = {
           timer_name: timerName,
           timer_hour: hours,
           timer_min: minutes,
@@ -166,53 +183,49 @@ export default function CountdownTimer(props) {
           tone_id: tone_id,
           user_id: parseInt(props.user_id, 10)
         };
+  
+         addTimer(timer).then(response => {});
+        hideSaveTimerForm(); // Hide the form after saving
+        handleLoadTimer(); // Reload timers after saving
 
-        addTimer(timer)
-          .then(response => {
-            console.log(response);
-            hideSaveTimerForm(); // Hide the form after saving
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      }).catch(error => {
-        console.log(error);
-      });
-    };
-    if (soundFile) {
-      reader.readAsDataURL(soundFile);
+        }).catch(error => {console.error("El error:", error)});
+
+
+      
+      
+    
+    } catch (error) {
+      console.log(error);
     }
   };
 
-  // Load the timers that the user has
   const handleLoadTimer = () => {
-
     getTimersForUser(parseInt(props.user_id, 10))
       .then(response => {
-        setTimer(response.data)
+
+        console.log("Los timers:", response.data);
+        setTimer(response.data);
       })
       .catch(error => {
         console.log("Fallo");
       });
-      showTimerTables();
+    showTimerTables();
   };
+
 
   const handleRowClick = (timer) => {
+            const blob = base64ToBlob(timer.tone_location,'audio/mpeg');
+            setSoundFile(blob);
+            
+            // Optionally, play the sound immediately
+            ///playBlobAudio(blob, ringRepetitions, ringDuration, ringDuration);
+     
 
-    console.log(timer);
-
-    if(timer.timer_hour == null)
-    {
-        setHours(0);
-    }
-      else
-      {
-        setHours(timer.timer_hour);
-      }
+    setHours(timer.timer_hour || 0);
     setMinutes(timer.timer_min);
     setSeconds(timer.timer_sec);
-    setSoundFile( timer.tone_location);
-  };
+};
+
 
   return (
     <div className="count-container">
@@ -288,7 +301,7 @@ export default function CountdownTimer(props) {
         <br />
         <button
           className="count-btn count-btn-lg count-temporizadores"
-          onClick={() => handleLoadTimer()}
+          onClick={handleLoadTimer}
         >
           Cargar
         </button>
@@ -342,7 +355,7 @@ export default function CountdownTimer(props) {
                   <td>{timer.timer_min}</td>
                   <td>{timer.timer_sec}</td>
                   <td>{timer.timer_duration}</td>
-                  <td>{timer.tone_id}</td>
+                  <td>{timer.tone_name}</td>
                 </tr>
               ))}
             </tbody>
@@ -351,5 +364,4 @@ export default function CountdownTimer(props) {
       )}
     </div>
   );
-  
 }

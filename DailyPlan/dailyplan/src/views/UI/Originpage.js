@@ -200,8 +200,8 @@ export default function OriginPage() {
       </div>
 
       <div className="UI-background">
-        {selectedOption === 0 && <Calendar />}
-        {selectedOption === 1 && <Alarm />}
+        {selectedOption === 0 && <Calendar user_id={id} />}
+        {selectedOption === 1 && <Alarm user_id={id} />}
         {selectedOption === 2 && (
           <Chrono
             id_user={id}

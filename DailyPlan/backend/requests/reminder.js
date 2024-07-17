@@ -1,32 +1,38 @@
 import { db } from '../config/connection.js';
 
 const addReminder = (req, res) => {
+
+    console.log("EL cuerpo de recordatorio:", req.body);
+    const body = req.body.reminderInfo;
+
     const query = {
-        sql: "INSERT INTO `reminders`(`reminder_name`, `reminder_date`, `reminder_hour`, `reminder_min`, `reminder_active`, `repdays_id`, `reminder_tone_duration_sec`, `reminder_advance_min`, `reminder_img`, `reminder_desc`, `reminder_days_suspended`, `reminder_share`, `reminder_sourse_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+        sql: "INSERT INTO `reminders`(`reminder_name`, `reminder_date`, `reminder_hour`, `reminder_min`, `reminder_active`, `repdays_id`, `reminder_tone_duration_sec`, `reminder_advance_min`, `reminder_img`, `reminder_desc`, `reminder_days_suspended`, `reminder_share`,  `tone_id`,`user_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)",
         values: [
-            req.body.reminder_name,
-            req.body.reminder_date,
-            req.body.reminder_hour,
-            req.body.reminder_min,
-            req.body.reminder_active,
-            req.body.repdays_id,
-            req.body.reminder_tone_duration_sec,
-            req.body.reminder_advance_min,
-            req.body.reminder_img,
-            req.body.reminder_desc,
-            req.body.reminder_days_suspended,
-            req.body.reminder_share,
-            req.body.reminder_sourse_id,
+            body.reminder_name,
+            body.reminder_date,
+            body.reminder_hour,
+            body.reminder_min,
+            body.reminder_active,
+            body.repdays_id,
+            body.reminder_tone_duration_sec,
+            body.reminder_advance_min,
+            body.reminder_img,
+            body.reminder_desc,
+            body.reminder_days_suspended,
+            body.reminder_share,
+           
+            body.tone_id,
+            body.user_id
         ],
     };
-    db.query(query.sql, query.values, (err, data) => {
+
+    db.query(query.sql, query.values, (err, result) => {
         if (err) {
-            return res.json({ message: "Error adding reminder", error: err });
+            return res.status(500).json({ message: "Error adding reminder", error: err });
         }
-        return res.json(data, { message: "Reminder added successfully" });
+        return res.status(200).json({ message: "Reminder added successfully", reminder_id: result.insertId });
     });
 };
-
 const getReminders = (req, res) => {
     const query = {
         sql: "SELECT `reminder_id`, `reminder_name`, `reminder_date`, `reminder_hour`, `reminder_min`, `reminder_active`, `repdays_id`, `reminder_tone_duration_sec`, `reminder_advance_min`, `reminder_img`, `reminder_desc`, `reminder_days_suspended`, `reminder_share`, `reminder_sourse_id` FROM `reminders` WHERE 1",
@@ -40,8 +46,11 @@ const getReminders = (req, res) => {
 };
 
 const getRemindersByMonth = (req, res) => {
-    const month = req.params.month;  // Espera 'YYYY-MM'
-    const userId = req.params.userId;  // Espera el ID del usuario
+
+
+    console.log("Se está pidiendo el mes por medio de: ", req.body);
+    const month = req.body.month;  // Espera 'YYYY-MM'
+    const userId = req.body.user_id;  // Espera el ID del usuario
     const query = {
         sql: "SELECT `reminder_name`, `reminder_date`, `reminder_hour`, `reminder_min` FROM `reminders` WHERE `user_id` = ? AND `reminder_date` BETWEEN ? AND ? ORDER BY `reminder_date`, `reminder_hour`",
         values: [userId, `${month}-01`, `${month}-31`],

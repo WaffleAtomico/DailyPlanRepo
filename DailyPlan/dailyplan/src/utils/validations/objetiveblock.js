@@ -9,8 +9,8 @@ import {
 
 export const saveObjectivesBlock = async (blockInfo) => {
     try {
-        await axios.post(ADD_OBJECTIVES_BLOCK_URL, blockInfo);
-        return true;
+        const response = await  axios.post(ADD_OBJECTIVES_BLOCK_URL, {blockInfo});
+        return response;
     } catch (err) {
         console.error("Error adding objective block:", err);
         return false;

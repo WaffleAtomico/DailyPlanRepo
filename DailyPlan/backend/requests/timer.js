@@ -39,7 +39,8 @@ const getTimersForUser = async (req, res) => {
                 t.timer_name, 
                 t.tone_id, 
                 t.user_id,
-                tones.tone_location 
+                tones.tone_location,
+                tones.tone_name
             FROM 
                 timers t
             INNER JOIN 
