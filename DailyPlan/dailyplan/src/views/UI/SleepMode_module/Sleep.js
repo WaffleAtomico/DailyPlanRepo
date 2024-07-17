@@ -4,6 +4,7 @@ import ReactPlayer from 'react-player';
 import moment from 'moment-timezone/builds/moment-timezone-with-data-10-year-range.js';
 import SleepSurvey from './SleepForm'; // Importa el componente SleepSurvey
 // import SpotifyPlayer from '../../components/alarm/SpoRepro';
+import { myPojo } from '../../../utils/ShowNotifInfo';
 
 import '../../../styles/UI/Sleep/Sleep.css'
 
@@ -16,10 +17,14 @@ export default function SleepAlarm() {
     const [horadiff, setHoradiff] = useState();
     const [mediaLink, setMediaLink] = useState('');
     const [showSurvey, setShowSurvey] = useState(false); // Estado para mostrar la encuesta
+    const [repValue, setRepValue] = useState(1);
 
     const handleMediaSubmit = (e) => {
         e.preventDefault();
         console.log('Media Link:', mediaLink);
+    };
+    const handleRepChange = (e) => {
+        setRepValue(e.target.value);
     };
 
     const calcularDiferenciaHoras = () => {
@@ -31,6 +36,10 @@ export default function SleepAlarm() {
         }
         const horas = Math.floor(diferenciaMilisegundos / 3600000);
         setHoradiff(horas);
+        if(horas >= 10 || horas <= 4)
+        {
+            myPojo.setNotif("¡CUIDADO!",<div style={{fontSize: "larger"}}>Dormir por demasiado tiempo o muy poco puede afectar tu rendimiento</div>)
+        }
         return horas;
     };
 
@@ -43,7 +52,7 @@ export default function SleepAlarm() {
                 } else {
                     setIsPlaying(false);
                     //Debe el sistema de asegurarse que ya contesto la encuesta para poder preguntarle
-                    if (horaActual >= horaDespertar && horaActual+1) {
+                    if (horaActual >= horaDespertar && horaActual + 1) {
                         //asignar que si la del dia ya se contesto, ya no la agregue
                         setShowSurvey(true);
                     }
@@ -73,6 +82,7 @@ export default function SleepAlarm() {
                                 Activar
                             </div>
                             <div className="sleep-input-container">
+                                Hora (24h) de dormir
                                 <div className="sleep-time-input">
                                     <input
                                         className="sleep-input"
@@ -82,6 +92,7 @@ export default function SleepAlarm() {
                                         onChange={(e) => setHoraDormir(e.target.value)}
                                     />
                                 </div>
+                                Hora (24h) de despertar
                                 <div className="sleep-time-input">
                                     <input
                                         className="sleep-input"
@@ -91,7 +102,19 @@ export default function SleepAlarm() {
                                         onChange={(e) => setHoraDespertar(e.target.value)}
                                     />
                                 </div>
+                                Repeticiones de alarma:  {repValue}
+                                <div className="sleep-time-input">
+                                    <input
+                                        className="sleep-input"
+                                        type="range"
+                                        min="1"
+                                        max="10"
+                                        value={repValue}
+                                        onChange={handleRepChange}
+                                    />
+                                </div>
                             </div>
+
                             <div className="sleep-confirmar-button-container">
                                 <button className="sleep-confirm" onClick={() => calcularDiferenciaHoras()}>
                                     Confirmar hora de dormir
