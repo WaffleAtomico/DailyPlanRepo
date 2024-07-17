@@ -16,7 +16,7 @@ const addObjective = (req, res) => {
         if (err) {
             return res.json({ message: "Error adding objective", error: err });
         }
-        return res.json({ message: "Objective added successfully" });
+        return res.json(data,{ message: "Objective added successfully" });
     });
 };
 

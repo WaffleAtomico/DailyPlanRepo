@@ -12,7 +12,7 @@ const addReminderShare = (req, res) => {
         if (err) {
             return res.json({ message: "Error adding reminder share", error: err });
         }
-        return res.json({ message: "Reminder share added successfully" });
+        return res.json(data, { message: "Reminder share added successfully" });
     });
 };
 
