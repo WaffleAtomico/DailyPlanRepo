@@ -84,7 +84,7 @@ const MonthView = ({ date, setDate, setView }) => {
               </tr>
             ))}
           </tbody>
-        </table>s
+        </table>
       </div>
     </div>
   );
