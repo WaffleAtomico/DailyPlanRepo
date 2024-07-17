@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Button, Form, Row, Col } from 'react-bootstrap';
 import '../../../styles/UI/Calendar/ObjectivesBlocks.css';
 
+
+
 const GoalsModule = ({ onClose, onSave }) => {
     const [blocks, setBlocks] = useState([]);
     const [blockColors, setBlockColors] = useState(['#FFA07A', '#FA8072', '#E9967A', '#F08080', '#CD5C5C', '#DC143C', '#B22222']);
