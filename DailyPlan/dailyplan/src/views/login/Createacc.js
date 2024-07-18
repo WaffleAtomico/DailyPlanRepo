@@ -12,6 +12,7 @@ import { IoReturnUpBackSharp } from "react-icons/io5";
 import "../../styles/start/general.css";
 import "../../styles/start/createacc.css";
 import { CREATE_ALL_TITLES } from "../../utils/routes";
+import { saveUserSleepmode } from "../../utils/validations/sleep";
 
 // NOTA: Puedes pasar la informacion necesaria para iniciar sesión cuando la información de crear cuenta es correcta
 // Para que sea mas facil para el usuario acceder a la cuenta que acaba de crear
@@ -85,24 +86,36 @@ testusr3@gmail.com
 
               // Añadir el usuario
               UserAdd(userInfoToSend).then(() => {
-
                 // Verificar si el usuario existe
                 UserExist(validateInfo).then(response => {
                   const user_id = response.data.id;
                   if (user_id >= 0) {
                     console.log(user_id);
-                    axios.post(CREATE_ALL_TITLES, { user_id }).then(response => {
-                      navigate("/login");
-                    }).catch(error => {
-                      console.error(error);
-                    });
+                    const sleep_info = {
+                      sleep_id: user_id,
+                      sleep_starthour: null,
+                      sleep_endhour: null,
+                      sleep_active: 0,
+                      sleep_rep: 1,
+                      sleep_video_url: null,
+                      sleep_rep_stopped: null,
+                      tone_id: null,
+                    }
+                    saveUserSleepmode(sleep_info).then(res => {
+                      if (res) {
+                        axios.post(CREATE_ALL_TITLES, { user_id }).then(response => {
+                          navigate("/login");
+                        }).catch(error => {
+                          console.error(error);
+                        });
+                      }
+                    }).catch(err => { console.log(err) });
                   }
                 }).catch(error => {
                   console.error(error);
                 });
 
                 form.current.reset();
-                // navigate(`/create_acount`);
               }).catch(error => {
                 console.error(error);
               });

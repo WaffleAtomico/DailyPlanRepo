@@ -1,5 +1,5 @@
 import { db } from '../config/connection.js';
-
+//este
 const addSleepmode = (req, res) => {
     const query = {
         sql: "INSERT INTO `sleepmode`(`sleep_id`, `sleep_starthour`, `sleep_endhour`, `sleep_active`, `sleep_rep`, `sleep_video_url`, `sleep_rep_stopped`, `tone_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
@@ -24,7 +24,7 @@ const addSleepmode = (req, res) => {
 
 const getSleepmodes = (req, res) => {
     const query = {
-        sql: "SELECT `sleep_id`, `sleep_starthour`, `sleep_endhour`, `sleep_active`, `sleep_rep`, `sleep_video_url`, `sleep_rep_stopped`, `tone_id` FROM `sleepmode` WHERE 1",
+        sql: "SELECT * FROM `sleepmode`",
     };
     db.query(query.sql, (err, data) => {
         if (err) {
@@ -33,11 +33,11 @@ const getSleepmodes = (req, res) => {
         return res.json(data);
     });
 };
-
+//este
 const getSleepmodeById = (req, res) => {
     const query = {
-        sql: "SELECT `sleep_id`, `sleep_starthour`, `sleep_endhour`, `sleep_active`, `sleep_rep`, `sleep_video_url`, `sleep_rep_stopped`, `tone_id` FROM `sleepmode` WHERE `sleep_id` = ?",
-        values: [req.params.sleep_id],
+        sql: "SELECT * FROM `sleepmode` WHERE `sleep_id` = ?",
+        values: [req.body.sleep_id],
     };
     db.query(query.sql, query.values, (err, data) => {
         if (err) {
@@ -46,8 +46,9 @@ const getSleepmodeById = (req, res) => {
         return res.json(data);
     });
 };
-
+//este
 const updateSleepmode = (req, res) => {
+    console.log("Entre en el back");
     const query = {
         sql: "UPDATE `sleepmode` SET `sleep_starthour` = ?, `sleep_endhour` = ?, `sleep_active` = ?, `sleep_rep` = ?, `sleep_video_url` = ?, `sleep_rep_stopped` = ?, `tone_id` = ? WHERE `sleep_id` = ?",
         values: [
@@ -58,7 +59,7 @@ const updateSleepmode = (req, res) => {
             req.body.sleep_video_url,
             req.body.sleep_rep_stopped,
             req.body.tone_id,
-            req.params.sleep_id,
+            req.body.sleep_id, //id user
         ],
     };
     db.query(query.sql, query.values, (err, data) => {
@@ -72,7 +73,7 @@ const updateSleepmode = (req, res) => {
 const deleteSleepmode = (req, res) => {
     const query = {
         sql: "DELETE FROM `sleepmode` WHERE `sleep_id` = ?",
-        values: [req.params.sleep_id],
+        values: [req.body.sleep_id],
     };
     db.query(query.sql, query.values, (err, data) => {
         if (err) {
