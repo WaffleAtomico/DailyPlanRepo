@@ -29,6 +29,34 @@ export function playRingtone(repetitions = 1, durationInSeconds = 1, repeatInter
   playAudio();
 }
 
+//alarm for sleep
+export function playAlarm(repetitions = 1, durationInSeconds = 3, repeatIntervalInSeconds = 1) {
+  const audio = new Audio(ringtone);
+
+  return new Promise((resolve) => {
+    let currentRepetitions = 0;
+
+    const playAudio = () => {
+      audio.currentTime = 0;
+      audio.play();
+      currentRepetitions++;
+
+      if (currentRepetitions < repetitions) {
+        setTimeout(playAudio, repeatIntervalInSeconds * 1000);
+      } else {
+        resolve();
+      }
+    };
+
+    audio.onended = () => {
+      if (currentRepetitions >= repetitions) {
+        resolve();
+      }
+    };
+
+    playAudio();
+  });
+}
 
 //method to split the string in various chunks
 export function  splitBase64 (base64String, chunkSize = 1000)  {
@@ -67,39 +95,45 @@ export function playBase64Audio(base64Audio, contentType, repetitions = 1, durat
 
   playAudio();
 }
-
 export function playBlobAudio(blob, repetitions = 1, durationInSeconds = 1, repeatIntervalInSeconds = 1) {
   const audioURL = URL.createObjectURL(blob);
   const audio = new Audio(audioURL);
 
-  let currentRepetitions = 0;
+  return new Promise((resolve) => {
+    let currentRepetitions = 0;
 
-  const playAudio = () => {
-    audio.currentTime = 0;
-    audio.play();
-    currentRepetitions++;
+    const playAudio = () => {
+      audio.currentTime = 0;
+      audio.play();
+      currentRepetitions++;
 
-    if (currentRepetitions < repetitions) {
-      setTimeout(playAudio, repeatIntervalInSeconds * 1000);
-    }
-  };
+      if (currentRepetitions < repetitions) {
+        setTimeout(playAudio, repeatIntervalInSeconds * 1000);
+      } else {
+        resolve();
+      }
+    };
 
-  audio.onloadedmetadata = () => {
-    const totalDurationInSeconds = repetitions * durationInSeconds;
-    const totalAudioDurationInSeconds = audio.duration;
+    audio.onloadedmetadata = () => {
+      const totalDurationInSeconds = repetitions * durationInSeconds;
+      const totalAudioDurationInSeconds = audio.duration;
 
-    if (totalDurationInSeconds > totalAudioDurationInSeconds) {
-      const requiredRepetitions = totalDurationInSeconds / totalAudioDurationInSeconds;
-      repetitions = Math.ceil(requiredRepetitions);
-    }
+      if (totalDurationInSeconds > totalAudioDurationInSeconds) {
+        const requiredRepetitions = totalDurationInSeconds / totalAudioDurationInSeconds;
+        repetitions = Math.ceil(requiredRepetitions);
+      }
 
-    playAudio();
-  };
+      playAudio();
+    };
 
-  audio.onerror = (e) => {
-    console.error("Error playing audio:", e);
-  };
+    audio.onended = () => {
+      if (currentRepetitions >= repetitions) {
+        resolve();
+      }
+    };
+  });
 }
+
 
 //Function to translate the base64 to a file
 export function base64ToFile (base64String, filename, mimeType)  {

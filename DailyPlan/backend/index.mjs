@@ -182,6 +182,7 @@ import {
   addSleepmode,
   getSleepmodes,
   getSleepmodeById,
+  updateSleepRepStopped,
   updateSleepmode,
   deleteSleepmode
 } from './requests/sleepmode.js';
@@ -452,6 +453,7 @@ app.post(urls.DELETE_SCHEDULE_URL, deleteSchedule);
 app.post(urls.ADD_SLEEP_MODE_URL, addSleepmode);
 app.post(urls.GET_SLEEP_MODES_URL, getSleepmodes);
 app.post(urls.GET_SLEEP_MODE_BY_ID_URL, getSleepmodeById);
+app.post(urls.UPDATE_SLEEP_MODE_REP_URL, updateSleepRepStopped);
 app.post(urls.UPDATE_SLEEP_MODE_URL, updateSleepmode);
 app.post(urls.DELETE_SLEEP_MODE_URL, deleteSleepmode);
 

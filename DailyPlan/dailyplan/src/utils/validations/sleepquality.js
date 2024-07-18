@@ -11,8 +11,8 @@ import {
 // quality_good, quality_medium, quiality_bad, quality_date, sleep_id
 export const saveSleepQuality = async (sleepQualityInfo) => {
     try {
-        console.log(sleepQualityInfo);
-        await axios.post(ADD_SLEEP_QUALITY_URL, sleepQualityInfo);
+        console.log("la esencia:",sleepQualityInfo);
+        await axios.post(ADD_SLEEP_QUALITY_URL, {sleepQualityInfo});
         return true;
     } catch (err) {
         console.log(err);
@@ -20,15 +20,14 @@ export const saveSleepQuality = async (sleepQualityInfo) => {
 };
 
 // Recibe un objeto con la propiedad quality_id
-export const getSleepQualityById = async (quality_id) => {
+export const getSleepQualityById = async ({ quality_id, current_date }) => {
     try {
-        const response = await axios.post(GET_SLEEP_QUALITY_BY_ID_URL, { quality_id,  });
+        const response = await axios.post(GET_SLEEP_QUALITY_BY_ID_URL, { quality_id, current_date });
         return response;
     } catch (err) {
         console.log(err);
     }
 };
-
 // Recibe un objeto con las propiedades startDate, endDate, userId
 export const getSleepQualitiesByDateRange = async (dateRangeInfo) => {
     try {

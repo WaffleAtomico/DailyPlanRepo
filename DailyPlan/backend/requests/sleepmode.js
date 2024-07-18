@@ -1,6 +1,9 @@
 import { db } from '../config/connection.js';
 //este
 const addSleepmode = (req, res) => {
+
+    console.log("Se está gurdando la verdadera calidad", req.body);
+
     const query = {
         sql: "INSERT INTO `sleepmode`(`sleep_id`, `sleep_starthour`, `sleep_endhour`, `sleep_active`, `sleep_rep`, `sleep_video_url`, `sleep_rep_stopped`, `tone_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
         values: [
@@ -36,7 +39,12 @@ const getSleepmodes = (req, res) => {
 //este
 const getSleepmodeById = (req, res) => {
     const query = {
-        sql: "SELECT * FROM `sleepmode` WHERE `sleep_id` = ?",
+        sql: `
+            SELECT sm.*, t.tone_location 
+            FROM sleepmode sm
+            LEFT JOIN tones t ON sm.tone_id = t.tone_id
+            WHERE sm.sleep_id = ?
+        `,
         values: [req.body.sleep_id],
     };
     db.query(query.sql, query.values, (err, data) => {
@@ -46,6 +54,7 @@ const getSleepmodeById = (req, res) => {
         return res.json(data);
     });
 };
+
 //este
 const updateSleepmode = (req, res) => {
     console.log("Entre en el back");
@@ -61,6 +70,22 @@ const updateSleepmode = (req, res) => {
             req.body.tone_id,
             req.body.sleep_id, //id user
         ],
+    };
+    db.query(query.sql, query.values, (err, data) => {
+        if (err) {
+            return res.json({ message: "Error updating sleep mode", error: err });
+        }
+        return res.json({ message: "Sleep mode updated successfully" });
+    });
+};
+
+const updateSleepRepStopped = (req, res) => {
+
+
+    console.log("Se mando a actualizar las repeticiones", req.body);
+    const query = {
+        sql: "UPDATE `sleepmode` SET `sleep_rep_stopped` = ? WHERE `sleep_id` = ?",
+        values: [req.body.sleep_rep_stopped, req.body.sleep_id],
     };
     db.query(query.sql, query.values, (err, data) => {
         if (err) {
@@ -88,5 +113,6 @@ export {
     getSleepmodes,
     getSleepmodeById,
     updateSleepmode,
-    deleteSleepmode
+    deleteSleepmode,
+    updateSleepRepStopped
 };

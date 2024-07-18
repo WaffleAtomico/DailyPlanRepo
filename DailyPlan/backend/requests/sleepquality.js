@@ -1,19 +1,27 @@
 import { db } from '../config/connection.js';
 //este
 const addSleepQuality = (req, res) => {
+
+    const body = req.body.sleepQualityInfo;
+    
+    console.log("la verdadera esencia", body);
     const query = {
-        sql: "INSERT INTO `sleepquality`(`quality_good`, `quality_medium`, `quiality_bad`, `sleep_id`) VALUES (?, ?, ?, ?, ?)",
+        sql: "INSERT INTO `sleepquality`(`quality_good`, `quality_medium`, `quiality_bad`, `quality_date`,  `sleep_id`) VALUES (?, ?, ?, ?, ?)",
         values: [
-            req.body.quality_good,
-            req.body.quality_medium,
-            req.body.quiality_bad,
-            req.body.sleep_id,
+            body.quality_good,
+            body.quality_medium,
+            body.quiality_bad,
+            body.quality_date,
+            body.sleep_id,
         ],
     };
     db.query(query.sql, query.values, (err, data) => {
         if (err) {
+
+            console.log("todo mal");
             return res.json({ message: "Error adding sleep quality", error: err });
         }
+        console.log("todo bien");
         return res.json({ message: "Sleep quality added successfully" });
     });
 };
@@ -29,11 +37,12 @@ const getSleepQualities = (req, res) => {
         return res.json(data);
     });
 };
-//este
+
 const getSleepQualityById = (req, res) => {
+    console.log("sleep quality by id", req.body);
     const query = {
-        sql: "SELECT * FROM `sleepquality` WHERE `sleep_id` = ? AND `quality_date` = ? ",
-        values: [req.params.quality_id],
+        sql: "SELECT * FROM `sleepquality` WHERE `sleep_id` = ? AND `quality_date` = ? ORDER BY `quality_date` DESC LIMIT 1",
+        values: [req.body.quality_id, req.body.current_date],
     };
     db.query(query.sql, query.values, (err, data) => {
         if (err) {
@@ -42,6 +51,7 @@ const getSleepQualityById = (req, res) => {
         return res.json(data);
     });
 };
+
 //este
 const getSleepQualitiesByDateRange = (req, res) => {
     const startDate = req.params.startDate;  // Espera 'YYYY-MM-DD'

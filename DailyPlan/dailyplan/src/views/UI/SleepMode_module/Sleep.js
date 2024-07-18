@@ -8,6 +8,8 @@ import { myPojo } from '../../../utils/ShowNotifInfo';
 import '../../../styles/UI/Sleep/Sleep.css';
 import { getSleepmodeById, updateSleepmode } from '../../../utils/validations/sleep';
 import { getSleepQualityById } from '../../../utils/validations/sleepquality';
+import { addTone } from '../../../utils/validations/tone';
+import { base64ToBlob, playAlarm, playBlobAudio, playRingtone } from '../../../utils/sounds';
 
 export default function SleepAlarm(props) {
     const [isToggled, setIsToggled] = useState(false);
@@ -19,12 +21,21 @@ export default function SleepAlarm(props) {
     const [mediaLink, setMediaLink] = useState('');
     const [showSurvey, setShowSurvey] = useState(false); // Estado para mostrar la encuesta
     const [repValue, setRepValue] = useState(1);
+    const [stopRepValue, setStopRepValue] = useState(0);
+    const [alreadySurvery, setAlreadySurvey] = useState(null);
+    const [tone, setTone] = useState(null);
+    const [dataTone, setDataTone] = useState(null);
     const [soundFile, setSoundFile] = useState(null);
 
     useEffect(() => {
         getSleepmodeById(props.id_user).then(res => {
             const sleepData = res.data[0];
+
+         
+
             if (sleepData) {
+                setTone(sleepData.tone_id);
+                setDataTone(base64ToBlob(sleepData.tone_location, "audio/mpeg" ));
                 setHoraDormir(formatTimeFromTinyInt(sleepData.sleep_starthour));
                 setHoraDespertar(formatTimeFromTinyInt(sleepData.sleep_endhour));
                 setIsToggled(sleepData.sleep_active === 1);
@@ -34,17 +45,28 @@ export default function SleepAlarm(props) {
                     setHoradiff(calcularDiferenciaHoras(sleepData.sleep_starthour, sleepData.sleep_endhour));
                 }
             }
-        }).catch(err => { console.log(err) });
+        }
+        
+            
+    
+    
+    ).catch(err => { console.log(err) });
     }, [props.id_user]);
 
-    useEffect(()=>{
-        getSleepQualityById(props.id_user, moment().format('YYYY-MM-DD')).then(res=>{
-            if(res.data >0)
-            {
-                
+    useEffect(() => {
+        const currentDate = moment().format('YYYY-MM-DD');
+        getSleepQualityById({ quality_id: props.id_user, current_date: currentDate }).then(res => {
+            console.log("ya hizo la query", res.data[0] != null);
+            if (res.data[0])  {
+                setAlreadySurvey(true);
+                console.log("alreadySurve es:", alreadySurvery);
             }
-        }).catch(err => {console.log(err)});
-    },[props.id_user]);
+            else
+            {
+                setAlreadySurvey(false);
+            }
+        }).catch(err => { console.log(err) });
+    }, []);
 
     const handleMediaSubmit = (e) => {
         e.preventDefault();
@@ -58,7 +80,19 @@ export default function SleepAlarm(props) {
     const handleSoundFileChange = (event) => {
         const file = event.target.files[0];
         if (file) {
-            setSoundFile(file);
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                const base64String = reader.result.split(',')[1];
+                console.log(`File name: ${file.name}`);
+                console.log(`File type: ${file.type}`);
+                console.log(`Base64 string: ${base64String}`);
+                setSoundFile({
+                    base64: base64String,
+                    name: file.name,
+                    type: file.type
+                });
+            };
+            reader.readAsDataURL(file);
         }
     };
 
@@ -90,36 +124,116 @@ export default function SleepAlarm(props) {
             const currentTime = convertTimeToTinyInt(horaActual);
             if (isToggled) {
                 if ((currentTime >= startHour && currentTime < endHour) || (startHour > endHour && (currentTime >= startHour || currentTime < endHour))) {
+                     console.log("sigue el tiempo");
                     setIsPlaying(true);
                 } else {
+                    console.log("El tiempo se acabo");
+                    if(alreadySurvery === null) return;
+              
+                    if(alreadySurvery) 
+                        {
+                            setShowSurvey(false);
+                            return;
+                        }
+
+                     if(repValue > 0)   
+                     {
+                        const more = repValue-1;
+                        const less = stopRepValue+1;
+                        setRepValue(more);
+                        setStopRepValue(less);
+                        if(tone === null)
+                        {
+                            console.log("olaaaaa");
+                          playAlarm();
+                            
+                        }
+                        else
+                        {
+                            playBlobAudio(soundFile);
+                        }
+                     }
+                        
                     setIsPlaying(false);
+                    
                 }
             } else {
+               
+                //Cuando es la hora
                 setIsPlaying(false);
-                
+
                 setShowSurvey(false);
             }
         }, 1000);
         return () => clearInterval(interval);
     }, [horaDormir, horaDespertar, isToggled]);
 
-    const confirmarModoDeSueño = () => {
-        const sleepData = {
-            sleep_starthour: convertTimeToTinyInt(horaDormir),
-            sleep_endhour: convertTimeToTinyInt(horaDespertar),
-            sleep_active: isToggled ? 1 : 0,
-            sleep_rep: repValue,
-            sleep_video_url: mediaLink,
-            sleep_rep_stopped: null,
-            tone_id: null,
-            sleep_id: props.id_user
-        };
-        console.log('Sleep Data:', sleepData);
-        updateSleepmode(sleepData).then(() => {
-            setHoradiff(calcularDiferenciaHoras(sleepData.sleep_starthour, sleepData.sleep_endhour));
-        }).catch(err => { console.log(err) });
-    };
 
+
+    const confirmarModoDeSueño = () => {
+        let tone_id = null;
+    
+        if (soundFile != null) {
+            // Object for the alarm
+            const formData = {
+                alarmTone: soundFile.base64,
+                alarmToneName: soundFile.name,
+                alarmToneType: soundFile.type
+            };
+    
+            // Add tone to the database
+            addTone(formData).then(response => {
+                tone_id = response.tone_id;
+    
+                // Sleep data object
+                const sleepData = {
+                    sleep_starthour: convertTimeToTinyInt(horaDormir),
+                    sleep_endhour: convertTimeToTinyInt(horaDespertar),
+                    sleep_active: isToggled ? 1 : 0,
+                    sleep_rep: repValue,
+                    sleep_video_url: mediaLink,
+                    sleep_rep_stopped: null,
+                    tone_id: tone_id,
+                    sleep_id: props.id_user
+                };
+    
+                console.log('Sleep Data:', sleepData);
+    
+                // Update sleep mode
+                updateSleepmode(sleepData).then(() => {
+                    setHoradiff(calcularDiferenciaHoras(sleepData.sleep_starthour, sleepData.sleep_endhour));
+                }).catch(err => {
+                    console.log(err);
+                });
+    
+            }).catch(err => {
+                console.log(err);
+            });
+    
+        } else {
+            // Sleep data object without tone
+            const sleepData = {
+                sleep_starthour: convertTimeToTinyInt(horaDormir),
+                sleep_endhour: convertTimeToTinyInt(horaDespertar),
+                sleep_active: isToggled ? 1 : 0,
+                sleep_rep: repValue,
+                sleep_video_url: mediaLink,
+                sleep_rep_stopped: null,
+                tone_id: null,
+                sleep_id: props.id_user
+            };
+    
+            console.log('Sleep Data:', sleepData);
+    
+            // Update sleep mode
+            updateSleepmode(sleepData).then(() => {
+                setHoradiff(calcularDiferenciaHoras(sleepData.sleep_starthour, sleepData.sleep_endhour));
+            }).catch(err => {
+                console.log(err);
+            });
+        }
+    };
+    
     const convertTimeToTinyInt = (time) => {
         const [hours, minutes] = time.split(':').map(Number);
         return hours * 60 + minutes;
@@ -135,10 +249,11 @@ export default function SleepAlarm(props) {
         <div className={mediaLink ? "sleep-body-link" : "sleep-body-nolink"}>
             <div className="sleep-content-wrapper">
                 {showSurvey ? (
-                    <SleepSurvey 
-                    onClose={() => setShowSurvey(false)}
-                    user_id={props.id_user}
-                    /> 
+                    <SleepSurvey
+                        onClose={() => setShowSurvey(false)}
+                        user_id={props.id_user}
+                        stopRep = {stopRepValue}
+                    />
                 ) : (
                     <div className="sleep-alarma">
                         <div className="sleep-alarma-container">

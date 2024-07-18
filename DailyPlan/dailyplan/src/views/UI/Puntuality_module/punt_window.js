@@ -9,8 +9,12 @@ Chart.register(ArcElement, Tooltip, Legend);
 
 const PopupWindow = ({ closePopup }) => {
 
-  // Sueno
 
+
+
+
+
+  // Sueño
   const data = {
     labels: ['Bueno', 'Regular', 'Mal'],
     datasets: [

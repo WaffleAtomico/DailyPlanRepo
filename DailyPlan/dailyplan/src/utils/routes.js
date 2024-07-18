@@ -140,6 +140,7 @@ const ADD_SLEEP_MODE_URL = `${urlreference}/add-sleepmode`;
 const GET_SLEEP_MODES_URL = `${urlreference}/get-sleepmodes`;
 const GET_SLEEP_MODE_BY_ID_URL = `${urlreference}/get-sleepmode`;
 const UPDATE_SLEEP_MODE_URL = `${urlreference}/update-sleepmode`;
+const UPDATE_SLEEP_MODE_REP_URL = '/update-sleepmode-rep';
 const DELETE_SLEEP_MODE_URL = `${urlreference}/delete-sleepmode`;
 
 const ADD_SLEEP_QUALITY_URL = `${urlreference}/add-sleepquality`;
@@ -263,6 +264,7 @@ export {
     ADD_SLEEP_MODE_URL,
     GET_SLEEP_MODES_URL,
     GET_SLEEP_MODE_BY_ID_URL,
+    UPDATE_SLEEP_MODE_REP_URL,
     UPDATE_SLEEP_MODE_URL,
     DELETE_SLEEP_MODE_URL,
     ADD_SLEEP_QUALITY_URL,

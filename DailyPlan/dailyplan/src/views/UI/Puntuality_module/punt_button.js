@@ -16,6 +16,7 @@ const PuntButton = (props) => {
   const [isCompletedArchivement3, setIsCompletedArchivement3] = useState(true);
 
   useEffect(() => {
+    console.log("Soy un boton");
     // setPuntuality(95);
     const grant_title_id1 = 0;
     const grant_title_id2 = 1;
@@ -44,7 +45,7 @@ const PuntButton = (props) => {
   }, [puntuality, isCompletedArchivement1, isCompletedArchivement2, isCompletedArchivement3]);
 
   useEffect(() => {
-    setPuntuality(95);
+    // setPuntuality(95);
   }, []);
 
   const confirmArchivement = (user_id, grant_title_id, idArchive) => {
@@ -75,7 +76,7 @@ const PuntButton = (props) => {
     grantArchivement(user_id, grant_title_id).then(res => {
       // console.log(res);
       // console.log("Debe de haberse ejecutado la notificacion");
-      myPojo.setNotif(text, icon);
+       myPojo.setNotif(text, icon);
     }).catch(error => {
       console.error("Error granting achievement:", error);
     });

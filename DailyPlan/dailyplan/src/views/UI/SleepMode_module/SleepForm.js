@@ -1,11 +1,21 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaRegSmile, FaMeh, FaRegFrown } from 'react-icons/fa';
 import '../../../styles/UI/Sleep/sleepForm.css';
 import moment from 'moment';
 import { saveSleepQuality } from '../../../utils/validations/sleepquality';
+import { updateSleepRepStopped } from '../../../utils/validations/sleep';
 
-const SleepForm = ({ onClose, user_id }) => {
+const SleepForm = ({ onClose, user_id, stopRep}) => {
   const [sleepRating, setSleepRating] = useState(null);
+
+
+
+  useEffect(() => {
+
+    updateSleepRepStopped(user_id, stopRep);
+
+}, stopRep)
+
 
   const handleRatingSelect = (rating) => {
     setSleepRating(rating);
@@ -18,6 +28,8 @@ const SleepForm = ({ onClose, user_id }) => {
       quality_date: moment().format('YYYY-MM-DD'),  // Formatear la fecha actual
       sleep_id: user_id,
     };
+
+
     switch (sleepRating) {
       case 'bien':
         sleepQualityInfo.quality_good = 1;
