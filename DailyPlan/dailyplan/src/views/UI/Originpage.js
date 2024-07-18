@@ -200,8 +200,8 @@ export default function OriginPage() {
       </div>
 
       <div className="UI-background">
-        {selectedOption === 0 && <Calendar />}
-        {selectedOption === 1 && <Alarm />}
+        {selectedOption === 0 && <Calendar user_id={id} />}
+        {selectedOption === 1 && <Alarm user_id={id} />}
         {selectedOption === 2 && (
           <Chrono
             id_user={id}
@@ -215,7 +215,7 @@ export default function OriginPage() {
         {selectedOption === 3 && <CountdownTimer user_id={id} />}
         {selectedOption === 4 && <Clock id_user={id} />}
         {selectedOption === 5 && <Invitation user_id={id}/>}
-        {selectedOption === 7 && <Sleep id_user={id}/>}
+        {selectedOption === 7 && <Sleep id_user={id} />}
         {selectedOption === 8 && <Pomodoro id_user={id}/>}
         {selectedOption !== 2 && secondsPassed > 0 && (
           <ChronoIndicator

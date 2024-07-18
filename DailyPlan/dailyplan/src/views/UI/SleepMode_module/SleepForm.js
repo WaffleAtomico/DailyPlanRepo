@@ -1,13 +1,40 @@
 import React, { useState } from 'react';
 import { FaRegSmile, FaMeh, FaRegFrown } from 'react-icons/fa';
 import '../../../styles/UI/Sleep/sleepForm.css';
+import moment from 'moment';
+import { saveSleepQuality } from '../../../utils/validations/sleepquality';
 
-const SleepForm = ({ onClose }) => {
+const SleepForm = ({ onClose, user_id }) => {
   const [sleepRating, setSleepRating] = useState(null);
 
   const handleRatingSelect = (rating) => {
     setSleepRating(rating);
-    // Aquí puedes agregar cualquier lógica adicional, como enviar el rating a una API o guardar localmente.
+    // quality_good, quality_medium, quiality_bad, quality_date, sleep_id
+
+    const sleepQualityInfo = {
+      quality_good: 0,
+      quality_medium: 0,
+      quiality_bad: 0,
+      quality_date: moment().format('YYYY-MM-DD'),  // Formatear la fecha actual
+      sleep_id: user_id,
+    };
+    switch (sleepRating) {
+      case 'bien':
+        sleepQualityInfo.quality_good = 1;
+        break;
+      case 'regular':
+        sleepQualityInfo.quality_medium = 1;
+        break;
+      case 'mal':
+        sleepQualityInfo.quiality_bad = 1;
+        break;
+      default:
+        sleepQualityInfo.quality_good = 1;
+      break;
+    }
+    saveSleepQuality(sleepQualityInfo).then(()=>{
+
+    }).catch(err => {console.log(err)});
     onClose(); // Cierra el formulario al seleccionar una opción.
   };
 

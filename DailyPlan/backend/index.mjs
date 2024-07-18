@@ -216,11 +216,14 @@ app.use(cors());
 //---------------------------Setting-------------------------//
 
 // Aumenta el límite de tamaño de la carga útil
+// Posible solucion, fragmentar lo que se vaya a enviar
+/*Lo ignora completamente */
 
+// app.use(bodyParser.json({ limit: '50mb' }));
+// app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
-app.use(bodyParser.json({ limit: '50mb' }));
-app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
-
+// app.use(express.json({ limit: '50mb' }));
+// app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 app.get(urls.ROOT_URL, (req, res) => {
   res.json("Hello this is the backend");

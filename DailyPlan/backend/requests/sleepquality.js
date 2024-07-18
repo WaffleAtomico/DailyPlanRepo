@@ -1,13 +1,12 @@
 import { db } from '../config/connection.js';
-
+//este
 const addSleepQuality = (req, res) => {
     const query = {
-        sql: "INSERT INTO `sleepquality`(`quality_good`, `quality_medium`, `quiality_bad`, `quality_date`, `sleep_id`) VALUES (?, ?, ?, ?, ?)",
+        sql: "INSERT INTO `sleepquality`(`quality_good`, `quality_medium`, `quiality_bad`, `sleep_id`) VALUES (?, ?, ?, ?, ?)",
         values: [
             req.body.quality_good,
             req.body.quality_medium,
             req.body.quiality_bad,
-            req.body.quality_date,
             req.body.sleep_id,
         ],
     };
@@ -30,10 +29,10 @@ const getSleepQualities = (req, res) => {
         return res.json(data);
     });
 };
-
+//este
 const getSleepQualityById = (req, res) => {
     const query = {
-        sql: "SELECT `quality_id`, `quality_good`, `quality_medium`, `quiality_bad`, `quality_date`, `sleep_id` FROM `sleepquality` WHERE `sleep_id` = ?",
+        sql: "SELECT * FROM `sleepquality` WHERE `sleep_id` = ? AND `quality_date` = ? ",
         values: [req.params.quality_id],
     };
     db.query(query.sql, query.values, (err, data) => {
@@ -43,7 +42,7 @@ const getSleepQualityById = (req, res) => {
         return res.json(data);
     });
 };
-
+//este
 const getSleepQualitiesByDateRange = (req, res) => {
     const startDate = req.params.startDate;  // Espera 'YYYY-MM-DD'
     const endDate = req.params.endDate;  // Espera 'YYYY-MM-DD'

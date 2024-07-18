@@ -4,15 +4,15 @@
     background-color: #ffecd4;
     font-size: 18px;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    padding-top: 2rem;
+    align-items: center; 
     flex-direction: column;
     overflow-y: auto;
     height: 100vh;
     min-height: 100vh;
 }
 .sleep-body-link{
-    padding-top: 10rem;
+    padding-top: 30rem;
     padding-bottom: 8rem; 
     font-family: Arial;
     background-color: #ffecd4;
