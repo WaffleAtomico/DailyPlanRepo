@@ -29,6 +29,17 @@ export function playRingtone(repetitions = 1, durationInSeconds = 1, repeatInter
   playAudio();
 }
 
+
+//method to split the string in various chunks
+export function  splitBase64 (base64String, chunkSize = 1000)  {
+  const chunks = [];
+  for (let i = 0; i < base64String.length; i += chunkSize) {
+      chunks.push(base64String.substring(i, i + chunkSize));
+  }
+  return chunks;
+};
+
+
 export function playBase64Audio(base64Audio, contentType, repetitions = 1, durationInSeconds = 1, repeatIntervalInSeconds = 1) {
   const blob = base64ToBlob(base64Audio, contentType);
   const audioURL = URL.createObjectURL(blob);
@@ -101,10 +112,21 @@ export function base64ToFile (base64String, filename, mimeType)  {
   return new File([ab], filename, { type: mimeType });
 };
 
-export function base64ToBlob()
-{
-  
-}
+export function base64ToBlob(base64, mime) {
+  const byteCharacters = atob(base64);
+  const byteNumbers = new Array(byteCharacters.length);
+
+  for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+  }
+
+  const byteArray = new Uint8Array(byteNumbers);
+  return new Blob([byteArray], { type: mime });
+};
+
+
+
+
 // Ejemplo de uso
 const base64Audio = "TU_BASE64_STRING_AQUÍ"; // Reemplaza esta cadena con tu audio en base64
 const contentType = "audio/mp3"; // Reemplaza esto con el tipo de contenido adecuado para tu audio

@@ -1,18 +1,20 @@
 import { db } from '../config/connection.js';
-
 const addReminderShare = (req, res) => {
+
+    const body = req.body.reminderShareInfo;
+    
     const query = {
         sql: "INSERT INTO `remindershare`(`rs_user_id_target`, `reminder_id`) VALUES (?, ?)",
         values: [
-            req.body.rs_user_id_target,
-            req.body.reminder_id,
+            body.rs_user_id_target,
+            body.reminder_id,
         ],
     };
-    db.query(query.sql, query.values, (err, data) => {
+    db.query(query.sql, query.values, (err, result) => {
         if (err) {
-            return res.json({ message: "Error adding reminder share", error: err });
+            return res.status(500).json({ message: "Error adding reminder share", error: err });
         }
-        return res.json(data, { message: "Reminder share added successfully" });
+        return res.status(200).json({ message: "Reminder share added successfully", remindsha_id: result.insertId });
     });
 };
 
