@@ -11,26 +11,28 @@ export const addUserBlocked = async (userBlockedInfo) => {
         return response.data;
     } catch (err) {
         console.error('Error adding user blocked:', err);
-        throw err; // Puedes manejar el error según tu lógica de frontend
+        throw err; 
     }
 };
 
 export const delUserBlocked = async (userBlockedId) => {
     try {
         const response = await axios.post(DELETE_USER_BLOCKED_URL, { userblocked_id: userBlockedId });
-        return response.data;
+        // return response.data;
+        return response;
     } catch (err) {
         console.error('Error deleting user blocked:', err);
-        throw err; // Puedes manejar el error según tu lógica de frontend
+        throw err;
     }
 };
 
 export const getUsersBlocked = async (user_id) => {
     try {
         const response = await axios.post(GET_USERS_BLOCKED_URL, { user_id });
-        return response.data;
+        // return response.data;
+        return response;
     } catch (err) {
         console.error('Error retrieving blocked users:', err);
-        throw err; // Puedes manejar el error según tu lógica de frontend
+        throw err;
     }
 };

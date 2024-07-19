@@ -4,15 +4,16 @@ import { CiCircleCheck } from "react-icons/ci";
 import RealTimeLocationComponent from "../../../utils/components/location/RealTimeLocation";
 import { getUsersBlocked } from "../../../utils/validations/blockedurs";
 import { RiUserForbidLine } from "react-icons/ri";
+import { FaSpotify } from 'react-icons/fa';
 
-import "../../../styles/UI/profile/proftitles.css";
+import "../../../styles/UI/profile/configOptions.css";
 
 
 const PersoInfo = (props) => {
 
 
-    //debe de permtir al usuario ver su info personal, y cambiar su usuario unas cuentas veces
-    //Revisar el requerimiento funcional o no funcional
+  //debe de permtir al usuario ver su info personal, y cambiar su usuario unas cuentas veces
+  //Revisar el requerimiento funcional o no funcional
   return (
     <div style={{ backgroundColor: "#f0f0f0" }}>
       <h2>Información personal</h2>
@@ -21,47 +22,46 @@ const PersoInfo = (props) => {
 };
 
 const BloqUser = (props) => {
-    //Falta poder desbloquear usuarios dando a un boton, ya los obtenemos, ahora falta hacer un onclick que los quite
-    const [blockedUsers, setBlockedUsers] = useState([]);
-    
-    useEffect(() => {
-      getBlockedUsers(props.id);
-    }, [props.id]);
-  
-    const getBlockedUsers = (user_id) => {
-          getUsersBlocked(user_id).then(blockedUsersData=>
-          {
-            setBlockedUsers(blockedUsersData);
-          }).catch(err => {console.log(err)});
-    };
-  
-    return (
-      <div style={{ backgroundColor: "#f0f0f0" }}>
-        <h2>Usuarios bloqueados {blockedUsers.length} </h2>
-        {blockedUsers.length > 0 ? (
-          <table className="titl-custom-table">
-            <thead>
-              <tr>
-                <th className="titl-table-header">Usuario</th>
-                <th className="titl-table-header">Seleccionar</th>
+  //Falta poder desbloquear usuarios dando a un boton, ya los obtenemos, ahora falta hacer un onclick que los quite
+  const [blockedUsers, setBlockedUsers] = useState([]);
+
+  useEffect(() => {
+    getBlockedUsers(props.id);
+  }, [props.id]);
+
+  const getBlockedUsers = (user_id) => {
+    getUsersBlocked(user_id).then(blockedUsersData => {
+      setBlockedUsers(blockedUsersData);
+    }).catch(err => { console.log(err) });
+  };
+
+  return (
+    <div style={{ backgroundColor: "#f0f0f0" }}>
+      <h2>Usuarios bloqueados {blockedUsers.length} </h2>
+      {blockedUsers.length > 0 ? (
+        <table className="titl-custom-table">
+          <thead>
+            <tr>
+              <th className="titl-table-header">Usuario</th>
+              <th className="titl-table-header">Seleccionar</th>
+            </tr>
+          </thead>
+          <tbody>
+            {blockedUsers.map((blockedUsr) => (
+              <tr key={blockedUsr.user_id_target}>
+                <td className="titl-table-cell">{blockedUsr.user_mail}</td>
+                <td className="titl-table-cell">
+                  <div className="titl-circle-check"><RiUserForbidLine /></div>
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {blockedUsers.map((blockedUsr) => (
-                <tr key={blockedUsr.user_id_target}>
-                  <td className="titl-table-cell">{blockedUsr.user_mail}</td>
-                  <td className="titl-table-cell">
-                    <div className="titl-circle-check"><RiUserForbidLine /></div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        ) : (
-          <p>No tienes bloqueado a ningún usuario.</p>
-        )}
-      </div>
-    );
+            ))}
+          </tbody>
+        </table>
+      ) : (
+        <p>No tienes bloqueado a ningún usuario.</p>
+      )}
+    </div>
+  );
 };
 
 const UserNodif = (props) => {
@@ -69,6 +69,34 @@ const UserNodif = (props) => {
   return (
     <div style={{ backgroundColor: "#f0f0f0" }}>
       <h2>Notificaciones</h2>
+
+    </div>
+  );
+};
+
+const UserConnections = (props) => {
+  const [spotifyConnected, setSpotifyConnected] = useState(false);
+  //cambiar a como sea necesario para llamar a la funcion de conexion
+  return (
+    <div className="user-connections">
+      <h2>Conexiones</h2>
+      {!spotifyConnected ? (
+        <button
+          className="spotify-button"
+          onClick={() => setSpotifyConnected(true)}
+        >
+          <FaSpotify className="spotify-icon" />
+          Conectar con Spotify
+        </button>
+      ) : (
+        <button
+          className="spotify-button"
+          onClick={() => setSpotifyConnected(false)}
+        >
+          <FaSpotify className="spotify-icon" />
+          Desconectar de Spotify
+        </button>
+      )}
     </div>
   );
 };
@@ -153,30 +181,46 @@ const UserPermissions = () => {
 };
 
 const UserTitles = (props) => {
-  //Se muestran los titulos, ademas de poder elegir uno a preferencia para que el usuario se muestre
   const [titles, setTitles] = useState([]);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
+    
     getUserArchivement(props.id);
   }, [props.id]);
 
   const getUserArchivement = async (user_id) => {
     try {
-      const titlesData = await getAllArchivements(user_id);
-      console.log("tietle " + titlesData);
-      const filteredTitles = titlesData.filter(
-        (title) => title.title_done === 1
-      );
-      console.log(filteredTitles);
-      setTitles(filteredTitles);
-    } catch (error) {
-      console.error("Error fetching titles:", error);
+      const res = await getAllArchivements(user_id);
+      const titlesData = res.data;
+      console.log("Títulos recibidos: ", titlesData);
+
+      if (Array.isArray(titlesData)) {
+        const validTitles = [];
+        titlesData.forEach(title => {
+          if (title.title_done === 1) {
+            validTitles.push(title);
+          }
+        });
+        console.log("Títulos válidos: ", validTitles);
+        setTitles(validTitles);
+      } else {
+        throw new Error("El formato de datos recibidos no es un arreglo.");
+      }
+    } catch (err) {
+      console.error("Error al obtener los títulos: ", err);
+      setError("No se pudieron obtener los títulos. Por favor, inténtalo más tarde.");
     }
+  };
+
+  const selectUserTitle = (title_id) => {
+    console.log("Es necesario enviar el title_id para actualizar ese campo en user, solo ese", title_id);
   };
 
   return (
     <div style={{ backgroundColor: "#f0f0f0" }}>
       <h2>Títulos</h2>
+      {error && <p>{error}</p>}
       {titles.length > 0 ? (
         <table className="titl-custom-table">
           <thead>
@@ -189,7 +233,7 @@ const UserTitles = (props) => {
             {titles.map((title) => (
               <tr key={title.title_id}>
                 <td className="titl-table-cell">{title.title_name}</td>
-                <td className="titl-table-cell">
+                <td className="titl-table-cell" onClick={() => selectUserTitle(title.title_id)}>
                   <div className="titl-circle-check">
                     <CiCircleCheck />
                   </div>
@@ -205,4 +249,11 @@ const UserTitles = (props) => {
   );
 };
 
-export { BloqUser, PersoInfo, UserNodif, UserPermissions, UserTitles };
+export {
+  BloqUser,
+  PersoInfo,
+  UserNodif,
+  UserPermissions,
+  UserTitles,
+  UserConnections
+};
