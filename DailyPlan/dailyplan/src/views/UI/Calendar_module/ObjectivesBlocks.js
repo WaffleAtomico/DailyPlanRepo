@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Button, Form, Row, Col } from 'react-bootstrap';
 import '../../../styles/UI/Calendar/ObjectivesBlocks.css';
 
+
+
 const GoalsModule = ({ onClose, onSave }) => {
     const [blocks, setBlocks] = useState([]);
     const [blockColors, setBlockColors] = useState(['#FFA07A', '#FA8072', '#E9967A', '#F08080', '#CD5C5C', '#DC143C', '#B22222']);
@@ -40,7 +42,7 @@ const GoalsModule = ({ onClose, onSave }) => {
         <div className="goals-module-container">
             <div className="goals-module-actions">
                 <Button onClick={handleSave} className="save-button">Guardar objetivos</Button>
-                <Button onClick={onClose} className="close-button">X</Button>
+                <Button onClick={onClose} className="reminders-close-button">X</Button>
             </div>
             <h3>Lista de Objetivos</h3>
             {blocks.map((block, blockIndex) => (

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import {
   BloqUser,
   PersoInfo,
+  UserConnections,
   UserNodif,
   UserPermissions,
   UserTitles,
@@ -28,6 +29,8 @@ export default function ProfileConfig_view(props) {
         return <BloqUser id={props.user_id} />;
       case 5:
         return <UserNodif id={props.user_id} />;
+      case 6:
+        return <UserConnections id={props.user_id} />;
       default:
         return <></>;
     }
@@ -77,6 +80,14 @@ export default function ProfileConfig_view(props) {
               onClick={() => handleOptionSelected(3)}
             >
               Permisos
+            </td>
+          </tr>
+          <tr>
+            <td
+              className={`menu-item ${optionselected === 6 ? "selected" : ""}`}
+              onClick={() => handleOptionSelected(6)}
+            >
+              Conexiones
             </td>
           </tr>
           <tr>

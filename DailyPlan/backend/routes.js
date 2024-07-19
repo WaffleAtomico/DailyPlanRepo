@@ -17,6 +17,7 @@ const USER_EXISTS_NAME_URL = '/users-existname';
 const USER_EXISTS_NUMBER_URL = '/users-existnumber';
 const GET_USER_BY_MAIL_URL = '/user-bymail';
 const GET_USER_BY_NUMBER_URL = '/user-bynumber';
+const UPDATE_USER_TITLE_URL = '/user-updtitle';
 
 const ADD_CLOCK_URL = '/clock-id';
 const GET_CLOCK_URL = '/clock-byid';
@@ -69,6 +70,8 @@ const ADD_INVITATION_URL = '/add-invitation';
 const GET_INVITATIONS_URL = '/get-invitations';
 const GET_INVITATION_BY_ID_URL = '/get-invitation';
 const GET_INVITATION_BY_USER_URL = '/get-invitation-user';
+const UPDATE_INVITATION_STATE_URL = '/update-invitation-state';
+const UPDATE_INVITATION_REASON_URL = '/update-invitation-reason';
 const UPDATE_INVITATION_URL = '/update-invitation';
 const DELETE_INVITATION_URL = '/delete-invitation';
 
@@ -139,10 +142,13 @@ const ADD_SLEEP_MODE_URL = '/add-sleepmode';
 const GET_SLEEP_MODES_URL = '/get-sleepmodes';
 const GET_SLEEP_MODE_BY_ID_URL = '/get-sleepmode';
 const UPDATE_SLEEP_MODE_URL = '/update-sleepmode';
+const UPDATE_SLEEP_MODE_REP_URL = '/update-sleepmode-rep'
 const DELETE_SLEEP_MODE_URL = '/delete-sleepmode';
 
 const ADD_SLEEP_QUALITY_URL = '/add-sleepquality';
 const GET_SLEEP_QUALITIES_URL = '/get-sleepqualities';
+const GET_SLEEPQUALITIES_BY_DATE_RANGE_URL = '/get-sleepqualities-by-date-range'
+const GET_SLEEPQUALITIES_BY_USER_URL = '/get-sleepqualities-by-user'
 const GET_SLEEP_QUALITY_BY_ID_URL = '/get-sleepquality';
 const UPDATE_SLEEP_QUALITY_URL = '/update-sleepquality';
 const DELETE_SLEEP_QUALITY_URL = '/delete-sleepquality';
@@ -167,6 +173,7 @@ export {
     USER_EXISTS_MAIL_URL,
     USER_EXISTS_NAME_URL,
     USER_EXISTS_NUMBER_URL,
+    UPDATE_USER_TITLE_URL,
     GET_USER_BY_MAIL_URL,
     GET_USER_BY_NUMBER_URL,
     ADD_CLOCK_URL,
@@ -210,6 +217,8 @@ export {
     GET_INVITATIONS_URL,
     GET_INVITATION_BY_ID_URL,
     GET_INVITATION_BY_USER_URL,
+    UPDATE_INVITATION_STATE_URL,
+    UPDATE_INVITATION_REASON_URL,
     UPDATE_INVITATION_URL,
     DELETE_INVITATION_URL,
     ADD_LOCATION_URL,
@@ -256,6 +265,7 @@ export {
     DELETE_REMINDERSHARE_URL,
     ADD_REPETITIONDAY_URL,
     GET_REPETITIONDAYS_URL,
+    UPDATE_SLEEP_MODE_REP_URL,
     GET_REPETITIONDAY_BY_ID_URL,
     UPDATE_REPETITIONDAY_URL,
     DELETE_REPETITIONDAY_URL,
@@ -271,7 +281,9 @@ export {
     DELETE_SLEEP_MODE_URL,
     ADD_SLEEP_QUALITY_URL,
     GET_SLEEP_QUALITIES_URL,
+    GET_SLEEPQUALITIES_BY_DATE_RANGE_URL,
     GET_SLEEP_QUALITY_BY_ID_URL,
+    GET_SLEEPQUALITIES_BY_USER_URL,
     UPDATE_SLEEP_QUALITY_URL,
     DELETE_SLEEP_QUALITY_URL,
     ADD_TONE_URL,

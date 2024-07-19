@@ -1,4 +1,7 @@
 import axios from 'axios';
+
+
+
 import { 
     ADD_TONE_URL,
     GET_TONES_URL,
@@ -7,6 +10,7 @@ import {
     DELETE_TONE_URL
 
 } from '../routes';
+import { base64ToBlob, splitBase64 } from '../sounds';
 
 
 const getTones = async () => {
@@ -21,29 +25,56 @@ const getTones = async () => {
 
 const getToneById = async (toneId) => {
     try {
-        const response = await axios.get(GET_TONE_BY_ID_URL, { params: { toneId } });
-        return response;
-    } catch (err) {
-        console.log(err);
-        throw err;
+        const response = await axios.post( GET_TONE_BY_ID_URL, { tone_id: toneId });
+        const { tone_name, tone_type, total_chunks, chunks } = response.data;
+
+        // Reassemble the base64 string from chunks
+        const completeBase64 = chunks.join('');
+        const toneBlob = base64ToBlob(completeBase64, tone_type);
+        return {
+            toneName: tone_name,
+            toneBlob: toneBlob
+        };
+    } catch (error) {
+        console.error('Error fetching tone chunks:', error);
+        throw error;
     }
 };
 
-const addTone = async (toneData) => {
-    
+const addTone = async (formData) => {
+    const base64Chunks = splitBase64(formData.alarmTone);
+    const totalChunks = base64Chunks.length;
+    const toneId = new Date().getTime(); // Temporary unique id for the tone
+
+    const chunkPromises = base64Chunks.map((chunk, index) => {
+        const chunkData = {
+            tone_name: formData.alarmToneName,
+            tone_location_chunk: chunk,
+            tone_type: formData.alarmToneType,
+            chunk_index: index,
+            total_chunks: totalChunks,
+            tone_id: toneId
+        };
+
+        return axios.post(ADD_TONE_URL, chunkData)
+            .then(response => {
+                console.log(`Chunk ${index + 1} of ${totalChunks} sent successfully:`, response.data);
+                return response.data;
+            })
+            .catch(error => {
+                console.error(`Error sending chunk ${index + 1} of ${totalChunks}:`, error);
+                throw error;
+            });
+    });
 
     try {
-
-        console.log("los datos que se tienen:", toneData)
-        const response = await axios.post(ADD_TONE_URL, toneData, {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        });
-        return response;
-    } catch (err) {
-        console.log(err);
-        throw err;
+        const responses = await Promise.all(chunkPromises);
+        const finalResponse = responses[responses.length - 1]; // The last response should contain the final tone_id
+        console.log('All chunks sent successfully');
+        return finalResponse; // Return the final response containing the actual tone_id from the database
+    } catch (error) {
+        console.error('Error sending all chunks:', error);
+        throw error;
     }
 };
 

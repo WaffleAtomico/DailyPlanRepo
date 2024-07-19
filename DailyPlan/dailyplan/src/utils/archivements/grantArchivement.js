@@ -4,19 +4,22 @@ import { GET_ALL_TITLES, UPDATE_ONE_TITLE } from "../routes";
 //solo se envia la info
 
 export const isCompleted = async (user_id, title_id) => {
+  console.log(user_id);
+  console.log(title_id);
   try {
     const response = await axios.post(GET_ALL_TITLES, { user_id });
     // console.log(response.data[title_id]);
     const titleInfo = response.data[title_id];
+    console.log(response.data);
     if (titleInfo.title_done == 0) {
-      console.log("El título no está completado");
+      // console.log("El título no está completado");
       return false;
     } else {
-      console.log("El título está completado");
+      // console.log("El título está completado");
       return true;
     }
   } catch (err) {
-    console.log("Error en isCompleted:", err);
+    console.log("Error en isCompleted: ", err);
     throw err;
   }
 };

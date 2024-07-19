@@ -12,8 +12,8 @@ import {
 export const saveUserReminder = async (reminderInfo) => {
     try {
         console.log(reminderInfo);
-        await axios.post(ADD_REMINDER_URL, reminderInfo); 
-        return true;
+        const response =  await axios.post(ADD_REMINDER_URL, {reminderInfo}); 
+        return response;
     } catch (err) {
         console.log(err);
     }

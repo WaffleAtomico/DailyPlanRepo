@@ -26,7 +26,7 @@ const CLOCK_EXISTS_ZONE_URL = `${urlreference}/clock-existzone`;
 
 const CONN_URL = `${urlreference}/conn`;
 
-const CREATE_ALL_TITLES = `${urlreference}//title-addAll`;
+const CREATE_ALL_TITLES = `${urlreference}/title-addAll`;
 const GET_ALL_TITLES = `${urlreference}/title-getAll`;
 const UPDATE_ONE_TITLE = `${urlreference}/title-updateone`;
 
@@ -67,6 +67,8 @@ const ADD_INVITATION_URL = `${urlreference}/add-invitation`;
 const GET_INVITATIONS_URL = `${urlreference}/get-invitations`;
 const GET_INVITATION_BY_USER_URL = `${urlreference}/get-invitation-user`;
 const GET_INVITATION_BY_ID_URL = `${urlreference}/get-invitation`;
+const UPDATE_INVITATION_STATE_URL = `${urlreference}/update-invitation-state`;
+const UPDATE_INVITATION_REASON_URL = `${urlreference}/update-invitation-reason`;
 const UPDATE_INVITATION_URL = `${urlreference}/update-invitation`;
 const DELETE_INVITATION_URL = `${urlreference}/delete-invitation`;
 
@@ -82,11 +84,11 @@ const GET_OBJECTIVE_BY_ID_URL = `${urlreference}/get-objective`;
 const UPDATE_OBJECTIVE_URL = `${urlreference}/update-objective`;
 const DELETE_OBJECTIVE_URL = `${urlreference}/delete-objective`;
 
-const ADD_OBJECTIVESBLOCK_URL = `${urlreference}/add-objectivesblock`;
-const GET_OBJECTIVESBLOCKS_URL = `${urlreference}/get-objectivesblocks`;
-const GET_OBJECTIVESBLOCK_BY_ID_URL = `${urlreference}/get-objectivesblock`;
-const UPDATE_OBJECTIVESBLOCK_URL = `${urlreference}/update-objectivesblock`;
-const DELETE_OBJECTIVESBLOCK_URL = `${urlreference}/delete-objectivesblock`;
+const ADD_OBJECTIVES_BLOCK_URL = `${urlreference}/add-objectivesblock`;
+const GET_OBJECTIVES_BLOCKS_URL = `${urlreference}/get-objectivesblocks`;
+const GET_OBJECTIVES_BLOCK_BY_ID_URL = `${urlreference}/get-objectivesblock`;
+const UPDATE_OBJECTIVES_BLOCK_URL = `${urlreference}/update-objectivesblock`;
+const DELETE_OBJECTIVES_BLOCK_URL = `${urlreference}/delete-objectivesblock`;
 
 const ADD_PERMISSION_URL = `${urlreference}/add-permission`;
 const GET_PERMISSIONS_URL = `${urlreference}/get-permissions`;
@@ -140,12 +142,15 @@ const ADD_SLEEP_MODE_URL = `${urlreference}/add-sleepmode`;
 const GET_SLEEP_MODES_URL = `${urlreference}/get-sleepmodes`;
 const GET_SLEEP_MODE_BY_ID_URL = `${urlreference}/get-sleepmode`;
 const UPDATE_SLEEP_MODE_URL = `${urlreference}/update-sleepmode`;
+const UPDATE_SLEEP_MODE_REP_URL = `${urlreference}/update-sleepmode-rep`;
 const DELETE_SLEEP_MODE_URL = `${urlreference}/delete-sleepmode`;
 
 const ADD_SLEEP_QUALITY_URL = `${urlreference}/add-sleepquality`;
 const GET_SLEEP_QUALITIES_URL = `${urlreference}/get-sleepqualities`;
 const GET_SLEEP_QUALITY_BY_ID_URL = `${urlreference}/get-sleepquality`;
+const GET_SLEEPQUALITIES_BY_DATE_RANGE_URL = `${urlreference}/get-sleepqualities-by-date-range`;
 const UPDATE_SLEEP_QUALITY_URL = `${urlreference}/update-sleepquality`;
+const GET_SLEEPQUALITIES_BY_USER_URL =  `${urlreference}/get-sleepqualities-by-user`
 const DELETE_SLEEP_QUALITY_URL = `${urlreference}/delete-sleepquality`;
 
 const ADD_TONE_URL = `${urlreference}/add-tone`;
@@ -202,6 +207,8 @@ export {
     GET_INVITATIONS_URL,
     GET_INVITATION_BY_USER_URL,
     GET_INVITATION_BY_ID_URL,
+    UPDATE_INVITATION_STATE_URL,
+    UPDATE_INVITATION_REASON_URL,
     UPDATE_INVITATION_URL,
     DELETE_INVITATION_URL,
     ADD_LOCATION_URL,
@@ -214,11 +221,11 @@ export {
     GET_OBJECTIVE_BY_ID_URL,
     UPDATE_OBJECTIVE_URL,
     DELETE_OBJECTIVE_URL,
-    ADD_OBJECTIVESBLOCK_URL,
-    GET_OBJECTIVESBLOCKS_URL,
-    GET_OBJECTIVESBLOCK_BY_ID_URL,
-    UPDATE_OBJECTIVESBLOCK_URL,
-    DELETE_OBJECTIVESBLOCK_URL,
+    ADD_OBJECTIVES_BLOCK_URL,
+    GET_OBJECTIVES_BLOCKS_URL,
+    GET_OBJECTIVES_BLOCK_BY_ID_URL,
+    UPDATE_OBJECTIVES_BLOCK_URL,
+    DELETE_OBJECTIVES_BLOCK_URL,
     ADD_PERMISSION_URL,
     GET_PERMISSIONS_URL,
     GET_PERMISSION_BY_ID_URL,
@@ -262,11 +269,14 @@ export {
     ADD_SLEEP_MODE_URL,
     GET_SLEEP_MODES_URL,
     GET_SLEEP_MODE_BY_ID_URL,
+    UPDATE_SLEEP_MODE_REP_URL,
     UPDATE_SLEEP_MODE_URL,
     DELETE_SLEEP_MODE_URL,
     ADD_SLEEP_QUALITY_URL,
     GET_SLEEP_QUALITIES_URL,
     GET_SLEEP_QUALITY_BY_ID_URL,
+    GET_SLEEPQUALITIES_BY_DATE_RANGE_URL,
+    GET_SLEEPQUALITIES_BY_USER_URL,
     UPDATE_SLEEP_QUALITY_URL,
     DELETE_SLEEP_QUALITY_URL,
     ADD_TONE_URL,

@@ -1,7 +1,11 @@
 import { db } from '../config/connection.js';
+
+
 import jwt from "jsonwebtoken";
 
 const SECRET_KEY = 'Xu$UW$z)555419G:f+iuZ';
+
+
 
 const loginUser = (req, res) => {
     console.log("req.body" + req.body.user_mail);

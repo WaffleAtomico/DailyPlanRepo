@@ -1,0 +1,58 @@
+/* ShareUsers.css */
+.ShareUsers-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.ShareUsers-input-container {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.ShareUsers-input {
+    padding: 0.5rem;
+    width: 20rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.ShareUsers-add-button {
+    padding: 0.5rem 1rem;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.ShareUsers-list-container {
+    width: 100%;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.ShareUsers-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.ShareUsers-list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem;
+    border-bottom: 1px solid #ccc;
+}
+
+.ShareUsers-remove-button {
+    padding: 0.3rem 0.6rem;
+    background-color: #f44336;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}

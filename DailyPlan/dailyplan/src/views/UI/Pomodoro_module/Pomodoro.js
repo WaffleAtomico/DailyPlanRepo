@@ -1,27 +1,66 @@
-// Pomodoro_view.jsx
 import React, { useState, useEffect } from 'react';
 import BreakOverlay from './BreakOverlay';
 import { GiTomato } from "react-icons/gi";
-
 import '../../../styles/UI/Pomodoro/pomodoro.css';
 import { playRingtone } from '../../../utils/sounds';
+import { myPojo } from '../../../utils/ShowNotifInfo';
+import { grantArchivement, isCompleted } from '../../../utils/archivements/grantArchivement';
 
-const Pomodoro_view = () => {
+const Pomodoro_view = (props) => {
     const [workTime, setWorkTime] = useState(25);
     const [shortBreak, setShortBreak] = useState(5);
     const [longBreak, setLongBreak] = useState(15);
     const [sound, setSound] = useState('');
     const [isBreak, setIsBreak] = useState(false);
     const [isLongBreak, setIsLongBreak] = useState(false);
-    const [timeRemaining, setTimeRemaining] = useState(workTime * 60);
+    const [timeRemaining, setTimeRemaining] = useState(0);
     const [completedCycles, setCompletedCycles] = useState(0);
     const [soundFile, setSoundFile] = useState(null);
+    const [isCompletedArchivement, setIsCompletedArchivement] = useState(true);
+    const [isTimerRunning, setIsTimerRunning] = useState(false);
+
+    useEffect(() => {
+        confirmArchivement(props.id_user);
+    }, []);
+
+    const confirmArchivement = (user_id) => {
+        const grant_title_id = 7;
+        isCompleted(user_id, grant_title_id).then(response => {
+            console.log("IsCompleted", response);
+            if (response == false) {
+                console.log("Si es falso?", response)
+                setIsCompletedArchivement(response);
+            }
+        }).catch(error => {
+            console.error("Error confirming achievement: ", error);
+        });
+    }
+
+    const grant8Archivement = (user_id) => {
+        const grant_title_id = 8;
+        console.log("Is completed:? ", isCompletedArchivement);
+        if (!isCompletedArchivement) { //si no esta completado hay que entregarlo
+
+            grantArchivement(user_id, grant_title_id).then(res => {
+                console.log(res);
+                myPojo.setNotif("Logro: TOMATERO", <GiTomato size={220} />);
+            }).catch(error => {
+                console.error("Error granting achievement:", error);
+            });
+        }
+    };
+
+    useEffect(() => {
+        if (completedCycles == 1) {
+            grant8Archivement(props.id_user);
+        }
+    }, [completedCycles]);
 
     useEffect(() => {
         let timer;
-        if (timeRemaining > 0) {
+        if (isTimerRunning && timeRemaining > 0) {
             timer = setInterval(() => setTimeRemaining(timeRemaining - 1), 1000);
-        } else {
+        } else if (timeRemaining === 0 && isTimerRunning) {
             if (isBreak) {
                 setIsBreak(false);
                 setTimeRemaining(workTime * 60);
@@ -34,7 +73,7 @@ const Pomodoro_view = () => {
             }
         }
         return () => clearInterval(timer);
-    }, [timeRemaining, isBreak, workTime, shortBreak, longBreak, isLongBreak]);
+    }, [timeRemaining, isBreak, isTimerRunning, workTime, shortBreak, longBreak, isLongBreak]);
 
     const playSound = () => {
         playRingtone();
@@ -71,6 +110,9 @@ const Pomodoro_view = () => {
         e.preventDefault();
         setTimeRemaining(workTime * 60);
         setCompletedCycles(0);
+        setIsBreak(false); // Reset break status
+        setIsLongBreak(false); // Reset long break status
+        setIsTimerRunning(true); // Start the timer
     };
 
     return (
@@ -91,7 +133,7 @@ const Pomodoro_view = () => {
                     </label>
                     <label>
                         Sonido:
-                        <input style={{width: "10rem"}}
+                        <input style={{ width: "10rem" }}
                             type="file"
                             accept=".mp3"
                             onChange={handleSoundFileChange}

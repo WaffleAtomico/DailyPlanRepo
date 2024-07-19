@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import nodemailer from "nodemailer";
-
+import bodyParser from "body-parser";
 import * as urls from './routes.js'
 
 import {
@@ -20,7 +20,8 @@ import {
   userExistsByName,
   userExistsByNumber,
   getUserByMail,
-  getUserByNumber
+  getUserByNumber,
+  updateUserTitle
 } from './requests/users.js';
 
 import {
@@ -91,6 +92,8 @@ import {
   getInvitations,
   getInvitationById,
   getInvitationByUser,
+  updateInvitationState,
+  updateInvitationReason,
   updateInvitation,
   deleteInvitation
 } from './requests/invitations.js';
@@ -181,6 +184,7 @@ import {
   addSleepmode,
   getSleepmodes,
   getSleepmodeById,
+  updateSleepRepStopped,
   updateSleepmode,
   deleteSleepmode
 } from './requests/sleepmode.js';
@@ -188,7 +192,9 @@ import {
 import {
   addSleepQuality,
   getSleepQualities,
+  getSleepQualitiesByDateRange,
   getSleepQualityById,
+getSleepQualityByUser,
   updateSleepQuality,
   deleteSleepQuality
 } from './requests/sleepquality.js';
@@ -209,6 +215,19 @@ const app = express();
 
 app.use(express.json());
 app.use(cors());
+
+
+//---------------------------Setting-------------------------//
+
+// Aumenta el límite de tamaño de la carga útil
+// Posible solucion, fragmentar lo que se vaya a enviar
+/*Lo ignora completamente */
+
+// app.use(bodyParser.json({ limit: '50mb' }));
+// app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
+
+// app.use(express.json({ limit: '50mb' }));
+// app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 app.get(urls.ROOT_URL, (req, res) => {
   res.json("Hello this is the backend");
@@ -297,6 +316,7 @@ app.post(urls.USER_EXISTS_NAME_URL, userExistsByName);
 app.post(urls.USER_EXISTS_NUMBER_URL, userExistsByNumber);
 app.post(urls.GET_USER_BY_MAIL_URL, getUserByMail);
 app.post(urls.GET_USER_BY_NUMBER_URL, getUserByNumber);
+app.post(urls.UPDATE_USER_TITLE_URL, updateUserTitle);
 
 /*-------------------------- Clocks --------------------------*/
 app.post(urls.ADD_CLOCK_URL, addClock);
@@ -356,6 +376,8 @@ app.post(urls.ADD_INVITATION_URL, addInvitation);
 app.post(urls.GET_INVITATIONS_URL, getInvitations);
 app.post(urls.GET_INVITATION_BY_ID_URL, getInvitationById);
 app.post(urls.GET_INVITATION_BY_USER_URL, getInvitationByUser);
+app.post(urls.UPDATE_INVITATION_STATE_URL, updateInvitationState);
+app.post(urls.UPDATE_INVITATION_REASON_URL, updateInvitationReason);
 app.post(urls.UPDATE_INVITATION_URL, updateInvitation);
 app.post(urls.DELETE_INVITATION_URL, deleteInvitation);
 
@@ -436,12 +458,16 @@ app.post(urls.DELETE_SCHEDULE_URL, deleteSchedule);
 app.post(urls.ADD_SLEEP_MODE_URL, addSleepmode);
 app.post(urls.GET_SLEEP_MODES_URL, getSleepmodes);
 app.post(urls.GET_SLEEP_MODE_BY_ID_URL, getSleepmodeById);
+app.post(urls.UPDATE_SLEEP_MODE_REP_URL, updateSleepRepStopped);
 app.post(urls.UPDATE_SLEEP_MODE_URL, updateSleepmode);
 app.post(urls.DELETE_SLEEP_MODE_URL, deleteSleepmode);
+
 
 /*-------------------------------SleepQuality-------------------------*/
 app.post(urls.ADD_SLEEP_QUALITY_URL, addSleepQuality);
 app.post(urls.GET_SLEEP_QUALITIES_URL, getSleepQualities);
+app.post(urls.GET_SLEEPQUALITIES_BY_DATE_RANGE_URL ,getSleepQualitiesByDateRange);
+app.post(urls.GET_SLEEPQUALITIES_BY_USER_URL, getSleepQualityByUser)
 app.post(urls.GET_SLEEP_QUALITY_BY_ID_URL, getSleepQualityById);
 app.post(urls.UPDATE_SLEEP_QUALITY_URL, updateSleepQuality);
 app.post(urls.DELETE_SLEEP_QUALITY_URL, deleteSleepQuality);
@@ -452,6 +478,9 @@ app.post(urls.GET_TONES_URL, getTones);
 app.post(urls.GET_TONE_BY_ID_URL, getToneById);
 app.post(urls.UPDATE_TONE_URL, updateTone);
 app.post(urls.DELETE_TONE_URL, deleteTone);
+
+
+
 
 /*-------------------------------spotify------------------------- */
 
