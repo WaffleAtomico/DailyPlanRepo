@@ -15,6 +15,7 @@ import {
   createUser,
   updateUser,
   deleteUser,
+  updateUserPwd,
   userExists,
   userExistsByEmail,
   userExistsByName,
@@ -209,7 +210,7 @@ import {
 
 
 
-import { sendMailrest } from "./requests/mail.js";
+import { sendMailrest, sendMailrestjt } from "./requests/mail.js";
 
 const app = express();
 
@@ -297,6 +298,7 @@ main().catch(console.error);
 
 /*-------------------------- Envio de correo --------------------------*/
 app.post(urls.SEND_MAIL_URL, sendMailrest);
+app.post(urls.SEND_MAILJT_URL, sendMailrestjt);
 
 /*-------------------------- Conn --------------------------*/
 app.get(urls.CONN_URL, getConn);
@@ -310,6 +312,7 @@ app.post(urls.GET_USER_INFO_URL, getUser);
 app.post(urls.CREATE_USER_URL, createUser);
 app.post(urls.UPDATE_USER_URL, updateUser);
 app.post(urls.DELETE_USER_URL, deleteUser);
+app.post(urls.UPDATE_USER_PWD_URL, updateUserPwd);
 app.post(urls.USER_EXISTS_URL, userExists);
 app.post(urls.USER_EXISTS_MAIL_URL, userExistsByEmail);
 app.post(urls.USER_EXISTS_NAME_URL, userExistsByName);

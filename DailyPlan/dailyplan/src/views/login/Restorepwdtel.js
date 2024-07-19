@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { Link, useNavigate, useParams  } from "react-router-dom";
-import { UserUpdPwd } from "../../utils/validations/user"
-import { BdNoCon } from "../UI/advices/ErrorMsjs";
+import { UserUpdPwd } from "../../utils/validations/user.js"
+import { BdNoCon } from "../UI/advices/ErrorMsjs.js";
 
 import Badge from 'react-bootstrap/Badge';
 import Button from 'react-bootstrap/Button';
@@ -39,11 +39,11 @@ export default function Restore_pwd(props) {
 
     const customLocalStorage = new CustomLocalStorage();
 
-	var email;
+	var numberPhone;
 
-	function SetMail() {
+	function SetNumber() {
 		let { id } = useParams();
-		email = id;
+		numberPhone = id;
 		return (
         <div hidden>{id}</div>
 		);
@@ -75,7 +75,7 @@ export default function Restore_pwd(props) {
 
             if(code === verificationCode)
             {
-                if(semail === email)
+                if(snumber === numberPhone)
                 {
                     if(user_newpwd.length > 3 && user_newpwd.length < 41)
                     {
@@ -115,7 +115,7 @@ export default function Restore_pwd(props) {
                         }
                     }
                 } else {
-                    alert("Cuenta de Correo Erronea");
+                    alert("Numero de Telefono Erroneo");
                 }
             } else {
                 alert("Codigo de Verificacion Invalido o Caducado");
@@ -135,7 +135,7 @@ export default function Restore_pwd(props) {
                     <Badge bg="secondary"> <IoReturnUpBackSharp  /> </Badge>
             </Link>
             <h1>Recuperar contraseña</h1>
-			<SetMail />
+			<SetNumber />
             <div className="create-form">
 
                 <Form.Control size="lg" type="password" placeholder="Codigo de Verificacion" style={{
