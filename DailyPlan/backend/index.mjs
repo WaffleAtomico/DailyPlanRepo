@@ -92,6 +92,8 @@ import {
   getInvitations,
   getInvitationById,
   getInvitationByUser,
+  updateInvitationState,
+  updateInvitationReason,
   updateInvitation,
   deleteInvitation
 } from './requests/invitations.js';
@@ -372,6 +374,8 @@ app.post(urls.ADD_INVITATION_URL, addInvitation);
 app.post(urls.GET_INVITATIONS_URL, getInvitations);
 app.post(urls.GET_INVITATION_BY_ID_URL, getInvitationById);
 app.post(urls.GET_INVITATION_BY_USER_URL, getInvitationByUser);
+app.post(urls.UPDATE_INVITATION_STATE_URL, updateInvitationState);
+app.post(urls.UPDATE_INVITATION_REASON_URL, updateInvitationReason);
 app.post(urls.UPDATE_INVITATION_URL, updateInvitation);
 app.post(urls.DELETE_INVITATION_URL, deleteInvitation);
 

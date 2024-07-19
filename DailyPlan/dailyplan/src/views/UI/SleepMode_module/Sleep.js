@@ -39,7 +39,7 @@ export default function SleepAlarm(props) {
 
     useEffect(()=>{
         getSleepQualityById(props.id_user, moment().format('YYYY-MM-DD')).then(res=>{
-            if(res.data >0)
+            if(res.data > 0)
             {
                 
             }

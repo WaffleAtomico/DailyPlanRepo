@@ -42,7 +42,7 @@ const GoalsModule = ({ onClose, onSave }) => {
         <div className="goals-module-container">
             <div className="goals-module-actions">
                 <Button onClick={handleSave} className="save-button">Guardar objetivos</Button>
-                <Button onClick={onClose} className="close-button">X</Button>
+                <Button onClick={onClose} className="reminders-close-button">X</Button>
             </div>
             <h3>Lista de Objetivos</h3>
             {blocks.map((block, blockIndex) => (

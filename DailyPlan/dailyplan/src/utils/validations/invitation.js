@@ -4,6 +4,8 @@ import {
     GET_INVITATIONS_URL,
     GET_INVITATION_BY_ID_URL,
     GET_INVITATION_BY_USER_URL,
+    UPDATE_INVITATION_STATE_URL,
+    UPDATE_INVITATION_REASON_URL,
     UPDATE_INVITATION_URL,
     DELETE_INVITATION_URL
 } from '../routes';
@@ -53,13 +55,32 @@ export const getInvitationByUser = async (user_id) => {
     }
 };
 
+// Function to update invitation state
+export const updateInvitationState = async (inv_id, inv_state) => {
+    try {
+        const response = await axios.post(UPDATE_INVITATION_STATE_URL, { inv_state, inv_id });
+        return response;
+    } catch (err) {
+        console.log("Error updating invitation state:", err);
+        return "Error updating invitation state";
+    }
+};
 
-
+// Function to update invitation reason
+export const updateInvitationReason = async (inv_id, inv_reason) => {
+    try {
+        const response = await axios.post(UPDATE_INVITATION_REASON_URL, { inv_reason, inv_id });
+        return response;
+    } catch (err) {
+        console.log("Error updating invitation reason:", err);
+        return "Error updating invitation reason";
+    }
+};
 
 // Function to update an invitation
 export const updateInvitation = async (inv_id, invitationInfo) => {
     try {
-        const response = await axios.put(`${UPDATE_INVITATION_URL}/${inv_id}`, invitationInfo);
+        const response = await axios.put(UPDATE_INVITATION_URL, invitationInfo);
         return response;
     } catch (err) {
         console.log("Error updating invitation:", err);
@@ -70,7 +91,7 @@ export const updateInvitation = async (inv_id, invitationInfo) => {
 // Function to delete an invitation
 export const deleteInvitation = async (inv_id) => {
     try {
-        const response = await axios.delete(`${DELETE_INVITATION_URL}/${inv_id}`);
+        const response = await axios.delete(DELETE_INVITATION_URL, { inv_id });
         return response;
     } catch (err) {
         console.log("Error deleting invitation:", err);

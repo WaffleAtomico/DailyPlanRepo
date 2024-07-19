@@ -67,6 +67,8 @@ const ADD_INVITATION_URL = `${urlreference}/add-invitation`;
 const GET_INVITATIONS_URL = `${urlreference}/get-invitations`;
 const GET_INVITATION_BY_USER_URL = `${urlreference}/get-invitation-user`;
 const GET_INVITATION_BY_ID_URL = `${urlreference}/get-invitation`;
+const UPDATE_INVITATION_STATE_URL = `${urlreference}/update-invitation-state`;
+const UPDATE_INVITATION_REASON_URL = `${urlreference}/update-invitation-reason`;
 const UPDATE_INVITATION_URL = `${urlreference}/update-invitation`;
 const DELETE_INVITATION_URL = `${urlreference}/delete-invitation`;
 
@@ -203,6 +205,8 @@ export {
     GET_INVITATIONS_URL,
     GET_INVITATION_BY_USER_URL,
     GET_INVITATION_BY_ID_URL,
+    UPDATE_INVITATION_STATE_URL,
+    UPDATE_INVITATION_REASON_URL,
     UPDATE_INVITATION_URL,
     DELETE_INVITATION_URL,
     ADD_LOCATION_URL,
