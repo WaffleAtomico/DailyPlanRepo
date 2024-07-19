@@ -22,6 +22,7 @@ const CancelReasonModal = ({ show, onClose, onSave }) => {
                             as="textarea"
                             rows={3}
                             value={reason}
+                            max={250}
                             onChange={(e) => setReason(e.target.value)}
                         />
                     </Form.Group>

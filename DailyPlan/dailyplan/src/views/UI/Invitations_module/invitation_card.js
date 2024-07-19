@@ -36,10 +36,10 @@ const InvitationCard = ({ name, color, Icon, content, flag, handleInvAccepted,
                 </div>
             </div>
             {isExpanded && (
-                <div className="invitation-details" style={{ backgroundColor: color }}>
+                <div className="invitation-details" style={{ backgroundColor: color }} >
                     {currentContent.map((item, index) => (
                         <div key={index} className="invitation-detail">
-                            <p>ID: {item.inv_id}</p>
+                            <p>ID: {item.inv_id} </p>
                             <p>Razón: {item.inv_reason}</p>
                             {/* Add other relevant fields here */}
                             <div className="invitation-buttons">
