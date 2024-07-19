@@ -92,7 +92,7 @@ const PuntButton = (props) => {
       <button className="punt_button-circle" onClick={togglePopup}>
         <span className="punt_button-text">{puntuality}%</span>
       </button>
-      {showPopup && <PopupWindow closePopup={togglePopup} />}
+      {showPopup && <PopupWindow closePopup={togglePopup} props = {props} />}
     </div>
   );
 };

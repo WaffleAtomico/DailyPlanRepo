@@ -52,6 +52,20 @@ const getSleepQualityById = (req, res) => {
     });
 };
 
+const getSleepQualityByUser = (req, res) => {
+    console.log("sleep quality by user", req.body);
+    const query = {
+        sql: "SELECT * FROM `sleepquality` WHERE `sleep_id` = ?",
+        values: [req.body.quality_id],
+    };
+    db.query(query.sql, query.values, (err, data) => {
+        if (err) {
+            return res.json({ message: "Error retrieving sleep quality", error: err });
+        }
+        return res.json(data);
+    });
+};
+
 //este
 const getSleepQualitiesByDateRange = (req, res) => {
     const startDate = req.params.startDate;  // Espera 'YYYY-MM-DD'
@@ -107,5 +121,6 @@ export {
     getSleepQualityById,
     getSleepQualitiesByDateRange,
     updateSleepQuality,
+    getSleepQualityByUser,
     deleteSleepQuality 
 };

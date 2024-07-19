@@ -140,7 +140,7 @@ const ADD_SLEEP_MODE_URL = `${urlreference}/add-sleepmode`;
 const GET_SLEEP_MODES_URL = `${urlreference}/get-sleepmodes`;
 const GET_SLEEP_MODE_BY_ID_URL = `${urlreference}/get-sleepmode`;
 const UPDATE_SLEEP_MODE_URL = `${urlreference}/update-sleepmode`;
-const UPDATE_SLEEP_MODE_REP_URL = '/update-sleepmode-rep';
+const UPDATE_SLEEP_MODE_REP_URL = `${urlreference}/update-sleepmode-rep`;
 const DELETE_SLEEP_MODE_URL = `${urlreference}/delete-sleepmode`;
 
 const ADD_SLEEP_QUALITY_URL = `${urlreference}/add-sleepquality`;
@@ -148,6 +148,7 @@ const GET_SLEEP_QUALITIES_URL = `${urlreference}/get-sleepqualities`;
 const GET_SLEEP_QUALITY_BY_ID_URL = `${urlreference}/get-sleepquality`;
 const GET_SLEEPQUALITIES_BY_DATE_RANGE_URL = `${urlreference}/get-sleepqualities-by-date-range`;
 const UPDATE_SLEEP_QUALITY_URL = `${urlreference}/update-sleepquality`;
+const GET_SLEEPQUALITIES_BY_USER_URL =  `${urlreference}/get-sleepqualities-by-user`
 const DELETE_SLEEP_QUALITY_URL = `${urlreference}/delete-sleepquality`;
 
 const ADD_TONE_URL = `${urlreference}/add-tone`;
@@ -271,6 +272,7 @@ export {
     GET_SLEEP_QUALITIES_URL,
     GET_SLEEP_QUALITY_BY_ID_URL,
     GET_SLEEPQUALITIES_BY_DATE_RANGE_URL,
+    GET_SLEEPQUALITIES_BY_USER_URL,
     UPDATE_SLEEP_QUALITY_URL,
     DELETE_SLEEP_QUALITY_URL,
     ADD_TONE_URL,

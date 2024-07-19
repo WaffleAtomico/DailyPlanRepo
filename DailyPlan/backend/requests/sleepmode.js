@@ -40,7 +40,7 @@ const getSleepmodes = (req, res) => {
 const getSleepmodeById = (req, res) => {
     const query = {
         sql: `
-            SELECT sm.*, t.tone_location 
+            SELECT sm.*, t.tone_location , t.tone_name
             FROM sleepmode sm
             LEFT JOIN tones t ON sm.tone_id = t.tone_id
             WHERE sm.sleep_id = ?
