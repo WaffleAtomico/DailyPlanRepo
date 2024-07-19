@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { isValidEmail, EmailExist, getUsrByEmail, enviaCorreo } from "../../utils/validations/user"
+import { isValidEmail, EmailExist, getUsrByEmail, enviaCorreojt } from "../../utils/validations/user"
 import { BdNoCon } from "../UI/advices/ErrorMsjs";
 
 import Badge from 'react-bootstrap/Badge';
@@ -12,7 +12,7 @@ import '../../styles/start/general.css';
 import '../../styles/start/createacc.css';
 import { CustomLocalStorage, duracionVariables } from '../../utils/CustomLocalStorage.js';
 
-export default function Recover_pwd(props) {
+export default function Recover_pwd2(props) {
 
 	const form = useRef();
 	const navigate = useNavigate();
@@ -36,6 +36,7 @@ export default function Recover_pwd(props) {
 	const customLocalStorage = new CustomLocalStorage();
 
 	const paso2 = (user_mail) => {
+
 		var datausr = getUsrByEmail(user_mail);
 
 		datausr.then(response => {
@@ -52,7 +53,7 @@ export default function Recover_pwd(props) {
 
 				customLocalStorage.setItem("RecInt-codigo",codigo,duracionVariables);
 
-				var correoresult = enviaCorreo(user_mail, nombre, codigo);
+				var correoresult = enviaCorreojt(user_mail, nombre, codigo);
 
 				correoresult.then(response => {
 					//console.log("E0 " + response.status);
@@ -135,7 +136,7 @@ export default function Recover_pwd(props) {
 					<Link to="/login">
 						<Badge bg="secondary"> <IoReturnUpBackSharp /> </Badge>
 					</Link>
-					<h1>Recuperar contraseña (MT)</h1>
+					<h1>Recuperar contraseña (JT)</h1>
 					<div className="create-form">
 
 						<Form.Control size="lg" type="mail" placeholder="Correo electrónico" style={{
@@ -153,11 +154,11 @@ export default function Recover_pwd(props) {
 							</p>
 							<hr />
 							<p>
-							<Link to="/recover_pwdjt">
-								<Button variant="link" title="Usar Servidor Javateam"><IoMail/></Button>
+							<Link to="/recover_pwd">
+								<Button variant="link" title="Usar Servidor MailTrap"><IoMail/></Button>
 							</Link>
 							-
-							<Link to="/recover_pwdtel">
+							<Link to="/recover_pwdteljt">
 								<Button variant="link">Recuperar por teléfono <IoReturnUpBackSharp /></Button>
 							</Link>
 							</p>

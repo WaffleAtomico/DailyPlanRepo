@@ -98,6 +98,32 @@ const updateUser = (req, res) => {
 
 /* json para postman
 {
+    "user_password": "221",
+    "user_id": 1
+}
+*/
+
+// Función para actualizar un usuario
+const updateUserPwd = (req, res) => {
+  const query = {
+    sql: "UPDATE `users` SET `user_password` = ? WHERE `user_id` = ?",
+    values: [
+      req.body.user_password,
+      req.body.user_id,
+    ],
+  };
+  //cuando los valores son pasados unitariamente   a=? b=?   se maneja []
+  //cuando son pasados todos juntos   (?)   se maneja [[]]
+  db.query(query.sql, query.values, (err, data) => {
+    if (err) {
+      return res.json({ result:false, message: "Error updating user password", error: err });
+    }
+    return res.json({ result:true, message: "User password updated successfully" });
+  });
+};
+
+/* json para postman
+{
     "user_id": 1
 }
 */
@@ -226,9 +252,9 @@ const getUserByMail = (req, res) => {
 };
 
 const getUserByNumber = (req, res) => {
-    // console.log("En back el telefono: " + req.body.user_number);
+    console.log("En back el telefono: " + req.body.user_number);
     const query = {
-        sql: "SELECT * FROM users WHERE `user_status` = 1 AND `user_number` = ?",
+        sql: "SELECT * FROM users WHERE `user_number` = ? AND `user_status` = 1",
         values: [req.body.user_number],
     };
     db.query(query.sql, query.values, (err, data) => {
@@ -243,6 +269,7 @@ export { getUsers,
         createUser,
         updateUser,
         deleteUser,
+        updateUserPwd,
         userExists,
         userExistsByEmail,
         userExistsByName,

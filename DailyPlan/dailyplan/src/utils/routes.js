@@ -31,14 +31,17 @@ const GET_ALL_TITLES = `${urlreference}/title-getAll`;
 const UPDATE_ONE_TITLE = `${urlreference}/title-updateone`;
 
 const CREATE_USER_URL = `${urlreference}/users`;
+const UPDATE_USER_PWD_URL = `${urlreference}/users-pwd`;
 const USER_EXISTS_URL = `${urlreference}/users-exist`;
 const USER_EXISTS_MAIL_URL = `${urlreference}/users-existmail`;
 const USER_EXISTS_NAME_URL = `${urlreference}/users-existname`;
 const USER_EXISTS_NUMBER_URL = `${urlreference}/users-existnumber`;
 const GET_USER_INFO_URL = `${urlreference}/get-userinfo`;
 const GET_USER_BY_MAIL_URL = `${urlreference}/user-bymail`;
+const GET_USER_BY_PHONE_URL = `${urlreference}/user-byphone`;
 
 const SEND_MAIL_URL = `${urlreference}/send`;
+const SEND_MAILJT_URL = `${urlreference}/sendjt`;
 
 const ADD_TIMER_URL = `${urlreference}/add-timer`;
 const GET_TIMERS_FOR_USER_URL = `${urlreference}/get-user-timers`;
@@ -171,13 +174,16 @@ export {
     CLOCK_EXISTS_ZONE_URL,
     CONN_URL,
     CREATE_USER_URL,
+    UPDATE_USER_PWD_URL,
     USER_EXISTS_URL,
     USER_EXISTS_MAIL_URL,
     USER_EXISTS_NAME_URL,
     USER_EXISTS_NUMBER_URL,
     GET_USER_INFO_URL,
     GET_USER_BY_MAIL_URL,
+    GET_USER_BY_PHONE_URL,
     SEND_MAIL_URL,
+    SEND_MAILJT_URL,
     ADD_TIMER_URL,
     GET_TIMERS_FOR_USER_URL,
     GET_TIMER_BY_ID_URL,

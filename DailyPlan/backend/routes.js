@@ -1,6 +1,7 @@
 const ROOT_URL = '/';
 
 const SEND_MAIL_URL = '/send';
+const SEND_MAILJT_URL = '/sendjt';
 
 const CONN_URL = '/conn';
 
@@ -11,12 +12,13 @@ const GET_USER_INFO_URL = '/get-userinfo';
 const CREATE_USER_URL = '/users';
 const UPDATE_USER_URL = '/users';
 const DELETE_USER_URL = '/users';
+const UPDATE_USER_PWD_URL = '/users-pwd';
 const USER_EXISTS_URL = '/users-exist';
 const USER_EXISTS_MAIL_URL = '/users-existmail';
 const USER_EXISTS_NAME_URL = '/users-existname';
 const USER_EXISTS_NUMBER_URL = '/users-existnumber';
 const GET_USER_BY_MAIL_URL = '/user-bymail';
-const GET_USER_BY_NUMBER_URL = '/user-bynumber';
+const GET_USER_BY_NUMBER_URL = '/user-byphone';
 
 const ADD_CLOCK_URL = '/clock-id';
 const GET_CLOCK_URL = '/clock-byid';
@@ -156,6 +158,7 @@ const DELETE_TONE_URL = '/delete-tone';
 export {
     ROOT_URL,
     SEND_MAIL_URL,
+    SEND_MAILJT_URL,
     CONN_URL,
     LOGIN_URL,
     GET_USERS_URL,
@@ -163,6 +166,7 @@ export {
     CREATE_USER_URL,
     UPDATE_USER_URL,
     DELETE_USER_URL,
+    UPDATE_USER_PWD_URL,
     USER_EXISTS_URL,
     USER_EXISTS_MAIL_URL,
     USER_EXISTS_NAME_URL,
