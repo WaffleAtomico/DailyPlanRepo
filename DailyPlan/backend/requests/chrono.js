@@ -23,6 +23,8 @@ const addChronometer = (req, res) => {
 };
 
 const getChronometersForUser = (req, res) => {
+    console.log("se obtuvieron cronomeotros:", req.body);
+
     const query = {
         sql: "SELECT `chrono_id`, `chrono_name`, `chrono_hour`, `chrono_min`, `chrono_sec`, `user_id` FROM `chronometers` WHERE `user_id` = ?",
         values: [req.body.user_id],
@@ -69,9 +71,11 @@ const updateChronometer = (req, res) => {
 };
 
 const deleteChronometer = (req, res) => {
+
+    console.log("eliminar crono;", req.body);
     const query = {
         sql: "DELETE FROM `chronometers` WHERE `chrono_id` = ?",
-        values: [req.params.chrono_id],
+        values: [req.body.chronoId],
     };
     db.query(query.sql, query.values, (err, data) => {
         if (err) {

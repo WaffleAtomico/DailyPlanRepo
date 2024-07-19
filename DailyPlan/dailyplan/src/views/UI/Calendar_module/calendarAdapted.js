@@ -10,7 +10,7 @@ import ReminderFormView from './Reminder_formCrea.js';
 // Queda pendiente cambiar el formulario para poder hacer la query correcta y poder publicar/
 // Crear un registro que tenga la informacion completa que se necesita
 
-export default function Calendar_Adapted() {
+export default function Calendar_Adapted(props) {
   const [view, setView] = useState('year'); // Inicializa la vista en "year"
   const [date, setDate] = useState(new Date());
   const [visible, setVisibilty] = useState(false);
@@ -18,7 +18,7 @@ export default function Calendar_Adapted() {
   const [selectDate, setSelectDate] = useState("2024-01-01");
 
 
-  console.log(view);
+  // console.log(view);
   
 
   const renderView = () => {
@@ -62,6 +62,7 @@ export default function Calendar_Adapted() {
   {visible && (
     
       <ReminderFormView 
+        user_id = {props.user_id}
         showform = {()=>setVisibilty(false)}
         SelectHour={hour}
         SelectDate={selectDate}

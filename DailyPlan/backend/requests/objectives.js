@@ -1,6 +1,9 @@
 import { db } from '../config/connection.js';
 
 const addObjective = (req, res) => {
+
+    console.log("meter objetivo", req.body);
+
     const query = {
         sql: "INSERT INTO `objectives`(`obj_name`, `obj_duration_min`, `obj_durationreal_min`, `obj_check`, `id_user`, `objblo_id`) VALUES (?, ?, ?, ?, ?, ?)",
         values: [

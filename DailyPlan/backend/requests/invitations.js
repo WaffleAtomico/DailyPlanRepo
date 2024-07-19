@@ -52,7 +52,7 @@ const getInvitationByUser = (req, res) => {
     const query = {
         sql: "SELECT `inv_id`, `reminder_id`, `alarm_id`, `user_id_owner`, `user_id_target`, `inv_state`, `inv_reason` FROM `invitations` WHERE `user_id_owner` = ? OR `user_id_target` = ?",
         values: [req.body.user_id, req.body.user_id],
-        
+
     };
     db.query(query.sql, query.values, (err, data) => {
         if (err) {
@@ -61,7 +61,7 @@ const getInvitationByUser = (req, res) => {
             return res.json({ message: "Error retrieving invitation", error: err });
         }
 
-        console.log("Datos obtenidos",data);
+        console.log("Datos obtenidos", data);
         return res.json(data);
     });
 };
@@ -88,6 +88,40 @@ const updateInvitation = (req, res) => {
     });
 };
 
+const updateInvitationState = (req, res) => {
+    const query = {
+        sql: "UPDATE `invitations` SET `inv_state` = ? WHERE `inv_id` = ?",
+        values: [
+            req.body.inv_state,
+            req.params.inv_id,
+        ],
+    };
+    db.query(query.sql, query.values, (err, data) => {
+        if (err) {
+            return res.json({ message: "Error updating invitation state", error: err });
+        }
+        return res.json({ message: "Invitation state updated successfully" });
+    });
+};
+
+const updateInvitationReason = (req, res) => {
+    const query = {
+        sql: "UPDATE `invitations` SET `inv_reason` = ? WHERE `inv_id` = ?",
+        values: [
+            req.body.inv_reason,
+            req.params.inv_id,
+        ],
+    };
+    db.query(query.sql, query.values, (err, data) => {
+        if (err) {
+            return res.json({ message: "Error updating invitation reason", error: err });
+        }
+        return res.json({ message: "Invitation reason updated successfully" });
+    });
+};
+
+
+
 const deleteInvitation = (req, res) => {
     const query = {
         sql: "DELETE FROM `invitations` WHERE `inv_id` = ?",
@@ -101,11 +135,13 @@ const deleteInvitation = (req, res) => {
     });
 };
 
-export { 
+export {
     addInvitation,
-    getInvitations, 
-    getInvitationById, 
+    getInvitations,
+    getInvitationById,
     getInvitationByUser,
+    updateInvitationState,
+    updateInvitationReason,
     updateInvitation,
     deleteInvitation
 };

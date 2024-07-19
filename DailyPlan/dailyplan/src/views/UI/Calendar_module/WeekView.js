@@ -49,8 +49,17 @@ const WeekView = ({ date, setDate, showform, setHour, setSelectDate }) => {
     getRemindersByWeek(formattedStartOfWeek, formattedEndOfWeek, id).then(response => {
       console.log(response);
       console.log(response.data);
-      setReminders(response.data);
-    }).catch(err => console.log(err));
+      if (Array.isArray(response.data)) {
+        setReminders(response.data);
+      } else {
+        console.error("Expected an array but received:", response.data);
+        setReminders([]); // Set to empty array to avoid map error
+      }
+    })
+    .catch(err => {
+      console.log(err);
+      setReminders([]); // Set to empty array in case of error
+    });
   }, [date, id]);
 
   // Ordenar recordatorios por fecha y hora

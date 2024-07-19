@@ -76,7 +76,7 @@ const createUser = (req, res) => {
 // Función para actualizar un usuario
 const updateUser = (req, res) => {
   const query = {
-    sql: "UPDATE `users` SET `user_mail` = ?, `user_name` = ?, `user_password` = ?, `user_number` = ?, `user_status` = ? WHERE `user_id` = ?",
+    sql: "UPDATE `users` SET `user_mail` = ?, `user_name` = ?, `user_password` = ?, `user_number` = ?, `user_status` = ?, `title_id` = ? WHERE `user_id` = ?",
     values: [
       req.body.user_mail,
       req.body.user_name,
@@ -128,6 +128,22 @@ const updateUserPwd = (req, res) => {
 }
 */
 
+const updateUserTitle = (req, res) => {
+  const query = {
+    sql: "UPDATE `users` SET `title_id` = ? WHERE `user_id` = ?",
+    values: [
+      req.body.title_id,
+    ],
+  };
+  db.query(query.sql, query.values, (err, data) => {
+    if (err) {
+      return res.json({ message: "Error updating userTitle", error: err });
+    }
+    return res.json({ message: "Usertitle updated successfully" });
+  });
+};
+
+
 // Función para eliminar un usuario
 const deleteUser = (req, res) => {
   const query = {
@@ -142,13 +158,6 @@ const deleteUser = (req, res) => {
     return res.json({ message: "User deleted successfully" });
   });
 };
-
-/* json para postman
-{
-    "user_mail": testuser@gmail.com,
-    "user_password": 123
-}
-*/
 
 // Función para verificar si un usuario existe
 const userExists = (req, res) => {
@@ -187,12 +196,6 @@ const userExistsByEmail = (req, res) => {
   });
 };
 
-/* json en postman
-{
-    "user_name": "user"
-}
-*/
-
 // Función para verificar si un usuario existe por nombre
 const userExistsByName = (req, res) => {
   const query = {
@@ -210,12 +213,6 @@ const userExistsByName = (req, res) => {
     }
   });
 };
-
-/* json en postman
-{
-    "user_number": "3312345678"
-}
-*/
 
 // Función para verificar si un usuario existe por número de teléfono
 const userExistsByNumber = (req, res) => {
@@ -275,5 +272,6 @@ export { getUsers,
         userExistsByName,
         userExistsByNumber,
         getUserByMail,
-        getUserByNumber
+        getUserByNumber,
+        updateUserTitle
         };
