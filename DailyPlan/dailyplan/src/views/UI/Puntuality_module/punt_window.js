@@ -1,21 +1,46 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Tabs, Tab } from 'react-bootstrap';
 import { FaTimes } from 'react-icons/fa';
 import { Pie } from 'react-chartjs-2';
 import { Chart, ArcElement, Tooltip, Legend } from 'chart.js';
-
-// Registrar los elementos de Chart.js
+import { getSleepQualityByUser } from '../../../utils/validations/sleepquality';
+// Register the Chart.js components
 Chart.register(ArcElement, Tooltip, Legend);
 
-const PopupWindow = ({ closePopup }) => {
+const PopupWindow = ({ closePopup, props }) => {
+  const [qualityData, setQualityData] = useState({ good: 0, medium: 0, bad: 0 });
 
-  // Sueno
+  useEffect(() => {
+
+    
+    getSleepQualityByUser(props.id_user)
+
+
+      .then(response => {
+        const qualityCounts = { good: 0, medium: 0, bad: 0 };
+        console.log("Se obtuvo la información para la grafica:", response.data);
+        response.data.forEach(item => {
+          if (item.quality_good===1) {
+            qualityCounts.good += 1;
+          } else if (item.quality_medium===1) {
+            qualityCounts.medium += 1;
+          } else if (item.quiality_bad===1) {
+            qualityCounts.bad += 1;
+          }
+        });
+
+        setQualityData(qualityCounts);
+      })
+      .catch(error => {
+        console.log("Ocurrió un error al obtener la calidad de sueño para la gráfica", error);
+      });
+  }, [props.id_user]);
 
   const data = {
     labels: ['Bueno', 'Regular', 'Mal'],
     datasets: [
       {
-        data: [30, 50, 20], // Estos son los valores para cada segmento del gráfico
+        data: [qualityData.good, qualityData.medium, qualityData.bad],
         backgroundColor: [
           '#36A2EB', // Color para "Bueno"
           '#FFCE56', // Color para "Regular"

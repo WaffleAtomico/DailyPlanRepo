@@ -142,11 +142,13 @@ const ADD_SLEEP_MODE_URL = '/add-sleepmode';
 const GET_SLEEP_MODES_URL = '/get-sleepmodes';
 const GET_SLEEP_MODE_BY_ID_URL = '/get-sleepmode';
 const UPDATE_SLEEP_MODE_URL = '/update-sleepmode';
+const UPDATE_SLEEP_MODE_REP_URL = '/update-sleepmode-rep'
 const DELETE_SLEEP_MODE_URL = '/delete-sleepmode';
 
 const ADD_SLEEP_QUALITY_URL = '/add-sleepquality';
 const GET_SLEEP_QUALITIES_URL = '/get-sleepqualities';
 const GET_SLEEPQUALITIES_BY_DATE_RANGE_URL = '/get-sleepqualities-by-date-range'
+const GET_SLEEPQUALITIES_BY_USER_URL = '/get-sleepqualities-by-user'
 const GET_SLEEP_QUALITY_BY_ID_URL = '/get-sleepquality';
 const UPDATE_SLEEP_QUALITY_URL = '/update-sleepquality';
 const DELETE_SLEEP_QUALITY_URL = '/delete-sleepquality';
@@ -263,6 +265,7 @@ export {
     DELETE_REMINDERSHARE_URL,
     ADD_REPETITIONDAY_URL,
     GET_REPETITIONDAYS_URL,
+    UPDATE_SLEEP_MODE_REP_URL,
     GET_REPETITIONDAY_BY_ID_URL,
     UPDATE_REPETITIONDAY_URL,
     DELETE_REPETITIONDAY_URL,
@@ -280,6 +283,7 @@ export {
     GET_SLEEP_QUALITIES_URL,
     GET_SLEEPQUALITIES_BY_DATE_RANGE_URL,
     GET_SLEEP_QUALITY_BY_ID_URL,
+    GET_SLEEPQUALITIES_BY_USER_URL,
     UPDATE_SLEEP_QUALITY_URL,
     DELETE_SLEEP_QUALITY_URL,
     ADD_TONE_URL,

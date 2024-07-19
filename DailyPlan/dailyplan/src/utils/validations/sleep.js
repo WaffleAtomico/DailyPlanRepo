@@ -3,6 +3,7 @@ import axios from 'axios';
 import { 
     ADD_SLEEP_MODE_URL,
     GET_SLEEP_MODES_URL,
+    UPDATE_SLEEP_MODE_REP_URL,
     GET_SLEEP_MODE_BY_ID_URL,
     UPDATE_SLEEP_MODE_URL
  } from "../routes";
@@ -39,5 +40,15 @@ export const updateSleepmode = async (sleepmodeInfo) => {
         return true;
     } catch (err) {
         console.log(err);
+    }
+};
+
+
+export const updateSleepRepStopped = async (sleep_id, sleep_rep_stopped) => {
+    try {
+        const response = await axios.post(UPDATE_SLEEP_MODE_REP_URL, { sleep_id, sleep_rep_stopped });
+        return response;
+    } catch (err) {
+        console.error(err);
     }
 };

@@ -1,24 +1,29 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaRegSmile, FaMeh, FaRegFrown } from 'react-icons/fa';
 import '../../../styles/UI/Sleep/sleepForm.css';
 import moment from 'moment';
 import { saveSleepQuality } from '../../../utils/validations/sleepquality';
+import { updateSleepRepStopped } from '../../../utils/validations/sleep';
 
-const SleepForm = ({ onClose, user_id }) => {
+const SleepForm = ({ onClose, user_id, stopRep, setAlreadySurvey }) => {
   const [sleepRating, setSleepRating] = useState(null);
+
+  useEffect(() => {
+    updateSleepRepStopped(user_id, stopRep);
+  }, [stopRep, user_id]);
 
   const handleRatingSelect = (rating) => {
     setSleepRating(rating);
-    // quality_good, quality_medium, quiality_bad, quality_date, sleep_id
 
     const sleepQualityInfo = {
       quality_good: 0,
       quality_medium: 0,
       quiality_bad: 0,
-      quality_date: moment().format('YYYY-MM-DD'),  // Formatear la fecha actual
+      quality_date: moment().format('YYYY-MM-DD'),
       sleep_id: user_id,
     };
-    switch (sleepRating) {
+
+    switch (rating) { // Fixed the switch case to use the 'rating' parameter
       case 'bien':
         sleepQualityInfo.quality_good = 1;
         break;
@@ -30,12 +35,30 @@ const SleepForm = ({ onClose, user_id }) => {
         break;
       default:
         sleepQualityInfo.quality_good = 1;
-      break;
+        break;
     }
-    saveSleepQuality(sleepQualityInfo).then(()=>{
 
-    }).catch(err => {console.log(err)});
-    onClose(); // Cierra el formulario al seleccionar una opción.
+    saveSleepQuality(sleepQualityInfo)
+      .then(() => {
+        setAlreadySurvey(true); // Set alreadySurvey to true after saving
+        onClose(); // Close the form after saving
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
+  const handleCloseWithoutAnswer = () => {
+    // Ensure updateSleepRepStopped is called even if no rating is selected
+    updateSleepRepStopped(user_id, stopRep)
+      .then(() => {
+        setAlreadySurvey(true); // Set alreadySurvey to true
+        onClose(); // Close the form
+      })
+      .catch(err => {
+        console.log(err);
+        onClose(); // Close the form even if there's an error
+      });
   };
 
   return (
@@ -55,6 +78,7 @@ const SleepForm = ({ onClose, user_id }) => {
           <span>Mal</span>
         </div>
       </div>
+      <button onClick={handleCloseWithoutAnswer}>Cerrar sin respuesta</button> {/* Button to close without answer */}
     </div>
   );
 };
