@@ -4,6 +4,7 @@ import { saveUserReminder } from '../../../utils/validations/reminders';
 import '../../../styles/UI/Calendar/Reminder_formCrea.css';
 
 import ObjectiveBlocks from './ObjectivesBlocks';
+import ShareUsers from './ShareReminder';
 import { addTone } from '../../../utils/validations/tone';
 import { saveReminderShare } from '../../../utils/validations/remindershare';
 import { saveObjective } from '../../../utils/validations/objetive';
@@ -24,12 +25,13 @@ const ReminderFormView = (props) => {
         image: null,
         description: '',
         snooze: '',
-        goalList: []
+        goalList: [],
+        shareUsers: []
     });
 
     const [reminder, setReminder] = useState([]);
-
     const [showObjectiveBlocks, setShowObjectiveBlocks] = useState(false);
+    const [showShareUsers, setShowShareUsers] = useState(false); // Añadido
 
     useEffect(() => {
         if (props.SelectDate && props.SelectHour !== null && props.SelectHour !== undefined) {
@@ -80,6 +82,21 @@ const ReminderFormView = (props) => {
         }));
     };
 
+    const handleAddUser = (user) => {
+        
+        setFormData((prevData) => ({
+            ...prevData,
+            shareUsers: [...prevData.shareUsers, user]
+        }));
+    };
+
+    const handleRemoveUser = (name) => {
+        setFormData((prevData) => ({
+            ...prevData,
+            shareUsers: prevData.shareUsers.filter(user => user.name !== name)
+        }));
+    };
+
     const handleSubmit = (event) => {
         event.preventDefault();
 
@@ -125,46 +142,45 @@ const ReminderFormView = (props) => {
 
                 };
 */
-              
-                    if (formData.goalList.length > 0) {
-                        formData.goalList.forEach(goal => {
-                            const objectiveBlockData = {
-                                objblo_name: goal.name,
-                                reminder_id: reminder_id,
-                            };
+                if (formData.goalList.length > 0) {
+                    formData.goalList.forEach(goal => {
+                        const objectiveBlockData = {
+                            objblo_name: goal.name,
+                            reminder_id: reminder_id,
+                        };
 
-                            saveObjectivesBlock(objectiveBlockData).then(response => {
-                                const { objblo_id } = response.data;
-                                console.log("Objective block saved:", response.data);
+                        saveObjectivesBlock(objectiveBlockData).then(response => {
+                            const { objblo_id } = response.data;
+                            console.log("Objective block saved:", response.data);
 
-                                goal.objectives.forEach(objective => {
-                                    const goalData = {
-                                        obj_name: objective,
-                                        obj_duration_min: goal.time, // Assuming time represents duration here
-                                        obj_durationreal_min: 0,
-                                        obj_check: false, // Adjust this value based on your needs
-                                        objblo_id: objblo_id,
-                                        id_user: props.user_id,
-                                    };
+                            goal.objectives.forEach(objective => {
+                                const goalData = {
+                                    obj_name: objective,
+                                    obj_duration_min: goal.time, // Assuming time represents duration here
+                                    obj_durationreal_min: 0,
+                                    obj_check: false, // Adjust this value based on your needs
+                                    objblo_id: objblo_id,
+                                    id_user: props.user_id,
+                                };
 
-                                    saveObjective(goalData).then(response => {
-                                        console.log("Objective saved:", response.data);
-                                    }).catch(error => {
-                                        console.error("Error saving objective", error);
-                                    });
+                                saveObjective(goalData).then(response => {
+                                    console.log("Objective saved:", response.data);
+                                }).catch(error => {
+                                    console.error("Error saving objective", error);
                                 });
-                            }).catch(error => {
-                                console.error("Error saving objective block", error);
                             });
+                        }).catch(error => {
+                            console.error("Error saving objective block", error);
                         });
-                    }
-                }).catch(error => {
-                    console.error("Error saving reminder share", error);
-                });
+                    });
+                }
             }).catch(error => {
-                console.error("Error saving reminder", error);
+                console.error("Error saving reminder share", error);
             });
-        
+        }).catch(error => {
+            console.error("Error saving reminder", error);
+        });
+
     };
 
     //Utils
@@ -175,11 +191,12 @@ const ReminderFormView = (props) => {
     }
 
     return (
-        <div className="reminder-view-container">
+       <div>
+         <div className="reminder-view-container">
             <div className="reminder-view">
                 <div className="reminder-view-header">
                     <h2 className="reminder-title">Configurar Recordatorio</h2>
-                    <button className="close-button" onClick={props.showform}>X</button>
+                    <button className="reminders-close-button" onClick={props.showform}>X</button>
                 </div>
                 <form onSubmit={handleSubmit}>
                     <Container fluid className="reminder-view">
@@ -375,12 +392,14 @@ const ReminderFormView = (props) => {
                         </Form>
                     </Container>
                     <div className="form-actions">
+                        <Button type="button" className="btn btn-secondary" onClick={() => setShowShareUsers(showShareUsers => !showShareUsers)}>
+                            Compartir
+                        </Button>
+
                         <Button type="submit" className="btn btn-primary" >
                             Guardar
                         </Button>
-                        <Button type="button" className="btn btn-secondary">
-                            Compartir
-                        </Button>
+
                     </div>
                 </form>
                 {showObjectiveBlocks && (
@@ -390,8 +409,16 @@ const ReminderFormView = (props) => {
                         onClose={() => setShowObjectiveBlocks(false)}
                     />
                 )}
+               {(showShareUsers && !showObjectiveBlocks) && (
+                   <ShareUsers
+                       onAddUser={handleAddUser}
+                       onRemoveUser={handleRemoveUser}
+                       userList={formData.shareUsers}
+                   />
+               )}
             </div>
         </div>
+       </div>
     );
 };
 

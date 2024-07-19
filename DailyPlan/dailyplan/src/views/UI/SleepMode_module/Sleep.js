@@ -51,12 +51,14 @@ export default function SleepAlarm(props) {
 
     }, [props.id_user]);
 
+
     useEffect(() => {
         const currentDate = moment().format('YYYY-MM-DD');
         getSleepQualityById({ quality_id: props.id_user, current_date: currentDate }).then(res => {
             setAlreadySurvey(res.data[0] != null);
         }).catch(err => { console.log(err) });
     }, [props.id_user]);
+
 
     const handleMediaSubmit = (e) => {
         e.preventDefault();
