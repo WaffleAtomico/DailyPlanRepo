@@ -15,36 +15,38 @@ export default function Calendar_Adapted(props) {
   const [date, setDate] = useState(new Date());
   const [visible, setVisibilty] = useState(false);
   const [hour, setHour] = useState(0);
+  const [reminderId, setReminderId] = useState(null);
   const [selectDate, setSelectDate] = useState("2024-01-01");
 
 
   // console.log(view);
-  
+
 
   const renderView = () => {
-    switch(view) {
+    switch (view) {
       case 'year':
-        return <YearView date={date} setDate={setDate} setView={setView}/>;
+        return <YearView date={date} setDate={setDate} setView={setView} />;
       case 'month':
-        return <MonthView 
-                date={date} 
-                setDate={setDate} 
-                setView={setView}
-                />;
+        return <MonthView
+          date={date}
+          setDate={setDate}
+          setView={setView}
+        />;
       case 'week':
-        return <WeekView 
-                date={date}
-                setDate={setDate}
-                showform={()=>setVisibilty(true)}
-                setHour={setHour}
-                setSelectDate={setSelectDate}
-                />;
+        return <WeekView
+          date={date}
+          setDate={setDate}
+          showform={() => setVisibilty(true)}
+          setHour={setHour}
+          setSelectDate={setSelectDate}
+          setReminderId={setReminderId}
+        />;
       default:
-        return <YearView 
-                date={date} 
-                setDate={setDate} 
-                setView={setView}
-                />;
+        return <YearView
+          date={date}
+          setDate={setDate}
+          setView={setView}
+        />;
     }
   };
 
@@ -59,15 +61,17 @@ export default function Calendar_Adapted(props) {
       <div className="calendar-view-container">
         {renderView()}
       </div>
-  {visible && (
-    
-      <ReminderFormView 
-        user_id = {props.user_id}
-        showform = {()=>setVisibilty(false)}
-        SelectHour={hour}
-        SelectDate={selectDate}
-       />
-    )} 
+      {visible && (
+
+        <ReminderFormView
+          user_id={props.user_id}
+          showform={() => setVisibilty(false)}
+          SelectHour={hour}
+          SelectDate={selectDate}
+          Reminder_id = {reminderId}
+          setReminderId={setReminderId}
+        />
+      )}
     </div>
   );
 };

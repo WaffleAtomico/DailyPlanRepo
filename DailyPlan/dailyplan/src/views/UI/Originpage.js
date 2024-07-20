@@ -16,7 +16,7 @@ import GeneralNotif from "./advices/GeneralNotif";
 
 
 import { timeFormatSec } from "../../utils/timeFormat";
-import { myPojo, changeCounter  } from "../../utils/ShowNotifInfo";
+import { myPojo, changeCounter } from "../../utils/ShowNotifInfo";
 
 
 import "../../styles/UI/Origin/UI.css";
@@ -31,6 +31,7 @@ import { AuthContext } from "../../services/AuthContext";
 //-------------
 //import CRUD function
 import { addChronometer } from "../../utils/validations/chrono";
+import PreparationView from "./advices/Preparation";
 
 
 
@@ -83,6 +84,7 @@ export default function OriginPage() {
   /*-------------------- Notifications --------------------*/
 
   const [mostrarNotificacion, setMostrarNotificacion] = useState(false);
+  const [mostrarPreparacion, setMostrarPreparacion] = useState(false);
   const [counter, setCounter] = useState(changeCounter);
 
   useEffect(() => {
@@ -91,12 +93,12 @@ export default function OriginPage() {
     if (myPojo._isShow === true) {
       setMostrarNotificacion(true);
       // console.log("Se muestra");
-    } else if(myPojo._isShow === false) {
+    } else if (myPojo._isShow === false) {
       setMostrarNotificacion(false);
       // console.log("No se muestra");
     }
   }, [counter]);
-  
+
   useEffect(() => {
     const interval = setInterval(() => {
       setCounter(changeCounter);
@@ -104,6 +106,11 @@ export default function OriginPage() {
 
     return () => clearInterval(interval);
   }, []);
+
+  const handleClosePreparationView = () => {
+    setMostrarPreparacion(false);
+};
+
 
   /*  --------------------CHRONO IN ALL-------------------- */
 
@@ -160,7 +167,7 @@ export default function OriginPage() {
   return (
     <div className="main-container">
       <div className="UI-header">
-        <PuntButton  id_user={id} />
+        <PuntButton id_user={id} />
         {/* <button className="left-button">
           Puntualidad
           </button> */}
@@ -214,9 +221,9 @@ export default function OriginPage() {
         )}
         {selectedOption === 3 && <CountdownTimer user_id={id} />}
         {selectedOption === 4 && <Clock id_user={id} />}
-        {selectedOption === 5 && <Invitation user_id={id}/>}
+        {selectedOption === 5 && <Invitation user_id={id} />}
         {selectedOption === 7 && <Sleep id_user={id} />}
-        {selectedOption === 8 && <Pomodoro id_user={id}/>}
+        {selectedOption === 8 && <Pomodoro id_user={id} />}
         {selectedOption !== 2 && secondsPassed > 0 && (
           <ChronoIndicator
             chronoTimeToChrono={chronoTime}
@@ -225,23 +232,20 @@ export default function OriginPage() {
           />
         )}
       </div>
-      {/* <GeneralNotif
-          mensaje="Este es el mensaje de la notificación"
-          onClose={handleCloseNotificacion}
-          componente={<div>Componente adicional</div>}
-        /> */}
-
-      {/* <GeneralNotif
-          mensaje={myPojo.HeadText}
-          // onClose={handleCloseNotificacion}
-          componente={myPojo.content}
-        /> */}
-
+      {mostrarPreparacion && (
+        <PreparationView
+          onClose={handleClosePreparationView}
+          objectives={[
+            { id: 1, text: 'Objetivo 1' },
+            { id: 2, text: 'Objetivo 2' },
+            { id: 3, text: 'Objetivo 3' }
+          ]}
+          timeLimit={10} // Ejemplo: 10 minutos
+        />
+      )}
       {mostrarNotificacion && (
-        // console.log("IsShow en origin: ", myPojo.isShow),
         <GeneralNotif
           mensaje={myPojo.HeadText}
-          // onClose={handleCloseNotificacion}
           componente={myPojo.content}
         />
       )}
