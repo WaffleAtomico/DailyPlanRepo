@@ -174,10 +174,14 @@ import {
 
 import {
   addSchedule,
+  addPomodoroSchedule,
+  addSleepSchedule,
   getSchedules,
   getScheduleById,
   updateSchedule,
-  deleteSchedule
+  deleteSchedule,
+  deleteSleepSchedule,
+  deletePomodoroSchedule
 } from './requests/schedule.js';
 
 import {
@@ -453,6 +457,11 @@ app.post(urls.GET_SCHEDULES_URL, getSchedules);
 app.post(urls.GET_SCHEDULE_BY_ID_URL, getScheduleById);
 app.post(urls.UPDATE_SCHEDULE_URL, updateSchedule);
 app.post(urls.DELETE_SCHEDULE_URL, deleteSchedule);
+app.post(urls.ADD_SCHEDULE_POMODORO_URL, addPomodoroSchedule);
+app.post(urls.ADD_SCHEDULE_SLEEP_URL, addSleepSchedule);
+app.post(urls.DELETE_SCHEDULE_POMODORO_URL, deletePomodoroSchedule);
+app.post(urls.DELETE_SCHEDULE_SLEEP_URL, deleteSleepSchedule);
+  
 
 /*-------------------------------SleepMode-------------------------*/
 app.post(urls.ADD_SLEEP_MODE_URL, addSleepmode);

@@ -1,14 +1,20 @@
 import { db } from '../config/connection.js';
 
 const addPomodoro = (req, res) => {
+
+    console.log("Se guardo el pomodoro", req.body.pomodoroInfo);
+
+    const body = req.body.pomodoroInfo;
+
     const query = {
-        sql: "INSERT INTO `pomodoros`(`tpomodoro_hour_work`, `pomodoro_min_work`, `pomodoro_shortrest`, `pomodoro_longrest`, `tone_id`) VALUES (?, ?, ?, ?, ?)",
+        sql: "INSERT INTO `pomodoros`(`pomodoro_id`,`tpomodoro_hour_work`, `pomodoro_min_work`, `pomodoro_shortrest`, `pomodoro_longrest`, `tone_id`) VALUES (?,?, ?, ?, ?, ?)",
         values: [
-            req.body.tpomodoro_hour_work,
-            req.body.pomodoro_min_work,
-            req.body.pomodoro_shortrest,
-            req.body.pomodoro_longrest,
-            req.body.tone_id,
+            body.pomodoro_id,
+            body.tpomodoro_hour_work,
+            body.pomodoro_min_work,
+            body.pomodoro_shortrest,
+            body.pomodoro_longrest,
+            body.tone_id,
         ],
     };
     db.query(query.sql, query.values, (err, data) => {
@@ -33,8 +39,24 @@ const getPomodoros = (req, res) => {
 
 const getPomodoroById = (req, res) => {
     const query = {
-        sql: "SELECT `pomodoro_id`, `tpomodoro_hour_work`, `pomodoro_min_work`, `pomodoro_shortrest`, `pomodoro_longrest`, `tone_id` FROM `pomodoros` WHERE `pomodoro_id` = ?",
-        values: [req.params.pomodoro_id],
+        sql: `
+            SELECT 
+                p.pomodoro_id, 
+                p.tpomodoro_hour_work, 
+                p.pomodoro_min_work, 
+                p.pomodoro_shortrest, 
+                p.pomodoro_longrest, 
+                p.tone_id,
+                t.tone_location,
+                t.tone_name
+            FROM 
+                pomodoros p
+            INNER JOIN 
+                tones t ON p.tone_id = t.tone_id
+            WHERE 
+                p.pomodoro_id = ?
+        `,
+        values: [req.body.pomodoro_id],
     };
     db.query(query.sql, query.values, (err, data) => {
         if (err) {
@@ -44,16 +66,23 @@ const getPomodoroById = (req, res) => {
     });
 };
 
+
 const updatePomodoro = (req, res) => {
+
+    console.log("Se actualizó el pomodoro:", req.body.pomodoroInfo);
+
+    const body =req.body.pomodoroInfo;
+
     const query = {
         sql: "UPDATE `pomodoros` SET `tpomodoro_hour_work` = ?, `pomodoro_min_work` = ?, `pomodoro_shortrest` = ?, `pomodoro_longrest` = ?, `tone_id` = ? WHERE `pomodoro_id` = ?",
         values: [
-            req.body.tpomodoro_hour_work,
-            req.body.pomodoro_min_work,
-            req.body.pomodoro_shortrest,
-            req.body.pomodoro_longrest,
-            req.body.tone_id,
-            req.params.pomodoro_id,
+            body.tpomodoro_hour_work,
+            body.pomodoro_min_work,
+            body.pomodoro_shortrest,
+            body.pomodoro_longrest,
+            body.tone_id,
+            body.pomodoro_id
+            
         ],
     };
     db.query(query.sql, query.values, (err, data) => {

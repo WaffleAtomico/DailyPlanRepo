@@ -2,7 +2,7 @@ import { db } from '../config/connection.js';
 //este
 const addSleepmode = (req, res) => {
 
-    console.log("Se está gurdando la verdadera calidad", req.body);
+    
 
     const query = {
         sql: "INSERT INTO `sleepmode`(`sleep_id`, `sleep_starthour`, `sleep_endhour`, `sleep_active`, `sleep_rep`, `sleep_video_url`, `sleep_rep_stopped`, `tone_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
