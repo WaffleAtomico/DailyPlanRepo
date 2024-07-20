@@ -23,9 +23,9 @@ const MonthView = ({ date, setDate, setView }) => {
     const lastDayOfMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0);
     const Month = new Date(date.getFullYear(), date.getMonth());
     const formattedMonth = `${Month.getFullYear()}-${(Month.getMonth() + 1).toString().padStart(2, '0')}`;
-    console.log('Fecha de inicio del mes:', firstDayOfMonth);
-    console.log('Fecha de fin del mes:', lastDayOfMonth);
-    console.log('Año y mes: ', formattedMonth);
+    // console.log('Fecha de inicio del mes:', firstDayOfMonth);
+    // console.log('Fecha de fin del mes:', lastDayOfMonth);
+    // console.log('Año y mes: ', formattedMonth);
   }, [date]);
 
   useEffect(() => {
@@ -56,10 +56,10 @@ const MonthView = ({ date, setDate, setView }) => {
         onClickDay={() => setView('week')}
         view="month"
         onActiveStartDateChange={({ activeStartDate }) => setDate(activeStartDate)}
-        tileClassName={({ date }) => 
-          date.getFullYear() === new Date().getFullYear() && 
-          date.getMonth() === new Date().getMonth() && 
-          date.getDate() === new Date().getDate() ? 'highlight' : null
+        tileClassName={({ date }) =>
+          date.getFullYear() === new Date().getFullYear() &&
+            date.getMonth() === new Date().getMonth() &&
+            date.getDate() === new Date().getDate() ? 'highlight' : null
         }
       />
       <style>{`
@@ -79,7 +79,14 @@ const MonthView = ({ date, setDate, setView }) => {
           </thead>
           <tbody>
             {reminders.map((reminder, index) => (
-              <tr key={index}>
+              <tr key={index}
+                style={{
+                  cursor: 'pointer',
+                  transition: 'background-color 0.3s ease',
+                }}
+                onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#e0f7fa'}
+                onMouseOut={(e) => e.currentTarget.style.backgroundColor = ''}
+              >
                 <td>{reminder.reminder_name}</td>
                 <td>{formatDate(reminder.reminder_date)}</td>
                 <td>{formatTime(reminder.reminder_hour, reminder.reminder_min)}</td>

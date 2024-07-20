@@ -64,17 +64,19 @@ const getRemindersByMonth = (req, res) => {
 };
 
 const getRemindersByWeek = (req, res) => {
-    const startDate = req.params.startDate;  // Espera 'YYYY-MM-DD'
-    const endDate = req.params.endDate;  // Espera 'YYYY-MM-DD'
-    const userId = req.params.userId;  // Espera el ID del usuario
+    const startDate = req.body.startDate;  // Espera 'YYYY-MM-DD'
+    const endDate = req.body.endDate;  // Espera 'YYYY-MM-DD'
+    const user_id = req.body.user_id;  // Espera el ID del usuario
     const query = {
-        sql: "SELECT `reminder_name`, `reminder_hour` FROM `reminders` WHERE `user_id` = ? AND `reminder_date` BETWEEN ? AND ? ORDER BY `reminder_date`, `reminder_hour`",
-        values: [userId, startDate, endDate],
+        sql: "SELECT `reminder_id`, `reminder_name`, `reminder_hour`, `reminder_date` FROM `reminders` WHERE `user_id` = ? AND `reminder_date` BETWEEN ? AND ? ORDER BY `reminder_date`, `reminder_hour`",
+        values: [user_id, startDate, endDate],
     };
+    // console.log(query.values)
     db.query(query.sql, query.values, (err, data) => {
         if (err) {
             return res.json({ message: "Error retrieving reminders for week", error: err });
         }
+        // console.log(data);
         return res.json(data);
     });
 };
@@ -82,7 +84,7 @@ const getRemindersByWeek = (req, res) => {
 const getReminderById = (req, res) => {
     const query = {
         sql: "SELECT `reminder_id`, `reminder_name`, `reminder_date`, `reminder_hour`, `reminder_min`, `reminder_active`, `repdays_id`, `reminder_tone_duration_sec`, `reminder_advance_min`, `reminder_img`, `reminder_desc`, `reminder_days_suspended`, `reminder_share`, `reminder_sourse_id` FROM `reminders` WHERE `reminder_id` = ?",
-        values: [req.params.reminder_id],
+        values: [req.body.reminder_id],
     };
     db.query(query.sql, query.values, (err, data) => {
         if (err) {
@@ -109,7 +111,7 @@ const updateReminder = (req, res) => {
             req.body.reminder_days_suspended,
             req.body.reminder_share,
             req.body.reminder_sourse_id,
-            req.params.reminder_id,
+            req.body.reminder_id,
         ],
     };
     db.query(query.sql, query.values, (err, data) => {
@@ -123,7 +125,7 @@ const updateReminder = (req, res) => {
 const deleteReminder = (req, res) => {
     const query = {
         sql: "DELETE FROM `reminders` WHERE `reminder_id` = ?",
-        values: [req.params.reminder_id],
+        values: [req.body.reminder_id],
     };
     db.query(query.sql, query.values, (err, data) => {
         if (err) {

@@ -5,7 +5,7 @@ import '../../../styles/UI/Calendar/Calendar_view.css';
 import { getRemindersByWeek } from '../../../utils/validations/reminders';
 import { useParams } from "react-router-dom";
 
-const WeekView = ({ date, setDate, showform, setHour, setSelectDate }) => {
+const WeekView = ({ date, setDate, showform, setHour, setSelectDate, setReminderId }) => {
   const { id } = useParams();
   const startOfCurrentWeek = startOfWeek(date, { weekStartsOn: 1 });
 
@@ -24,42 +24,45 @@ const WeekView = ({ date, setDate, showform, setHour, setSelectDate }) => {
     showform();
   };
 
+  const handleReminderSaved = (reminder_id) => {
+    console.log(reminder_id);
+    setReminderId(reminder_id);
+    showform();
+  }
 
-  const [reminders, setReminders] = useState([
-    // { name: 'Reunión', date: '2024-07-11', time: '09:00' },
-    // { name: 'Gimnasio', date: '2024-07-11', time: '20:00' },
-    // { name: 'Gimnasio', date: '2024-07-11', time: '17:00' },
-    // { name: 'Dentista', date: '2024-07-12', time: '11:00' },
-    // { name: 'Compras', date: '2024-07-13', time: '14:00' },
-    // { name: 'Cena', date: '2024-07-13', time: '20:00' },
-    // { name: 'Estudio', date: '2024-07-14', time: '18:00' },
-    // { name: 'Cine', date: '2024-07-15', time: '19:00' },
-  ]);
+  const [reminders, setReminders] = useState([]);
 
   useEffect(() => {
     const startOfCurrentWeek = startOfWeek(date, { weekStartsOn: 1 }); // Primer día de la semana
     const endOfCurrentWeek = endOfWeek(date, { weekStartsOn: 1 }); // Último día de la semana
-  
+
     const formattedStartOfWeek = format(startOfCurrentWeek, 'yyyy-MM-dd');
     const formattedEndOfWeek = format(endOfCurrentWeek, 'yyyy-MM-dd');
-  
-    console.log('Primer día de la semana:', formattedStartOfWeek);
-    console.log('Último día de la semana:', formattedEndOfWeek);
-  
-    getRemindersByWeek(formattedStartOfWeek, formattedEndOfWeek, id).then(response => {
-      console.log(response);
-      console.log(response.data);
-      if (Array.isArray(response.data)) {
-        setReminders(response.data);
-      } else {
-        console.error("Expected an array but received:", response.data);
-        setReminders([]); // Set to empty array to avoid map error
-      }
-    })
-    .catch(err => {
-      console.log(err);
-      setReminders([]); // Set to empty array in case of error
-    });
+
+    // console.log('Primer día de la semana:', formattedStartOfWeek);
+    // console.log('Último día de la semana:', formattedEndOfWeek);
+    // console.log('id user:', id);
+
+    getRemindersByWeek(formattedStartOfWeek, formattedEndOfWeek, id)
+      .then(response => {
+        if (Array.isArray(response.data)) {
+          // Formatear las fechas y asignar al estado
+          const formattedReminders = response.data.map(reminder => ({
+            id: reminder.reminder_id,
+            name: reminder.reminder_name,
+            date: reminder.reminder_date.substring(0, 10), // Primeros 10 caracteres de reminder_date
+            time: reminder.reminder_hour ? String(reminder.reminder_hour) : ''
+          }));
+          setReminders(formattedReminders);
+        } else {
+          console.error("Expected an array but received:", response.data);
+          setReminders([]); // Set to empty array to avoid map error
+        }
+      })
+      .catch(err => {
+        console.log(err);
+        setReminders([]); // Set to empty array in case of error
+      });
   }, [date, id]);
 
   // Ordenar recordatorios por fecha y hora
@@ -107,7 +110,7 @@ const WeekView = ({ date, setDate, showform, setHour, setSelectDate }) => {
               <div className="hours-container">
                 {Array.from({ length: 24 }).map((_, hour) => (
                   <HourBlock key={hour} hour={hour} day={day} onHourClick={handleHourClick} />
-               ))}
+                ))}
               </div>
             </div>
             <div className="reminders-table-container">
@@ -121,9 +124,18 @@ const WeekView = ({ date, setDate, showform, setHour, setSelectDate }) => {
                   </thead>
                   <tbody>
                     {sortedReminders.filter(reminder => isSameDay(parseISO(reminder.date), day)).map((reminder, reminderIndex) => (
-                      <tr key={reminderIndex}>
+                      <tr
+                        key={reminderIndex}
+                        onClick={() => handleReminderSaved(reminder.id)}
+                        style={{
+                          cursor: 'pointer',
+                          transition: 'background-color 0.3s ease',
+                        }}
+                        onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#e0f7fa'}
+                        onMouseOut={(e) => e.currentTarget.style.backgroundColor = ''}
+                      >
                         <td>{reminder.name}</td>
-                        <td>{reminder.time}</td>
+                        <td>{reminder.time}h</td>
                       </tr>
                     ))}
                   </tbody>
