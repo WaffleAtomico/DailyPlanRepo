@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { isValidEmail, EmailExist, getUsrByEmail, enviaCorreo } from "../../utils/validations/user"
+import { isValidTelefono, NumberExist, getUsrByPhone, enviaCorreojt } from "../../utils/validations/user"
 import { BdNoCon } from "../UI/advices/ErrorMsjs";
 
 import Badge from 'react-bootstrap/Badge';
@@ -12,14 +12,14 @@ import '../../styles/start/general.css';
 import '../../styles/start/createacc.css';
 import { CustomLocalStorage, duracionVariables } from '../../utils/CustomLocalStorage.js';
 
-export default function Recover_pwd(props) {
+export default function Recover_pwdtel(props) {
 
 	const form = useRef();
 	const navigate = useNavigate();
-	const [user_mail, setEmail] = useState("");
+	const [user_phone, setPhone] = useState("");
 
-	const handlEmail = (e) => {
-		setEmail(e.target.value);
+	const handlPhone = (e) => {
+		setPhone(e.target.value);
 		//console.log(user_mail);
 	};
 
@@ -35,15 +35,18 @@ export default function Recover_pwd(props) {
 
 	const customLocalStorage = new CustomLocalStorage();
 
-	const paso2 = (user_mail) => {
-		var datausr = getUsrByEmail(user_mail);
+	const paso2 = (user_number) => {
+
+		var datausr = getUsrByPhone(user_number);
 
 		datausr.then(response => {
+			//console.log("A7 " + response.status);
 			if (response.status === 200 && response.data.length > 0) {
 				var nombre = response.data[0].user_name;
 
 				var user_id = response.data[0].user_id;
 				var user_number = response.data[0].user_number;
+				var user_mail = response.data[0].user_mail;
 				customLocalStorage.setItem("RecInt-correo",user_mail,duracionVariables);
 				customLocalStorage.setItem("RecInt-number",user_number,duracionVariables);
 				customLocalStorage.setItem("RecInt-id",user_id,duracionVariables);
@@ -52,7 +55,7 @@ export default function Recover_pwd(props) {
 
 				customLocalStorage.setItem("RecInt-codigo",codigo,duracionVariables);
 
-				var correoresult = enviaCorreo(user_mail, nombre, codigo);
+				var correoresult = enviaCorreojt(user_mail, nombre, codigo);
 
 				correoresult.then(response => {
 					//console.log("E0 " + response.status);
@@ -60,7 +63,7 @@ export default function Recover_pwd(props) {
 						if (response.data.msg === 'success') {
 							alert('Correo de recuperacion te ha sido enviado');
 							form.current.reset();
-							navigate(`/restore_pwd/${user_mail}`);
+							navigate(`/restore_pwdtel/${user_number}`);
 						} else if (response.data.msg === 'fail') {
 							alert('Hubo un problema al enviar correo, intente mas tarde');
 						}
@@ -104,29 +107,27 @@ export default function Recover_pwd(props) {
 			customLocalStorage.setItem("RecuperaIntentos",countInt,duracionVariables);
 
 			// Ask if the mail exist
-			var emailvalid = isValidEmail(user_mail);
-			if (emailvalid) {
-				EmailExist(user_mail).then(response => {
-					//console.log("B1 " + response.data.exists);
+			var phonevalid = isValidTelefono(user_phone);
+			if (phonevalid) {
+				NumberExist(user_phone).then(response => {
+					//console.log("A3 " + response.data.exists);
 					if (response.data.exists) {
-						paso2(user_mail);
+						paso2(user_phone);
 					} else {
-						alert("Cuenta de correo electronico no registrada");
+						alert("Numero de teléfono no registrado");
 					}
 				}).catch(function (error) {
 						console.error(error);
-						//console.log("B2 " + error.response);
+						//console.log("A4 " + error.response);
 				})
 
 			} else {
-				alert("Ingresa un correo electronico")
+				alert("Ingresa un teléfono valido de 10 dígitos")
 			}
 		} else {
 			alert("Excedidos los intentos de recuperacion");
 		}
 	}
-
-
 
 	return (
 		<>
@@ -135,30 +136,32 @@ export default function Recover_pwd(props) {
 					<Link to="/login">
 						<Badge bg="secondary"> <IoReturnUpBackSharp /> </Badge>
 					</Link>
-					<h1>Recuperar contraseña (MT)</h1>
+					<h1>Recuperar contraseña (JT)</h1>
 					<div className="create-form">
 
-						<Form.Control size="lg" type="mail" placeholder="Correo electrónico" style={{
-							backgroundColor: 'rgba(0, 141, 205, 0.55)',
-							borderRadius: '20px',
-							margin: '10px 0',
-							border: '1px solid black',
-						}} onChange={handlEmail} />
+						<Form.Control size="lg" type="text" placeholder="Número de Teléfono"
+							style={{
+								backgroundColor: "rgba(0, 141, 205, 0.55)",
+								borderRadius: "20px",
+								margin: "10px 0",
+								border: "1px solid black",
+							}}
+              				onChange={handlPhone} required />
 
 						<Alert variant="success">
 							<Alert.Heading> Aviso! </Alert.Heading>
 							<p>
-								Se enviará un correo a la dirección que se agregue, <strong>mientras exista una cuenta </strong>
-								dada de alta con ese correo
+								Se enviará un correo a la dirección de correo asociado al teléfono que se ingrese, <strong>mientras exista una cuenta </strong>
+								dada de alta con ese número
 							</p>
 							<hr />
 							<p>
-							<Link to="/recover_pwdjt">
-								<Button variant="link" title="Usar Servidor Javateam"><IoMail/></Button>
+							<Link to="/recover_pwdtel">
+								<Button variant="link" title="Usar Servidor MailTrap"><IoMail/></Button>
 							</Link>
 							-
-							<Link to="/recover_pwdtel">
-								<Button variant="link">Recuperar por teléfono <IoReturnUpBackSharp /></Button>
+							<Link to="/recover_pwdjt">
+								<Button variant="link">Recuperar por correo <IoReturnUpBackSharp /></Button>
 							</Link>
 							</p>
 						</Alert>
