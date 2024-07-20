@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import { FaUserFriends, FaUserCheck, FaUserPlus } from 'react-icons/fa';
+import { LuMailX } from "react-icons/lu";
 import { TiGroup } from 'react-icons/ti';
 import '../../../styles/UI/Invitations/invitation_view.css';
 
 import InvitationCard from './invitation_card';
-import { getInvitationByUser, updateInvitationReason, updateInvitationState } from '../../../utils/validations/invitation';
+import { deleteInvitation, getInvitationByUser, updateInvitationReason, updateInvitationState } from '../../../utils/validations/invitation';
 import { myPojo } from '../../../utils/ShowNotifInfo';
 import { grantArchivement, isCompleted } from '../../../utils/archivements/grantArchivement';
 import CancelReasonModal from './CancelReasonModal';  // Importamos el nuevo modal
@@ -26,7 +27,7 @@ export default function InvitationView(props) {
                 .then(response => {
                     if (data) {
                         setData(response.data);
-                        console.log("Data: ",data)
+                        console.log("Data: ", data);
                     }
                 })
                 .catch(error => {
@@ -152,11 +153,17 @@ export default function InvitationView(props) {
 
     const handleInvSettings = (inv_id) => {
         //ver la configuracion de una alarma y cambiarla
+        
     }
 
     const handleInvDelete = (inv_id) => {
         //eliminar el recordatorio por parte del creador
-        //cancela y elimina creo, o elimina completamente npi ahorita veo
+        deleteInvitation(inv_id).then(res => {
+            if(res)
+            {
+                myPojo.setNotif("Invitacion cancelada", <LuMailX size={220}/>)
+            }
+        }).catch(err => { console.log(err) })
     }
 
     return (

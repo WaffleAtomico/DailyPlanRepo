@@ -8,7 +8,11 @@ import Errorurl from './views/Errorurl';
 import Login from './views/login/Login';
 import Createacc from './views/login/Createacc';
 import Recoverpwd from './views/login/Recoverpwd';
+import Recoverpwdtel from './views/login/Recoverpwdtel';
+import Recoverpwd2 from './views/login/Recoverpwd2';
+import Recoverpwd2tel from './views/login/Recoverpwd2tel';
 import Restore_pwd from './views/login/Restorepwd';
+import Restore_pwdtel from './views/login/Restorepwdtel';
 import OriginPage from './views/UI/Originpage';
 import ProfileOriPage from './views/Profile/profileOriPage';
 
@@ -33,13 +37,29 @@ const router = createBrowserRouter([
     path: '/create_acount',
     element: <Createacc />,
   },
-  { //Recover password
+  { //Recover password MailTrap
     path: '/recover_pwd',
     element: <Recoverpwd />,
+  },
+  { //Recover password MailTrap por telefono
+    path: '/recover_pwdtel',
+    element: <Recoverpwdtel />,
+  },
+  { //Restore password Javateam
+    path: '/recover_pwdjt',
+    element: <Recoverpwd2 />,
+  },
+  { //Restore password Javateam
+    path: '/recover_pwdteljt',
+    element: <Recoverpwd2tel />,
   },
   { //Restore password
     path: '/restore_pwd/:id',
     element: <Restore_pwd />,
+  },
+  { //Restore password
+    path: '/restore_pwdtel/:id',
+    element: <Restore_pwdtel />,
   },
   {
     path: '/dailyplan/:id',

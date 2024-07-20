@@ -31,7 +31,7 @@ const ReminderFormView = (props) => {
 
     const [reminder, setReminder] = useState([]);
     const [showObjectiveBlocks, setShowObjectiveBlocks] = useState(false);
-    const [showShareUsers, setShowShareUsers] = useState(false); // Añadido
+    const [showShareUsers, setShowShareUsers] = useState(false); 
 
     useEffect(() => {
         if (props.SelectDate && props.SelectHour !== null && props.SelectHour !== undefined) {
