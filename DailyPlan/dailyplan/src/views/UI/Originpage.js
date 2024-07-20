@@ -81,7 +81,7 @@ export default function OriginPage() {
       default:
         break;
     }
-  };
+  }; 
 
   /*-------------------- Notifications --------------------*/
 
