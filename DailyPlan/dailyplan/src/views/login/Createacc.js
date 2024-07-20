@@ -13,6 +13,7 @@ import "../../styles/start/general.css";
 import "../../styles/start/createacc.css";
 import { CREATE_ALL_TITLES } from "../../utils/routes";
 import { saveUserSleepmode } from "../../utils/validations/sleep";
+import { savePomodoro } from "../../utils/validations/pomodoro";
 
 // NOTA: Puedes pasar la informacion necesaria para iniciar sesión cuando la información de crear cuenta es correcta
 // Para que sea mas facil para el usuario acceder a la cuenta que acaba de crear
@@ -101,13 +102,37 @@ testusr3@gmail.com
                       sleep_rep_stopped: null,
                       tone_id: null,
                     }
+
+
+
+                    //Agregar el pomodoro
+                    const podomoro_info = {
+                      pomodoro_id: user_id,
+                      tpomodoro_hour_work: 0,
+                      pomodoro_min_work: 0,
+                      pomodoro_shortrest: 0,
+                      pomodoro_longrest: 0,
+                      tone_id: null,
+                    }
+
+                    console.log("acá pasó el código");
+
+
+                    
+
+
                     saveUserSleepmode(sleep_info).then(res => {
                       if (res) {
-                        axios.post(CREATE_ALL_TITLES, { user_id }).then(response => {
-                          navigate("/login");
-                        }).catch(error => {
-                          console.error(error);
-                        });
+                        console.log("Se guardo el modo de dormir");
+                        savePomodoro(podomoro_info).then(res => {
+                          console.log("se guardó el pomodoro")
+                          axios.post(CREATE_ALL_TITLES, { user_id }).then(response => {
+                            navigate("/login");
+                          }).catch(error => {
+                            console.error(error);
+                          });
+                        }
+                        ).catch(error => { console.log("No se pudo guardar") });
                       }
                     }).catch(err => { console.log(err) });
                   }

@@ -31,6 +31,8 @@ import { AuthContext } from "../../services/AuthContext";
 //-------------
 //import CRUD function
 import { addChronometer } from "../../utils/validations/chrono";
+import { getScheduleById } from "../../utils/validations/schedule";
+
 import PreparationView from "./advices/Preparation";
 
 
@@ -42,6 +44,8 @@ export default function OriginPage() {
 
   const [selectedOption, setSelectedOption] = useState(0);
   const [username, setUsername] = useState("");
+  const [schedule, setSchedule] = useState([]);
+
 
   const handleOptionSelected = (index) => {
     setSelectedOption(index);
@@ -79,7 +83,7 @@ export default function OriginPage() {
       default:
         break;
     }
-  };
+  }; 
 
   /*-------------------- Notifications --------------------*/
 
@@ -107,9 +111,29 @@ export default function OriginPage() {
     return () => clearInterval(interval);
   }, []);
 
+
+/**
+ *   GET SCHEDULE
+ */
+
+useEffect(() =>{
+
+ getScheduleById(id).then(response => {
+  
+  console.log("Se obtuvo la siguiente información", response.data);
+  setSchedule(response.data);  localStorage.setItem('schedule', JSON.stringify(schedule));
+
+  
+
+ } ).catch("no se logro obtener el schedule"); 
+} , [id]);
+
+
+
   const handleClosePreparationView = () => {
     setMostrarPreparacion(false);
 };
+
 
 
   /*  --------------------CHRONO IN ALL-------------------- */

@@ -135,11 +135,14 @@ const UPDATE_REPETITIONDAY_URL = '/update-repetitionday';
 const DELETE_REPETITIONDAY_URL = '/delete-repetitionday';
 
 const ADD_SCHEDULE_URL = '/add-schedule';
+const ADD_SCHEDULE_POMODORO_URL = '/add-schedule-pomodoro';
+const ADD_SCHEDULE_SLEEP_URL = '/add-schedule-sleep';
 const GET_SCHEDULES_URL = '/get-schedules';
 const GET_SCHEDULE_BY_ID_URL = '/get-schedule';
 const UPDATE_SCHEDULE_URL = '/update-schedule';
 const DELETE_SCHEDULE_URL = '/delete-schedule';
-
+const DELETE_SCHEDULE_POMODORO_URL = '/delete-schedule-pomodoro';
+const DELETE_SCHEDULE_SLEEP_URL = '/delete-schedule-sleep';
 const ADD_SLEEP_MODE_URL = '/add-sleepmode';
 const GET_SLEEP_MODES_URL = '/get-sleepmodes';
 const GET_SLEEP_MODE_BY_ID_URL = '/get-sleepmode';
@@ -277,7 +280,12 @@ export {
     GET_SCHEDULES_URL,
     GET_SCHEDULE_BY_ID_URL,
     UPDATE_SCHEDULE_URL,
-    DELETE_SCHEDULE_URL,
+    DELETE_SCHEDULE_URL,    
+ADD_SCHEDULE_POMODORO_URL,
+ADD_SCHEDULE_SLEEP_URL,
+DELETE_SCHEDULE_POMODORO_URL,
+DELETE_SCHEDULE_SLEEP_URL,
+
     ADD_SLEEP_MODE_URL,
     GET_SLEEP_MODES_URL,
     GET_SLEEP_MODE_BY_ID_URL,

@@ -136,10 +136,14 @@ const UPDATE_REPETITIONDAY_URL = `${urlreference}/update-repetitionday`;
 const DELETE_REPETITIONDAY_URL = `${urlreference}/delete-repetitionday`;
 
 const ADD_SCHEDULE_URL = `${urlreference}/add-schedule`;
+const ADD_SCHEDULE_POMODORO_URL = `${urlreference}/add-schedule-pomodoro`;
+const ADD_SCHEDULE_SLEEP_URL = `${urlreference}/add-schedule-sleep`;
 const GET_SCHEDULES_URL = `${urlreference}/get-schedules`;
 const GET_SCHEDULE_BY_ID_URL = `${urlreference}/get-schedule`;
 const UPDATE_SCHEDULE_URL = `${urlreference}/update-schedule`;
 const DELETE_SCHEDULE_URL = `${urlreference}/delete-schedule`;
+const DELETE_SCHEDULE_POMODORO_URL = `${urlreference}/delete-schedule-pomodoro`;
+const DELETE_SCHEDULE_SLEEP_URL = `${urlreference}/delete-schedule-sleep`;
 
 const ADD_SLEEP_MODE_URL = `${urlreference}/add-sleepmode`;
 const GET_SLEEP_MODES_URL = `${urlreference}/get-sleepmodes`;
@@ -290,7 +294,12 @@ export {
     GET_TONE_BY_ID_URL,
     UPDATE_TONE_URL,
     DELETE_TONE_URL,
-
+  
+    ADD_SCHEDULE_POMODORO_URL,
+    ADD_SCHEDULE_SLEEP_URL,
+    DELETE_SCHEDULE_POMODORO_URL,
+    DELETE_SCHEDULE_SLEEP_URL,
+    
     CREATE_ALL_TITLES,
     GET_ALL_TITLES,
     UPDATE_ONE_TITLE,
