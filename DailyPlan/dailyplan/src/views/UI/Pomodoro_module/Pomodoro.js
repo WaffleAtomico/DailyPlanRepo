@@ -206,77 +206,62 @@ const Pomodoro_view = (props) => {
     };
 
     return (
-        <div className="main-container">
-          <div className="UI-header">
-            <PuntButton id_user={id} />
-            <Ui_navbar
-              handleOptionSelected={handleOptionSelected}
-              selectedOption={selectedOption}
-            />
-            <button onClick={() => GoToProfileModule()} className="right-button">
-              {" "}
-              <FaUserClock /> {username}{" "}
-            </button>
-            <p style={{ marginTop: "3rem" }}>
-              {selectedOption === 0 && "Calendario"}
-              {selectedOption === 1 && "Alarma"}
-              {selectedOption === 2 && "Cronometro"}
-              {selectedOption === 3 && "Temporizador"}
-              {selectedOption === 4 && "Relojes"}
-              {selectedOption === 5 && "Invitaciones"}
-              {selectedOption === 7 && "Modo de sueño"}
-              {selectedOption === 8 && "Pomodoro"}
-            </p>
-            {(selectedOption === 1 ||
-              selectedOption === 3 ||
-              selectedOption === 7 ||
-              selectedOption === 8) && (
-              <button
-                className="UI-btn-opption"
-                onClick={() => handleSuboption(selectedOption)}
-              >
-                {selectedOption === 1 && "Modo de sueño"}
-                {selectedOption === 3 && "Pomodoro"}
-                {selectedOption === 7 && "Alarma"}
-                {selectedOption === 8 && "Temporizador"}
-              </button>
-            )}
-          </div>
-    
-          <div className="UI-background">
-            {selectedOption === 0 && <Calendar user_id={id} />}
-            {selectedOption === 1 && <Alarm user_id={id} />}
-            {selectedOption === 2 && (
-              <Chrono
-                id_user={id}
-                chronoTimeToChrono={chronoTime}
-                chronoTimeSecond={secondsPassed}
-                isRunningChrono={isRunning}
-                handleStaStoChrono={handleStaSto}
-                handleResetChrono={handleReset}
-              />
-            )}
-            {selectedOption === 3 && <CountdownTimer user_id={id} />}
-            {selectedOption === 4 && <Clock id_user={id} />}
-            {selectedOption === 5 && <Invitation user_id={id} />}
-            {selectedOption === 7 && <Sleep id_user={id} />}
-            {selectedOption === 8 && <Pomodoro id_user={id} />}
-            {selectedOption !== 2 && secondsPassed > 0 && (
-              <ChronoIndicator
-                chronoTimeToChrono={chronoTime}
-                chronoTimeSecond={secondsPassed}
-                handleStaStoToChrono={handleStaSto}
-              />
-            )}
-          </div>
-          
-          {mostrarNotificacion && (
-            <GeneralNotif
-              mensaje={myPojo.HeadText}
-              componente={myPojo.content}
-            />
-          )}
+        <div className="pomodoro-container">
+            <div className="pomodoro-layout">
+                <form onSubmit={handleSubmit} className="pomodoro-form">
+                    <label>
+                        Tiempo de trabajo (horas):
+                        <input type="number" 
+                               min='0' 
+                               max='8' 
+                               value={hourWorkTime} 
+                               onChange={(e) => setHourWorkTime(Number(e.target.value))} />
+                    </label>
+                    <label>
+                        Tiempo de trabajo (minutos):
+                        <input type="number" 
+                               min='0' 
+                               max='59' 
+                               value={minWorkTime} 
+                               onChange={(e) => setMinWorkTime(Number(e.target.value))} />
+                    </label>
+                    <label>
+                        Descanso corto (min):
+                        <input type="number"
+                               min='0'
+                               max='5'
+                               value={shortBreak} 
+                               onChange={(e) => setShortBreak(Number(e.target.value))} />
+                    </label>
+                    <label>
+                        Descanso largo (min):
+                        <input type="number"
+                               min='15'
+                               max='40'
+                               value={longBreak} 
+                               onChange={(e) => setLongBreak(Number(e.target.value))} />
+                    </label>
+                    <label>
+                        Sonido:
+                        <input style={{ width: "10rem" }}
+                               type="file"
+                               accept=".mp3"
+                               onChange={handleSoundFileChange} />
+                    </label>
+                    <span>{getFileName()}</span>
+                    <button type="submit" className="pomodoro-boton-verde">Iniciar Pomodoro</button>
+                </form>
+                <div className="timer-display">
+                    <div className="cycles-completed">
+                        <GiTomato size={40} /> Ciclos completados: {completedCycles}
+                    </div>
+                    <div className="time-remaining">
+                        {`${Math.floor(timeRemaining / 60)}:${('0' + timeRemaining % 60).slice(-2)}`}
+                    </div>
+                </div>
+            </div>
+            {isBreak && <BreakOverlay timeRemaining={timeRemaining} />}
         </div>
-      )};
+    )};
     
 export default Pomodoro_view;
