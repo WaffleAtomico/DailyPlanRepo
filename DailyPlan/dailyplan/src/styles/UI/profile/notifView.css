@@ -1,0 +1,56 @@
+.notif-container {
+    background-color: #f0f0f0;
+    padding: 1rem;
+    border-radius: 5px;
+  }
+  
+  .notif-title {
+    color: #333;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .notif-table-container {
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  .notif-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .notif-table th,
+  .notif-table td {
+    padding: 0.5rem;
+    text-align: left;
+  }
+  
+  .notif-date-header {
+    width: 30%;
+    background-color: #007bff;
+    color: #fff;
+  }
+  
+  .notif-name-header {
+    width: 70%;
+    background-color: #007bff;
+    color: #fff;
+  }
+  
+  .notif-date-cell {
+    background-color: #e6fdff;
+  }
+  
+  .notif-name-cell {
+    background-color: #e6fdff;
+  }
+  
+  .notif-empty-message {
+    color: #555;
+    font-size: 1rem;
+    margin-top: 1rem;
+  }
+  
