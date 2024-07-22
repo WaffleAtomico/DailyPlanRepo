@@ -2,9 +2,10 @@ import axios from 'axios';
 
 import {
     ADD_SLEEP_QUALITY_URL,
-    GET_SLEEP_QUALITIES_URL,
+   
     GET_SLEEPQUALITIES_BY_USER_URL,
     GET_SLEEP_QUALITY_BY_ID_URL,
+    UPDATE_SLEEP_REP_INCR_URL,
     GET_SLEEPQUALITIES_BY_DATE_RANGE_URL,
 } from '../routes';
 
@@ -54,5 +55,15 @@ export const getSleepQualitiesByDateRange = async (dateRangeInfo) => {
         return response;
     } catch (err) {
         console.log(err);
+    }
+};
+
+export const updateSleepModeRep = async ({ date, userId }) => {
+    try {
+        const response = await axios.post(UPDATE_SLEEP_REP_INCR_URL, { date, userId });
+        return response.data;
+    } catch (err) {
+        console.error("Error updating sleep mode rep increment:", err);
+        throw err;
     }
 };

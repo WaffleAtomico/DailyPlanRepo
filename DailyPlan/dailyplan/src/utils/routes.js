@@ -157,8 +157,10 @@ const GET_SLEEP_QUALITIES_URL = `${urlreference}/get-sleepqualities`;
 const GET_SLEEP_QUALITY_BY_ID_URL = `${urlreference}/get-sleepquality`;
 const GET_SLEEPQUALITIES_BY_DATE_RANGE_URL = `${urlreference}/get-sleepqualities-by-date-range`;
 const UPDATE_SLEEP_QUALITY_URL = `${urlreference}/update-sleepquality`;
-const GET_SLEEPQUALITIES_BY_USER_URL =  `${urlreference}/get-sleepqualities-by-user`
+const GET_SLEEPQUALITIES_BY_USER_URL =  `${urlreference}/get-sleepqualities-by-user`;
+const UPDATE_SLEEP_REP_INCR_URL = `${urlreference}/update-sleepquality-rep`;
 const DELETE_SLEEP_QUALITY_URL = `${urlreference}/delete-sleepquality`;
+
 
 const ADD_TONE_URL = `${urlreference}/add-tone`;
 const GET_TONES_URL = `${urlreference}/get-tones`;
@@ -288,6 +290,7 @@ export {
     GET_SLEEPQUALITIES_BY_DATE_RANGE_URL,
     GET_SLEEPQUALITIES_BY_USER_URL,
     UPDATE_SLEEP_QUALITY_URL,
+    UPDATE_SLEEP_REP_INCR_URL,
     DELETE_SLEEP_QUALITY_URL,
     ADD_TONE_URL,
     GET_TONES_URL,

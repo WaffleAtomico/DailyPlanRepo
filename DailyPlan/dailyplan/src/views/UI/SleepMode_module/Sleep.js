@@ -8,7 +8,8 @@ import '../../../styles/UI/Sleep/Sleep.css';
 import { getSleepmodeById, updateSleepmode } from '../../../utils/validations/sleep';
 import { getSleepQualityById } from '../../../utils/validations/sleepquality';
 import { addTone } from '../../../utils/validations/tone';
-import { base64ToBlob, playAlarm, playBlobAudio, playRingtone } from '../../../utils/sounds';
+import { base64ToBlob, playAlarm, playBlobAudio } from '../../../utils/sounds';
+import { loadSchedulesFromLocalStorage, checkScheduleConflict, addSleepSchedule, addNewEvent } from '../../../utils/validations/schedule';
 
 export default function SleepAlarm(props) {
     const [isToggled, setIsToggled] = useState(false);
@@ -26,12 +27,14 @@ export default function SleepAlarm(props) {
     const [nameTone, setNameTone] = useState(null);
     const [dataTone, setDataTone] = useState(null);
     const [soundFile, setSoundFile] = useState(null);
+    const [sleepRepIncr, setSleepRepIncr] = useState(0);
 
     useEffect(() => {
         getSleepmodeById(props.id_user).then(res => {
             const sleepData = res.data[0];
             if (sleepData) {
                 setTone(sleepData.tone_id);
+                setSleepRepIncr(sleepData.sleep_rep_incr);
                 setNameTone(sleepData.tone_name);
                 setDataTone(base64ToBlob(sleepData.tone_location, "audio/mpeg"));
                 setHoraDormir(formatTimeFromTinyInt(sleepData.sleep_starthour));
@@ -44,13 +47,7 @@ export default function SleepAlarm(props) {
                 }
             }
         }).catch(err => { console.log(err) });
-
-
-        
-
-
     }, [props.id_user]);
-
 
     useEffect(() => {
         const currentDate = moment().format('YYYY-MM-DD');
@@ -58,7 +55,6 @@ export default function SleepAlarm(props) {
             setAlreadySurvey(res.data[0] != null);
         }).catch(err => { console.log(err) });
     }, [props.id_user]);
-
 
     const handleMediaSubmit = (e) => {
         e.preventDefault();
@@ -101,6 +97,45 @@ export default function SleepAlarm(props) {
         return horas;
     };
 
+    const validateSleepTimes = (startHour, endHour) => {
+        const startHourInt = convertTimeToTinyInt(startHour);
+        const endHourInt = convertTimeToTinyInt(endHour);
+        const difference = endHourInt - startHourInt;
+
+        const now = moment();
+        const recommendedSleepTime = now.add(2, 'hours').format('HH:mm');
+        const recommendedSleepTimeInt = convertTimeToTinyInt(recommendedSleepTime);
+
+        if (startHourInt > endHourInt && startHourInt - endHourInt > 120) {
+            myPojo.setNotif("Advertencia", "El sistema no recomienda una segunda hora de dormir por más de 2 horas después de la hora que se despierta.");
+            return false;
+        }
+
+        return true;
+    };
+
+    const calculateSecondSleepTime = (startHour, endHour) => {
+        const startHourInt = convertTimeToTinyInt(startHour);
+        const endHourInt = convertTimeToTinyInt(endHour);
+        const sleepDuration = endHourInt - startHourInt;
+
+        let secondSleepStartInt = endHourInt + 3 * 60; // Adding 3 hours after wake-up time
+        let secondSleepEndInt = secondSleepStartInt + sleepDuration;
+
+        if (secondSleepEndInt >= 1440) { // Adjust for the next day
+            secondSleepEndInt -= 1440;
+        }
+
+        // Format the second sleep time as "HH:mm"
+        const secondSleepStart = formatTimeFromTinyInt(secondSleepStartInt);
+        const secondSleepEnd = formatTimeFromTinyInt(secondSleepEndInt);
+
+        return {
+            secondSleepStart,
+            secondSleepEnd
+        };
+    };
+
     useEffect(() => {
         const interval = setInterval(() => {
             const horaActual = moment().format('HH:mm');
@@ -108,6 +143,11 @@ export default function SleepAlarm(props) {
             const endHour = convertTimeToTinyInt(horaDespertar);
             const currentTime = convertTimeToTinyInt(horaActual);
             if (isToggled) {
+                if (!horaDespertar) {
+                    setIsPlaying(false);
+                    setShowSurvey(false);
+                    return;
+                }
                 if ((currentTime >= startHour && currentTime < endHour) || (startHour > endHour && (currentTime >= startHour || currentTime < endHour))) {
                     setIsPlaying(true);
                 } else {
@@ -137,46 +177,87 @@ export default function SleepAlarm(props) {
         return () => clearInterval(interval);
     }, [horaDormir, horaDespertar, isToggled, alreadySurvey, repValue, stopRepValue, tone, dataTone]);
 
-    const confirmarModoDeSueño = () => {
-        let tone_id = null;
-        if (soundFile != null) {
+    const confirmarModoDeSueno = () => {
+        const calculateSleepRep = () => {
+            const repValueNumber = Number(repValue);
+            const sleepRepIncrNumber = Number(sleepRepIncr);
+            let sleepRep = repValueNumber + sleepRepIncrNumber;
+    
+            if (sleepRep > 10) {
+                sleepRep = 10;
+            } else if (sleepRep < 1) {
+                sleepRep = 1;
+            }
+    
+            return sleepRep;
+        };
+    
+        const sleepRep = calculateSleepRep();
+    
+        if (!validateSleepTimes(horaDormir, horaDespertar)) {
+            return;
+        }
+    
+        const newEvent = {
+            schedule_datetime: `${moment().format('YYYY-MM-DD')} ${horaDormir}`,
+            schedule_duration_hour: parseInt(horaDespertar.split(':')[0]) - parseInt(horaDormir.split(':')[0]),
+            schedule_duration_min: parseInt(horaDespertar.split(':')[1]) - parseInt(horaDormir.split(':')[1]),
+            user_id: props.id_user
+        };
+    
+        const existingEvents = loadSchedulesFromLocalStorage();
+        const conflictingEvent = checkScheduleConflict(newEvent, existingEvents);
+    /*
+        if (conflictingEvent) {
+            myPojo.setNotif("Advertencia", `El evento "${conflictingEvent.schedule_eventname}" ya está programado en este horario.`);
+            return;
+        }
+    */
+        addSleepSchedule(newEvent);
+        addNewEvent(newEvent);
+    
+        const horadiff = calcularDiferenciaHoras(horaDormir, horaDespertar);
+    
+        const { secondSleepStart, secondSleepEnd } = calculateSecondSleepTime(horaDormir, horaDespertar);
+        myPojo.setNotif("Recomendación", `Se recomienda una segunda hora para dormir de ${secondSleepStart} hasta ${secondSleepEnd}.`);
+    
+        const saveSleepData = (tones_id = null) => {
+            const sleepData = {
+                sleep_starthour: convertTimeToTinyInt(horaDormir),
+                sleep_endhour: convertTimeToTinyInt(horaDespertar),
+                sleep_active: isToggled ? 1 : 0,
+                sleep_rep: sleepRep,
+                sleep_video_url: mediaLink,
+                sleep_rep_stopped: null,
+                tone_id: tones_id,
+                sleep_id: props.id_user
+            };
+            updateSleepmode(sleepData).then(() => {
+                setHoradiff(horadiff);
+            }).catch(err => {
+                console.log(err);
+            });
+        };
+    
+        if (soundFile) {
             const formData = {
                 alarmTone: soundFile.base64,
                 alarmToneName: soundFile.name,
                 alarmToneType: soundFile.type
             };
             addTone(formData).then(response => {
-                tone_id = response.tone_id;
-                const sleepData = {
-                    sleep_starthour: convertTimeToTinyInt(horaDormir),
-                    sleep_endhour: convertTimeToTinyInt(horaDespertar),
-                    sleep_active: isToggled ? 1 : 0,
-                    sleep_rep: repValue,
-                    sleep_video_url: mediaLink,
-                    sleep_rep_stopped: null,
-                    tone_id: tone_id,
-                    sleep_id: props.id_user
-                };
-                updateSleepmode(sleepData).then(() => {
-                    setHoradiff(calcularDiferenciaHoras(sleepData.sleep_starthour, sleepData.sleep_endhour));
-                }).catch(err => { console.log(err); });
-            }).catch(err => { console.log(err); });
+                const tones_id = response.tone_id;
+                console.log("El tono agregado es:", tones_id);
+                saveSleepData(tones_id);
+            }).catch(err => {
+                console.log(err);
+            });
         } else {
-            const sleepData = {
-                sleep_starthour: convertTimeToTinyInt(horaDormir),
-                sleep_endhour: convertTimeToTinyInt(horaDespertar),
-                sleep_active: isToggled ? 1 : 0,
-                sleep_rep: repValue,
-                sleep_video_url: mediaLink,
-                sleep_rep_stopped: null,
-                tone_id: null,
-                sleep_id: props.id_user
-            };
-            updateSleepmode(sleepData).then(() => {
-                setHoradiff(calcularDiferenciaHoras(sleepData.sleep_starthour, sleepData.sleep_endhour));
-            }).catch(err => { console.log(err); });
+            saveSleepData();
         }
     };
+    
+    
 
     const convertTimeToTinyInt = (time) => {
         const [hours, minutes] = time.split(':').map(Number);
@@ -252,7 +333,7 @@ export default function SleepAlarm(props) {
                                 </div>
                             </div>
                             <div className="sleep-confirmar-button-container">
-                                <button className="sleep-confirm" onClick={confirmarModoDeSueño}>
+                                <button className="sleep-confirm" onClick={confirmarModoDeSueno}>
                                     Confirmar hora de dormir
                                 </button>
                             </div>

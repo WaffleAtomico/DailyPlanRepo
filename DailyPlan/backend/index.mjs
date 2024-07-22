@@ -201,7 +201,9 @@ import {
   getSleepQualityById,
 getSleepQualityByUser,
   updateSleepQuality,
-  deleteSleepQuality
+  
+  deleteSleepQuality,
+  UpdateSleepRepIncr
 } from './requests/sleepquality.js';
 
 import {
@@ -483,6 +485,8 @@ app.post(urls.GET_SLEEPQUALITIES_BY_USER_URL, getSleepQualityByUser)
 app.post(urls.GET_SLEEP_QUALITY_BY_ID_URL, getSleepQualityById);
 app.post(urls.UPDATE_SLEEP_QUALITY_URL, updateSleepQuality);
 app.post(urls.DELETE_SLEEP_QUALITY_URL, deleteSleepQuality);
+app.post(urls.UPDATE_SLEEP_REP_INCR_URL, UpdateSleepRepIncr);
+
 
 /*-------------------------------Tones-------------------------*/
 app.post(urls.ADD_TONE_URL, addTone);
