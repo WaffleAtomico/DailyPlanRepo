@@ -35,11 +35,12 @@ body {
 .menu-item-close:hover {
     color:#f0f0f0;
     background-color: #B43F61;
+    
 }
 
 .view-container {
     flex: 1; 
-    padding: 20px; 
+    padding: 20px;
 }
 
 
