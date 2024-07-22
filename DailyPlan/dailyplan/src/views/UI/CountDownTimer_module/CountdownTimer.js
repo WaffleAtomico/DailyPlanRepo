@@ -1,17 +1,21 @@
 import React, { useState, useEffect } from "react";
-import Timer from "./Timer";
 import '../../../styles/UI/Countdowntimer/countdown.css';
+import { MdTimer, MdAlarm } from "react-icons/md";
+
 import { addTimer, getTimerById, getTimersForUser } from "../../../utils/validations/timer";
 import { base64ToBlob, playBlobAudio } from "../../../utils/sounds";
 import { addTone } from "../../../utils/validations/tone";
+import Timer from "./Timer";
+import { myPojo } from "../../../utils/ShowNotifInfo";
+import { GiSoundOff } from "react-icons/gi";
 
 const splitBase64 = (base64) => {
-    const chunkSize = 1024 * 1024; // 1 MB
-    const chunks = [];
-    for (let i = 0; i < base64.length; i += chunkSize) {
-        chunks.push(base64.slice(i, i + chunkSize));
-    }
-    return chunks;
+  const chunkSize = 1024 * 1024; // 1 MB
+  const chunks = [];
+  for (let i = 0; i < base64.length; i += chunkSize) {
+    chunks.push(base64.slice(i, i + chunkSize));
+  }
+  return chunks;
 };
 
 export default function CountdownTimer(props) {
@@ -161,20 +165,23 @@ export default function CountdownTimer(props) {
 
   const handleSaveTimer = async () => {
     try {
+      console.log("filtro1")
       let tone_id = null;
-      if (!soundFile) return;
+      if (!soundFile){
+        myPojo.setNotif("¡Agrega un sonido!",<GiSoundOff size={220}/>)  
+        return
+      };
+      const formData = {
+        alarmTone: soundFile.base64,
+        alarmToneName: soundFile.name,
+        alarmToneType: soundFile.type
+      };
+      console.log("filtro1.5")
+      addTone(formData).then(response => {
+        console.log(response)
+        const tone_id = response.tone_id;
 
-        const formData = {
-          alarmTone: soundFile.base64,
-          alarmToneName: soundFile.name,
-          alarmToneType: soundFile.type
-        };
-         addTone(formData).then(response => {
-
-         const tone_id = response.tone_id;
-
-  
-         const timer = {
+        const timer = {
           timer_name: timerName,
           timer_hour: hours,
           timer_min: minutes,
@@ -183,48 +190,51 @@ export default function CountdownTimer(props) {
           tone_id: tone_id,
           user_id: parseInt(props.user_id, 10)
         };
-  
-         addTimer(timer).then(response => {});
-        hideSaveTimerForm(); // Hide the form after saving
-        handleLoadTimer(); // Reload timers after saving
+      console.log("filtro2")
 
-        }).catch(error => {console.error("El error:", error)});
+        addTimer(timer).then(response => {
+          console.log("Si lo guardo");
+          hideSaveTimerForm(); // Hide the form after saving
+          handleLoadTimer(); // Reload timers after saving
+          console.log("filtro3")
+        });
 
-
-      
-      
-    
+      }).catch(error => { console.error("El error:", error) });
     } catch (error) {
       console.log(error);
     }
+
+    //
+
   };
 
   const handleLoadTimer = () => {
-    getTimersForUser(parseInt(props.user_id, 10))
-      .then(response => {
-
-        console.log("Los timers:", response.data);
-        setTimer(response.data);
-      })
-      .catch(error => {
-        console.log("Fallo");
-      });
-    showTimerTables();
+    if (showTableTimer) {
+      hideTableTimer();
+    } else {
+      getTimersForUser(parseInt(props.user_id, 10))
+        .then(response => {
+          console.log("Timers of user: ", response.data);
+          setTimer(response.data);
+        })
+        .catch(error => {
+          console.log("Fallo");
+        });
+      showTimerTables();
+    }
   };
 
 
   const handleRowClick = (timer) => {
-            const blob = base64ToBlob(timer.tone_location,'audio/mpeg');
-            setSoundFile(blob);
-            
-            // Optionally, play the sound immediately
-            ///playBlobAudio(blob, ringRepetitions, ringDuration, ringDuration);
-     
+    const blob = base64ToBlob(timer.tone_location, 'audio/mpeg');
+    setSoundFile(blob);
 
+    // Optionally, play the sound immediately
+    ///playBlobAudio(blob, ringRepetitions, ringDuration, ringDuration);
     setHours(timer.timer_hour || 0);
     setMinutes(timer.timer_min);
     setSeconds(timer.timer_sec);
-};
+  };
 
 
   return (
@@ -266,7 +276,7 @@ export default function CountdownTimer(props) {
                 onChange={handleSoundFileChange}
               />
             </label>
-            <span>{getFileName()}</span>
+            {/* <span>{getFileName()}</span> */}
           </div>
         </div>
         <br />
@@ -305,18 +315,22 @@ export default function CountdownTimer(props) {
         >
           Cargar
         </button>
-  
+
         {showSaveForm && (
           <div className="save-timer-form">
-            <h2>Guardar Temporizador</h2>
-            <label>
-              Nombre:
+            <h2>Guarda tu nuevo Temporizador</h2>
+            <label style={{fontSize: "large"}}>
               <input
                 type="text"
+                className="input-timer-name"
+                placeholder="Nombra tu temporizador"
+                max={20}
+                min={1}
                 value={timerName}
                 onChange={(e) => setTimerName(e.target.value)}
               />
             </label>
+            <br />
             <button
               className="count-btn count-btn-save count-btn-lg"
               onClick={handleSaveTimer}
@@ -332,18 +346,18 @@ export default function CountdownTimer(props) {
           </div>
         )}
       </div>
-  
+
       {showTableTimer && (
-        <div className="timer-table">
-          <h2>Temporizadores Guardados</h2>
-          <table>
+        <div className="timer-table-container">
+          <h2 className="timer-table-title"><MdTimer /> Temporizadores Guardados</h2>
+          <table className="styled-table">
             <thead>
               <tr>
                 <th>Nombre</th>
-                <th>Hora</th>
-                <th>Minuto</th>
-                <th>Segundo</th>
-                <th>Duración</th>
+                <th>HH</th>
+                <th>MM</th>
+                <th>SS</th>
+                <th>MS</th>
                 <th>Sonido</th>
               </tr>
             </thead>

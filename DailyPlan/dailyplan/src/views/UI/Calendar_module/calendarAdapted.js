@@ -7,6 +7,8 @@ import WeekView from './WeekView.js';
 import '../../../styles/UI/Calendar/Calendar_view.css';
 import ReminderFormView from './Reminder_formCrea.js';
 
+import { FaCalendarAlt } from 'react-icons/fa';
+
 // Queda pendiente cambiar el formulario para poder hacer la query correcta y poder publicar/
 // Crear un registro que tenga la informacion completa que se necesita
 
@@ -53,11 +55,19 @@ export default function Calendar_Adapted(props) {
   return (
 
     <div >
-      <select onChange={(e) => setView(e.target.value)} value={view}>
-        <option value="year">Año</option>
-        <option value="month">Mes</option>
-        <option value="week">Semana</option>
-      </select>
+      <div style={{ position: 'relative', display: 'inline-block', width: '100%' }}>
+        <select
+          onChange={(e) => setView(e.target.value)}
+          value={view}
+          className="custom-select"
+        >
+          <option value="year"> Año</option>
+          <option value="month"> Mes</option>
+          <option value="week"> Semana</option>
+        </select>
+        <FaCalendarAlt className="custom-select-icon" />
+      </div>
+
       <div className="calendar-view-container">
         {renderView()}
       </div>
@@ -68,7 +78,7 @@ export default function Calendar_Adapted(props) {
           showform={() => setVisibilty(false)}
           SelectHour={hour}
           SelectDate={selectDate}
-          Reminder_id = {reminderId}
+          Reminder_id={reminderId}
           setReminderId={setReminderId}
         />
       )}
