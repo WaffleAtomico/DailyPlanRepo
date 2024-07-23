@@ -5,7 +5,7 @@ const addSleepmode = (req, res) => {
     
 
     const query = {
-        sql: "INSERT INTO `sleepmode`(`sleep_id`, `sleep_starthour`, `sleep_endhour`, `sleep_active`, `sleep_rep`, `sleep_video_url`, `sleep_rep_stopped`, `tone_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+        sql: "INSERT INTO `sleepmode`(`sleep_id`, `sleep_starthour`, `sleep_endhour`, `sleep_active`, `sleep_rep`, `sleep_video_url`, `sleep_rep_stopped`, `sleep_rep_incr` , `tone_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
         values: [
             req.body.sleep_id,
             req.body.sleep_starthour,
@@ -14,6 +14,7 @@ const addSleepmode = (req, res) => {
             req.body.sleep_rep,
             req.body.sleep_video_url,
             req.body.sleep_rep_stopped,
+            req.body.sleep_rep_incr,
             req.body.tone_id,
         ],
     };
@@ -57,7 +58,7 @@ const getSleepmodeById = (req, res) => {
 
 //este
 const updateSleepmode = (req, res) => {
-    console.log("Entre en el back");
+    
     const query = {
         sql: "UPDATE `sleepmode` SET `sleep_starthour` = ?, `sleep_endhour` = ?, `sleep_active` = ?, `sleep_rep` = ?, `sleep_video_url` = ?, `sleep_rep_stopped` = ?, `tone_id` = ? WHERE `sleep_id` = ?",
         values: [

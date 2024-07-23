@@ -121,11 +121,8 @@ export default function OriginPage() {
 
       console.log("Se obtuvo la siguiente información", response.data);
       setSchedule(response.data); localStorage.setItem('schedule', JSON.stringify(schedule));
-
-
-
-    }).catch("no se logro obtener el schedule");
-  }, [id]);
+ } ).catch("no se logro obtener el schedule"); 
+} , [id, selectedOption]);
 
   /*---------------------- PREPARACION ---------------------- */
 

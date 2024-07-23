@@ -1,16 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { FaRegSmile, FaMeh, FaRegFrown } from 'react-icons/fa';
 import '../../../styles/UI/Sleep/sleepForm.css';
 import moment from 'moment';
-import { saveSleepQuality } from '../../../utils/validations/sleepquality';
+import { saveSleepQuality, updateSleepModeRep } from '../../../utils/validations/sleepquality';
 import { updateSleepRepStopped } from '../../../utils/validations/sleep';
+
+
 
 const SleepForm = ({ onClose, user_id, stopRep, setAlreadySurvey }) => {
   const [sleepRating, setSleepRating] = useState(null);
-
-  useEffect(() => {
-    updateSleepRepStopped(user_id, stopRep);
-  }, [stopRep, user_id]);
 
   const handleRatingSelect = (rating) => {
     setSleepRating(rating);
@@ -21,9 +19,10 @@ const SleepForm = ({ onClose, user_id, stopRep, setAlreadySurvey }) => {
       quiality_bad: 0,
       quality_date: moment().format('YYYY-MM-DD'),
       sleep_id: user_id,
+      sleep_rep_stopped: stopRep,
     };
 
-    switch (rating) { // Fixed the switch case to use the 'rating' parameter
+    switch (rating) {
       case 'bien':
         sleepQualityInfo.quality_good = 1;
         break;
@@ -40,24 +39,39 @@ const SleepForm = ({ onClose, user_id, stopRep, setAlreadySurvey }) => {
 
     saveSleepQuality(sleepQualityInfo)
       .then(() => {
-        setAlreadySurvey(true); // Set alreadySurvey to true after saving
-        onClose(); // Close the form after saving
+        updateSleepRepStopped(user_id, stopRep)
+          .then(() => {
+            
+            
+            updateSleepModeRep({ date: moment().format('YYYY-MM-DD'), userId: user_id })
+              .then(() => {
+                setAlreadySurvey(true);
+                onClose();
+              })
+              .catch(err => {
+                console.log("Error updating sleep mode rep increment:", err);
+                onClose();
+              });
+          })
+          .catch(err => {
+            console.log("Error updating sleep rep stopped:", err);
+            onClose();
+          });
       })
       .catch(err => {
-        console.log(err);
+        console.log("Error saving sleep quality:", err);
       });
   };
 
   const handleCloseWithoutAnswer = () => {
-    // Ensure updateSleepRepStopped is called even if no rating is selected
     updateSleepRepStopped(user_id, stopRep)
       .then(() => {
-        setAlreadySurvey(true); // Set alreadySurvey to true
-        onClose(); // Close the form
+        setAlreadySurvey(true);
+        onClose();
       })
       .catch(err => {
         console.log(err);
-        onClose(); // Close the form even if there's an error
+        onClose();
       });
   };
 
@@ -78,7 +92,7 @@ const SleepForm = ({ onClose, user_id, stopRep, setAlreadySurvey }) => {
           <span>Mal</span>
         </div>
       </div>
-      <button onClick={handleCloseWithoutAnswer}>Cerrar sin respuesta</button> {/* Button to close without answer */}
+      <button onClick={handleCloseWithoutAnswer}>Cerrar sin respuesta</button>
     </div>
   );
 };
