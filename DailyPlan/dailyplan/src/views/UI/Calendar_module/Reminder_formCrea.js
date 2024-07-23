@@ -372,6 +372,8 @@ const ReminderFormView = (props) => {
                                                 name="reminderAdvance"
                                                 value={formData.reminderAdvance}
                                                 onChange={handleChange}
+                                                min={0}
+                                                max={5}
                                             />
                                         </Form.Group>
                                     </Col>
@@ -410,7 +412,7 @@ const ReminderFormView = (props) => {
                                                 name="description"
                                                 value={formData.description}
                                                 onChange={handleChange}
-                                                maxLength={300}
+                                                maxLength={200}
                                             />
                                         </Form.Group>
                                     </Col>
