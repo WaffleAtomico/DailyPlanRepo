@@ -199,7 +199,7 @@ const AlarmFormView = (props) => {
                                         <Form.Control
                                             type="range"
                                             min={1}
-                                            max={10}
+                                            max={5}
                                             value={alarmRepetition}
                                             onChange={handleAlarmRepetitionChange}
                                         />
@@ -239,7 +239,7 @@ const AlarmFormView = (props) => {
                                             rows={3}
                                             value={alarmDescription}
                                             onChange={handleAlarmDescriptionChange}
-                                            maxLength={300}
+                                            maxLength={200}
                                         />
                                     </Form.Group>
                                 </Col>
