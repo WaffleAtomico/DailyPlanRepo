@@ -161,12 +161,12 @@ const GET_SLEEPQUALITIES_BY_USER_URL =  `${urlreference}/get-sleepqualities-by-u
 const UPDATE_SLEEP_REP_INCR_URL = `${urlreference}/update-sleepquality-rep`;
 const DELETE_SLEEP_QUALITY_URL = `${urlreference}/delete-sleepquality`;
 
-
 const ADD_TONE_URL = `${urlreference}/add-tone`;
 const GET_TONES_URL = `${urlreference}/get-tones`;
 const GET_TONE_BY_ID_URL = `${urlreference}/get-tone`;
 const UPDATE_TONE_URL = `${urlreference}/update-tone`;
 const DELETE_TONE_URL = `${urlreference}/delete-tone`;
+
 export {
     urlreference,
     ADD_ALARM_URL,

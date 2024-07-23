@@ -4,7 +4,7 @@ import mysql from "mysql"
 
 const db = mysql.createConnection({
     host:'localhost', //luego cambiar a cuando sea la direccion del server
-    user: 'root',
+    user: 'dailyplan',
     password: '',
     database: 'dailyplan',
     dialect: 'mysql',

@@ -17,7 +17,7 @@ const addDayselected = (req, res) => {
         if (err) {
             return res.json({ message: "Error adding day selected", error: err });
         }
-        return res.json({ message: "Day selected added successfully" });
+        return res.json({ message: "Day selected added successfully", data });
     });
 };
 

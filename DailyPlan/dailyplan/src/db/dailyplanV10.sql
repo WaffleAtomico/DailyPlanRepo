@@ -527,7 +527,7 @@ CREATE TABLE `sleepquality` (
   `quality_good` tinyint(1) DEFAULT NULL,
   `quality_medium` tinyint(1) DEFAULT NULL,
   `quiality_bad` tinyint(1) DEFAULT NULL,
-  `quality_date` date NOT NULL DEFAULT current_timestamp(),
+  `quality_date` timestamp NOT NULL DEFAULT current_timestamp(),
   `sleep_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
