@@ -30,6 +30,7 @@
     width: 100%;
     max-width: 850px;
     gap: 2rem;
+    overflow-y: auto;
 }
 
 .sleep-alarma {
@@ -39,6 +40,14 @@
     justify-content: space-between;
     gap: 1rem;
     width: 100%;
+    
+}
+
+.sleep-input-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .sleep-alarma-container {
@@ -80,7 +89,7 @@
 }
 
 .sleep-confirmar-button-container {
-    margin-top: -2rem;
+    margin-top: 0.5rem;
     margin-bottom: 1rem;
 }
 
@@ -104,6 +113,16 @@
 
 .sleep-input[type="time"], .sleep-input[type="text"] {
     width: 280px;
+    height: 40px;
+    padding: 0.5rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.sleep-media-input[type="text"] {
+    width: 60rem;
+    align-content: center;
+    text-align: center;
     height: 40px;
     padding: 0.5rem;
     border-radius: 5px;

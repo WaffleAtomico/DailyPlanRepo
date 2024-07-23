@@ -1,0 +1,112 @@
+.info-container {
+    background-color: #f0f0f0;
+    padding: 1rem;
+    border-radius: 10px;
+    /* width: 100%; */
+    max-width: 40rem;
+    margin: 0 auto;
+    max-height: 500px;
+    overflow-y: auto;
+  }
+  
+  .info-title {
+    color: #333;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+  
+  .info-field {
+    margin-bottom: 0.8rem;
+  }
+  
+  .info-field label {
+    display: block;
+    font-size: 0.9rem;
+    color: #333;
+    margin-bottom: 0.3rem;
+  }
+  
+  .info-input {
+    width: 100%;
+    padding: 0.4rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    background-color: #007bffa7;
+    color: #333;
+  }
+  
+  .info-value {
+    font-size: 0.9rem;
+    color: #201f1f;
+    background-color: #007bffa7;
+    padding: 0.4rem;
+    border-radius: 5px;
+  }
+  
+  .info-delete-button {
+    background-color: #b43f61;
+    color: #fff;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    display: block;
+    margin: 1rem auto 0;
+  }
+  
+  .info-delete-button:hover {
+    background-color: #a53656;
+  }
+  
+  .confirmation-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .confirmation-box {
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 10px;
+    text-align: center;
+    max-width: 300px;
+    width: 90%;
+  }
+  
+  .confirmation-box p {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .confirmation-button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    margin: 0 0.3rem;
+  }
+  
+  .confirmation-button.confirm {
+    background-color: #4caf50;
+  }
+  
+  .confirmation-button.cancel {
+    background-color: #f44336;
+  }
+  
+  .confirmation-button:hover {
+    opacity: 0.9;
+  }
+  

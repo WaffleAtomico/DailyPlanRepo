@@ -4,7 +4,7 @@ import { CiCircleCheck } from "react-icons/ci";
 import RealTimeLocationComponent from "../../../utils/components/location/RealTimeLocation";
 import { getUsersBlocked } from "../../../utils/validations/blockedurs";
 import { RiUserForbidLine } from "react-icons/ri";
-import { FaSpotify } from 'react-icons/fa';
+import { FaCheckCircle, FaRegCircle, FaSpotify } from 'react-icons/fa';
 
 import { SpotifyApiContext } from 'react-spotify-api'
 import Cookies from 'js-cookie'
@@ -12,16 +12,68 @@ import { SpotifyAuth, Scopes } from 'react-spotify-auth'
 import 'react-spotify-auth/dist/index.css'
 
 import "../../../styles/UI/profile/configOptions.css";
+import "../../../styles/UI/profile/notifView.css";
+import "../../../styles/UI/profile/profileInfo.css";
 
 
-const PersoInfo = (props) => {
 
+const PersoInfo = () => {
+  const [userName, setUserName] = useState('Nombre Usuario');
+  const [showConfirmation, setShowConfirmation] = useState(false);
 
-  //debe de permtir al usuario ver su info personal, y cambiar su usuario unas cuentas veces
-  //Revisar el requerimiento funcional o no funcional
+  const handleDeleteAccount = () => {
+    console.log('Cuenta eliminada');
+  };
+
   return (
-    <div style={{ backgroundColor: "#f0f0f0" }}>
-      <h2>Información personal</h2>
+    <div className="info-container">
+      <h2 className="info-title">Información personal</h2>
+      <div className="info-field">
+        <label>Nombre de Usuario:</label>
+        <input
+          type="text"
+          value={userName}
+          onChange={(e) => setUserName(e.target.value)}
+          className="info-input"
+        />
+      </div>
+      <div className="info-field">
+        <label>Título:</label>
+        <p className="info-value">Mi Título</p>
+      </div>
+      <div className="info-field">
+        <label>Correo Registrado:</label>
+        <p className="info-value">usuario@correo.com</p>
+      </div>
+      <div className="info-field">
+        <label>Número Telefónico:</label>
+        <p className="info-value">123-456-7890</p>
+      </div>
+      <button
+        className="info-delete-button"
+        onClick={() => setShowConfirmation(true)}
+      >
+        Eliminar Cuenta
+      </button>
+      {showConfirmation && (
+        <div className="confirmation-overlay">
+          <div className="confirmation-box">
+            <p>¿Estás seguro de que deseas eliminar tu cuenta?</p>
+            <button
+              className="confirmation-button confirm"
+              onClick={handleDeleteAccount}
+            >
+              Aceptar
+            </button>
+            <button
+              className="confirmation-button cancel"
+              onClick={() => setShowConfirmation(false)}
+            >
+              Cancelar
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
@@ -69,12 +121,53 @@ const BloqUser = (props) => {
   );
 };
 
-const UserNodif = (props) => {
-  //mostrar avisos, como: Invitaciones, Titulos, y como + Reinicios semanales
-  return (
-    <div style={{ backgroundColor: "#f0f0f0" }}>
-      <h2>Notificaciones</h2>
+const UserNotif = (props) => {
+  const [notifications, setNotifications] = useState([]);
 
+  useEffect(() => {
+    // Simular una solicitud de datos
+    const fetchNotifications = () => {
+      // Aquí puedes simular una solicitud de datos
+      setTimeout(() => {
+        const dummyData = [
+          { id: 1, date: '2024-07-10', name: 'Invitación a Evento' },
+          { id: 2, date: '2024-07-11', name: 'Nuevo Título Obtenido' },
+          { id: 3, date: '2024-07-12', name: 'Reinicio Semanal Completado' },
+        ];
+        setNotifications(dummyData);
+      }, 1000); // Simulación de demora de solicitud
+    };
+
+    fetchNotifications();
+  }, []);
+
+  return (
+    <div className="notif-container">
+      <h2 className="notif-title">Notificaciones</h2>
+      {notifications.length > 0 ? (
+        <div className="notif-table-container">
+          <table className="notif-table">
+            <thead>
+              <tr>
+                <th className="notif-date-header">Fecha</th>
+                <th className="notif-name-header">Nombre</th>
+              </tr>
+            </thead>
+            <tbody>
+              {notifications.map((notification) => (
+                <tr key={notification.id}>
+                  <td className="notif-date-cell">{notification.date}</td>
+                  <td className="notif-name-cell">{notification.name}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        <p className="notif-empty-message">
+          No tienes notificaciones en este momento. Puedes obtener notificaciones por medio de logros, invitaciones o esperar por un reinicio semanal.
+        </p>
+      )}
     </div>
   );
 };
@@ -122,11 +215,13 @@ const UserConnections = (props) => {
         </button>
       )}
 */
-const UserPermissions = () => {
+
+const UserPermissions = (props) => {
   //Preguntar solo 1 vez, si permite acceder a la ubicacion, de hecho
   //IDEA: Solo cuando funcione la API de google maps, va a preguntar, si en este campo
   //lo marco como denegado, significa que no esta permitido, por medio del sistema
-  /*Explico a detalle, no es solo el permiso del navegador, es saber si permite
+  /*
+    Explico a detalle, no es solo el permiso del navegador, es saber si permite
     el usuario usar esa informacion, aunque ya se haya propiciado por el usuario
   */
   return (
@@ -204,9 +299,10 @@ const UserPermissions = () => {
 const UserTitles = (props) => {
   const [titles, setTitles] = useState([]);
   const [error, setError] = useState(null);
+  const [hoveredIndex, setHoveredIndex] = useState(null);
 
   useEffect(() => {
-    
+
     getUserArchivement(props.id);
   }, [props.id]);
 
@@ -215,7 +311,6 @@ const UserTitles = (props) => {
       const res = await getAllArchivements(user_id);
       const titlesData = res.data;
       console.log("Títulos recibidos: ", titlesData);
-
       if (Array.isArray(titlesData)) {
         const validTitles = [];
         titlesData.forEach(title => {
@@ -233,36 +328,51 @@ const UserTitles = (props) => {
       setError("No se pudieron obtener los títulos. Por favor, inténtalo más tarde.");
     }
   };
-
   const selectUserTitle = (title_id) => {
     console.log("Es necesario enviar el title_id para actualizar ese campo en user, solo ese", title_id);
   };
 
+
+
   return (
-    <div style={{ backgroundColor: "#f0f0f0" }}>
+    <div className="notif-container">
       <h2>Títulos</h2>
       {error && <p>{error}</p>}
       {titles.length > 0 ? (
-        <table className="titl-custom-table">
-          <thead>
-            <tr>
-              <th className="titl-table-header">Título</th>
-              <th className="titl-table-header">Seleccionar título</th>
-            </tr>
-          </thead>
-          <tbody>
-            {titles.map((title) => (
-              <tr key={title.title_id}>
-                <td className="titl-table-cell">{title.title_name}</td>
-                <td className="titl-table-cell" onClick={() => selectUserTitle(title.title_id)}>
-                  <div className="titl-circle-check">
-                    <CiCircleCheck />
-                  </div>
-                </td>
+        <div className="notif-table-container">
+          <table className="notif-table">
+            <thead>
+              <tr>
+                <th className="notif-date-header">Título</th>
+                <th className="notif-date-header">Seleccionar título</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {titles.map((title, index) => (
+                <tr key={title.title_id}>
+                  <td className="notif-date-cell">{title.title_name}</td>
+                  <td
+                    className="notif-name-cell"
+                    onClick={() => selectUserTitle(title.title_id)}
+                  >
+                    <div
+                      className="titl-circle-check"
+                      onMouseEnter={() => setHoveredIndex(index)}
+                      onMouseLeave={() => setHoveredIndex(null)}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      {hoveredIndex === index ? (
+                        <FaCheckCircle size={40} />
+                      ) : (
+                        <FaRegCircle size={40} />
+                      )}
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       ) : (
         <p>No tienes ningún título.</p>
       )}
@@ -273,7 +383,7 @@ const UserTitles = (props) => {
 export {
   BloqUser,
   PersoInfo,
-  UserNodif,
+  UserNotif,
   UserPermissions,
   UserTitles,
   UserConnections

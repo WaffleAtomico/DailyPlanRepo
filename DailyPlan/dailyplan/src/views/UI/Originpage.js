@@ -126,7 +126,7 @@ useEffect(() =>{
   
 
  } ).catch("no se logro obtener el schedule"); 
-} , [id]);
+} , [id, selectedOption]);
 
 
 

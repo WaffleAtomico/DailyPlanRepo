@@ -74,7 +74,9 @@ const PopupWindow = ({ closePopup, props }) => {
       </div>
       <Tabs defaultActiveKey="reminders" id="punt_button-popup-tabs">
         <Tab eventKey="reminders" title="Recordatorios">
-          <div className="punt_button-tab-content">Contenido de Recordatorios</div>
+          <div className="punt_button-tab-content">
+            Contenido de Recordatorios
+            </div>
         </Tab>
         <Tab eventKey="alarms" title="Alarmas">
           <div className="punt_button-tab-content">Contenido de Alarmas</div>

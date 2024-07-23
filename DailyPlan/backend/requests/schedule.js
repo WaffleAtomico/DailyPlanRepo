@@ -82,7 +82,7 @@ const addSleepSchedule = (req, res) => {
     const body = req.body.schedule;
     const userId = body.user_id;
     const eventName = "Sleep";
-
+    
     const checkQuery = {
         sql: "SELECT * FROM `schedules` WHERE `schedule_eventname` = ? AND `user_id` = ?",
         values: [eventName, userId],

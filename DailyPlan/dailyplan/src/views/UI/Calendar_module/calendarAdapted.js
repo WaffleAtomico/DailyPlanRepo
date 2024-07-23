@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 // import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
-import YearView from './YearView.js';
-import MonthView from './MonthView.js';
-import WeekView from './WeekView.js';
 import '../../../styles/UI/Calendar/Calendar_view.css';
 import ReminderFormView from './Reminder_formCrea.js';
 
-import { FaCalendarAlt } from 'react-icons/fa';
+import YearView from './YearView.js';
+import MonthView from './MonthView.js';
+import WeekView from './WeekView.js';
 
 // Queda pendiente cambiar el formulario para poder hacer la query correcta y poder publicar/
 // Crear un registro que tenga la informacion completa que se necesita
@@ -65,7 +64,6 @@ export default function Calendar_Adapted(props) {
           <option value="month"> Mes</option>
           <option value="week"> Semana</option>
         </select>
-        <FaCalendarAlt className="custom-select-icon" />
       </div>
 
       <div className="calendar-view-container">

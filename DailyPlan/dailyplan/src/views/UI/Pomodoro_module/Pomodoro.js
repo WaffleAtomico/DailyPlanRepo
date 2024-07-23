@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import BreakOverlay from './BreakOverlay';
+
 import { GiHolyGrail, GiTomato } from "react-icons/gi";
 import '../../../styles/UI/Pomodoro/pomodoro.css';
+
 import { playRingtone, base64ToBlob, playBlobAudio } from '../../../utils/sounds';
 import { myPojo } from '../../../utils/ShowNotifInfo';
 import { grantArchivement, isCompleted } from '../../../utils/archivements/grantArchivement';
@@ -9,10 +10,11 @@ import { getPomodoroById, updatePomodoro } from '../../../utils/validations/pomo
 import { addTone } from "../../../utils/validations/tone";
 import { addPomodoroSchedule } from '../../../utils/validations/schedule';
 import { checkScheduleConflict } from '../../../utils/validations/schedule';
+import BreakOverlay from './BreakOverlay';
 
 const Pomodoro_view = (props) => {
     const [workTime, setWorkTime] = useState(25);
-    const [minWorkTime, setMinWorkTime] = useState(0);
+    const [minWorkTime, setMinWorkTime] = useState(1);
     const [hourWorkTime, setHourWorkTime] = useState(0);
     const [shortBreak, setShortBreak] = useState(5);
     const [longBreak, setLongBreak] = useState(15);
@@ -163,7 +165,7 @@ const Pomodoro_view = (props) => {
         e.preventDefault();
 
         const workMinutes = convertHoursToMinutes(hourWorkTime, minWorkTime);
-        
+
         const updatedPomodoro = {
             ...pomodoro,
             tpomodoro_hour_work: workMinutes,
@@ -209,44 +211,48 @@ const Pomodoro_view = (props) => {
         <div className="pomodoro-container">
             <div className="pomodoro-layout">
                 <form onSubmit={handleSubmit} className="pomodoro-form">
-                    <label>
-                        Tiempo de trabajo (horas):
-                        <input type="number" 
-                               min='0' 
-                               max='8' 
-                               value={hourWorkTime} 
-                               onChange={(e) => setHourWorkTime(Number(e.target.value))} />
+                    <label >
+                        <div style={{fontSize: "small"}}>Tiempo de trabajo (HH/mm):</div>
+                        <input type="number"
+                            min={0}
+                            max={8}
+                            value={hourWorkTime}
+                            onChange={(e) => setHourWorkTime(
+                                Number(e.target.value) <= 8 ? Number(e.target.value) :
+                                8
+                                )} />
+                        <input type="number"
+                            min={1}
+                            max={59}
+                            value={minWorkTime}
+                            onChange={(e) => setMinWorkTime(
+                                Number(e.target.value)
+                                
+                                )} />
                     </label>
-                    <label>
-                        Tiempo de trabajo (minutos):
-                        <input type="number" 
-                               min='0' 
-                               max='59' 
-                               value={minWorkTime} 
-                               onChange={(e) => setMinWorkTime(Number(e.target.value))} />
-                    </label>
+                   
                     <label>
                         Descanso corto (min):
                         <input type="number"
-                               min='0'
-                               max='5'
-                               value={shortBreak} 
-                               onChange={(e) => setShortBreak(Number(e.target.value))} />
+                            min='0'
+                            max='5'
+                            value={shortBreak}
+                            onChange={(e) => setShortBreak(Number(e.target.value))} />
                     </label>
                     <label>
                         Descanso largo (min):
                         <input type="number"
-                               min='15'
-                               max='40'
-                               value={longBreak} 
-                               onChange={(e) => setLongBreak(Number(e.target.value))} />
+                            min='15'
+                            max='40'
+                            value={longBreak}
+                            onChange={(e) => setLongBreak(Number(e.target.value))} />
                     </label>
                     <label>
                         Sonido:
                         <input style={{ width: "10rem" }}
-                               type="file"
-                               accept=".mp3"
-                               onChange={handleSoundFileChange} />
+                            type="file"
+                            accept=".mp3"
+                            onChange={handleSoundFileChange} />
                     </label>
                     <span>{getFileName()}</span>
                     <button type="submit" className="pomodoro-boton-verde">Iniciar Pomodoro</button>
@@ -262,6 +268,7 @@ const Pomodoro_view = (props) => {
             </div>
             {isBreak && <BreakOverlay timeRemaining={timeRemaining} />}
         </div>
-    )};
-    
+    )
+};
+
 export default Pomodoro_view;
