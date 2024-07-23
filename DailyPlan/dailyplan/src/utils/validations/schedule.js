@@ -128,7 +128,7 @@ export const deleteSchedule = async (schedule_id) => {
 export function loadSchedulesFromLocalStorage() {
     const schedules = localStorage.getItem("schedule");
     return schedules ? JSON.parse(schedules) : [];
-};
+}
 
 export function checkScheduleConflict(newEvent) {
     const existingEvents = loadSchedulesFromLocalStorage();
@@ -147,6 +147,11 @@ export function checkScheduleConflict(newEvent) {
         return (newEventStart >= eventStart && newEventStart < eventEnd) ||
                (newEventEnd > eventStart && newEventEnd <= eventEnd);
     });
-};
+}
 
+export function addNewEvent(newEvent) {
+    const schedules = loadSchedulesFromLocalStorage();
+    schedules.push(newEvent);
+    localStorage.setItem("schedule", JSON.stringify(schedules));
+}
 

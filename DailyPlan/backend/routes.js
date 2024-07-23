@@ -156,6 +156,7 @@ const GET_SLEEPQUALITIES_BY_DATE_RANGE_URL = '/get-sleepqualities-by-date-range'
 const GET_SLEEPQUALITIES_BY_USER_URL = '/get-sleepqualities-by-user'
 const GET_SLEEP_QUALITY_BY_ID_URL = '/get-sleepquality';
 const UPDATE_SLEEP_QUALITY_URL = '/update-sleepquality';
+const UPDATE_SLEEP_REP_INCR_URL = '/update-sleepquality-rep';
 const DELETE_SLEEP_QUALITY_URL = '/delete-sleepquality';
 
 const ADD_TONE_URL = '/add-tone';
@@ -297,6 +298,7 @@ DELETE_SCHEDULE_SLEEP_URL,
     GET_SLEEP_QUALITY_BY_ID_URL,
     GET_SLEEPQUALITIES_BY_USER_URL,
     UPDATE_SLEEP_QUALITY_URL,
+    UPDATE_SLEEP_REP_INCR_URL,
     DELETE_SLEEP_QUALITY_URL,
     ADD_TONE_URL,
     GET_TONES_URL,
