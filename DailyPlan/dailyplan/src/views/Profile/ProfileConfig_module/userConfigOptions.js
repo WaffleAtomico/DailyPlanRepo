@@ -6,6 +6,11 @@ import { getUsersBlocked } from "../../../utils/validations/blockedurs";
 import { RiUserForbidLine } from "react-icons/ri";
 import { FaCheckCircle, FaRegCircle, FaSpotify } from 'react-icons/fa';
 
+import { SpotifyApiContext } from 'react-spotify-api'
+import Cookies from 'js-cookie'
+import { SpotifyAuth, Scopes } from 'react-spotify-auth'
+import 'react-spotify-auth/dist/index.css'
+
 import "../../../styles/UI/profile/configOptions.css";
 import "../../../styles/UI/profile/notifView.css";
 import "../../../styles/UI/profile/profileInfo.css";
@@ -169,10 +174,29 @@ const UserNotif = (props) => {
 
 const UserConnections = (props) => {
   const [spotifyConnected, setSpotifyConnected] = useState(false);
+  const [token, setToken] = React.useState(Cookies.get("spotifyAuthToken"))
   //cambiar a como sea necesario para llamar a la funcion de conexion
   return (
     <div className="user-connections">
       <h2>Conexiones</h2>
+      {token ? (
+        <SpotifyApiContext.Provider value={token}>
+          {/* Your Spotify Code here */}
+          <p>You are authorized with token: {token}</p>
+        </SpotifyApiContext.Provider>
+      ) : (
+        // Display the login page
+        <SpotifyAuth
+          redirectUri='http://localhost:3000/callback'
+          clientID='1a70ba777fec4ffd9633c0c418bdcf39'
+          scopes={[Scopes.userReadPrivate, 'user-read-email']} // either style will work
+          onAccessToken={(token) => setToken(token)}
+        />
+      )}
+    </div>
+  );
+};
+/*
       {!spotifyConnected ? (
         <button
           className="spotify-button"
@@ -190,9 +214,7 @@ const UserConnections = (props) => {
           Desconectar de Spotify
         </button>
       )}
-    </div>
-  );
-};
+*/
 
 const UserPermissions = (props) => {
   //Preguntar solo 1 vez, si permite acceder a la ubicacion, de hecho

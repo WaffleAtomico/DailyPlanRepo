@@ -23,7 +23,7 @@ import "../../styles/UI/Origin/UI.css";
 import "../../styles/start/startpage.css";
 import "../../styles/UI/Countdowntimer/countdown.css";
 
-import { FaUserClock } from "react-icons/fa6";
+import { FaList, FaUserClock } from "react-icons/fa6";
 import { getUsrName } from "../../utils/validations/user";
 import { AuthContext } from "../../services/AuthContext";
 
@@ -83,12 +83,11 @@ export default function OriginPage() {
       default:
         break;
     }
-  }; 
+  };
 
   /*-------------------- Notifications --------------------*/
 
   const [mostrarNotificacion, setMostrarNotificacion] = useState(false);
-  const [mostrarPreparacion, setMostrarPreparacion] = useState(false);
   const [counter, setCounter] = useState(changeCounter);
 
   useEffect(() => {
@@ -112,27 +111,55 @@ export default function OriginPage() {
   }, []);
 
 
-/**
- *   GET SCHEDULE
- */
+  /**
+   *   GET SCHEDULE
+   */
 
-useEffect(() =>{
+  useEffect(() => {
 
- getScheduleById(id).then(response => {
-  
-  console.log("Se obtuvo la siguiente información", response.data);
-  setSchedule(response.data);  localStorage.setItem('schedule', JSON.stringify(schedule));
+    getScheduleById(id).then(response => {
 
-  
-
+      console.log("Se obtuvo la siguiente información", response.data);
+      setSchedule(response.data); localStorage.setItem('schedule', JSON.stringify(schedule));
  } ).catch("no se logro obtener el schedule"); 
 } , [id, selectedOption]);
 
+  /*---------------------- PREPARACION ---------------------- */
 
+  const [mostrarPreparacion, setMostrarPreparacion] = useState(false);
+  const [showMiniTab, setShowMiniTab] = useState(true);
 
   const handleClosePreparationView = () => {
     setMostrarPreparacion(false);
-};
+  };
+  const [blocks, setBlocks] = useState([
+    {
+      name: 'Bloque 1',
+      timeLimit: 5,
+      objectives: [
+        { id: 1, text: 'Objetivo 1', confirmed: false },
+        { id: 2, text: 'Objetivo 2', confirmed: false },
+        { id: 3, text: 'Objetivo 3', confirmed: false }
+      ],
+      timeDifference: null
+    },
+    {
+      name: 'Bloque 2',
+      timeLimit: 5,
+      objectives: [
+        { id: 4, text: 'Objetivo 4', confirmed: false },
+        { id: 5, text: 'Objetivo 5', confirmed: false },
+        { id: 6, text: 'Objetivo 6', confirmed: false },
+        { id: 7, text: 'Objetivo 7', confirmed: false }
+      ],
+      timeDifference: null
+    },
+  ]);
+
+  const handleUpdateBlocks = (updatedBlocks) => {
+    setBlocks(updatedBlocks);
+    console.log(blocks);
+  };
 
 
 
@@ -259,14 +286,33 @@ useEffect(() =>{
       {mostrarPreparacion && (
         <PreparationView
           onClose={handleClosePreparationView}
-          objectives={[
-            { id: 1, text: 'Objetivo 1' },
-            { id: 2, text: 'Objetivo 2' },
-            { id: 3, text: 'Objetivo 3' }
-          ]}
-          timeLimit={10} // Ejemplo: 10 minutos
+          setShowMiniTab={setShowMiniTab}
+          blocks={blocks}
+          handleUpdateBlocks={handleUpdateBlocks} 
         />
       )}
+      {showMiniTab && (
+        <div className="preparation-mini-tab" onClick={() => {
+          setShowMiniTab(false);
+          setMostrarPreparacion(true);
+        }}>
+          <FaList className="tab-icon" />
+          <div className="tab-text">
+            <span>P</span>
+            <span>R</span>
+            <span>E</span>
+            <span>P</span>
+            <span>A</span>
+            <span>R</span>
+            <span>A</span>
+            <span>C</span>
+            <span>I</span>
+            <span>Ó</span>
+            <span>N</span>
+          </div>
+        </div>
+      )}
+
       {mostrarNotificacion && (
         <GeneralNotif
           mensaje={myPojo.HeadText}
