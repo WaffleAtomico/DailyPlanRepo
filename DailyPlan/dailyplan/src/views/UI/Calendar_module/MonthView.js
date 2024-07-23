@@ -29,7 +29,7 @@ const MonthView = ({ date, setDate, setView }) => {
   }, [date]);
 
   useEffect(() => {
-    console.log(id);
+    // console.log(id);
     const Month = new Date(date.getFullYear(), date.getMonth());
     const formattedMonth = `${Month.getFullYear()}-${(Month.getMonth() + 1).toString().padStart(2, '0')}`;
     getRemindersByMonth(formattedMonth, id)
@@ -47,6 +47,14 @@ const MonthView = ({ date, setDate, setView }) => {
         setReminders([]); // Set to empty array in case of error
       });
   }, [date, id]);
+
+  const handleReminderMonth = (date) => {
+    console.log("Date",date);
+    const formattedDate = new Date(date);
+    console.log("Formatted Date:", formattedDate);
+    setDate(formattedDate);
+    setView('week');
+  }
 
   return (
     <div className="month-view-container">
@@ -86,6 +94,7 @@ const MonthView = ({ date, setDate, setView }) => {
                 }}
                 onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#e0f7fa'}
                 onMouseOut={(e) => e.currentTarget.style.backgroundColor = ''}
+                onClick={()=>handleReminderMonth(reminder.reminder_date)}
               >
                 <td>{reminder.reminder_name}</td>
                 <td>{formatDate(reminder.reminder_date)}</td>

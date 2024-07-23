@@ -12,7 +12,7 @@
 }
 
 .count-d-time-wrapper {
-  margin-top: 20vh;
+  /* margin-top: 20vh; */
   width: 600px;
   margin-left: auto;
   margin-right: auto;
@@ -281,4 +281,93 @@ input:hover {
 
 .timer-table th {
   background-color: #f2f2f2;
+}
+
+
+
+
+
+.timer-table-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  border: 2px solid #4CAF50;
+  border-radius: 10px;
+  margin: 2rem 0;
+}
+
+.timer-table-title {
+  font-size: 2rem;
+  color: #4CAF50;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.no-timers-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #4CAF50;
+  font-size: 1.5rem;
+}
+
+.styled-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 1rem;
+  text-align: left;
+}
+
+.styled-table thead tr {
+  background-color: #4CAF50;
+  color: #ffffff;
+  text-align: left;
+  font-weight: bold;
+}
+
+.styled-table th, .styled-table td {
+  padding: 12px 15px;
+  border: 1px solid #dddddd;
+}
+
+.styled-table tbody tr {
+  border-bottom: 1px solid #dddddd;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+  background-color: #f3f3f3;
+}
+
+.styled-table tbody tr:last-of-type {
+  border-bottom: 2px solid #4CAF50;
+}
+
+.styled-table tbody tr:hover {
+  background-color: #f1f1f1;
+  cursor: pointer;
+}
+
+.input-timer-name {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 2px solid #4CAF50;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 1.2rem;
+  background-color: transparent;
+  transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  color: #333;
+}
+
+.input-timer-name:focus {
+  border-color: #45a049;
+  box-shadow: 0 0 8px rgba(69, 160, 73, 0.5);
+  outline: none;
 }

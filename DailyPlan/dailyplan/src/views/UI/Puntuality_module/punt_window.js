@@ -11,20 +11,16 @@ const PopupWindow = ({ closePopup, props }) => {
   const [qualityData, setQualityData] = useState({ good: 0, medium: 0, bad: 0 });
 
   useEffect(() => {
-
-    
     getSleepQualityByUser(props.id_user)
-
-
       .then(response => {
         const qualityCounts = { good: 0, medium: 0, bad: 0 };
         console.log("Se obtuvo la información para la grafica:", response.data);
         response.data.forEach(item => {
-          if (item.quality_good===1) {
+          if (item.quality_good === 1) {
             qualityCounts.good += 1;
-          } else if (item.quality_medium===1) {
+          } else if (item.quality_medium === 1) {
             qualityCounts.medium += 1;
-          } else if (item.quiality_bad===1) {
+          } else if (item.quiality_bad === 1) {
             qualityCounts.bad += 1;
           }
         });
@@ -36,7 +32,7 @@ const PopupWindow = ({ closePopup, props }) => {
       });
   }, [props.id_user]);
 
-  const data = {
+  const sleepdata = {
     labels: ['Bueno', 'Regular', 'Mal'],
     datasets: [
       {
@@ -76,17 +72,27 @@ const PopupWindow = ({ closePopup, props }) => {
           <FaTimes />
         </button>
       </div>
-      <Tabs defaultActiveKey="general" id="punt_button-popup-tabs">
+      <Tabs defaultActiveKey="reminders" id="punt_button-popup-tabs">
         <Tab eventKey="reminders" title="Recordatorios">
-          <div className="punt_button-tab-content">Contenido de Recordatorios</div>
+          <div className="punt_button-tab-content">
+            Contenido de Recordatorios
+            </div>
         </Tab>
         <Tab eventKey="alarms" title="Alarmas">
           <div className="punt_button-tab-content">Contenido de Alarmas</div>
         </Tab>
         <Tab eventKey="sleep" title="Sueño">
           <div className="punt_button-tab-content">
-            <div style={{ width: '100%', height: '100%' }}>
-              <Pie data={data} options={options} />
+          <div style={{ width: '100%', height: '100%' }}>
+              {(qualityData.good < 1 &&
+                qualityData.medium < 1 &&
+                qualityData.bad < 1 ) ? (
+                <div>
+                  <h2>Prueba el modulo de calidad de sueño desde alarmas!</h2>
+                </div>
+              ) : (
+                <Pie data={sleepdata} options={options} />
+              )}
             </div>
           </div>
         </Tab>

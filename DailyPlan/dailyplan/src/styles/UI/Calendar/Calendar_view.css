@@ -117,3 +117,35 @@ select {
     font-size: small;
   }
 }
+
+
+.custom-select {
+  width: 20%;
+  padding: 5px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 2px solid #0f729d;
+  border-radius: 50px;
+  box-sizing: border-box;
+  font-size: 1.2rem;
+  background-color: #3276be;
+  color: #FFF;
+  appearance: none;
+  position: relative;
+  padding-right: 40px; 
+}
+
+.custom-select:focus {
+  border-color: #4381c4;
+  box-shadow: 0 0 8px rgba(57, 138, 225, 0.5);
+  outline: none;
+}
+
+.custom-select-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none; /* El icono no interfere con la selección */
+  color: #FFF;
+}

@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { startOfWeek, endOfWeek, addDays, format, isSameDay, parseISO } from 'date-fns';
 import HourBlock from './HourBlock';
 import '../../../styles/UI/Calendar/Calendar_view.css';
+import { FaArrowAltCircleLeft , FaArrowAltCircleRight } from "react-icons/fa";
+
+
 import { getRemindersByWeek } from '../../../utils/validations/reminders';
 import { useParams } from "react-router-dom";
 
@@ -98,8 +101,8 @@ const WeekView = ({ date, setDate, showform, setHour, setSelectDate, setReminder
   return (
     <div className="week-view-container">
       <div className="week-nav">
-        <button onClick={previousWeek}>Semana anterior</button>
-        <button onClick={nextWeek}>Siguiente semana</button>
+        <div style={{color: "green"}} onClick={previousWeek}><FaArrowAltCircleLeft size={50}/></div>
+        <div style={{color: "green"}} onClick={nextWeek}><FaArrowAltCircleRight size={50}/></div>
       </div>
       <div className="week-days">
         {daysOfWeek.map((day, dayIndex) => (

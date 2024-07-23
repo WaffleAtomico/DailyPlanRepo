@@ -4,12 +4,17 @@ import {
   BloqUser,
   PersoInfo,
   UserConnections,
-  UserNodif,
+  UserNotif,
   UserPermissions,
   UserTitles,
 } from "./userConfigOptions";
 
 import "../../../styles/UI/profile/profconfig.css";
+import { IoMdExit } from "react-icons/io";
+import { MdNotificationImportant } from "react-icons/md";
+import { FaMapMarked, FaUser, FaUserSlash } from "react-icons/fa";
+import { PiPlugsConnected } from "react-icons/pi";
+import { IoTrophySharp } from "react-icons/io5";
 
 
 export default function ProfileConfig_view(props) {
@@ -28,7 +33,7 @@ export default function ProfileConfig_view(props) {
       case 4:
         return <BloqUser id={props.user_id} />;
       case 5:
-        return <UserNodif id={props.user_id} />;
+        return <UserNotif id={props.user_id} />;
       case 6:
         return <UserConnections id={props.user_id} />;
       default:
@@ -54,6 +59,8 @@ export default function ProfileConfig_view(props) {
     navigate("/login");
   };
 
+  const iconSize = 40;
+
   return (
     <div className="menu-container" style={{ display: "flex" }}>
       <table className="menu-list" style={{ width: `${widthmenui}%` }}>
@@ -63,7 +70,7 @@ export default function ProfileConfig_view(props) {
               className={`menu-item ${optionselected === 1 ? "selected" : ""}`}
               onClick={() => handleOptionSelected(1)}
             >
-              Información personal
+             <FaUser size={iconSize} /> Información personal 
             </td>
           </tr>
           <tr>
@@ -71,7 +78,7 @@ export default function ProfileConfig_view(props) {
               className={`menu-item ${optionselected === 2 ? "selected" : ""}`}
               onClick={() => handleOptionSelected(2)}
             >
-              Títulos
+              <IoTrophySharp size={iconSize} /> Títulos
             </td>
           </tr>
           <tr>
@@ -79,7 +86,7 @@ export default function ProfileConfig_view(props) {
               className={`menu-item ${optionselected === 3 ? "selected" : ""}`}
               onClick={() => handleOptionSelected(3)}
             >
-              Permisos
+              <FaMapMarked size={iconSize} /> Permisos
             </td>
           </tr>
           <tr>
@@ -87,7 +94,7 @@ export default function ProfileConfig_view(props) {
               className={`menu-item ${optionselected === 6 ? "selected" : ""}`}
               onClick={() => handleOptionSelected(6)}
             >
-              Conexiones
+              <PiPlugsConnected size={iconSize} />  Conexiones
             </td>
           </tr>
           <tr>
@@ -95,7 +102,7 @@ export default function ProfileConfig_view(props) {
               className={`menu-item ${optionselected === 4 ? "selected" : ""}`}
               onClick={() => handleOptionSelected(4)}
             >
-              Usuarios bloqueados
+              <FaUserSlash size={iconSize} /> Usuarios bloqueados
             </td>
           </tr>
           <tr>
@@ -103,12 +110,12 @@ export default function ProfileConfig_view(props) {
               className={`menu-item ${optionselected === 5 ? "selected" : ""}`}
               onClick={() => handleOptionSelected(5)}
             >
-              Notificaciones
+              <MdNotificationImportant size={iconSize} /> Notificaciones
             </td>
           </tr>
           <tr>
             <td className="menu-item-close" onClick={() => closeSesion()}>
-              Cerrar sesión
+              <IoMdExit size={iconSize} /> Cerrar sesión
             </td>
           </tr>
         </tbody>

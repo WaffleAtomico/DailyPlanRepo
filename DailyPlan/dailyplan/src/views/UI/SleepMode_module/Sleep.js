@@ -8,8 +8,12 @@ import '../../../styles/UI/Sleep/Sleep.css';
 import { getSleepmodeById, updateSleepmode } from '../../../utils/validations/sleep';
 import { getSleepQualityById } from '../../../utils/validations/sleepquality';
 import { addTone } from '../../../utils/validations/tone';
-import { base64ToBlob, playAlarm, playBlobAudio } from '../../../utils/sounds';
+
 import { loadSchedulesFromLocalStorage, checkScheduleConflict, addSleepSchedule, addNewEvent } from '../../../utils/validations/schedule';
+
+import { base64ToBlob, playAlarm, playBlobAudio, playRingtone } from '../../../utils/sounds';
+import { MdBedtime, MdBedtimeOff } from 'react-icons/md';
+
 
 export default function SleepAlarm(props) {
     const [isToggled, setIsToggled] = useState(false);
@@ -47,6 +51,7 @@ export default function SleepAlarm(props) {
                 }
             }
         }).catch(err => { console.log(err) });
+
     }, [props.id_user]);
 
     useEffect(() => {
@@ -283,14 +288,7 @@ export default function SleepAlarm(props) {
                 ) : (
                     <div className="sleep-alarma">
                         <div className="sleep-alarma-container">
-                            <div className="sleep-toggle-container">
-                                Desactivar
-                                <ToggleButton
-                                    handleChange={() => setIsToggled(!isToggled)}
-                                    isToggled={isToggled}
-                                />
-                                Activar
-                            </div>
+
                             <div className="sleep-input-container">
                                 Hora (24h) de dormir
                                 <div className="sleep-time-input">
@@ -331,7 +329,9 @@ export default function SleepAlarm(props) {
                                         onChange={handleSoundFileChange}
                                     />
                                 </div>
+                                <br />
                             </div>
+                            
                             <div className="sleep-confirmar-button-container">
                                 <button className="sleep-confirm" onClick={confirmarModoDeSueno}>
                                     Confirmar hora de dormir
@@ -339,8 +339,19 @@ export default function SleepAlarm(props) {
                             </div>
                         </div>
                         <div className="sleep-horas-container">
+                            
                             <label className='sleep-horas'>{isNaN(horadiff) ? "" : horadiff}</label>
-                            <label className='sleep-texto'>Horas<br />de<br />Sueño</label>
+
+                            <label className='sleep-texto'>
+                                <div className="sleep-toggle-container">
+                                    <MdBedtimeOff />
+                                    <ToggleButton
+                                        handleChange={() => setIsToggled(!isToggled)}
+                                        isToggled={isToggled}
+                                    />
+                                    <MdBedtime/>
+                                </div>
+                                Horas<br />de<br />Sueño</label>
                         </div>
                     </div>
                 )}

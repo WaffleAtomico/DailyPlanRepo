@@ -1,12 +1,12 @@
-/* Chrono.css */
+/* Estilos generales */
 .chronometer-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
     padding: 1rem;
-    height: 100vh; /* Asegura que el contenedor tome la altura completa de la vista */
-    overflow-y: auto; /* Habilita el scroll vertical */
+    height: 100vh;
+    overflow-y: auto;
 }
 
 .chronometer-time {
@@ -16,11 +16,14 @@
 
 .general-div {
     margin-bottom: 1rem;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
 }
 
 .table-container {
-    max-height: 50vh; /* Limita la altura del contenedor de la tabla */
-    overflow-y: auto; /* Habilita el scroll vertical */
+    max-height: 50vh;
+    overflow-y: auto;
     width: 100%;
 }
 
@@ -42,26 +45,36 @@
     color: #000000;
 }
 
-.add-button {
-    background-color: #CDDC39;
+/* Botones mejorados */
+.general-button {
+    flex: auto;
+    background-color: #4CAF50;
     border: none;
-    color: #000000;
+    color: white;
+    padding: 0.75rem 1.25rem;
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 36px;
+    font-size: 1rem;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 20px;
+    transition: background-color 0.3s ease;
 }
 
-.general-button {
-    flex: auto;
-    border-radius: 10%;
+.general-button:hover {
+    background-color: #45a049;
+}
+
+.button-icon {
+    margin-right: 8px;
 }
 
 .chronometer-controls {
     display: flex;
     gap: 1rem;
     margin-top: 1rem;
-    margin-bottom: 6rem; /* Aumenta el margen inferior */
+    margin-bottom: 6rem;
 }
 
 .input-container {
@@ -78,7 +91,7 @@
     background-color: #FFFFFF;
     color: #000000;
     margin-right: 0.5rem;
-    text-align: center; /* Centra el texto del input */
+    text-align: center;
 }
 
 .time-input-container {
@@ -108,11 +121,11 @@
     .chronometer-time {
         font-size: 3rem;
     }
-    
+
     .add-button {
         font-size: 24px;
     }
-    
+
     .times-table th,
     .times-table td {
         padding: 0.25rem;
@@ -121,7 +134,7 @@
     .input-container input {
         width: 100px;
     }
-    
+
     .chronometer-controls {
         flex-direction: column;
         gap: 0.5rem;
@@ -131,18 +144,18 @@
         flex-direction: column;
         gap: 10px;
     }
-    
+
     .table-container {
-        max-height: 30vh; 
+        max-height: 30vh;
     }
 
     .times-table {
-        font-size: 0.8rem; 
+        font-size: 0.8rem;
     }
 
     .times-table th,
     .times-table td {
         padding: 0.2rem;
-        word-break: break-word; 
+        word-break: break-word;
     }
 }
