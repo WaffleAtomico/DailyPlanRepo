@@ -505,6 +505,11 @@ const CLIENT_SECRET = 'ece004e5f2d44a9e9f4ad4b80140532e';
 const REDIRECT_URI = 'http://localhost:3000/callback';
 
 
+/*-------------------------------Google Maps Platform---------------------------*/
+
+const CLIENT_ID_MAP = 'AIzaSyABWa3p-_7ZFIh7eOEUPLD8r7vKDn3KHfE';
+const CLIENT_SECRET_MAP = 'z-ucHPnSDWcMh7R_mNuqnsZG5c0=';
+
 app.get('/auth-url', (req, res) => {
   const scopes = [
     'user-modify-playback-state',
