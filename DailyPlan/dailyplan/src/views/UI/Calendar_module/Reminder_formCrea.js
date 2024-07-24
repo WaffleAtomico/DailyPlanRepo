@@ -34,6 +34,8 @@ const ReminderFormView = (props) => {
     const [reminder, setReminder] = useState([]);
     const [showObjectiveBlocks, setShowObjectiveBlocks] = useState(false);
     const [showShareUsers, setShowShareUsers] = useState(false);
+    const [arrivalLatLng, setArrivalLatLng] = useState({ lat: null, lng: null });
+const [departureLatLng, setDepartureLatLng] = useState({ lat: null, lng: null });
 
     useEffect(() => {
         if(!(props.Reminder_id)) //la info la vamos a obtener cuando no tenga el reminder_id o sea nulo
@@ -102,6 +104,23 @@ const ReminderFormView = (props) => {
             [name]: type === 'checkbox' ? checked : value
         }));
     };
+
+    const handlePlaceSelect = (type, place, latLng) => {
+        if (type === 'arrival') {
+            setFormData(prevData => ({
+                ...prevData,
+                arrivalPlace: place,
+            }));
+            setArrivalLatLng(latLng);
+        } else if (type === 'departure') {
+            setFormData(prevData => ({
+                ...prevData,
+                departurePlace: place,
+            }));
+            setDepartureLatLng(latLng);
+        }
+    };
+    
 
     const handleFileChange = (event) => {
         const { name, files } = event.target;
@@ -322,7 +341,7 @@ const ReminderFormView = (props) => {
                                 <Row>
                                     <Col xs={12}>
                                         <div className="map-placeholder" style={{ height: '200px',  backgroundColor: '#f0f0f0', margin: '1rem 0' }}>
-                                            <MapView/>
+                                        <MapView onPlaceSelect={ handlePlaceSelect} />
                                         </div>
                                     </Col>
                                 </Row>

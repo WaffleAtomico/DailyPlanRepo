@@ -1,5 +1,4 @@
-// components/MapView.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
@@ -12,15 +11,15 @@ L.Icon.Default.mergeOptions({
   shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
 });
 
-const SearchControl = (props) => {
+const SearchControl = ({ onLocationSelected }) => {
   const map = useMapEvents({
     geosearch_showlocation: (result) => {
       const { x, y, label } = result.location;
-      props.onLocationSelected({ lat: y, lng: x, label });
+      onLocationSelected({ lat: y, lng: x, label });
     },
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     const provider = new OpenStreetMapProvider();
     const searchControl = new GeoSearchControl({
       provider,
@@ -38,14 +37,14 @@ const SearchControl = (props) => {
   return null;
 };
 
-const MapView = ({ onLocationSelected }) => {
+const MapView = ({ onLocationSelected, onPlaceSelect }) => {
   const [position, setPosition] = useState([51.505, -0.09]);
   const [markerPosition, setMarkerPosition] = useState(null);
 
   const handleMapClick = (e) => {
     const { lat, lng } = e.latlng;
     setMarkerPosition([lat, lng]);
-    onLocationSelected({ lat, lng, label: "Selected Location" }); // Placeholder label
+    onLocationSelected({ lat, lng, label: 'Selected Location' }); // Placeholder label
   };
 
   return (
@@ -60,6 +59,14 @@ const MapView = ({ onLocationSelected }) => {
           <Popup>Selected Location</Popup>
         </Marker>
       )}
+      <div style={{ position: 'absolute', top: '10px', left: '50px', zIndex: 1000 }}>
+        <button onClick={() => onPlaceSelect('arrival', 'Arrival Place', { lat: 40.7128, lng: -74.0060 })}>
+          Select Arrival Place
+        </button>
+        <button onClick={() => onPlaceSelect('departure', 'Departure Place', { lat: 34.0522, lng: -118.2437 })}>
+          Select Departure Place
+        </button>
+      </div>
     </MapContainer>
   );
 };
