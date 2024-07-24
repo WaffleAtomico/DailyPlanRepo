@@ -14,15 +14,22 @@ import 'react-spotify-auth/dist/index.css'
 import "../../../styles/UI/profile/configOptions.css";
 import "../../../styles/UI/profile/notifView.css";
 import "../../../styles/UI/profile/profileInfo.css";
+import { addPermission } from "../../../utils/validations/permission";
 
 
 
 const PersoInfo = () => {
   const [userName, setUserName] = useState('Nombre Usuario');
   const [showConfirmation, setShowConfirmation] = useState(false);
+  const [isChecked, setIsChecked] = useState(false);
 
   const handleDeleteAccount = () => {
     console.log('Cuenta eliminada');
+  };
+
+  const handleCheckboxChange = (checked) => {
+    setIsChecked(checked);
+    console.log('Checkbox in PersoInfo is now', checked);
   };
 
   return (
@@ -37,6 +44,7 @@ const PersoInfo = () => {
           className="info-input"
         />
       </div>
+    
       <div className="info-field">
         <label>Título:</label>
         <p className="info-value">Mi Título</p>
@@ -77,10 +85,9 @@ const PersoInfo = () => {
     </div>
   );
 };
-
 const BloqUser = (props) => {
-  //Falta poder desbloquear usuarios dando a un boton, ya los obtenemos, ahora falta hacer un onclick que los quite
   const [blockedUsers, setBlockedUsers] = useState([]);
+  const [isChecked, setIsChecked] = useState(false);
 
   useEffect(() => {
     getBlockedUsers(props.id);
@@ -92,9 +99,19 @@ const BloqUser = (props) => {
     }).catch(err => { console.log(err) });
   };
 
+  const handleCheckboxChange = (checked) => {
+    setIsChecked(checked);
+    console.log('Checkbox in BloqUser is now', checked);
+  };
+
   return (
     <div style={{ backgroundColor: "#f0f0f0" }}>
       <h2>Usuarios bloqueados {blockedUsers.length} </h2>
+      <CustomCheckbox
+        label="Check me"
+        isChecked={isChecked}
+        onChange={handleCheckboxChange}
+      />
       {blockedUsers.length > 0 ? (
         <table className="titl-custom-table">
           <thead>
@@ -216,85 +233,88 @@ const UserConnections = (props) => {
       )}
 */
 
-const UserPermissions = (props) => {
-  //Preguntar solo 1 vez, si permite acceder a la ubicacion, de hecho
-  //IDEA: Solo cuando funcione la API de google maps, va a preguntar, si en este campo
-  //lo marco como denegado, significa que no esta permitido, por medio del sistema
-  /*
-    Explico a detalle, no es solo el permiso del navegador, es saber si permite
-    el usuario usar esa informacion, aunque ya se haya propiciado por el usuario
-  */
-  return (
-    <div>
-      <h1>Ubicación en tiempo real</h1>
-      {/* cambiar en un tiempo */}
-      {/* <RealTimeLocationComponent /> */}
 
+//Checkbox
+const CustomCheckbox = ({ label, isChecked, onChange }) => {
+  return (
+    <div className="checkbox-container">
+      <label>
+        {label}
+        <input
+          type="checkbox"
+          checked={isChecked}
+          onChange={(e) => onChange(e.target.checked)}
+        />
+      </label>
     </div>
   );
-  /*const [locationPermission, setLocationPermission] = useState(false);
-    const [userLocation, setUserLocation] = useState(null);
-    const [error, setError] = useState(null);
-
-    const handlePermissionToggle = () => {
-        if (!locationPermission) {
-            requestLocationPermission();
-        } else {
-            setLocationPermission(false);
-            setUserLocation(null);
-        }
-    };
-
-    const requestLocationPermission = () => {
-        navigator.permissions.query({ name: 'geolocation' }).then(permissionStatus => {
-            if (permissionStatus.state === 'granted') {
-                fetchUserLocation();
-            } else if (permissionStatus.state === 'prompt') {
-                permissionStatus.onchange = () => {
-                    fetchUserLocation();
-                };
-            }
-        }).catch(error => {
-            console.error('Error al solicitar permisos de ubicación:', error);
-            setError('Error al solicitar permisos de ubicación.');
-        });
-    };
-
-    const fetchUserLocation = () => {
-        navigator.geolocation.getCurrentPosition(
-            position => {
-                setLocationPermission(true);
-                setUserLocation({
-                    latitude: position.coords.latitude,
-                    longitude: position.coords.longitude
-                });
-                setError(null);
-            },
-            error => {
-                console.error('Error al obtener la ubicación:', error);
-                setError('No se pudo obtener la ubicación.');
-            }
-        );
-    };
-
-    return (
-        <div style={{ backgroundColor: "#f0f0f0", padding: '20px', borderRadius: '5px', margin: '20px' }}>
-            <h2>Permisos</h2>
-            <label>
-                Compartir Ubicación:
-                <input
-                    type="checkbox"
-                    checked={locationPermission}
-                    onChange={handlePermissionToggle}
-                />
-            </label>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
-            {userLocation && (
-                <p>Ubicación actual: Latitud {userLocation.latitude}, Longitud {userLocation.longitude}</p>
-            )}
-        </div>
-    );*/
 };
+
+//Componente que sirve para obtener los permisos de ubicación de la persona
+const UserPermissions = (props) => {
+  const [locationPermission, setLocationPermission] = useState(false);
+  const [userLocation, setUserLocation] = useState(null);
+  const [error, setError] = useState(null);
+
+  const handlePermissionToggle = () => {
+
+    //crear un objeto para pasar la información
+    console.log("Buenas tardes");
+    const permission = {
+
+      permission_active: 1,
+      user_id: props.id
+    }
+      //Si se dio el permiso...
+       if (!locationPermission) {
+      addPermission(permission);
+      fetchUserLocation();
+    } else {
+      //En caso de que no...
+      permission.permission_active= 0;
+      addPermission(permission);
+      setLocationPermission(false);
+      setUserLocation(null);
+    }
+  };
+
+  const fetchUserLocation = () => {
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        setLocationPermission(true);
+        setUserLocation({
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude
+        });
+        setError(null);
+      },
+      error => {
+        console.error('Error al obtener la ubicación:', error);
+        setError('No se pudo obtener la ubicación.');
+      }
+    );
+  };
+
+  return (
+    <div style={{ backgroundColor: "#f0f0f0", padding: '20px', borderRadius: '5px', margin: '20px' }}>
+      <h2>Permisos</h2>
+      <label>
+        Compartir Ubicación:
+        <input
+          type="checkbox"
+          checked={locationPermission}
+          onChange={handlePermissionToggle}
+        />
+      </label>
+      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {userLocation && (
+        <p>Ubicación actual: Latitud {userLocation.latitude}, Longitud {userLocation.longitude}</p>
+      )}
+    </div>
+  );
+};
+
+
 
 const UserTitles = (props) => {
   const [titles, setTitles] = useState([]);

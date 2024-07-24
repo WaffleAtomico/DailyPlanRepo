@@ -1,22 +1,49 @@
 import { db } from '../config/connection.js';
 
 const addPermision = (req, res) => {
-    // Cuando se crea debe de estar en 0
-    const query = {
-        sql: "INSERT INTO `permisions`(`permision_active`, `user_id`) VALUES (?, ?)",
-        values: [
-            req.body.permision_active,
-            req.body.user_id,
-        ],
+    const { user_id, permission_active } = req.body.permissionInfo;
+  
+    // Check if a permission record exists for the user
+    const checkQuery = {
+      sql: "SELECT * FROM `permissions` WHERE `user_id` = ?",
+      values: [user_id],
     };
-    db.query(query.sql, query.values, (err, data) => {
-        if (err) {
-            return res.json({ message: "Error adding permision", error: err });
-        }
-        return res.json({ message: "Permision added successfully" });
+  
+    db.query(checkQuery.sql, checkQuery.values, (checkErr, checkData) => {
+      if (checkErr) {
+        return res.json({ message: "Error checking permission", error: checkErr });
+      }
+  
+      if (checkData.length > 0) {
+        // If the record exists, update it
+        const updateQuery = {
+          sql: "UPDATE `permissions` SET `permission_active` = ? WHERE `user_id` = ?",
+          values: [permission_active, user_id],
+        };
+  
+        db.query(updateQuery.sql, updateQuery.values, (updateErr, updateData) => {
+          if (updateErr) {
+            return res.json({ message: "Error updating permission", error: updateErr });
+          }
+          return res.json({ message: "Permission updated successfully" });
+        });
+      } else {
+        // If the record does not exist, insert a new one
+        const insertQuery = {
+          sql: "INSERT INTO `permissions`(`permission_active`, `user_id`) VALUES (?, ?)",
+          values: [permission_active, user_id],
+        };
+  
+        db.query(insertQuery.sql, insertQuery.values, (insertErr, insertData) => {
+          if (insertErr) {
+            return res.json({ message: "Error adding permission", error: insertErr });
+          }
+          return res.json({ message: "Permission added successfully" });
+        });
+      }
     });
-};
-
+  };
+  
 const getPermisions = (req, res) => {
     const query = {
         sql: "SELECT `permision_id`, `permision_active`, `user_id` FROM `permisions` WHERE 1",
@@ -31,8 +58,8 @@ const getPermisions = (req, res) => {
 
 const getPermisionById = (req, res) => {
     const query = {
-        sql: "SELECT `permision_id`, `permision_active`, `user_id` FROM `permisions` WHERE `permision_id` = ?",
-        values: [req.params.permision_id],
+        sql: "SELECT `permision_id`, `permision_active`, `user_id` FROM `permisions` WHERE `user_id` = ?",
+        values: [req.body.permissionId],
     };
     db.query(query.sql, query.values, (err, data) => {
         if (err) {
