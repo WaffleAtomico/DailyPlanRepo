@@ -10,6 +10,7 @@ import { addTone } from '../../../utils/validations/tone';
 import { saveReminderShare } from '../../../utils/validations/remindershare';
 import { saveObjective } from '../../../utils/validations/objetive';
 import { saveObjectivesBlock } from '../../../utils/validations/objetiveblock';
+import MapView from '../Map_module/MapView';
 
 const ReminderFormView = (props) => {
     const [formData, setFormData] = useState({
@@ -320,8 +321,8 @@ const ReminderFormView = (props) => {
                                 </Row>
                                 <Row>
                                     <Col xs={12}>
-                                        <div className="map-placeholder" style={{ height: '200px', backgroundColor: '#f0f0f0', margin: '1rem 0' }}>
-                                            <p>Mapa aquí</p>
+                                        <div className="map-placeholder" style={{ height: '200px',  backgroundColor: '#f0f0f0', margin: '1rem 0' }}>
+                                            <MapView/>
                                         </div>
                                     </Col>
                                 </Row>

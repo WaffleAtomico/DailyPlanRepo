@@ -95,3 +95,21 @@
         padding: 1rem;
     }
 }
+
+
+/* styles.css or any CSS file you use */
+.map-placeholder {
+    height: 1000%;
+    background-color: #f0f0f0;
+    margin: 1rem 0;
+    position: relative; /* Ensures the absolute positioning of the map */
+  }
+  
+  .map-container {
+    height: 100%; /* Ensures the map takes up the entire height of the parent */
+    width: 100%;  /* Ensures the map takes up the entire width of the parent */
+    position: absolute; /* Positioning the map absolutely within the parent */
+    top: 0;
+    left: 0;
+  }
+  
