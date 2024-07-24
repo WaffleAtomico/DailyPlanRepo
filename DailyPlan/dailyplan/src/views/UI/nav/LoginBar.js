@@ -7,7 +7,7 @@ export default function Header_startpage() {
     return(
         <>
          <div className="startpage-header">
-            <div  className="startpage-components">
+            <div className="startpage-components">
                 <h1>
                     <strong > Daily Plan </strong>
                 </h1>

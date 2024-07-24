@@ -189,7 +189,7 @@ const UserNotif = (props) => {
   );
 };
 
-const UserConnections = (props) => {
+const UserConnections = (props) => { 
   const [spotifyConnected, setSpotifyConnected] = useState(false);
   const [token, setToken] = React.useState(Cookies.get("spotifyAuthToken"))
   //cambiar a como sea necesario para llamar a la funcion de conexion
