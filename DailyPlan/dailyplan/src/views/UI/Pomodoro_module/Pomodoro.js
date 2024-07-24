@@ -117,7 +117,7 @@ const Pomodoro_view = (props) => {
                             const base64String = reader.result.split(',')[1];
                             const convertedSound = {
                                 base64: base64String,
-                                name: file.name.replace('.mp3', '.ogg'),
+                                name: file.name.replace('.mp3'),
                                 type: 'audio/mpeg'
                             };
                             setSoundFile(convertedSound);

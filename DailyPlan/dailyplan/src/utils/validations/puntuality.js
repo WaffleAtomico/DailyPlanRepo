@@ -125,7 +125,14 @@ export function percentImprove(approx, exact) {
 //Method to calculate if the user have a penalty with the punctuality with the difference of time.
 export function applyLatePenalty(punctuality, timeDifferenceInMinutes) {
     if (timeDifferenceInMinutes > 10) {
-        return punctuality * 0.95; // Subtract 5% of the punctuality
+    
+        if(punctuality - 5 < 0){
+            punctuality = 0;
+        }else
+        {
+            punctuality =- 5;
+        }
+        return punctuality; // Subtract 5% of the punctuality
     }
     return punctuality;
 }

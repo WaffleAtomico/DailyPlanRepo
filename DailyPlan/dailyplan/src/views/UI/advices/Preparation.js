@@ -131,50 +131,50 @@ const PreparationView = ({ onClose, blocks, setShowMiniTab, handleUpdateBlocks }
 
     return (
         <div className="preparation-fullscreen-container">
-        <button className="preparation-close-button" onClick={() => {
-            setShowMiniTab(true);
-            onClose();
-        }}>
-            <IoClose size={40} />
-        </button>
-        {!timeUp && (
-            <>
-                <div className="preparation-block-name">
-                    {blocks[currentBlock]?.name || 'Cargando...'}
+            <button className="preparation-close-button" onClick={() => {
+                setShowMiniTab(true);
+                onClose();
+            }}>
+                <IoClose size={40} />
+            </button>
+            {!timeUp && (
+                <>
+                    <div className="preparation-block-name">
+                        {blocks[currentBlock]?.name || 'Cargando...'}
+                    </div>
+                    <div className="preparation-counter">
+                        {`${Math.floor(counter / 60).toString().padStart(2, '0')}:${(counter % 60).toString().padStart(2, '0')}`}
+                    </div>
+                    <div className="preparation-items-list">
+                        {objectiveList.map(item => (
+                            <div
+                                key={item.id}
+                                className={`preparation-item ${item.confirmed ? 'confirmed' : ''} ${item.removing ? 'removing' : ''}`}
+                            >
+                                <label className="preparation-item-label">
+                                    <input
+                                        type="checkbox"
+                                        onChange={() => handleConfirm(item.id)}
+                                        disabled={item.confirmed}
+                                    />
+                                    <span className="checkmark"></span>
+                                    {item.text}
+                                </label>
+                            </div>
+                        ))}
+                    </div>
+                    <div className="preparation-advice">
+                        {advice}
+                    </div>
+                </>
+            )}
+            {timeUp && (
+                <div className="time-up-message" style={{ fontSize: '3rem', padding: '40px' }}>
+                    <IoTime size={100} />
+                    <span><h1>¡Se acabó el tiempo de preparación!</h1></span>
                 </div>
-                <div className="preparation-counter">
-                    {`${Math.floor(counter / 60).toString().padStart(2, '0')}:${(counter % 60).toString().padStart(2, '0')}`}
-                </div>
-                <div className="preparation-items-list">
-                    {objectiveList.map(item => (
-                        <div
-                            key={item.id}
-                            className={`preparation-item ${item.confirmed ? 'confirmed' : ''} ${item.removing ? 'removing' : ''}`}
-                        >
-                            <label className="preparation-item-label">
-                                <input
-                                    type="checkbox"
-                                    onChange={() => handleConfirm(item.id)}
-                                    disabled={item.confirmed}
-                                />
-                                <span className="checkmark"></span>
-                                {item.text}
-                            </label>
-                        </div>
-                    ))}
-                </div>
-                <div className="preparation-advice">
-                    {advice}
-                </div>
-            </>
-        )}
-        {timeUp && (
-            <div className="time-up-message" style={{ fontSize: '3rem', padding: '40px' }}>
-                <IoTime size={100} />
-                <span><h1>¡Se acabó el tiempo de preparación!</h1></span>
-            </div>
-        )}
-    </div>
+            )}
+        </div>
 
     );
 };
