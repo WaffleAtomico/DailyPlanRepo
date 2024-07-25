@@ -5,6 +5,7 @@ import { FaRegCalendarAlt, FaRegBell, FaRegImage } from 'react-icons/fa';
 import { addAlarm } from "../../../utils/validations/alarm";
 import { addDaySelected } from "../../../utils/validations/dayselected";
 import '../../../styles/UI/Alarm/alarm_formCrea.css';
+import { myPojo } from '../../../utils/ShowNotifInfo';
 
 const AlarmFormView = (props) => {
     const [alarmTime, setAlarmTime] = useState('');
@@ -96,6 +97,7 @@ const AlarmFormView = (props) => {
         addAlarm(alarmInfoToSend).then(() => {
         }).catch(error => {
             console.error(error);
+            myPojo.setNotif("Error: No se pudo guardar la alarma", <div size={220} />);
         });
 
         console.log('Datos del formulario:', {
