@@ -4,6 +4,7 @@ import '../../../styles/UI/Sleep/sleepForm.css';
 import moment from 'moment';
 import { saveSleepQuality, updateSleepModeRep } from '../../../utils/validations/sleepquality';
 import { updateSleepRepStopped } from '../../../utils/validations/sleep';
+import Button from 'react-bootstrap/Button';
 
 
 
@@ -41,8 +42,8 @@ const SleepForm = ({ onClose, user_id, stopRep, setAlreadySurvey }) => {
       .then(() => {
         updateSleepRepStopped(user_id, stopRep)
           .then(() => {
-            
-            
+
+
             updateSleepModeRep({ date: moment().format('YYYY-MM-DD'), userId: user_id })
               .then(() => {
                 setAlreadySurvey(true);
@@ -92,7 +93,10 @@ const SleepForm = ({ onClose, user_id, stopRep, setAlreadySurvey }) => {
           <span>Mal</span>
         </div>
       </div>
-      <button onClick={handleCloseWithoutAnswer}>Cerrar sin respuesta</button>
+      <Button variant="warning" onClick={handleCloseWithoutAnswer}>
+        Cerrar sin respuesta
+      </Button>
+
     </div>
   );
 };

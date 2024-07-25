@@ -34,7 +34,8 @@ export const getPuntuality = async () => {
 // Function to get punctuality by ID
 export const getPuntualityById = async (user_id) => {
     try {
-        const response = await axios.post(GET_PUNTUALITY_BY_ID_URL, {user_id});
+        const response = await axios.post(GET_PUNTUALITY_BY_ID_URL, { user_id });
+        // console.log(response.data[0]);
         return response;
     } catch (err) {
         console.log("Error retrieving punctuality:", err);
@@ -66,12 +67,6 @@ export const deletePuntuality = async (punt_id) => {
         return "Error deleting punctuality";
     }
 };
-
-
-
-
-
-
 
 
 
@@ -125,14 +120,13 @@ export function percentImprove(approx, exact) {
 //Method to calculate if the user have a penalty with the punctuality with the difference of time.
 export function applyLatePenalty(punctuality, timeDifferenceInMinutes) {
     if (timeDifferenceInMinutes > 10) {
-    
         if(punctuality - 5 < 0){
             punctuality = 0;
         }else
         {
-            punctuality =- 5;
+            punctuality =- 5; // Subtract 5% of the punctuality
         }
-        return punctuality; // Subtract 5% of the punctuality
+        return punctuality; 
     }
     return punctuality;
 }

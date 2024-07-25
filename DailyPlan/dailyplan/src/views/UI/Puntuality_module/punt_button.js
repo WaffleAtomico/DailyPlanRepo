@@ -16,7 +16,7 @@ const PuntButton = (props) => {
   const [isCompletedArchivement3, setIsCompletedArchivement3] = useState(true);
 
   useEffect(() => {
-    console.log("Soy un boton");
+    // console.log("Soy un boton");
     // setPuntuality(95);
     const grant_title_id1 = 0;
     const grant_title_id2 = 1;
@@ -45,8 +45,9 @@ const PuntButton = (props) => {
   }, [puntuality, isCompletedArchivement1, isCompletedArchivement2, isCompletedArchivement3]);
 
   useEffect(() => {
-    // setPuntuality(95);
-  }, []);
+    setPuntuality(props.puntuality);
+    //Obtener puntualidad aca mero
+  }, [props.puntuality]);
 
   const confirmArchivement = (user_id, grant_title_id, idArchive) => {
     isCompleted(user_id, grant_title_id).then(response => {
@@ -81,8 +82,7 @@ const PuntButton = (props) => {
       console.error("Error granting achievement:", error);
     });
   };
-
-
+  
   const togglePopup = () => {
     setShowPopup(!showPopup);
   };

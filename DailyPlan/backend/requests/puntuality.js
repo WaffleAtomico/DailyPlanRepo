@@ -38,27 +38,17 @@ const getPuntuality = (req, res) => {
 };
 
 const getPuntualityById = (req, res) => {
-
-        console.log(req.body);
-
+    // console.log("En back puntById",req.body.user_id);
     const query = {
-
         sql: "SELECT `punt_id`, `user_id`, `punt_date`, `punt_value`, `punt_num_rem`, `punt_percent_rem`, `punt_num_alar`, `punt_percent_alar`, `punt_num_timer`, `punt_percent_timer`, `punt_num_chro`, `punt_percent_chro` FROM `puntuality` WHERE `user_id` = ?",
         values: [req.body.user_id],
-
     };
-
-
-
-
     db.query(query.sql, query.values, (err, data) => {
         if (err) {
-
             console.log("error");
             return res.json({ message: "Error retrieving puntuality", error: err });
         }
-
-        console.log("info obtenida", data);
+        // console.log("info obtenida", data);
         return res.json(data);
     });
 };
