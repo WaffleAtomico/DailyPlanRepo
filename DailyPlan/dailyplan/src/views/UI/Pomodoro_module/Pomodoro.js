@@ -11,6 +11,7 @@ import { addTone } from "../../../utils/validations/tone";
 import { addPomodoroSchedule } from '../../../utils/validations/schedule';
 import { checkScheduleConflict } from '../../../utils/validations/schedule';
 import BreakOverlay from './BreakOverlay';
+import { getDistanceMatrix } from '../../../utils/validations/services/distanceMatrixClient';
 
 const Pomodoro_view = (props) => {
     const [workTime, setWorkTime] = useState(25);
@@ -30,6 +31,16 @@ const Pomodoro_view = (props) => {
 
     useEffect(() => {
         confirmArchivement(props.id_user);
+
+        //TEMPORAL
+        const origins = ['40.748817,-73.985428']; // Example coordinates
+        const destinations = ['34.052235,-118.243683'];
+        
+        getDistanceMatrix(origins, destinations)
+          .then(data => console.log(data))
+          .catch(error => console.error(error));
+        
+
     }, [props.id_user]);
 
     useEffect(() => {
@@ -117,7 +128,7 @@ const Pomodoro_view = (props) => {
                             const base64String = reader.result.split(',')[1];
                             const convertedSound = {
                                 base64: base64String,
-                                name: file.name.replace('.mp3', '.ogg'),
+                                name: file.name.replace('.mp3'),
                                 type: 'audio/mpeg'
                             };
                             setSoundFile(convertedSound);

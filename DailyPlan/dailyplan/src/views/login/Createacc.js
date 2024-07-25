@@ -116,11 +116,7 @@ testusr3@gmail.com
                       tone_id: null,
                     }
 
-                    console.log("acá pasó el código");
-
-
-                    
-
+                    // console.log("acá pasó el código");
 
                     saveUserSleepmode(sleep_info).then(res => {
                       if (res) {

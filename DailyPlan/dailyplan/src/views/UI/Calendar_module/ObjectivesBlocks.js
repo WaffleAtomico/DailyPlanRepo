@@ -61,7 +61,7 @@ const GoalsModule = ({ onClose, onSave }) => {
                             <Form.Control
                                 type="number"
                                 placeholder="Tiempo (min)"
-                                value={block.time}
+                                value={block.time ? block.time : 5}
                                 onChange={(e) => handleBlockChange(blockIndex, 'time', e.target.value)}
                                 min={1}
                                 max={60}

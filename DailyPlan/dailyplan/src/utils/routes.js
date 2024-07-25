@@ -167,8 +167,15 @@ const GET_TONE_BY_ID_URL = `${urlreference}/get-tone`;
 const UPDATE_TONE_URL = `${urlreference}/update-tone`;
 const DELETE_TONE_URL = `${urlreference}/delete-tone`;
 
+
+/*External services:------------------------------------------- */
+
+/*Google */
+const DISTANCE_MATRIX_URL = `${urlreference}/distance-matrix`; 
+
 export {
     urlreference,
+    DISTANCE_MATRIX_URL,
     ADD_ALARM_URL,
     GET_ALARMS_FOR_USER_URL,
     GET_ALARM_BY_ID_URL,

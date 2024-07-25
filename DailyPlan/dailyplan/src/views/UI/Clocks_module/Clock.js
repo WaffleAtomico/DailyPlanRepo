@@ -255,7 +255,7 @@ export default function ClockView(props) {
                         <tr key={clock.clock_id}>
                             <td>{moment().tz(clock.clock_name).format('HH:mm:ss')}</td>
                             <td>{clock.clock_name}</td>
-                            <td><TiDeleteOutline className="icon-large" onClick={() => deleteUserClock(clock.clock_id)} /></td>
+                            <td><TiDeleteOutline className="icon-large" size={30} onClick={() => deleteUserClock(clock.clock_id)} /></td>
                         </tr>
                     ))}
                 </tbody>
