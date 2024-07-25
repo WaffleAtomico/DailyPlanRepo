@@ -1,11 +1,14 @@
 import { db } from '../config/connection.js';
 
 const addPermision = (req, res) => {
-    const { user_id, permission_active } = req.body.permissionInfo;
+
+  console.log("Se trata de agregar un permiso:", req.body.permissionInfo);
+
+    const { user_id, permision_active } = req.body.permissionInfo;
   
     // Check if a permission record exists for the user
     const checkQuery = {
-      sql: "SELECT * FROM `permissions` WHERE `user_id` = ?",
+      sql: "SELECT * FROM `permisions` WHERE `user_id` = ?",
       values: [user_id],
     };
   
@@ -17,8 +20,8 @@ const addPermision = (req, res) => {
       if (checkData.length > 0) {
         // If the record exists, update it
         const updateQuery = {
-          sql: "UPDATE `permissions` SET `permission_active` = ? WHERE `user_id` = ?",
-          values: [permission_active, user_id],
+          sql: "UPDATE `permisions` SET `permision_active` = ? WHERE `user_id` = ?",
+          values: [permision_active, user_id],
         };
   
         db.query(updateQuery.sql, updateQuery.values, (updateErr, updateData) => {
@@ -30,8 +33,8 @@ const addPermision = (req, res) => {
       } else {
         // If the record does not exist, insert a new one
         const insertQuery = {
-          sql: "INSERT INTO `permissions`(`permission_active`, `user_id`) VALUES (?, ?)",
-          values: [permission_active, user_id],
+          sql: "INSERT INTO `permisions`(`permision_active`, `user_id`) VALUES (?, ?)",
+          values: [permision_active, user_id],
         };
   
         db.query(insertQuery.sql, insertQuery.values, (insertErr, insertData) => {

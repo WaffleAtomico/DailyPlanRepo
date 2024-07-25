@@ -9,7 +9,7 @@ import {
 
 export const addPermission = async (permissionInfo) => {
     try {
-        const response = await axios.post(ADD_PERMISSION_URL, permissionInfo);
+        const response = await axios.post(ADD_PERMISSION_URL, {permissionInfo});
         return response.data;
     } catch (err) {
         console.error("Error adding permission:", err);

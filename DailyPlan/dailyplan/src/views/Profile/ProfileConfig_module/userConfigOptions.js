@@ -14,7 +14,7 @@ import 'react-spotify-auth/dist/index.css'
 import "../../../styles/UI/profile/configOptions.css";
 import "../../../styles/UI/profile/notifView.css";
 import "../../../styles/UI/profile/profileInfo.css";
-import { addPermission } from "../../../utils/validations/permission";
+import { addPermission, getPermissionById } from "../../../utils/validations/permission";
 
 
 
@@ -251,34 +251,41 @@ const CustomCheckbox = ({ label, isChecked, onChange }) => {
 };
 
 //Componente que sirve para obtener los permisos de ubicación de la persona
+
 const UserPermissions = (props) => {
   const [locationPermission, setLocationPermission] = useState(false);
   const [userLocation, setUserLocation] = useState(null);
   const [error, setError] = useState(null);
 
+  useEffect(() => {
+    // Fetch the user's current permission status when the component mounts
+    getPermissionById(props.id).then(data => {
+      if (data && data.length > 0 && data[0].permision_active === 1) {
+        console.log("Obtener el permiso:", data[0]);
+        setLocationPermission(true);
+        fetchUserLocation();
+      }
+    });
+  }, [props.id]);
+
   const handlePermissionToggle = () => {
-
-    //crear un objeto para pasar la información
-    console.log("Buenas tardes");
     const permission = {
-
-      permission_active: 1,
+      permision_active: locationPermission ? 0 : 1,
       user_id: props.id
-    }
-      //Si se dio el permiso...
-       if (!locationPermission) {
-      addPermission(permission);
-      fetchUserLocation();
+    };
+    
+    if (!locationPermission) {
+      // If the permission is being turned on, fetch the location and then update the DB
+      fetchUserLocation(permission);
     } else {
-      //En caso de que no...
-      permission.permission_active= 0;
+      // If the permission is being turned off, update the DB and reset the location state
       addPermission(permission);
       setLocationPermission(false);
       setUserLocation(null);
     }
   };
 
-  const fetchUserLocation = () => {
+  const fetchUserLocation = (permission) => {
     navigator.geolocation.getCurrentPosition(
       position => {
         setLocationPermission(true);
@@ -287,10 +294,11 @@ const UserPermissions = (props) => {
           longitude: position.coords.longitude
         });
         setError(null);
+        if (permission) addPermission(permission); // Update DB after getting location
       },
       error => {
-        console.error('Error al obtener la ubicación:', error);
-        setError('No se pudo obtener la ubicación.');
+        
+        setError('No se pudo obtener la ubicación. Quite el bloqueo del navegador');
       }
     );
   };

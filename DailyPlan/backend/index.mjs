@@ -510,6 +510,9 @@ const REDIRECT_URI = 'http://localhost:3000/callback';
 const CLIENT_ID_MAP = 'AIzaSyABWa3p-_7ZFIh7eOEUPLD8r7vKDn3KHfE';
 const CLIENT_SECRET_MAP = 'z-ucHPnSDWcMh7R_mNuqnsZG5c0=';
 
+
+
+/*-----------------------------------Request---------------------------------------*/
 app.get('/auth-url', (req, res) => {
   const scopes = [
     'user-modify-playback-state',
@@ -536,3 +539,27 @@ app.post('/get-token', async (req, res) => {
     res.status(500).send({ error: 'Failed to fetch access token' });
   }
 });
+
+
+
+app.post('/distance-matrix', async (req, res) => {
+  const { origins, destinations } = req.body;
+
+  try {
+    const response = await axios.get('https://maps.googleapis.com/maps/api/distancematrix/json', {
+      params: {
+        origins: origins.join('|'),
+        destinations: destinations.join('|'),
+        key: CLIENT_ID_MAP,  // Replace YOUR_API_KEY with the actual API key
+      },
+    });
+
+    res.send(response.data);
+  } catch (error) {
+    res.status(500).send({ error: 'Failed to fetch distance matrix' });
+  }
+});
+
+
+
+
