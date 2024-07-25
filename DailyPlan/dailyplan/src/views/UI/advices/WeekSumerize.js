@@ -1,18 +1,20 @@
 import React from 'react';
 import { Bar } from 'react-chartjs-2';
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, Filler } from 'chart.js';
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, PointElement, LineElement, Title, Tooltip, Legend, Filler } from 'chart.js';
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, Filler);
+ChartJS.register(CategoryScale, LinearScale, BarElement, PointElement, LineElement, Title, Tooltip, Legend, Filler);
 
 const WeekSumerize = () => {
-    const punctualityData = [80, 90, 70, 85, 95, 60, 75]; // Puntualidad en porcentaje
+    // Rellenar con la info correspondiente por dia sacada de la misma query
+    const punctualityData = [10, 15, 20, 13, 10, 19, 20]; 
+    const puntualityPercet = [50, 70, 60, 90, 80, 60, 74];
     const days = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
 
     const data = {
         labels: days,
         datasets: [
             {
-                label: 'Puntualidad (%)',
+                label: 'Acciones que modificaron tu puntualidad (%)',
                 data: punctualityData,
                 backgroundColor: 'rgba(75, 192, 192, 0.6)',
                 borderColor: 'rgba(75, 192, 192, 1)',
@@ -20,8 +22,8 @@ const WeekSumerize = () => {
                 fill: true,
             },
             {
-                label: 'Línea de Tendencia',
-                data: punctualityData.map((value) => (value + 20)), // Ejemplo de línea de tendencia
+                label: 'Porcentaje de puntualidad por dia',
+                data: puntualityPercet,
                 type: 'line',
                 borderColor: 'rgba(255, 99, 132, 1)',
                 borderDash: [5, 5], // Línea discontinua
@@ -60,8 +62,8 @@ const WeekSumerize = () => {
     };
 
     return (
-        <div>
-            <h2>Resumen Semanal de Puntualidad</h2>
+        <div style={{ width: '80%', height: 'auto', margin: '0 auto' }} >
+            {/* <h2></h2> */}
             <Bar data={data} options={options} />
         </div>
     );

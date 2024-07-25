@@ -13,6 +13,8 @@ import { addChronometer, deleteChronometer, getChronometersForUser } from '../..
 import { getPercentages, getPuntuality, getPuntualityById, updatePuntuality } from '../../../utils/validations/puntuality';
 
 import ChronoList from './ChronoList';
+import TimeReportChart from '../advices/TimeReportChart';
+import { MdProductionQuantityLimits } from 'react-icons/md';
 
 
 export default function Chrono_view(props) {
@@ -31,9 +33,9 @@ export default function Chrono_view(props) {
     const confirmArchivement = (user_id) => {
         const grant_title_id = 14;
         isCompleted(user_id, grant_title_id).then(response => {
-            console.log("IsCompleted", response);
+            // console.log("IsCompleted", response);
             if (response == false) {
-                console.log("Si es falso?", response)
+                // console.log("Si es falso?", response)
                 setIsCompletedArchivement(response);
             }
         }).catch(error => {
@@ -42,7 +44,7 @@ export default function Chrono_view(props) {
     }
     const grant15Archivement = (user_id) => {
         const grant_title_id = 15;
-        console.log("Is completed:? ", isCompletedArchivement);
+        // console.log("Is completed:? ", isCompletedArchivement);
         if (!isCompletedArchivement) { //si no esta completado hay que entregarlo
             grantArchivement(user_id, grant_title_id).then(res => {
                 console.log(res);
@@ -131,7 +133,8 @@ export default function Chrono_view(props) {
         }
 
         // Cannot surpass 20 chronometers
-        if (chronos != null && chronos.length >= 20) { //pero en la bd
+        if (chronos != null && chronos.length >= 20) { 
+            myPojo.setNotif("Límite alcanzado", <MdProductionQuantityLimits/> )
             return;
         }
         // Create new object to store
@@ -156,14 +159,14 @@ export default function Chrono_view(props) {
             if (puntuality[0] == null && puntuality[0].punt_percent_chro == null) return;
 
             const punt = puntuality[0];
-            console.log("Puntualidad antigua", punt.punt_percent_chro);
+            // console.log("Puntualidad antigua", punt.punt_percent_chro);
             if (punt.punt_percent_chro != 0) {
                 const newPunctuality = (punt.punt_percent_chro + getPercentages(timesFromUser, savedmarks,)) / 2;
                 punt.punt_percent_chro = newPunctuality;
             }
             punt.punt_percent_chro = getPercentages(timesFromUser, savedmarks,)
 
-            console.log("Nueva puntualidad", punt.punt_percent_chro);
+            // console.log("Nueva puntualidad", punt.punt_percent_chro);
             updatePuntuality(punt);
 
         } catch (error) {
@@ -179,30 +182,26 @@ export default function Chrono_view(props) {
         if (!showList == false) return;
         GetChronosToUpdateList();
     }
-    
-    const GetChronosToUpdateList = () =>
-    {
+
+    const GetChronosToUpdateList = () => {
         getChronometersForUser(props.id_user)
-        .then(response => {
-            if (response.data) {
-                console.log(response.data)
-                setChronos(response.data);
-            } else {
-                // console.error("Unexpected response format:", data);
-            }
-        })
-        .catch(error => {
-            //  console.error("Error fetching the user's chronometers:", error);
-        });
+            .then(response => {
+                if (response.data) {
+                    console.log(response.data)
+                    setChronos(response.data);
+                } else {
+                    // console.error("Unexpected response format:", data);
+                }
+            })
+            .catch(error => {
+                console.error("Error fetching the user's chronometers:", error);
+            });
     }
-
-
-    //function to eliminate a chrono
 
     const handleDeleteChrono = (id_chrono) => {
         deleteChronometer(id_chrono).then(() => { console.log("Éxito") })
             .catch(error => { console.error("Error:", error) })
-            GetChronosToUpdateList();
+        GetChronosToUpdateList();
     }
 
     const getDifference = (expectedTime, actualTime) => {
@@ -223,7 +222,44 @@ export default function Chrono_view(props) {
     };
 
     useEffect(() => {
+        if (timesFromUser.length === savedmarks.length && timesFromUser.length > 0) {
+            handleEqualTimesAndMarks();
+            props.handleStaStoChrono();
+        }
+    }, [timesFromUser, savedmarks]);
 
+    const handleEqualTimesAndMarks = () => {
+        if (timesFromUser.length === savedmarks.length) {
+            // console.log("Tiempos del usuario (originales):", timesFromUser);
+            // console.log("Tiempos de las marcas (obtenidos):", savedmarks);
+
+            const userTimesInSeconds = timesFromUser.map(time => {
+                const [hours, minutes, seconds] = time.split(":").map(Number);
+                return hours * 3600 + minutes * 60 + seconds; // Convertir a segundos
+            });
+            const obtainedTimes = savedmarks;
+            const labels = obtainedTimes.map((_, index) => `Marca ${index + 1}`);
+
+            // const timeDifferences = userTimesInSeconds.map((userTime, index) => {
+            //     return userTime - obtainedTimes[index];
+            // });
+
+            // Imprimir los valores en la consola
+            // console.log("Tiempos del usuario en segundos:", userTimesInSeconds);
+            // console.log("Tiempos obtenidos en segundos:", obtainedTimes);
+            // console.log("Diferencias entre tiempos de usuario y obtenidos:", timeDifferences);
+            myPojo.setNotif("Resumen de tiempos", <TimeReportChart
+                actualTimes={obtainedTimes}
+                budgetedTimes={userTimesInSeconds}
+                labels={labels}
+            />)
+        } else {
+            console.error("Los tiempos del usuario y las marcas guardadas no coinciden en cantidad.");
+        }
+    };
+
+
+    useEffect(() => {
         if (timesFromUser.length > 1) {
             const sortedTimes = [...timesFromUser].sort((a, b) => a.localeCompare(b));
             if (JSON.stringify(sortedTimes) !== JSON.stringify(timesFromUser)) {
