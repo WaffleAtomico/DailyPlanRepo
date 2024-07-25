@@ -50,7 +50,7 @@ const ClickHandler = ({ setDepartureMarker, setArrivalMarker, selectingDeparture
   useMapEvents({
     click: async (e) => {
       const { lat, lng } = e.latlng;
-      console.log(`Map clicked at position: (${lat}, ${lng})`);
+   
       const address = await fetchAddress(lat, lng);
       const place = `${address} (Lat: ${lat}, Lng: ${lng})`;
 
@@ -107,7 +107,7 @@ const MapView = ({ onPlaceSelect }) => {
   const MousePositionLogger = () => {
     useMapEvents({
       mousemove: (e) => {
-        console.log(`Mouse moved to position: (${e.latlng.lat}, ${e.latlng.lng})`);
+       
       },
     });
     return null;

@@ -4,6 +4,7 @@ import nodemailer from "nodemailer";
 import bodyParser from "body-parser";
 import * as urls from './routes.js'
 
+
 import {
   loginUser
 } from "./requests/app.js";
@@ -541,22 +542,25 @@ app.post('/get-token', async (req, res) => {
 });
 
 
-
 app.post('/distance-matrix', async (req, res) => {
-  const { origins, destinations } = req.body;
-
+  const { origins, destinations, mode } = req.body;
+  
   try {
-    const response = await axios.get('https://maps.googleapis.com/maps/api/distancematrix/json', {
-      params: {
-        origins: origins.join('|'),
-        destinations: destinations.join('|'),
-        key: CLIENT_ID_MAP,  // Replace YOUR_API_KEY with the actual API key
-      },
+    const response = await fetch(`https://maps.googleapis.com/maps/api/distancematrix/json?origins=${origins}&destinations=${destinations}&mode=${mode}&key=${CLIENT_ID_MAP}`, {
+      method: 'GET',
     });
 
-    res.send(response.data);
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+
+    const data = await response.json();
+    console.log("resultado: ", data);
+
+    res.json(data);
   } catch (error) {
-    res.status(500).send({ error: 'Failed to fetch distance matrix' });
+    console.error(error);
+    res.status(500).send('Internal Server Error');
   }
 });
 

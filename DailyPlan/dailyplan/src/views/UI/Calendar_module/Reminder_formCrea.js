@@ -107,6 +107,10 @@ const ReminderFormView = (props) => {
 
     const handlePlaceSelect = (type, place, latLng) => {
         if (type === 'arrival') {
+
+
+            console.log(latLng);
+
             setFormData(prevData => ({
                 ...prevData,
                 arrivalPlace: place,
@@ -254,6 +258,11 @@ const ReminderFormView = (props) => {
         const [hours, minutes] = timeString.split(':').map(Number);
         return { hours, minutes };
     }
+    
+
+    //-----------------//
+    //Calculo de tiempo
+
 
     return (
         <div>
@@ -320,6 +329,7 @@ const ReminderFormView = (props) => {
                                             onChange={handleChange}
                                         />
                                     </Form.Group>
+                                    
                                 </Col>
                                 <Col xs={6}>
                                     <Form.Group controlId="formDeparturePlace">
@@ -332,6 +342,8 @@ const ReminderFormView = (props) => {
                                         />
                                     </Form.Group>
                                 </Col>
+
+                                <p>Tiempo de llegada </p>
                             </Row>
                             <Row>
                                 <Col xs={12}>

@@ -29,19 +29,7 @@ const Pomodoro_view = (props) => {
     const [isTimerRunning, setIsTimerRunning] = useState(false);
     const [pomodoro, setPomodoro] = useState(null);
 
-    useEffect(() => {
-        confirmArchivement(props.id_user);
-
-        //TEMPORAL
-        const origins = ['40.748817,-73.985428']; // Example coordinates
-        const destinations = ['34.052235,-118.243683'];
-        
-        getDistanceMatrix(origins, destinations)
-          .then(data => console.log(data))
-          .catch(error => console.error(error));
-        
-
-    }, [props.id_user]);
+  
 
     useEffect(() => {
         getPomodoroById(props.id_user)
