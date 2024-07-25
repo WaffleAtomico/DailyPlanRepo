@@ -20,24 +20,6 @@ const PreparationView = ({ onClose, blocks, setShowMiniTab, handleUpdateBlocks }
         '¡Impresionante! Ya casi llegas al final.',
     ];
 
-    /**
-     * Sigue habiendo problemas a la hora de que los objetivos se acaban, ya que
-     * No los guarda como si estuviesen acabados, el funcionamiento principal
-     * Ademas que ya sabe relativamente la diferencia con el tiempo
-     * Al menos cuando se tarda menos, falta que podamos saber cuando se tarda mas en 
-     * Otro bloque, mas tiempo del que vaya, le toca
-     */
-    /*
-    El contador del tiempo debe de estar en origin page
-    Ademas, debe de verificar con la hora a la que se deberia haber terminado la preparacion
-    Si el usuario entra luego de la fecha a la que deberia estar,
-    el tiempo se le va a tener que acortar
-
-    Quiza desde reminders, deberia haber una opcion al editarlo que al
-    actualizarlo, permita cambiar el valor de los valores de la lista de objetivos
-    para poder hacer de mejor manera actualizacion de info
-    */
-
     useEffect(() => {
         if (blocks && blocks.length > 0) {
             const newObjectives = blocks[0].objectives;
@@ -46,6 +28,7 @@ const PreparationView = ({ onClose, blocks, setShowMiniTab, handleUpdateBlocks }
             const newAllObjectives = blocks.flatMap(block =>
                 block.objectives.map(obj => ({ ...obj, confirmed: false }))
             );
+
             setObjectiveList(newObjectives);
             setCounter(newCounter);
             setTotalTimeLeft(newTotalTimeLeft);
@@ -59,7 +42,6 @@ const PreparationView = ({ onClose, blocks, setShowMiniTab, handleUpdateBlocks }
                 setCounter(prevCounter => prevCounter - 1);
                 setTotalTimeLeft(prevTotalTime => prevTotalTime - 1);
             }, 1000);
-            console.log(blocksToUpd);
             return () => clearInterval(timer);
         } else {
             handleNextBlock();
@@ -106,6 +88,7 @@ const PreparationView = ({ onClose, blocks, setShowMiniTab, handleUpdateBlocks }
                 const timeSpent = blocks[currentBlock].timeLimit - timeLeft;
                 updatedBlocks[currentBlock].timeDifference = timeSpent;
                 setBlocksToUpd(updatedBlocks);
+                console.log(blocksToUpd);
                 setTimeUp(true);
                 setTimeout(() => {
                     setShowMiniTab(false);
@@ -123,7 +106,6 @@ const PreparationView = ({ onClose, blocks, setShowMiniTab, handleUpdateBlocks }
                 setObjectiveList([...unconfirmedObjectives, ...blocks[nextBlock].objectives]);
                 setCounter(blocks[nextBlock].timeLimit + timeLeft);
                 setAdvice(dummyData[Math.floor(Math.random() * dummyData.length)]);
-                // setAdvice(dummyData[Math.floor(Math.random() * dummyData.length)]);
                 setBlocksToUpd(updatedBlocks);
             }
         }
@@ -149,7 +131,7 @@ const PreparationView = ({ onClose, blocks, setShowMiniTab, handleUpdateBlocks }
                         {objectiveList.map(item => (
                             <div
                                 key={item.id}
-                                className={`preparation-item ${item.confirmed ? 'confirmed' : ''} ${item.removing ? 'removing' : ''}`}
+                                className={`preparation-item ${item.confirmed ? 'confirmed removing' : ''}`}
                             >
                                 <label className="preparation-item-label">
                                     <input
@@ -175,7 +157,6 @@ const PreparationView = ({ onClose, blocks, setShowMiniTab, handleUpdateBlocks }
                 </div>
             )}
         </div>
-
     );
 };
 

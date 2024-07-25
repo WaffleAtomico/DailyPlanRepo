@@ -57,6 +57,10 @@
     display: none;
 }
 
+.preparation-block-name{
+    font-size: 3rem;
+}
+
 .preparation-item-label .checkmark {
     width: 20px;
     height: 20px;
@@ -98,7 +102,9 @@
     max-height: 0;
     margin-bottom: 0;
     padding: 0;
+    transition: opacity 0.5s ease, max-height 0.5s ease;
 }
+
 
 .preparation-close-button {
     position: absolute;
