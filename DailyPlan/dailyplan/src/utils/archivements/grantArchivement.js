@@ -4,13 +4,13 @@ import { GET_ALL_TITLES, UPDATE_ONE_TITLE } from "../routes";
 //solo se envia la info
 
 export const isCompleted = async (user_id, title_id) => {
-  console.log(user_id);
-  console.log(title_id);
+  // console.log(user_id);
+  // console.log(title_id);
   try {
     const response = await axios.post(GET_ALL_TITLES, { user_id });
     // console.log(response.data[title_id]);
     const titleInfo = response.data[title_id];
-    console.log(response.data);
+    // console.log(response.data);
     if (titleInfo.title_done == 0) {
       // console.log("El título no está completado");
       return false;
@@ -31,7 +31,7 @@ export const grantArchivement = async (user_id, title_id) => {
   // };
   try {
     const response = await axios.post(UPDATE_ONE_TITLE, {user_id, title_id});
-    console.log(response);
+    // console.log(response);
     return response
     // return response.data;
   } catch (err) {
@@ -45,10 +45,10 @@ export const getAllArchivements = async (user_id) => {
     //mapear en torno a la info que se envie
     const response = await axios.post(GET_ALL_TITLES, { user_id });
     // console.log("data "+response.data);
-    console.log(response.data);
+    // console.log(response.data);
     // console.log("titlename "+response.data.titles);
     // console.log(response.data.titles[0].title_name);
-    console.log("alltitles in response " + response.data[0].titles);
+    // console.log("alltitles in response " + response.data[0].titles);
 
     // return response.data;
     return response;

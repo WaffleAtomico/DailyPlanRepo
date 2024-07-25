@@ -34,17 +34,19 @@ import { addChronometer } from "../../utils/validations/chrono";
 import { getScheduleById } from "../../utils/validations/schedule";
 
 import PreparationView from "./advices/Preparation";
-
+import { getPuntualityById } from "../../utils/validations/puntuality";
 
 
 export default function OriginPage() {
   /* --------------------ORIGIN BASE-------------------- */
+  //#region 
   const { id } = useParams();
   const navigate = useNavigate();
 
   const [selectedOption, setSelectedOption] = useState(0);
   const [username, setUsername] = useState("");
   const [schedule, setSchedule] = useState([]);
+  const [puntuality, setPuntuality] = useState(0);
 
 
   const handleOptionSelected = (index) => {
@@ -55,15 +57,29 @@ export default function OriginPage() {
     const getUserName = (user_id) => {
       // const response = await 
       getUsrName(user_id).then(response => {
-        console.log("Response in front");
-        console.log(response.data);
+        // console.log("Response in front");
+        // console.log(response.data);
         setUsername(response.data[0].user_name);
       }).catch(error => {
         console.error(error);
       });
 
     };
+    const getUserPuntuality = (user_id) => {
+      getPuntualityById(user_id).then(res => {
+        if (isNaN(res.data[0])) {
+          // console.log("Puntualidad ", res.data[0]);
+          setPuntuality(0);
+          // myPojo.setNotif("¿No tienes puntualidad?", <> Cada domingo a las 6pm con base en tus resultados de esa semana se te asignará un valor de puntualidad. ¡Esfuerzate cada semana para obtener distintos logros y hasta un marco especial para tu usuario!</>)
+        } else {
+          setPuntuality(res.data[0]);
+        }
+      }).catch(error => {
+        console.error(error);
+      });
+    };
     getUserName(id);
+    getUserPuntuality(id);
   }, []);
 
   const handleSuboption = (index) => {
@@ -85,8 +101,13 @@ export default function OriginPage() {
     }
   };
 
-  /*-------------------- Notifications --------------------*/
+  const GoToProfileModule = () => {
+    navigate(`/dailyplanconfig/${id}`);
+  };
 
+  //#endregion
+  /*-------------------- NOTIFICATIONS --------------------*/
+  //#region 
   const [mostrarNotificacion, setMostrarNotificacion] = useState(false);
   const [counter, setCounter] = useState(changeCounter);
 
@@ -110,19 +131,22 @@ export default function OriginPage() {
     return () => clearInterval(interval);
   }, []);
 
-
+  //#endregion
   /**
    *   GET SCHEDULE
    */
 
+  //#region 
   useEffect(() => {
     getScheduleById(id).then(response => {
-      console.log("Se obtuvo la siguiente información", response.data);
+      // console.log("Se obtuvo la siguiente información", response.data);
       setSchedule(response.data); localStorage.setItem('schedule', JSON.stringify(schedule));
     }).catch("no se logro obtener el schedule");
   }, [id, selectedOption]);
+  //#endregion
 
-  /*---------------------- PREPARACION ---------------------- */
+  /*---------------------- PREPARATION ---------------------- */
+  //#region 
 
   const [mostrarPreparacion, setMostrarPreparacion] = useState(false);
   const [showMiniTab, setShowMiniTab] = useState(true);
@@ -160,9 +184,9 @@ export default function OriginPage() {
   };
 
 
-
+  //#endregion
   /*  --------------------CHRONO IN ALL-------------------- */
-
+  //#region 
   const [startTime, setStartTime] = useState(null);
   const [elapsedTime, setElapsedTime] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
@@ -205,18 +229,15 @@ export default function OriginPage() {
     setStartTime(null);
     setElapsedTime(0);
   }
-
-  const GoToProfileModule = () => {
-    navigate(`/dailyplanconfig/${id}`);
-  };
-
   const secondsPassed = elapsedTime / 1000;
   const chronoTime = timeFormatSec(secondsPassed);
+  //#endregion
+
 
   return (
     <div className="main-container">
       <div className="UI-header">
-        <PuntButton id_user={id} />
+        <PuntButton id_user={id} puntuality={puntuality} />
         {/* <button className="left-button">
           Puntualidad
           </button> */}
@@ -224,8 +245,10 @@ export default function OriginPage() {
           handleOptionSelected={handleOptionSelected}
           selectedOption={selectedOption}
         />
-        <button onClick={() => GoToProfileModule()} className="right-button">
-          {" "}
+        <button
+          onClick={GoToProfileModule}
+          className={`right-button ${(puntuality > 89) ? 'right-button-gold' : ''}`}
+        >{" "}
           <FaUserClock /> {username}{" "}
         </button>
         <p style={{ marginTop: "3rem" }}>
