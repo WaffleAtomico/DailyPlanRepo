@@ -35,6 +35,7 @@ import { getScheduleById } from "../../utils/validations/schedule";
 
 import PreparationView from "./advices/Preparation";
 import { getPuntualityById } from "../../utils/validations/puntuality";
+import WeekSumerize from "./advices/WeekSumerize";
 
 
 export default function OriginPage() {
@@ -100,6 +101,14 @@ export default function OriginPage() {
         break;
     }
   };
+
+  useEffect(()=>{
+    const showSumarize = () =>{
+      //Preguntar si existe o si esta en 0 o 1
+      myPojo.setNotif("Resumen Semanal de Puntualidad", <WeekSumerize />);
+    }
+    showSumarize();
+  },[])
 
   const GoToProfileModule = () => {
     navigate(`/dailyplanconfig/${id}`);
