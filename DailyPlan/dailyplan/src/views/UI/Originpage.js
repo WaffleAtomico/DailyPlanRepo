@@ -319,6 +319,7 @@ export default function OriginPage() {
           setShowMiniTab={setShowMiniTab}
           blocks={blocks}
           handleUpdateBlocks={handleUpdateBlocks}
+          id_user ={id}
         />
       )}
       {showMiniTab && (
