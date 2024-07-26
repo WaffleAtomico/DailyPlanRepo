@@ -34,6 +34,7 @@ import { addChronometer } from "../../utils/validations/chrono";
 import { getScheduleById } from "../../utils/validations/schedule";
 
 import PreparationView from "./advices/Preparation";
+import { getReminderById, getRemindersByWeek } from "../../utils/validations/reminders";
 
 
 
@@ -130,7 +131,8 @@ const [targetDate, setTargetDate] = useState(null);
 
 //Calcular la fecha del momento en que se deba de mostrar el bloque de objetivos
 useEffect(() => {
-  
+
+    getRemindersByWeek(id, first day of the week, last day of the week)
 
 }, [id])
 
