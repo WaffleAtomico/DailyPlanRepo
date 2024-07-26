@@ -167,6 +167,12 @@ const GET_TONE_BY_ID_URL = `${urlreference}/get-tone`;
 const UPDATE_TONE_URL = `${urlreference}/update-tone`;
 const DELETE_TONE_URL = `${urlreference}/delete-tone`;
 
+/*-------------------------------weeklyscorecard-------------------------*/
+const GET_WEEKLY_SCORECARD_URL = `${urlreference}/get-weekly-scorecards`;
+const GET_WEEKLY_SCORECARD_BY_ID_URL = `${urlreference}/get-weekly-scorecard`;
+const GET_WEEKLY_SCORECARD_FOR_USER_URL = `${urlreference}/get-weekly-scorecard-by-user`;
+const GET_IS_USER_WEEKLY_SCORECARD_URL = `${urlreference}/get-is-weekly-scorecard`;
+
 
 /*External services:------------------------------------------- */
 
@@ -274,7 +280,7 @@ export {
     GET_REMINDERSHARE_BY_ID_URL,
     UPDATE_REMINDERSHARE_URL,
     DELETE_REMINDERSHARE_URL,
-  
+
     ADD_REPETITIONDAY_URL,
     GET_REPETITIONDAYS_URL,
     GET_REPETITIONDAY_BY_ID_URL,
@@ -304,7 +310,7 @@ export {
     GET_TONE_BY_ID_URL,
     UPDATE_TONE_URL,
     DELETE_TONE_URL,
-  
+
     ADD_SCHEDULE_POMODORO_URL,
     ADD_SCHEDULE_SLEEP_URL,
     DELETE_SCHEDULE_POMODORO_URL,
@@ -313,4 +319,9 @@ export {
     CREATE_ALL_TITLES,
     GET_ALL_TITLES,
     UPDATE_ONE_TITLE,
+    /*---weeklyscorecard---*/
+    GET_WEEKLY_SCORECARD_URL,
+    GET_WEEKLY_SCORECARD_BY_ID_URL,
+    GET_WEEKLY_SCORECARD_FOR_USER_URL,
+    GET_IS_USER_WEEKLY_SCORECARD_URL
 };

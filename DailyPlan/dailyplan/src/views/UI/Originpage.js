@@ -13,6 +13,7 @@ import Pomodoro from "./Pomodoro_module/Pomodoro";
 import PuntButton from "./Puntuality_module/punt_button";
 import ChronoIndicator from "./advices/ChronoMsjs";
 import GeneralNotif from "./advices/GeneralNotif";
+import WeeklyScorecard from "./WeeklyScorecard_module/weeklyscorecard";
 
 
 import { timeFormatSec } from "../../utils/timeFormat";
