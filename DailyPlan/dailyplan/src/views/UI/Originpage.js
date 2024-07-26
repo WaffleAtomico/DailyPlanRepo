@@ -35,6 +35,8 @@ import { addChronometer } from "../../utils/validations/chrono";
 import { getScheduleById } from "../../utils/validations/schedule";
 
 import PreparationView from "./advices/Preparation";
+import { getReminderById, getRemindersByWeek } from "../../utils/validations/reminders";
+
 import { getPuntualityById } from "../../utils/validations/puntuality";
 import WeekSumerize from "./advices/WeekSumerize";
 
@@ -155,11 +157,19 @@ export default function OriginPage() {
   }, [id, selectedOption]);
   //#endregion
 
-  /*---------------------- PREPARATION ---------------------- */
-  //#region 
-
+  /*---------------------- PREPARACION ---------------------- */
+const [targetDate, setTargetDate] = useState(null);
   const [mostrarPreparacion, setMostrarPreparacion] = useState(false);
   const [showMiniTab, setShowMiniTab] = useState(true);
+
+
+//Calcular la fecha del momento en que se deba de mostrar el bloque de objetivos
+useEffect(() => {
+
+//    getRemindersByWeek(id, first day of the week, last day of the week)
+
+}, [id])
+
 
   const handleClosePreparationView = () => {
     setMostrarPreparacion(false);
@@ -320,6 +330,7 @@ export default function OriginPage() {
           setShowMiniTab={setShowMiniTab}
           blocks={blocks}
           handleUpdateBlocks={handleUpdateBlocks}
+          id_user ={id}
         />
       )}
       {showMiniTab && (

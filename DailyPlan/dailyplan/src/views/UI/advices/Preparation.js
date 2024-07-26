@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import '../../../styles/advices/Preparation.css';
 import { IoClose, IoTime } from 'react-icons/io5';
+import { isCompleted } from '../../../utils/archivements/grantArchivement';
+import { FaListCheck } from 'react-icons/fa6';
+import { MdOutlineTimelapse } from 'react-icons/md';
 
-const PreparationView = ({ onClose, blocks, setShowMiniTab, handleUpdateBlocks }) => {
+const PreparationView = ({ onClose, blocks, setShowMiniTab, handleUpdateBlocks, id_user }) => {
     const [currentBlock, setCurrentBlock] = useState(0);
     const [objectiveList, setObjectiveList] = useState([]);
     const [counter, setCounter] = useState(0);
@@ -11,6 +14,69 @@ const PreparationView = ({ onClose, blocks, setShowMiniTab, handleUpdateBlocks }
     const [totalTimeLeft, setTotalTimeLeft] = useState(0);
     const [timeUp, setTimeUp] = useState(false);
     const [blocksToUpd, setBlocksToUpd] = useState([]);
+    const [isCompletedArchivement1, setIsCompletedArchivement1] = useState(true);
+    const [isCompletedArchivement2, setIsCompletedArchivement2] = useState(true);
+
+    //#region 
+    useEffect(() => {
+        confirmArchivement1(id_user);
+        confirmArchivement2(id_user)
+        console.log("uno ", isCompletedArchivement1);
+        console.log("dos ", isCompletedArchivement2);
+    }, []);
+
+    const confirmArchivement1 = (user_id) => {
+        const grant_title_id = 9;
+        isCompleted(user_id, grant_title_id).then(response => {
+            // console.log("IsCompleted", response);
+            if (response == false) {
+                // console.log("Si es falso?", response)
+                setIsCompletedArchivement1(response);
+            }
+        }).catch(error => {
+            console.error("Error confirming achievement: ", error);
+        });
+    }
+    const confirmArchivement2 = (user_id) => {
+        const grant_title_id = 10;
+        isCompleted(user_id, grant_title_id).then(response => {
+            // console.log("IsCompleted", response);
+            if (response == false) {
+                // console.log("Si es falso?", response)
+                setIsCompletedArchivement2(response);
+            }
+        }).catch(error => {
+            console.error("Error confirming achievement: ", error);
+        });
+    }
+
+    const grant10Archivement = (user_id) => {
+        const grant_title_id = 10;
+        console.log("Is completed:? ", isCompletedArchivement1);
+        if (!isCompletedArchivement1) { //si no esta completado hay que entregarlo
+            grantArchivement(user_id, grant_title_id).then(res => {
+                console.log(res);
+                
+                myPojo.setNotif("Logro: TODO EN SU LUGAR", <FaListCheck size={220} />);
+            }).catch(error => {
+                console.error("Error granting achievement:", error);
+            });
+        }
+    };
+    const grant11Archivement = (user_id) => {
+        const grant_title_id = 11;
+        console.log("Is completed:? ", isCompletedArchivement2);
+        if (!isCompletedArchivement2) {
+            grantArchivement(user_id, grant_title_id).then(res => {
+                console.log(res);
+                
+                myPojo.setNotif("Logro: GANANDO TIEMPO AL TIEMPO", <MdOutlineTimelapse size={220} />);
+            }).catch(error => {
+                console.error("Error granting achievement:", error);
+            });
+        }
+    };
+    //#endregion
 
     const dummyData = [
         '¡Buen trabajo! ¡Has completado un bloque de objetivos!',
