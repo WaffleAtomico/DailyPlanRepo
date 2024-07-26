@@ -54,8 +54,6 @@ const GET_TIMER_BY_ID_URL = '/get-timer';
 const UPDATE_TIMER_URL = '/update-timer';
 const DELETE_TIMER_URL = '/delete-timer';
 
-
-
 const ADD_ALARMSHARE_URL = '/add-alarmshare';
 const GET_ALARMSHARES_URL = '/get-alarmshares';
 const GET_ALARMSHARE_BY_ID_URL = '/get-alarmshare';
@@ -164,6 +162,12 @@ const GET_TONES_URL = '/get-tones';
 const GET_TONE_BY_ID_URL = '/get-tone';
 const UPDATE_TONE_URL = '/update-tone';
 const DELETE_TONE_URL = '/delete-tone';
+
+/*-------------------------------weeklyscorecard-------------------------*/
+const GET_WEEKLY_SCORECARD_URL = '/get-weekly-scorecards';
+const GET_WEEKLY_SCORECARD_BY_ID_URL = '/get-weekly-scorecard';
+const GET_WEEKLY_SCORECARD_FOR_USER_URL = '/get-weekly-scorecard-by-user';
+const GET_IS_USER_WEEKLY_SCORECARD_URL = '/get-is-weekly-scorecard';
 
 export {
     ROOT_URL,
@@ -282,11 +286,10 @@ export {
     GET_SCHEDULE_BY_ID_URL,
     UPDATE_SCHEDULE_URL,
     DELETE_SCHEDULE_URL,    
-ADD_SCHEDULE_POMODORO_URL,
-ADD_SCHEDULE_SLEEP_URL,
-DELETE_SCHEDULE_POMODORO_URL,
-DELETE_SCHEDULE_SLEEP_URL,
-
+    ADD_SCHEDULE_POMODORO_URL,
+    ADD_SCHEDULE_SLEEP_URL,
+    DELETE_SCHEDULE_POMODORO_URL,
+    DELETE_SCHEDULE_SLEEP_URL,
     ADD_SLEEP_MODE_URL,
     GET_SLEEP_MODES_URL,
     GET_SLEEP_MODE_BY_ID_URL,
@@ -305,4 +308,9 @@ DELETE_SCHEDULE_SLEEP_URL,
     GET_TONE_BY_ID_URL,
     UPDATE_TONE_URL,
     DELETE_TONE_URL,
+    /*---weeklyscorecard---*/
+    GET_WEEKLY_SCORECARD_URL,
+    GET_WEEKLY_SCORECARD_BY_ID_URL,
+    GET_WEEKLY_SCORECARD_FOR_USER_URL,
+    GET_IS_USER_WEEKLY_SCORECARD_URL
 };

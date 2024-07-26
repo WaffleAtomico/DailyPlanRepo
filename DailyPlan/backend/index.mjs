@@ -214,7 +214,12 @@ import {
   deleteTone
 } from './requests/tone.js';
 
-
+import {
+  getWeeklyScorecard,
+  getWeeklyScorecardById,
+  getWeeklyScorecardForUser,
+  isUserWeeklyScorecard
+} from './requests/weeklyscorecard.js';
 
 import { sendMailrest, sendMailrestjt } from "./requests/mail.js";
 
@@ -495,8 +500,11 @@ app.post(urls.GET_TONE_BY_ID_URL, getToneById);
 app.post(urls.UPDATE_TONE_URL, updateTone);
 app.post(urls.DELETE_TONE_URL, deleteTone);
 
-
-
+/*-------------------------------weeklyscorecard-------------------------*/
+app.post(urls.GET_WEEKLY_SCORECARD_URL, getWeeklyScorecard);
+app.post(urls.GET_WEEKLY_SCORECARD_BY_ID_URL, getWeeklyScorecardById);
+app.post(urls.GET_WEEKLY_SCORECARD_FOR_USER_URL, getWeeklyScorecardForUser);
+app.post(urls.GET_IS_USER_WEEKLY_SCORECARD_URL, isUserWeeklyScorecard);
 
 /*-------------------------------spotify------------------------- */
 

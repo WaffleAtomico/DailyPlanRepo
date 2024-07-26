@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 25-07-2024 a las 00:08:34
+-- Tiempo de generación: 26-07-2024 a las 21:30:03
 -- Versión del servidor: 8.0.30
 -- Versión de PHP: 8.1.10
 
@@ -20,6 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `dailyplan`
 --
+CREATE DATABASE IF NOT EXISTS `dailyplan` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `dailyplan`;
 
 -- --------------------------------------------------------
 
@@ -29,17 +31,17 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `alarms` (
   `alarm_id` int NOT NULL,
-  `alarm_name` varchar(30) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `alarm_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `daysel_id` int DEFAULT NULL,
   `alarm_hour` tinyint DEFAULT NULL,
   `alarm_min` tinyint DEFAULT NULL,
   `alarm_sec` tinyint DEFAULT NULL,
-  `alarm_rep_tone` text COLLATE utf8mb4_general_ci,
+  `alarm_rep_tone` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `tone_id` int DEFAULT NULL,
   `alarm_days_suspended` tinyint DEFAULT NULL,
   `alarm_active` tinyint(1) DEFAULT NULL,
-  `alarm_image` text COLLATE utf8mb4_general_ci,
-  `alarm_desc` varchar(300) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `alarm_image` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `alarm_desc` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `user_id` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -63,7 +65,7 @@ CREATE TABLE `alarmshare` (
 
 CREATE TABLE `chronometers` (
   `chrono_id` int NOT NULL,
-  `chrono_name` varchar(30) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `chrono_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `chrono_hour` tinyint DEFAULT NULL,
   `chrono_min` tinyint DEFAULT NULL,
   `chrono_sec` tinyint DEFAULT NULL,
@@ -78,7 +80,7 @@ CREATE TABLE `chronometers` (
 
 CREATE TABLE `clocks` (
   `clock_id` int NOT NULL,
-  `clock_name` varchar(40) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `clock_name` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `user_id` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -168,7 +170,7 @@ CREATE TABLE `invitations` (
   `user_id_owner` int DEFAULT NULL,
   `user_id_target` int DEFAULT NULL,
   `inv_state` tinyint(1) DEFAULT NULL,
-  `inv_reason` varchar(250) COLLATE utf8mb4_general_ci DEFAULT NULL
+  `inv_reason` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -193,7 +195,7 @@ CREATE TABLE `locations` (
 
 CREATE TABLE `objectives` (
   `obj_id` int NOT NULL,
-  `obj_name` varchar(30) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `obj_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `obj_duration_min` tinyint DEFAULT NULL,
   `obj_durationreal_min` smallint DEFAULT NULL,
   `obj_check` tinyint(1) DEFAULT NULL,
@@ -210,7 +212,7 @@ CREATE TABLE `objectives` (
 CREATE TABLE `objectivesblock` (
   `objblo_id` int NOT NULL,
   `reminder_id` int DEFAULT NULL,
-  `objblo_name` varchar(25) COLLATE utf8mb4_general_ci DEFAULT NULL
+  `objblo_name` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -317,6 +319,14 @@ CREATE TABLE `puntuality` (
   `punt_percent_chro` tinyint DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `puntuality`
+--
+
+INSERT INTO `puntuality` (`punt_id`, `user_id`, `punt_date`, `punt_value`, `punt_num_rem`, `punt_percent_rem`, `punt_num_alar`, `punt_percent_alar`, `punt_num_timer`, `punt_percent_timer`, `punt_num_chro`, `punt_percent_chro`) VALUES
+(784, 53, '2024-07-25', 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(785, 54, '2024-07-25', 0, 0, 0, 0, 0, 0, 0, 0, 0);
+
 -- --------------------------------------------------------
 
 --
@@ -325,7 +335,8 @@ CREATE TABLE `puntuality` (
 
 CREATE TABLE `reminders` (
   `reminder_id` int NOT NULL,
-  `reminder_name` varchar(30) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `reminder_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `reminder_create` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `reminder_date` datetime DEFAULT NULL,
   `reminder_hour` tinyint DEFAULT NULL,
   `reminder_min` tinyint DEFAULT NULL,
@@ -333,8 +344,8 @@ CREATE TABLE `reminders` (
   `repdays_id` int DEFAULT NULL,
   `reminder_tone_duration_sec` tinyint DEFAULT NULL,
   `reminder_advance_min` tinyint DEFAULT NULL,
-  `reminder_img` text COLLATE utf8mb4_general_ci,
-  `reminder_desc` varchar(300) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `reminder_img` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `reminder_desc` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `reminder_days_suspended` tinyint DEFAULT NULL,
   `reminder_share` tinyint(1) DEFAULT NULL,
   `reminder_sourse_id` int DEFAULT NULL,
@@ -429,7 +440,7 @@ INSERT INTO `repetitiondays` (`repdays_id`, `repday_date`) VALUES
 
 CREATE TABLE `schedules` (
   `schedule_id` int NOT NULL,
-  `schedule_eventname` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `schedule_eventname` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `schedule_datetime` datetime DEFAULT NULL,
   `schedule_duration_hour` tinyint DEFAULT NULL,
   `schedule_duration_min` tinyint DEFAULT NULL,
@@ -504,7 +515,7 @@ CREATE TABLE `sleepmode` (
   `sleep_endhour` mediumint DEFAULT NULL,
   `sleep_active` tinyint(1) DEFAULT NULL,
   `sleep_rep` tinyint DEFAULT NULL,
-  `sleep_video_url` text COLLATE utf8mb4_general_ci,
+  `sleep_video_url` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `sleep_rep_stopped` tinyint DEFAULT NULL,
   `tone_id` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -543,7 +554,7 @@ CREATE TABLE `timers` (
   `timer_min` tinyint DEFAULT NULL,
   `timer_sec` tinyint DEFAULT NULL,
   `timer_duration` tinyint DEFAULT NULL,
-  `timer_name` varchar(30) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `timer_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `tone_id` int DEFAULT NULL,
   `user_id` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -556,7 +567,7 @@ CREATE TABLE `timers` (
 
 CREATE TABLE `titles` (
   `title_id` int NOT NULL,
-  `title_name` varchar(30) COLLATE utf8mb4_general_ci DEFAULT NULL
+  `title_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -589,8 +600,8 @@ INSERT INTO `titles` (`title_id`, `title_name`) VALUES
 
 CREATE TABLE `tones` (
   `tone_id` int NOT NULL,
-  `tone_name` varchar(30) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `tone_location` text COLLATE utf8mb4_general_ci
+  `tone_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `tone_location` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -657,10 +668,10 @@ INSERT INTO `tones` (`tone_id`, `tone_name`, `tone_location`) VALUES
 
 CREATE TABLE `users` (
   `user_id` int NOT NULL,
-  `user_mail` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `user_name` varchar(20) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `user_password` varchar(40) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `user_number` varchar(10) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `user_mail` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `user_name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `user_password` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `user_number` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `user_status` tinyint(1) DEFAULT NULL,
   `title_id` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -824,7 +835,7 @@ INSERT INTO `user_titles` (`user_id`, `title_id`, `title_done`) VALUES
 CREATE TABLE `weeklyscorecard` (
   `weeklyscorecard_id` int NOT NULL,
   `user_id` int DEFAULT NULL,
-  `punt_weekly_date` date DEFAULT NULL,
+  `punt_weekly_date` timestamp NULL DEFAULT NULL,
   `punt_value` tinyint DEFAULT NULL,
   `punt_num_rem` tinyint DEFAULT NULL,
   `punt_percent_rem` tinyint DEFAULT NULL,
@@ -835,6 +846,13 @@ CREATE TABLE `weeklyscorecard` (
   `punt_num_chro` tinyint DEFAULT NULL,
   `punt_percent_chro` tinyint DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `weeklyscorecard`
+--
+
+INSERT INTO `weeklyscorecard` (`weeklyscorecard_id`, `user_id`, `punt_weekly_date`, `punt_value`, `punt_num_rem`, `punt_percent_rem`, `punt_num_alar`, `punt_percent_alar`, `punt_num_timer`, `punt_percent_timer`, `punt_num_chro`, `punt_percent_chro`) VALUES
+(18, 53, '2024-07-25 21:38:00', 10, 10, 10, 10, 10, 10, 10, 10, 10);
 
 --
 -- Índices para tablas volcadas
@@ -1098,7 +1116,7 @@ ALTER TABLE `pomodoros`
 -- AUTO_INCREMENT de la tabla `puntuality`
 --
 ALTER TABLE `puntuality`
-  MODIFY `punt_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=784;
+  MODIFY `punt_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=786;
 
 --
 -- AUTO_INCREMENT de la tabla `reminders`
@@ -1164,7 +1182,7 @@ ALTER TABLE `usersblocked`
 -- AUTO_INCREMENT de la tabla `weeklyscorecard`
 --
 ALTER TABLE `weeklyscorecard`
-  MODIFY `weeklyscorecard_id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `weeklyscorecard_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- Restricciones para tablas volcadas
