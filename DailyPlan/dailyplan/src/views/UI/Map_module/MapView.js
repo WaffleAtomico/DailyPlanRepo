@@ -4,7 +4,7 @@ import 'leaflet/dist/leaflet.css';
 import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
 import L from 'leaflet';
 import { FaExclamationTriangle } from 'react-icons/fa';
-import { Button } from 'react-bootstrap';
+import { Button, Dropdown, DropdownButton } from 'react-bootstrap';
 import '../../../styles/UI/Map/MapView.css';
 
 delete L.Icon.Default.prototype._getIconUrl;
@@ -15,13 +15,7 @@ L.Icon.Default.mergeOptions({
 });
 
 const SearchControl = () => {
-  const map = useMapEvents({
-    geosearch_showlocation: (result) => {
-      const { x, y, label } = result.location;
-      console.log(`Location selected: ${label} (${y}, ${x})`);
-    },
-  });
-
+  const map = useMap();
   useEffect(() => {
     const provider = new OpenStreetMapProvider();
     const searchControl = new GeoSearchControl({
@@ -40,7 +34,7 @@ const SearchControl = () => {
   return null;
 };
 
-const ClickHandler = ({ setDepartureMarker, setArrivalMarker, selectingDeparture, onPlaceSelect }) => {
+const ClickHandler = ({ setDepartureMarker, setArrivalMarker, selectingDeparture, onPlaceSelect, transportMode }) => {
   const fetchAddress = async (lat, lng) => {
     const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`);
     const data = await response.json();
@@ -50,51 +44,70 @@ const ClickHandler = ({ setDepartureMarker, setArrivalMarker, selectingDeparture
   useMapEvents({
     click: async (e) => {
       const { lat, lng } = e.latlng;
-      console.log(`Map clicked at position: (${lat}, ${lng})`);
       const address = await fetchAddress(lat, lng);
-      const place = `${address} (Lat: ${lat}, Lng: ${lng})`;
+      const place = `${address}`;
 
       if (selectingDeparture) {
         setDepartureMarker([lat, lng]);
-        onPlaceSelect('departure', place, { lat, lng });
-        console.log("Lugar de salida:", address, lat, lng);
+        onPlaceSelect('departure', place, [lat, lng], transportMode);
       } else {
         setArrivalMarker([lat, lng]);
-        onPlaceSelect('arrival', place, { lat, lng });
-        console.log("Lugar de llegada:", address, lat, lng);
+        onPlaceSelect('arrival', place, [lat, lng], transportMode);
       }
     }
   });
   return null;
 };
 
-const MapView = ({ onPlaceSelect }) => {
+const MapView = ({ onPlaceSelect, active }) => {
   const [locationPermission, setLocationPermission] = useState(false);
-  const [position, setPosition] = useState([0, 0]); // Default position
+  const [position, setPosition] = useState([0, 0]);
   const [departureMarker, setDepartureMarker] = useState(null);
   const [arrivalMarker, setArrivalMarker] = useState(null);
   const [error, setError] = useState(null);
-  const [selectingDeparture, setSelectingDeparture] = useState(true); // State to toggle between departure and arrival
+  const [selectingDeparture, setSelectingDeparture] = useState(true);
+  const [transportMode, setTransportMode] = useState('driving');
+  const [sidebarVisible, setSidebarVisible] = useState(true);
 
   useEffect(() => {
-    navigator.permissions.query({ name: 'geolocation' }).then(result => {
-      if (result.state !== 'granted') {
+    const fetchAddress = async (lat, lng) => {
+      const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`);
+      const data = await response.json();
+      return data.display_name;
+    };
+
+    const getCurrentPosition = async () => {
+      try {
+        const result = await navigator.permissions.query({ name: 'geolocation' });
+        if (result.state === 'granted') {
+          setLocationPermission(false);
+          return;
+        }
+
         setLocationPermission(true);
+
         navigator.geolocation.getCurrentPosition(
-          (position) => {
+          async (position) => {
             const { latitude, longitude } = position.coords;
-            setPosition([latitude, longitude]); // Set the map's initial position to the user's location
+            setPosition([latitude, longitude]);
+            setDepartureMarker([latitude, longitude]);
+
+            const address = await fetchAddress(latitude, longitude);
+            onPlaceSelect('departure', address, [latitude, longitude], transportMode);
           },
           (error) => {
             console.error('Error getting location:', error);
             setError('Error getting location');
           }
         );
-      } else {
-        setLocationPermission(false);
+      } catch (error) {
+        console.error('Error checking geolocation permission:', error);
+        setError('Error checking geolocation permission');
       }
-    });
-  }, []);
+    };
+
+    getCurrentPosition();
+  }, [active]);
 
   const MyMapComponent = ({ center }) => {
     const map = useMap();
@@ -104,14 +117,14 @@ const MapView = ({ onPlaceSelect }) => {
     return null;
   };
 
-  const MousePositionLogger = () => {
-    useMapEvents({
-      mousemove: (e) => {
-        console.log(`Mouse moved to position: (${e.latlng.lat}, ${e.latlng.lng})`);
-      },
-    });
-    return null;
-  };
+  if (!active) {
+    return (
+      <div className="no-permission">
+        <FaExclamationTriangle size={50} color="red" />
+        <p>No se dio el permiso. Verifíquelo en Permisos.</p>
+      </div>
+    );
+  }
 
   return (
     <div style={{ height: '100%', width: '100%' }}>
@@ -128,8 +141,8 @@ const MapView = ({ onPlaceSelect }) => {
             setArrivalMarker={setArrivalMarker}
             selectingDeparture={selectingDeparture}
             onPlaceSelect={onPlaceSelect}
+            transportMode={transportMode}
           />
-          <MousePositionLogger />
           {departureMarker && (
             <Marker position={departureMarker}>
               <Popup>Lugar de salida</Popup>
@@ -142,40 +155,50 @@ const MapView = ({ onPlaceSelect }) => {
           )}
         </MapContainer>
       ) : (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
+        <div className="no-permission">
           <FaExclamationTriangle size={50} color="red" />
           <p>No se dio el permiso. Verifíquelo en Permisos.</p>
         </div>
       )}
-      <div style={{ position: 'absolute', top: '10px', left: '10px', zIndex: 1000 }}>
-        <Button
-          variant={selectingDeparture ? "primary" : "secondary"}
-          onClick={() => setSelectingDeparture(true)}
-          style={{ marginRight: '5px' }}
+      <div className={`sidebar ${sidebarVisible ? 'visible' : 'hidden'}`}>
+        <DropdownButton
+          id="dropdown-basic-button"
+          title="Modo de Transporte"
+          onSelect={(mode) => setTransportMode(mode)}
+          className="dropdown-button"
         >
-          Seleccionar Lugar de Salida
-        </Button>
+          <Dropdown.Item eventKey="driving">Conduciendo</Dropdown.Item>
+          <Dropdown.Item eventKey="walking">Caminando</Dropdown.Item>
+          <Dropdown.Item eventKey="bicycling">En bicicleta</Dropdown.Item>
+        </DropdownButton>
         <Button
-          variant={!selectingDeparture ? "primary" : "secondary"}
-          onClick={() => setSelectingDeparture(false)}
-          style={{ marginRight: '5px' }}
+          variant="primary"
+          onClick={() => setSelectingDeparture(!selectingDeparture)}
+          style={{ marginBottom: '5px' }}
         >
-          Seleccionar Lugar de Llegada
-        </Button>
-        <Button
-          variant="danger"
-          onClick={() => setDepartureMarker(null)}
-          style={{ marginRight: '5px' }}
-        >
-          Borrar Lugar de Salida
+          {selectingDeparture ? 'Seleccionar Lugar de Llegada' : 'Seleccionar Lugar de Salida'}
         </Button>
         <Button
           variant="danger"
-          onClick={() => setArrivalMarker(null)}
+          onClick={() => {
+            if (selectingDeparture) {
+              setDepartureMarker(null);
+              onPlaceSelect('departure', '', null, transportMode);
+            } else {
+              setArrivalMarker(null);
+              onPlaceSelect('arrival', '', null, transportMode);
+            }
+          }}
         >
-          Borrar Lugar de Llegada
+          Borrar {selectingDeparture ? 'Lugar de Salida' : 'Lugar de Llegada'}
         </Button>
       </div>
+      <Button
+        className="toggle-sidebar"
+        onClick={() => setSidebarVisible(!sidebarVisible)}
+      >
+        {sidebarVisible ? 'Ocultar' : 'Mostrar'}
+      </Button>
     </div>
   );
 };

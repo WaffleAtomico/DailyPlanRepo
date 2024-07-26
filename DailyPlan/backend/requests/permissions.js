@@ -60,6 +60,7 @@ const getPermisions = (req, res) => {
 };
 
 const getPermisionById = (req, res) => {
+
     const query = {
         sql: "SELECT `permision_id`, `permision_active`, `user_id` FROM `permisions` WHERE `user_id` = ?",
         values: [req.body.permissionId],
@@ -68,6 +69,8 @@ const getPermisionById = (req, res) => {
         if (err) {
             return res.json({ message: "Error retrieving permission", error: err });
         }
+
+        console.log("Datos obtenidos:", data);
         return res.json(data);
     });
 };
