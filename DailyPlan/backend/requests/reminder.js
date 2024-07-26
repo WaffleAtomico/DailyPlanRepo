@@ -6,7 +6,7 @@ const addReminder = (req, res) => {
     const body = req.body.reminderInfo;
 
     const query = {
-        sql: "INSERT INTO `reminders`(`reminder_name`, `reminder_date`, `reminder_hour`, `reminder_min`, `reminder_active`, `repdays_id`, `reminder_tone_duration_sec`, `reminder_advance_min`, `reminder_img`, `reminder_desc`, `reminder_days_suspended`, `reminder_share`,  `tone_id`,`user_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)",
+        sql: "INSERT INTO `reminders`(`reminder_name`, `reminder_date`, `reminder_hour`, `reminder_min`, `reminder_active`, `repdays_id`, `reminder_tone_duration_sec`, `reminder_advance_min`, `reminder_img`, `reminder_desc`, `reminder_days_suspended`, `reminder_share`,  `tone_id`,`user_id`, `reminder_travel_time`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)",
         values: [
             body.reminder_name,
             body.reminder_date,
@@ -20,9 +20,11 @@ const addReminder = (req, res) => {
             body.reminder_desc,
             body.reminder_days_suspended,
             body.reminder_share,
+            
            
             body.tone_id,
-            body.user_id
+            body.user_id,
+            body.reminder_travel_time
         ],
     };
 
