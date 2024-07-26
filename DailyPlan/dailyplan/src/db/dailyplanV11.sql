@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 26-07-2024 a las 21:30:03
+-- Tiempo de generación: 26-07-2024 a las 21:42:08
 -- Versión del servidor: 8.0.30
 -- Versión de PHP: 8.1.10
 
@@ -20,8 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `dailyplan`
 --
-CREATE DATABASE IF NOT EXISTS `dailyplan` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `dailyplan`;
 
 -- --------------------------------------------------------
 
@@ -29,6 +27,7 @@ USE `dailyplan`;
 -- Estructura de tabla para la tabla `alarms`
 --
 
+DROP TABLE IF EXISTS `alarms`;
 CREATE TABLE `alarms` (
   `alarm_id` int NOT NULL,
   `alarm_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
@@ -51,6 +50,7 @@ CREATE TABLE `alarms` (
 -- Estructura de tabla para la tabla `alarmshare`
 --
 
+DROP TABLE IF EXISTS `alarmshare`;
 CREATE TABLE `alarmshare` (
   `alarmsha_id` int NOT NULL,
   `ar_user_id_target` int DEFAULT NULL,
@@ -63,6 +63,7 @@ CREATE TABLE `alarmshare` (
 -- Estructura de tabla para la tabla `chronometers`
 --
 
+DROP TABLE IF EXISTS `chronometers`;
 CREATE TABLE `chronometers` (
   `chrono_id` int NOT NULL,
   `chrono_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
@@ -78,6 +79,7 @@ CREATE TABLE `chronometers` (
 -- Estructura de tabla para la tabla `clocks`
 --
 
+DROP TABLE IF EXISTS `clocks`;
 CREATE TABLE `clocks` (
   `clock_id` int NOT NULL,
   `clock_name` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
@@ -90,6 +92,7 @@ CREATE TABLE `clocks` (
 -- Estructura de tabla para la tabla `dayselected`
 --
 
+DROP TABLE IF EXISTS `dayselected`;
 CREATE TABLE `dayselected` (
   `daysel_id` int NOT NULL,
   `daysel_mon` tinyint(1) DEFAULT NULL,
@@ -163,6 +166,7 @@ INSERT INTO `dayselected` (`daysel_id`, `daysel_mon`, `daysel_tues`, `daysel_wed
 -- Estructura de tabla para la tabla `invitations`
 --
 
+DROP TABLE IF EXISTS `invitations`;
 CREATE TABLE `invitations` (
   `inv_id` int NOT NULL,
   `reminder_id` int DEFAULT NULL,
@@ -179,6 +183,7 @@ CREATE TABLE `invitations` (
 -- Estructura de tabla para la tabla `locations`
 --
 
+DROP TABLE IF EXISTS `locations`;
 CREATE TABLE `locations` (
   `location_id` int NOT NULL,
   `location_x` double DEFAULT NULL,
@@ -193,6 +198,7 @@ CREATE TABLE `locations` (
 -- Estructura de tabla para la tabla `objectives`
 --
 
+DROP TABLE IF EXISTS `objectives`;
 CREATE TABLE `objectives` (
   `obj_id` int NOT NULL,
   `obj_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
@@ -209,6 +215,7 @@ CREATE TABLE `objectives` (
 -- Estructura de tabla para la tabla `objectivesblock`
 --
 
+DROP TABLE IF EXISTS `objectivesblock`;
 CREATE TABLE `objectivesblock` (
   `objblo_id` int NOT NULL,
   `reminder_id` int DEFAULT NULL,
@@ -221,6 +228,7 @@ CREATE TABLE `objectivesblock` (
 -- Estructura de tabla para la tabla `permisions`
 --
 
+DROP TABLE IF EXISTS `permisions`;
 CREATE TABLE `permisions` (
   `permision_id` int NOT NULL,
   `permision_active` tinyint(1) DEFAULT NULL,
@@ -233,6 +241,7 @@ CREATE TABLE `permisions` (
 -- Estructura de tabla para la tabla `pomodoros`
 --
 
+DROP TABLE IF EXISTS `pomodoros`;
 CREATE TABLE `pomodoros` (
   `pomodoro_id` int NOT NULL,
   `tpomodoro_hour_work` tinyint DEFAULT NULL,
@@ -304,6 +313,7 @@ INSERT INTO `pomodoros` (`pomodoro_id`, `tpomodoro_hour_work`, `pomodoro_min_wor
 -- Estructura de tabla para la tabla `puntuality`
 --
 
+DROP TABLE IF EXISTS `puntuality`;
 CREATE TABLE `puntuality` (
   `punt_id` int NOT NULL,
   `user_id` int DEFAULT NULL,
@@ -333,6 +343,7 @@ INSERT INTO `puntuality` (`punt_id`, `user_id`, `punt_date`, `punt_value`, `punt
 -- Estructura de tabla para la tabla `reminders`
 --
 
+DROP TABLE IF EXISTS `reminders`;
 CREATE TABLE `reminders` (
   `reminder_id` int NOT NULL,
   `reminder_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
@@ -359,6 +370,7 @@ CREATE TABLE `reminders` (
 -- Estructura de tabla para la tabla `remindershare`
 --
 
+DROP TABLE IF EXISTS `remindershare`;
 CREATE TABLE `remindershare` (
   `remindsha_id` int NOT NULL,
   `rs_user_id_target` int DEFAULT NULL,
@@ -371,6 +383,7 @@ CREATE TABLE `remindershare` (
 -- Estructura de tabla para la tabla `repetitiondays`
 --
 
+DROP TABLE IF EXISTS `repetitiondays`;
 CREATE TABLE `repetitiondays` (
   `repdays_id` int NOT NULL,
   `repday_date` datetime DEFAULT NULL
@@ -438,6 +451,7 @@ INSERT INTO `repetitiondays` (`repdays_id`, `repday_date`) VALUES
 -- Estructura de tabla para la tabla `schedules`
 --
 
+DROP TABLE IF EXISTS `schedules`;
 CREATE TABLE `schedules` (
   `schedule_id` int NOT NULL,
   `schedule_eventname` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
@@ -509,6 +523,7 @@ INSERT INTO `schedules` (`schedule_id`, `schedule_eventname`, `schedule_datetime
 -- Estructura de tabla para la tabla `sleepmode`
 --
 
+DROP TABLE IF EXISTS `sleepmode`;
 CREATE TABLE `sleepmode` (
   `sleep_id` int NOT NULL,
   `sleep_starthour` mediumint DEFAULT NULL,
@@ -533,6 +548,7 @@ INSERT INTO `sleepmode` (`sleep_id`, `sleep_starthour`, `sleep_endhour`, `sleep_
 -- Estructura de tabla para la tabla `sleepquality`
 --
 
+DROP TABLE IF EXISTS `sleepquality`;
 CREATE TABLE `sleepquality` (
   `quality_id` int NOT NULL,
   `quality_good` tinyint(1) DEFAULT NULL,
@@ -548,6 +564,7 @@ CREATE TABLE `sleepquality` (
 -- Estructura de tabla para la tabla `timers`
 --
 
+DROP TABLE IF EXISTS `timers`;
 CREATE TABLE `timers` (
   `timer_id` int NOT NULL,
   `timer_hour` tinyint DEFAULT NULL,
@@ -565,6 +582,7 @@ CREATE TABLE `timers` (
 -- Estructura de tabla para la tabla `titles`
 --
 
+DROP TABLE IF EXISTS `titles`;
 CREATE TABLE `titles` (
   `title_id` int NOT NULL,
   `title_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL
@@ -598,6 +616,7 @@ INSERT INTO `titles` (`title_id`, `title_name`) VALUES
 -- Estructura de tabla para la tabla `tones`
 --
 
+DROP TABLE IF EXISTS `tones`;
 CREATE TABLE `tones` (
   `tone_id` int NOT NULL,
   `tone_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
@@ -666,6 +685,7 @@ INSERT INTO `tones` (`tone_id`, `tone_name`, `tone_location`) VALUES
 -- Estructura de tabla para la tabla `users`
 --
 
+DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `user_id` int NOT NULL,
   `user_mail` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
@@ -690,6 +710,7 @@ INSERT INTO `users` (`user_id`, `user_mail`, `user_name`, `user_password`, `user
 -- Estructura de tabla para la tabla `usersblocked`
 --
 
+DROP TABLE IF EXISTS `usersblocked`;
 CREATE TABLE `usersblocked` (
   `userblocked_id` int NOT NULL,
   `user_id_sourse` int DEFAULT NULL,
@@ -702,6 +723,7 @@ CREATE TABLE `usersblocked` (
 -- Estructura de tabla para la tabla `user_titles`
 --
 
+DROP TABLE IF EXISTS `user_titles`;
 CREATE TABLE `user_titles` (
   `user_id` int NOT NULL,
   `title_id` int NOT NULL,
@@ -832,6 +854,7 @@ INSERT INTO `user_titles` (`user_id`, `title_id`, `title_done`) VALUES
 -- Estructura de tabla para la tabla `weeklyscorecard`
 --
 
+DROP TABLE IF EXISTS `weeklyscorecard`;
 CREATE TABLE `weeklyscorecard` (
   `weeklyscorecard_id` int NOT NULL,
   `user_id` int DEFAULT NULL,
@@ -1326,6 +1349,27 @@ ALTER TABLE `user_titles`
 --
 ALTER TABLE `weeklyscorecard`
   ADD CONSTRAINT `weeklyscorecard_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
+
+DELIMITER $$
+--
+-- Eventos
+--
+DROP EVENT IF EXISTS `WeeklyScoreCard`$$
+CREATE DEFINER=`root`@`localhost` EVENT `WeeklyScoreCard` ON SCHEDULE EVERY 1 WEEK STARTS '2024-07-28 18:00:00' ON COMPLETION PRESERVE ENABLE COMMENT 'Evento semanal, calcula el promedio de puntualidad' DO INSERT INTO `weeklyscorecard` (`user_id`, `punt_weekly_date`, `punt_value`, `punt_num_rem`, `punt_percent_rem`, `punt_num_alar`, `punt_percent_alar`, `punt_num_timer`, `punt_percent_timer`, `punt_num_chro`, `punt_percent_chro`)
+    SELECT `user_id`, AVG(`punt_date`), AVG(`punt_value`), AVG(`punt_num_rem`), AVG(`punt_percent_rem`), AVG(`punt_num_alar`), AVG(`punt_percent_alar`), AVG(`punt_num_timer`), AVG(`punt_percent_timer`), AVG(`punt_num_chro`), AVG(`punt_percent_chro`)
+    FROM `puntuality`
+    WHERE (SELECT count(*) AS count FROM `puntuality` WHERE `punt_date` BETWEEN date_add(CURRENT_TIMESTAMP, INTERVAL -7 DAY) AND CURRENT_TIMESTAMP) > 0 AND `punt_date` BETWEEN date_add(CURRENT_TIMESTAMP, INTERVAL -7 DAY) AND CURRENT_TIMESTAMP
+    GROUP BY `user_id`$$
+
+DROP EVENT IF EXISTS `DailyPuntuality`$$
+CREATE DEFINER=`root`@`localhost` EVENT `DailyPuntuality` ON SCHEDULE EVERY 1 DAY STARTS '2024-07-26 00:00:00' ON COMPLETION PRESERVE ENABLE COMMENT 'Se genera entrada en puntualidad cada día a media noche' DO INSERT INTO `puntuality` (`user_id`, `punt_date`, `punt_value`, `punt_num_rem`, `punt_percent_rem`, `punt_num_alar`, `punt_percent_alar`, `punt_num_timer`, `punt_percent_timer`, `punt_num_chro`, `punt_percent_chro`)
+SELECT `user_id`, CURRENT_TIMESTAMP, 0, 0, 0, 0, 0, 0, 0, 0, 0
+FROM `users`$$
+
+DROP EVENT IF EXISTS `ReminderCancel`$$
+CREATE DEFINER=`root`@`localhost` EVENT `ReminderCancel` ON SCHEDULE EVERY 1 MINUTE STARTS '2024-07-25 00:00:00' ON COMPLETION NOT PRESERVE DISABLE COMMENT 'Cancela el recordatorio si supero el 80% de tiempo antes de verl' DO SELECT * FROM `reminder`$$
+
+DELIMITER ;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
