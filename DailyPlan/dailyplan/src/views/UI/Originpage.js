@@ -123,9 +123,17 @@ export default function OriginPage() {
   }, [id, selectedOption]);
 
   /*---------------------- PREPARACION ---------------------- */
-
+const [targetDate, setTargetDate] = useState(null);
   const [mostrarPreparacion, setMostrarPreparacion] = useState(false);
   const [showMiniTab, setShowMiniTab] = useState(true);
+
+
+//Calcular la fecha del momento en que se deba de mostrar el bloque de objetivos
+useEffect(() => {
+  
+
+}, [id])
+
 
   const handleClosePreparationView = () => {
     setMostrarPreparacion(false);

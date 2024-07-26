@@ -28,6 +28,7 @@ export const getPermissions = async () => {
 export const getPermissionById = async (permissionId) => {
     try {
         const response = await axios.post(GET_PERMISSION_BY_ID_URL, {permissionId});
+        
         return response.data;
     } catch (err) {
         console.error("Error retrieving permission by ID:", err);

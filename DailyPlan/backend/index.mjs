@@ -543,6 +543,7 @@ app.post('/get-token', async (req, res) => {
 
 
 app.post('/distance-matrix', async (req, res) => {
+  console.log("Cuerpo", req.body);
   const { origins, destinations, mode } = req.body;
   
   try {

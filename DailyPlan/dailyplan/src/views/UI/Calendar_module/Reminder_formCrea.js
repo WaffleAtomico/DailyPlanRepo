@@ -11,6 +11,11 @@ import { saveReminderShare } from '../../../utils/validations/remindershare';
 import { saveObjective } from '../../../utils/validations/objetive';
 import { saveObjectivesBlock } from '../../../utils/validations/objetiveblock';
 import MapView from '../Map_module/MapView';
+import { getDistanceTimeMatrix } from '../../../utils/validations/services/distanceMatrixClient';
+import { addNewEvent, addSchedule, checkScheduleConflict, findConflictEvent } from '../../../utils/validations/schedule';
+import { myPojo } from '../../../utils/ShowNotifInfo';
+import { getPermissionById } from '../../../utils/validations/permission';
+
 
 const ReminderFormView = (props) => {
     const [formData, setFormData] = useState({
@@ -34,8 +39,16 @@ const ReminderFormView = (props) => {
     const [reminder, setReminder] = useState([]);
     const [showObjectiveBlocks, setShowObjectiveBlocks] = useState(false);
     const [showShareUsers, setShowShareUsers] = useState(false);
-    const [arrivalLatLng, setArrivalLatLng] = useState({ lat: null, lng: null });
-    const [departureLatLng, setDepartureLatLng] = useState({ lat: null, lng: null });
+    const [arrivalLatLng, setArrivalLatLng] = useState([null, null]);
+    const [departureLatLng, setDepartureLatLng] = useState([null, null]);
+    const [Transport, setTransport] = useState('driving');
+    const [permission, setPermission] = useState(null);
+    const [active, setActive] = useState(false);
+    const [result, setResult] = useState({
+
+        distance: { text: "", value: 0 },
+        duration: { text: "", value: 0 }
+    });
 
     useEffect(() => {
         if (!(props.Reminder_id)) //la info la vamos a obtener cuando no tenga el reminder_id o sea nulo
@@ -53,17 +66,31 @@ const ReminderFormView = (props) => {
         }
     }, [props.SelectHour, props.SelectDate]);
 
+
+    useEffect(() => {
+
+        getPermissionById(props.user_id).then(response => {console.log("El permiso es:", response); 
+
+            if(response !== null && response[0].permision_active === 1)
+                {
+                    console.log("Se encuentra activo");
+                    setActive(true);
+                }
+                else
+                {
+                    console.log("No se encuentra activo");
+                    setActive(false);
+                }
+
+        }).catch(console.log("No se pudieron obtener los permisos"));
+
+     
+
+    }, [props.user_id]);
+
     useEffect(() => { //esta pendiente obtener los valores
         const fetchReminderData = (id) => {
-            /**
-            sql: "SELECT `reminder_id`, `reminder_name`, `reminder_date`,
-             `reminder_hour`, `reminder_min`, `reminder_active`, `repdays_id`, 
-             `reminder_tone_duration_sec`, `reminder_advance_min`, `reminder_img`,
-              `reminder_desc`, `reminder_days_suspended`, `reminder_share`, `reminder_sourse_id`
-               FROM `reminders` WHERE `reminder_id` = ?",
 
-              
-             */
             getReminderById(id).then(response => {
                 // Asigna valores al objeto formData
                 const dataRem = response.data[0];
@@ -105,12 +132,10 @@ const ReminderFormView = (props) => {
         }));
     };
 
-    const handlePlaceSelect = (type, place, latLng) => {
+    const handlePlaceSelect = (type, place, latLng, modeTransport) => {
+
+
         if (type === 'arrival') {
-
-
-            console.log(latLng);
-
             setFormData(prevData => ({
                 ...prevData,
                 arrivalPlace: place,
@@ -123,6 +148,18 @@ const ReminderFormView = (props) => {
             }));
             setDepartureLatLng(latLng);
         }
+
+        if (departureLatLng[0] !== null && arrivalLatLng[0] != null && modeTransport != null) {
+        
+          getDistanceTimeMatrix(departureLatLng, arrivalLatLng, modeTransport).then(response => {
+            console.log("la respuesta del calculo es:", response);
+                setResult(response);
+
+
+          }); 
+        }
+
+        setTransport(modeTransport);
     };
 
 
@@ -170,14 +207,44 @@ const ReminderFormView = (props) => {
         }));
     };
     const handleSubmit = (event) => {
-        event.preventDefault(); // Prevent the default form submission behavior
+        event.preventDefault(); // Evitar envíos por defecto o nulos
+
+        const { hours, minutes } = convertTimeString(formData.time);
+
+        // Crear un objeto para iniciar la verificación
+        const newEvent = {
+            schedule_eventname: formData.name,
+            schedule_duration_hour: hours,
+            schedule_duration_min: minutes,
+            schedule_datetime: formData.date // Assuming this is where the datetime is coming from
+        };
+
+        // Verificar existencia de conflicto
+        if (checkScheduleConflict(newEvent)) {
+            // Obtener la información del evento con el que se tiene conflicto
+            const conflictingEvent = findConflictEvent(newEvent);
+
+            if (conflictingEvent) {
+                const { schedule_eventname, schedule_datetime } = conflictingEvent;
+                myPojo.setNotif("¡Cuidado!", `Se tiene conflicto con el evento ${schedule_eventname} en el día ${schedule_datetime}`);
+            }
+
+            return;
+        }
+
+        addSchedule(newEvent);
+        addNewEvent(newEvent);
 
         const saveTone = formData.alarmTone ? addTone(formData) : Promise.resolve({ data: { tone_id: null } });
 
         saveTone.then(response => {
-            const { tone_id } = response;
+            const { tone_id } = response.data;
 
-            const { hours, minutes } = convertTimeString(formData.time);
+
+            //Tratar de almacenar las ubicaciones asignadas
+
+             
+
 
             const reminder = {
                 reminder_name: formData.name,
@@ -192,14 +259,14 @@ const ReminderFormView = (props) => {
                 reminder_days_suspended: parseInt(formData.snooze, 10),
                 reminder_share: 0,
                 tone_id: tone_id,
+                reminder_travel_time: result.duration.value,
                 user_id: props.user_id
             };
 
             saveUserReminder(reminder).then(response => {
                 const { reminder_id } = response.data;
 
-                //tratar de guardar la localización
-
+                // Tratar de guardar la localización
 
                 if (formData.goalList.length > 0) {
                     formData.goalList.forEach(goal => {
@@ -242,6 +309,7 @@ const ReminderFormView = (props) => {
     };
 
 
+
     const handleDeleteReminder = () => {
         deleteReminder(props.Reminder_id).then(res => {
             props.setReminderId(null);
@@ -258,10 +326,8 @@ const ReminderFormView = (props) => {
         const [hours, minutes] = timeString.split(':').map(Number);
         return { hours, minutes };
     }
-    
 
-    //-----------------//
-    //Calculo de tiempo
+
 
 
     return (
@@ -329,7 +395,7 @@ const ReminderFormView = (props) => {
                                             onChange={handleChange}
                                         />
                                     </Form.Group>
-                                    
+
                                 </Col>
                                 <Col xs={6}>
                                     <Form.Group controlId="formDeparturePlace">
@@ -343,12 +409,13 @@ const ReminderFormView = (props) => {
                                     </Form.Group>
                                 </Col>
 
-                                <p>Tiempo de llegada </p>
+                                <p>Tiempo de llegada: {result.duration.text}</p>
+                                <p> Distancia de: {result.distance.text}</p>
                             </Row>
                             <Row>
                                 <Col xs={12}>
                                     <div className="map-placeholder" style={{ height: '200px', backgroundColor: '#f0f0f0', margin: '1rem 0' }}>
-                                        <MapView  onPlaceSelect={handlePlaceSelect}  />
+                                        <MapView onPlaceSelect={handlePlaceSelect} active = {active}/>
                                     </div>
                                 </Col>
                             </Row>
