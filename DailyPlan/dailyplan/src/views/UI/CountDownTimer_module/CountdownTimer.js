@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import '../../../styles/UI/Countdowntimer/countdown.css';
-import { MdTimer, MdAlarm } from "react-icons/md";
+import { MdTimer, MdAlarm, MdProductionQuantityLimits } from "react-icons/md";
 
 import { addTimer, getTimerById, getTimersForUser } from "../../../utils/validations/timer";
 import { base64ToBlob, playBlobAudio } from "../../../utils/sounds";
@@ -164,8 +164,11 @@ export default function CountdownTimer(props) {
   };
 
   const handleSaveTimer = async () => {
+    if(timers != null && timers.length >= 10){
+      myPojo.setNotif("Límite alcanzado", <MdProductionQuantityLimits /> )
+      return;
+    }
     try {
-      console.log("filtro1")
       let tone_id = null;
       if (!soundFile){
         myPojo.setNotif("¡Agrega un sonido!",<GiSoundOff size={220}/>)  
@@ -176,7 +179,6 @@ export default function CountdownTimer(props) {
         alarmToneName: soundFile.name,
         alarmToneType: soundFile.type
       };
-      console.log("filtro1.5")
       addTone(formData).then(response => {
         console.log(response)
         const tone_id = response.tone_id;
@@ -190,13 +192,11 @@ export default function CountdownTimer(props) {
           tone_id: tone_id,
           user_id: parseInt(props.user_id, 10)
         };
-      console.log("filtro2")
 
         addTimer(timer).then(response => {
           console.log("Si lo guardo");
           hideSaveTimerForm(); // Hide the form after saving
           handleLoadTimer(); // Reload timers after saving
-          console.log("filtro3")
         });
 
       }).catch(error => { console.error("El error:", error) });

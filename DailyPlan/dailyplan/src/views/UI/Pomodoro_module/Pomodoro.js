@@ -206,6 +206,21 @@ const Pomodoro_view = (props) => {
             });
     };
 
+    function formatTime(totalSeconds) {
+        const hours = Math.floor(totalSeconds / 3600);
+        const minutes = Math.floor((totalSeconds % 3600) / 60);
+        const seconds = totalSeconds % 60;
+      
+        let formattedTime = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+      
+        if (hours > 0) {
+          formattedTime = `${hours.toString().padStart(2, '0')}:${formattedTime}`;
+        }
+      
+        return formattedTime;
+      }
+      
+
     return (
         <div className="pomodoro-container">
             <div className="pomodoro-layout">
@@ -261,7 +276,7 @@ const Pomodoro_view = (props) => {
                         <GiTomato size={40} /> Ciclos completados: {completedCycles}
                     </div>
                     <div className="time-remaining">
-                        {`${Math.floor(timeRemaining / 60)}:${('0' + timeRemaining % 60).slice(-2)}`}
+                        {formatTime(timeRemaining)}
                     </div>
                 </div>
             </div>

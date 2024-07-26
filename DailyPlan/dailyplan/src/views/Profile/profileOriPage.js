@@ -10,6 +10,7 @@ import "../../styles/UI/profile/profGeneral.css";
 import { IoIosArrowBack } from "react-icons/io";
 import { FaUserClock } from "react-icons/fa6";
 import GeneralNotif from "../UI/advices/GeneralNotif";
+import { getPuntualityById } from "../../utils/validations/puntuality";
 
 export default function ProfileOriPage() {
   const { id } = useParams();
@@ -17,6 +18,8 @@ export default function ProfileOriPage() {
 
   const [selectedOption, setSelectedOption] = useState(0);
   const [username, setUsername] = useState("");
+  const [puntuality, setPuntuality] = useState(0);
+
 
   const handleSuboption = (index) => {
     if (index === 1) {
@@ -58,9 +61,20 @@ export default function ProfileOriPage() {
       }).catch(error => {
         console.error(error);
       });
-
+    };
+    const getUserPuntuality = (user_id) => {
+      getPuntualityById(user_id).then(res => {
+        if (isNaN(res.data[0])) {
+          setPuntuality(0);
+        } else {
+          setPuntuality(res.data[0]);
+        }
+      }).catch(error => {
+        console.error(error);
+      });
     };
     getUserName(id);
+    getUserPuntuality(id);
   }, []);
 
   const GoToOrigin = () => {
@@ -69,16 +83,16 @@ export default function ProfileOriPage() {
   };
 
 
-    /*-------------------- Notifications --------------------*/
-    const [mostrarNotificacion, setMostrarNotificacion] = useState(false);
+  /*-------------------- Notifications --------------------*/
+  const [mostrarNotificacion, setMostrarNotificacion] = useState(false);
 
-    const handleShowNotificacion = () => {
-      setMostrarNotificacion(true);
-    };
-  
-    const handleCloseNotificacion = () => {
-      setMostrarNotificacion(false);
-    };
+  const handleShowNotificacion = () => {
+    setMostrarNotificacion(true);
+  };
+
+  const handleCloseNotificacion = () => {
+    setMostrarNotificacion(false);
+  };
 
   return (
     <div className="prof-main-container">
@@ -87,10 +101,13 @@ export default function ProfileOriPage() {
           {" "}
           <IoIosArrowBack /> Volver{" "}
         </div>
-        <div style={{ fontSize: "xx-large", paddingBottom: "1rem" }}>
+        <div style={{ fontSize: "xx-large", paddingBottom: "1rem", cursor:"default"}}>
           Configuración
         </div>
-        <button className="prof-right-button">
+        <button
+          style={{ cursor: "auto" }}
+          className={`right-button ${(puntuality > 89) ? 'right-button-gold' : ''}`}
+        >
           {" "}
           <FaUserClock /> {username}{" "}
         </button>
