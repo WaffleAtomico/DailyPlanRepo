@@ -28,6 +28,7 @@ export default function Chrono_view(props) {
 
     useEffect(() => {
         confirmArchivement(props.id_user);
+        console.log(isCompletedArchivement);
     }, []);
 
     const confirmArchivement = (user_id) => {
@@ -44,7 +45,7 @@ export default function Chrono_view(props) {
     }
     const grant15Archivement = (user_id) => {
         const grant_title_id = 15;
-        // console.log("Is completed:? ", isCompletedArchivement);
+        console.log("Is completed:? ", isCompletedArchivement);
         if (!isCompletedArchivement) { //si no esta completado hay que entregarlo
             grantArchivement(user_id, grant_title_id).then(res => {
                 console.log(res);
@@ -85,11 +86,10 @@ export default function Chrono_view(props) {
 
 
     useEffect(() => {
-
         getChronometersForUser(props.id_user)
             .then(response => {
                 if (response.data) {
-                    console.log(response.data)
+                    // console.log(response.data)
                     setChronos(response.data);
                 } else {
                     // console.error("Unexpected response format:", data);
@@ -98,7 +98,6 @@ export default function Chrono_view(props) {
             .catch(error => {
                 //  console.error("Error fetching the user's chronometers:", error);
             });
-
     }, []);
 
     const handleMark = () => {
@@ -133,8 +132,8 @@ export default function Chrono_view(props) {
         }
 
         // Cannot surpass 20 chronometers
-        if (chronos != null && chronos.length >= 20) { 
-            myPojo.setNotif("Límite alcanzado", <MdProductionQuantityLimits/> )
+        if (chronos != null && chronos.length >= 20) {
+            myPojo.setNotif("Límite alcanzado", <MdProductionQuantityLimits />)
             return;
         }
         // Create new object to store
@@ -148,7 +147,20 @@ export default function Chrono_view(props) {
         console.log(chrono);
         try {
             // Save the chrono
-            addChronometer(chrono);
+            addChronometer(chrono).then(res => {
+                if (res) {
+                    console.log("Si lo guarde ", savedmarks.length)
+                    if (timesFromUser.length >= 5) {
+                        console.log("Si lo guarde y si hay mas saved marks")
+                        grant15Archivement(props.id_user);
+                    }
+                }
+            }).catch((err) => {
+                console.log(err)
+            });
+
+            //Checar este pedo de la puntualidad
+
             // Update the punctuality
             getPuntualityById(props.id_user).then(response => {
                 setPuntuality(response.data)
@@ -210,7 +222,7 @@ export default function Chrono_view(props) {
 
         const expectedTotalSeconds = expectedHours * 3600 + expectedMinutes * 60 + expectedSeconds;
         const actualTimeSeconds = Math.floor(actualTime);
-        console.log(actualTimeSeconds);
+        // console.log(actualTimeSeconds);
 
         const differenceInSeconds = actualTimeSeconds - expectedTotalSeconds;
 

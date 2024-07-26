@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { startOfWeek, endOfWeek, addDays, format, isSameDay, parseISO } from 'date-fns';
 import HourBlock from './HourBlock';
 import '../../../styles/UI/Calendar/Calendar_view.css';
-import { FaArrowAltCircleLeft , FaArrowAltCircleRight } from "react-icons/fa";
+import { FaArrowAltCircleLeft, FaArrowAltCircleRight } from "react-icons/fa";
 
 
 import { getRemindersByWeek } from '../../../utils/validations/reminders';
@@ -45,7 +45,13 @@ const WeekView = ({ date, setDate, showform, setHour, setSelectDate, setReminder
     // console.log('Primer día de la semana:', formattedStartOfWeek);
     // console.log('Último día de la semana:', formattedEndOfWeek);
     // console.log('id user:', id);
+    const interval = setInterval(() => {
+      GetRemByWeek(formattedStartOfWeek, formattedEndOfWeek);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [date, id]);
 
+  const GetRemByWeek = (formattedStartOfWeek, formattedEndOfWeek) => {
     getRemindersByWeek(formattedStartOfWeek, formattedEndOfWeek, id)
       .then(response => {
         if (Array.isArray(response.data)) {
@@ -59,16 +65,15 @@ const WeekView = ({ date, setDate, showform, setHour, setSelectDate, setReminder
           setReminders(formattedReminders);
         } else {
           console.error("Expected an array but received:", response.data);
-          setReminders([]); // Set to empty array to avoid map error
+          setReminders([]); 
         }
       })
       .catch(err => {
         console.log(err);
-        setReminders([]); // Set to empty array in case of error
+        setReminders([]); 
       });
-  }, [date, id]);
+  }
 
-  // Ordenar recordatorios por fecha y hora
   const sortedReminders = reminders.sort((a, b) => {
     const dateComparison = parseISO(a.date) - parseISO(b.date);
     if (dateComparison !== 0) {
@@ -101,8 +106,8 @@ const WeekView = ({ date, setDate, showform, setHour, setSelectDate, setReminder
   return (
     <div className="week-view-container">
       <div className="week-nav">
-        <div style={{color: "green"}} onClick={previousWeek}><FaArrowAltCircleLeft size={50}/></div>
-        <div style={{color: "green"}} onClick={nextWeek}><FaArrowAltCircleRight size={50}/></div>
+        <div style={{ color: "green" }} onClick={previousWeek}><FaArrowAltCircleLeft size={50} /></div>
+        <div style={{ color: "green" }} onClick={nextWeek}><FaArrowAltCircleRight size={50} /></div>
       </div>
       <div className="week-days">
         {daysOfWeek.map((day, dayIndex) => (

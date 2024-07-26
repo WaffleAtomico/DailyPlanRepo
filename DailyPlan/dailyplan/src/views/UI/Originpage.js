@@ -329,6 +329,7 @@ useEffect(() => {
           setShowMiniTab={setShowMiniTab}
           blocks={blocks}
           handleUpdateBlocks={handleUpdateBlocks}
+          id_user ={id}
         />
       )}
       {showMiniTab && (
