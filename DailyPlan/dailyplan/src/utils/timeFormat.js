@@ -24,6 +24,27 @@ function timeFormatHHMMSS(seconds) {
     };
 }
 
+const calculateWeekRange = () => {
+    const today = new Date();
+    const dayOfWeek = today.getDay(); // Sunday - Saturday : 0 - 6
+
+    // Calculate start of the week (Monday)
+    const startOfWeek = new Date(today);
+    startOfWeek.setDate(today.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
+
+    // Calculate end of the week (Sunday)
+    const endOfWeek = new Date(startOfWeek);
+    endOfWeek.setDate(startOfWeek.getDate() + 6);
+
+    const formatDate = (date) => date.toISOString().split('T')[0];
+
+    return {
+        startDate: formatDate(startOfWeek),
+        endDate: formatDate(endOfWeek),
+    };
+};
+
+
 export {
-    timeFormatSec, timeFormatHHMMSS
+    timeFormatSec, timeFormatHHMMSS, calculateWeekRange
 }

@@ -94,6 +94,8 @@ const GET_OBJECTIVESBLOCKS_URL = '/get-objectivesblocks';
 const GET_OBJECTIVESBLOCK_BY_ID_URL = '/get-objectivesblock';
 const UPDATE_OBJECTIVESBLOCK_URL = '/update-objectivesblock';
 const DELETE_OBJECTIVESBLOCK_URL = '/delete-objectivesblock';
+const COMPLETE_OBJECTIVEBLOCK_URL = '/complete-objetivesblock';
+
 
 const ADD_PERMISSION_URL = '/add-permission';
 const GET_PERMISSIONS_URL = '/get-permissions';
@@ -244,6 +246,7 @@ export {
     GET_OBJECTIVESBLOCK_BY_ID_URL,
     UPDATE_OBJECTIVESBLOCK_URL,
     DELETE_OBJECTIVESBLOCK_URL,
+    COMPLETE_OBJECTIVEBLOCK_URL,
     ADD_PERMISSION_URL,
     GET_PERMISSIONS_URL,
     GET_PERMISSION_BY_ID_URL,

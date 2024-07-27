@@ -2,15 +2,11 @@ import { db } from '../config/connection.js';
 
 const addObjective = (req, res) => {
 
-    console.log("meter objetivo", req.body);
-
+   
     const query = {
-        sql: "INSERT INTO `objectives`(`obj_name`, `obj_duration_min`, `obj_durationreal_min`, `obj_check`, `id_user`, `objblo_id`) VALUES (?, ?, ?, ?, ?, ?)",
+        sql: "INSERT INTO `objectives`(`obj_name`,`id_user`, `objblo_id`) VALUES (?, ?, ?)",
         values: [
-            req.body.obj_name,
-            req.body.obj_duration_min,
-            req.body.obj_durationreal_min,
-            req.body.obj_check,
+            req.body.obj_name,            
             req.body.id_user,
             req.body.objblo_id,
         ],
@@ -25,7 +21,7 @@ const addObjective = (req, res) => {
 
 const getObjectives = (req, res) => {
     const query = {
-        sql: "SELECT `obj_id`, `obj_name`, `obj_duration_min`, `obj_durationreal_min`, `obj_check`, `id_user`, `objblo_id` FROM `objectives` WHERE 1",
+        sql: "SELECT `obj_id`, `obj_name`, `id_user`, `objblo_id` FROM `objectives` WHERE 1",
     };
     db.query(query.sql, (err, data) => {
         if (err) {
@@ -37,7 +33,7 @@ const getObjectives = (req, res) => {
 
 const getObjectiveById = (req, res) => {
     const query = {
-        sql: "SELECT `obj_id`, `obj_name`, `obj_duration_min`, `obj_durationreal_min`, `obj_check`, `id_user`, `objblo_id` FROM `objectives` WHERE `obj_id` = ?",
+        sql: "SELECT `obj_id`, `obj_name`,  `id_user`, `objblo_id` FROM `objectives` WHERE `obj_id` = ?",
         values: [req.params.obj_id],
     };
     db.query(query.sql, query.values, (err, data) => {
@@ -50,12 +46,10 @@ const getObjectiveById = (req, res) => {
 
 const updateObjective = (req, res) => {
     const query = {
-        sql: "UPDATE `objectives` SET `obj_name` = ?, `obj_duration_min` = ?, `obj_durationreal_min` = ?, `obj_check` = ?, `id_user` = ?, `objblo_id` = ? WHERE `obj_id` = ?",
+        sql: "UPDATE `objectives` SET `obj_name` = ?,`id_user` = ?, `objblo_id` = ? WHERE `obj_id` = ?",
         values: [
             req.body.obj_name,
-            req.body.obj_duration_min,
-            req.body.obj_durationreal_min,
-            req.body.obj_check,
+       
             req.body.id_user,
             req.body.objblo_id,
             req.params.obj_id,

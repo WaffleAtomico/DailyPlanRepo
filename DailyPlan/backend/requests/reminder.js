@@ -64,24 +64,55 @@ const getRemindersByMonth = (req, res) => {
         return res.json(data);
     });
 };
-
 const getRemindersByWeek = (req, res) => {
-    const startDate = req.body.startDate;  // Espera 'YYYY-MM-DD'
-    const endDate = req.body.endDate;  // Espera 'YYYY-MM-DD'
-    const user_id = req.body.user_id;  // Espera el ID del usuario
+
+    console.log("Se quiere obtener los recordatorios:", req.body);
+    const startDate = req.body.startDate;  // Expects 'YYYY-MM-DD'
+    const endDate = req.body.endDate;  // Expects 'YYYY-MM-DD'
+    const user_id = req.body.user_id;  // Expects the user ID
+
     const query = {
-        sql: "SELECT `reminder_id`, `reminder_name`, `reminder_hour`, `reminder_date` FROM `reminders` WHERE `user_id` = ? AND `reminder_date` BETWEEN ? AND ? ORDER BY `reminder_date`, `reminder_hour`",
+        sql: `
+            SELECT 
+                r.reminder_id, 
+                r.reminder_name, 
+                r.reminder_hour, 
+                r.reminder_date,
+                r.reminder_min,
+                r.reminder_travel_time,
+                ob.objblo_id,
+                ob.objblo_name,
+                ob.objblo_check,
+                ob.objblo_duration_min,
+                ob.objblo_durationreal_min,
+                o.obj_id,
+                o.obj_name,
+                o.id_user
+            FROM 
+                reminders r
+            INNER JOIN 
+                objectivesblock ob ON r.reminder_id = ob.reminder_id
+            INNER JOIN 
+                objectives o ON ob.objblo_id = o.objblo_id
+            WHERE 
+                r.user_id = ? 
+                AND r.reminder_date BETWEEN ? AND ?
+            ORDER BY 
+                r.reminder_date, 
+                r.reminder_hour
+        `,
         values: [user_id, startDate, endDate],
     };
-    // console.log(query.values)
+
     db.query(query.sql, query.values, (err, data) => {
         if (err) {
             return res.json({ message: "Error retrieving reminders for week", error: err });
         }
-        // console.log(data);
+        
         return res.json(data);
     });
 };
+
 
 const getReminderById = (req, res) => {
     const query = {

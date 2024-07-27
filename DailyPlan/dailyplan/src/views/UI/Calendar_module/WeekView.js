@@ -46,11 +46,16 @@ const WeekView = ({ date, setDate, showform, setHour, setSelectDate, setReminder
     // console.log('Último día de la semana:', formattedEndOfWeek);
     // console.log('id user:', id);
 
+
+    
+
     getRemindersByWeek(formattedStartOfWeek, formattedEndOfWeek, id)
-      .then(response => {
-        if (Array.isArray(response.data)) {
+      .then(data => {
+
+        console.log("La data obtenida es:", data);
+        if (Array.isArray(data)) {
           // Formatear las fechas y asignar al estado
-          const formattedReminders = response.data.map(reminder => ({
+          const formattedReminders = data.map(reminder => ({
             id: reminder.reminder_id,
             name: reminder.reminder_name,
             date: reminder.reminder_date.substring(0, 10), // Primeros 10 caracteres de reminder_date
@@ -58,7 +63,7 @@ const WeekView = ({ date, setDate, showform, setHour, setSelectDate, setReminder
           }));
           setReminders(formattedReminders);
         } else {
-          console.error("Expected an array but received:", response.data);
+          console.error("Expected an array but received:", data);
           setReminders([]); // Set to empty array to avoid map error
         }
       })
