@@ -63,8 +63,10 @@ export default function OriginPage() {
         // console.log("Response in front");
         // console.log(response.data);
         setUsername(response.data[0].user_name);
+        
       }).catch(error => {
         console.error(error);
+        navigate("/login");
       });
 
     };
@@ -104,13 +106,13 @@ export default function OriginPage() {
     }
   };
 
-  useEffect(()=>{
-    const showSumarize = () =>{
+  useEffect(() => {
+    const showSumarize = () => {
       //Preguntar si existe o si esta en 0 o 1
       myPojo.setNotif("Resumen Semanal de Puntualidad", <WeekSumerize />);
     }
     showSumarize();
-  },[])
+  }, [])
 
   const GoToProfileModule = () => {
     navigate(`/dailyplanconfig/${id}`);
@@ -142,6 +144,68 @@ export default function OriginPage() {
     return () => clearInterval(interval);
   }, []);
 
+  //Se puede manejar como un 3er tipo de notificacion
+  //Si si tiene esa notificacion, se lo va a mostrar aca
+  //Como con un true, si no le llega esa notificacion tecnicamente no lo tiene
+  const [reminderArchi, setReminderArchi] = useState({
+    timeObj: false,
+    allObj: false,
+    fasArrival: false,
+  });
+  const [currentAchievement, setCurrentAchievement] = useState(null);
+  
+  useEffect(() => {
+    if (!myPojo._isShow) {
+      if (currentAchievement === null || currentAchievement === 'fasArrival') {
+        if (reminderArchi.fasArrival) {
+          handleFastestArrival();
+          setReminderArchi(prevState => ({
+            ...prevState,
+            fasArrival: false,
+          }));
+          setCurrentAchievement('timeObj');
+          return;
+        }
+      }
+      if (currentAchievement === 'timeObj') {
+        if (reminderArchi.timeObj) {
+          handleFastestTimeObj();
+          setReminderArchi(prevState => ({
+            ...prevState,
+            timeObj: false,
+          }));
+          setCurrentAchievement('allObj');
+          return;
+        }
+      }
+      if (currentAchievement === 'allObj') {
+        if (reminderArchi.allObj) {
+          handleFastestAllObj();
+          setReminderArchi(prevState => ({
+            ...prevState,
+            allObj: false,
+          }));
+          setCurrentAchievement(null); // Todos los logros procesados
+          return;
+        }
+      }
+    }
+  }, [myPojo._isShow, counter, currentAchievement]);
+  
+
+  const handleFastestTimeObj = () => {
+    myPojo.setNotif("Felicidades, completaste tu primer grupo de objetivos antes que todos los demás");
+  }
+  const handleFastestAllObj = () => {
+    myPojo.setNotif("Felicidades, completaste todos tus grupos de objetivos antes que todos los demás");
+  }
+  const handleFastestArrival = () => {
+    myPojo.setNotif("Felicidades, llegaste a tu destino antes que todos los demás");
+  }
+
+
+  /*  */
+
   //#endregion
   /**
    *   GET SCHEDULE
@@ -157,17 +221,17 @@ export default function OriginPage() {
   //#endregion
 
   /*---------------------- PREPARACION ---------------------- */
-const [targetDate, setTargetDate] = useState(null);
+  const [targetDate, setTargetDate] = useState(null);
   const [mostrarPreparacion, setMostrarPreparacion] = useState(false);
   const [showMiniTab, setShowMiniTab] = useState(true);
 
 
-//Calcular la fecha del momento en que se deba de mostrar el bloque de objetivos
-useEffect(() => {
+  //Calcular la fecha del momento en que se deba de mostrar el bloque de objetivos
+  useEffect(() => {
 
-//    getRemindersByWeek(id, first day of the week, last day of the week)
+    //    getRemindersByWeek(id, first day of the week, last day of the week)
 
-}, [id])
+  }, [id])
 
 
   const handleClosePreparationView = () => {
@@ -329,7 +393,7 @@ useEffect(() => {
           setShowMiniTab={setShowMiniTab}
           blocks={blocks}
           handleUpdateBlocks={handleUpdateBlocks}
-          id_user ={id}
+          id_user={id}
         />
       )}
       {showMiniTab && (

@@ -7,7 +7,7 @@ import '../../../styles/UI/Invitations/invitation_card.css';
 
 const InvitationCard = ({ name, color, Icon, content, flag, handleInvAccepted,
                           handleInvRejected, handleInvObjectives, handleInvChange,
-                          handleInvCanceled, handleInvDelete
+                          handleInvCanceled, handleInvDelete, handleInvUsers,
                          }) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
@@ -38,7 +38,7 @@ const InvitationCard = ({ name, color, Icon, content, flag, handleInvAccepted,
             {isExpanded && (
                 <div className="invitation-details" style={{ backgroundColor: color }} >
                     {currentContent.map((item, index) => (
-                        <div key={index} className="invitation-detail">
+                        <div key={index} className="invitation-detail" onClick={handleInvUsers(item.inv_id)}>
                             <p>ID: {item.inv_id} </p>
                             <p>Razón: {item.inv_reason}</p>
                             {/* Add other relevant fields here */}
