@@ -124,7 +124,7 @@ export default function Chrono_view(props) {
 
         const formattedDate = formatDateToHHMMSS(date);
 
-
+ 
         // Check if seconds are zero
         if (timeFormat.seconds === 0) {
             console.warn("Chrono seconds are zero, not saving the chrono.");

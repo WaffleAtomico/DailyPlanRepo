@@ -239,7 +239,7 @@ const ReminderFormView = (props) => {
         const saveTone = formData.alarmTone ? addTone(formData) : Promise.resolve({ data: { tone_id: null } });
 
         saveTone.then(response => {
-            const { tone_id } = response.data;
+            const tone_id = response.tone_id;
             //Tratar de almacenar las ubicaciones asignadas
             const reminder = {
                 reminder_name: formData.name,
@@ -252,7 +252,7 @@ const ReminderFormView = (props) => {
                 reminder_img: formData.image,
                 reminder_desc: formData.description,
                 reminder_days_suspended: parseInt(formData.snooze, 10),
-                reminder_share: 0,
+                reminder_share: 0, 
                 tone_id: tone_id,
                 reminder_travel_time: result.duration.value,
                 user_id: props.user_id

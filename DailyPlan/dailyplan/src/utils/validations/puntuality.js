@@ -5,6 +5,7 @@ import {
     ADD_PUNTUALITY_URL,
    GET_PUNTUALITIES_URL,
    GET_PUNTUALITY_BY_ID_URL,
+   GET_PUNTUALITY_BY_USER_ID_AND_DATE_URL,
     UPDATE_PUNTUALITY_URL,
     DELETE_PUNTUALITY_URL
 } from '../routes';
@@ -40,6 +41,17 @@ export const getPuntualityById = async (user_id) => {
     } catch (err) {
         console.log("Error retrieving punctuality:", err);
         return "Error retrieving punctuality";
+    }
+};
+
+// Function to get punctuality by user ID and date
+export const getPuntualityByUserIdAndDate = async (user_id, date) => {
+    try {
+        const response = await axios.post(GET_PUNTUALITY_BY_USER_ID_AND_DATE_URL, { user_id, date });
+        return response.data;
+    } catch (err) {
+        console.log("Error retrieving punctuality by date:", err);
+        return "Error retrieving punctuality by date";
     }
 };
 

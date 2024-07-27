@@ -40,9 +40,10 @@ const addTone = (req, res) => {
             return res.status(200).json({ message: "Tone added successfully", tone_id: result.insertId });
         });
     } else {
-        res.status(200).json({ message: `Chunk ${chunk_index + 1} of ${total_chunks} received` });
+        return res.status(200).json({ message: `Chunk ${chunk_index + 1} of ${total_chunks} received` });
     }
 };
+
 
 const getTones = (req, res) => {
     const query = {

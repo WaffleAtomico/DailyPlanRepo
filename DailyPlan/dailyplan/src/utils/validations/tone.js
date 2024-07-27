@@ -69,14 +69,19 @@ const addTone = async (formData) => {
 
     try {
         const responses = await Promise.all(chunkPromises);
-        const finalResponse = responses[responses.length - 1]; // The last response should contain the final tone_id
-        console.log('All chunks sent successfully');
-        return finalResponse; // Return the final response containing the actual tone_id from the database
+        const finalResponse = responses.find(response => response.message && response.message.includes('Tone added successfully'));
+        if (finalResponse) {
+            console.log('All chunks sent successfully');
+            return finalResponse;
+        } else {
+            throw new Error('Final response with tone_id not found');
+        }
     } catch (error) {
         console.error('Error sending all chunks:', error);
         throw error;
     }
 };
+
 
 const updateTone = async (toneData) => {
     try {
