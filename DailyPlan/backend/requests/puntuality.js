@@ -53,6 +53,30 @@ const getPuntualityById = (req, res) => {
     });
 };
 
+const getPuntualityByUserIdAndDate = (req, res) => {
+    const { user_id, date } = req.body;
+
+    const query = {
+        sql: `
+            SELECT 
+                punt_id, user_id, punt_date, punt_value, punt_num_rem, 
+                punt_percent_rem, punt_num_alar, punt_percent_alar, 
+                punt_num_timer, punt_percent_timer, punt_num_chro, punt_percent_chro 
+            FROM puntuality 
+            WHERE user_id = ? AND DATE(punt_date) = ?
+        `,
+        values: [user_id, date],
+    };
+
+    db.query(query.sql, query.values, (err, data) => {
+        if (err) {
+            console.log("Error retrieving punctuality by date:", err);
+            return res.json({ message: "Error retrieving punctuality", error: err });
+        }
+        return res.json(data);
+    });
+};
+
 const updatePuntuality = (req, res) => {
 
     console.log("Se manda a actualizar:", req.body.puntualityInfo);
@@ -67,7 +91,7 @@ const updatePuntuality = (req, res) => {
             req.body.puntualityInfo.punt_percent_rem,
             req.body.puntualityInfo.punt_num_alar,
             req.body.puntualityInfo.punt_percent_alar,
-            req.body.puntualityInfopunt_num_timer,
+            req.body.puntualityInfo.punt_num_timer,
             req.body.puntualityInfo.punt_percent_timer,
             req.body.puntualityInfo.punt_num_chro,
             req.body.puntualityInfo.punt_percent_chro,
@@ -102,5 +126,6 @@ export {
     getPuntuality,
     getPuntualityById,
     updatePuntuality,
+    getPuntualityByUserIdAndDate,
     deletePuntuality 
 };

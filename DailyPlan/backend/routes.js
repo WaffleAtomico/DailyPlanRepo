@@ -115,6 +115,8 @@ const GET_PUNTUALITIES_URL = '/get-puntualities';
 const GET_PUNTUALITY_BY_ID_URL = '/get-puntuality';
 const UPDATE_PUNTUALITY_URL = '/update-puntuality';
 const DELETE_PUNTUALITY_URL = '/delete-puntuality';
+const GET_PUNTUALITY_BY_USER_ID_AND_DATE_URL = '/getPuntualityByUserIdAndDate';
+
 
 const ADD_REMINDER_URL = '/add-reminder';
 const GET_REMINDERS_URL = '/get-reminders';
@@ -264,6 +266,7 @@ export {
     GET_PUNTUALITY_BY_ID_URL,
     UPDATE_PUNTUALITY_URL,
     DELETE_PUNTUALITY_URL,
+    GET_PUNTUALITY_BY_USER_ID_AND_DATE_URL,
     ADD_REMINDER_URL,
     GET_REMINDERS_URL,
     GET_REMINDERS_BY_MONTH_URL,

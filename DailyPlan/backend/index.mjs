@@ -148,7 +148,8 @@ import {
   getPuntuality,
   getPuntualityById,
   updatePuntuality,
-  deletePuntuality 
+  deletePuntuality, 
+  getPuntualityByUserIdAndDate
 } from './requests/puntuality.js'
 
 import {
@@ -438,6 +439,7 @@ app.post(urls.GET_PUNTUALITIES_URL, getPuntuality);
 app.post(urls.GET_PUNTUALITY_BY_ID_URL, getPuntualityById);
 app.post(urls.UPDATE_PUNTUALITY_URL, updatePuntuality);
 app.post(urls.DELETE_PUNTUALITY_URL, deletePuntuality);
+app.post(urls.GET_PUNTUALITY_BY_USER_ID_AND_DATE_URL, getPuntualityByUserIdAndDate);
 
 /*-------------------------------Reminders-------------------------*/
 app.post(urls.ADD_REMINDER_URL, addReminder);

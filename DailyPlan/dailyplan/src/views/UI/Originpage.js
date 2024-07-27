@@ -228,33 +228,6 @@ const [mostrarPreparacion, setMostrarPreparacion] = useState(false);
 const [showMiniTab, setShowMiniTab] = useState(true);
 const [reminders, setReminders] = useState([]);
 const [blocks, setBlocks] = useState([
-  {
-    name: 'Bloque 1',
-    timeLimit: 5,
-    objectives: [
-      { id: 1, text: 'Objetivo 1', confirmed: false },
-      { id: 2, text: 'Objetivo 2', confirmed: false },
-      { id: 3, text: 'Objetivo 3', confirmed: false }
-    ],
-    travelTime: 40,
-    reminderDate: '2024-07-26',
-    reminderHour: 13,
-    reminderMin: 0 
-  },
-  {
-    name: 'Bloque 2',
-    timeLimit: 5,
-    objectives: [
-      { id: 4, text: 'Objetivo 4', confirmed: false },
-      { id: 5, text: 'Objetivo 5', confirmed: false },
-      { id: 6, text: 'Objetivo 6', confirmed: false },
-      { id: 7, text: 'Objetivo 7', confirmed: false }
-    ],
-    travelTime: 40,
-    reminderDate: '2024-07-26',
-    reminderHour: 14,
-    reminderMin: 0
-  },
 ]);
 
 useEffect(() => {
