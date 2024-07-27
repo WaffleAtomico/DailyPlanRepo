@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import '../../../styles/advices/Preparation.css';
 import { IoClose, IoTime } from 'react-icons/io5';
-import { isCompleted } from '../../../utils/archivements/grantArchivement';
+import { grantArchivement, isCompleted } from '../../../utils/archivements/grantArchivement';
 import { FaListCheck } from 'react-icons/fa6';
 import { MdOutlineTimelapse } from 'react-icons/md';
+import { myPojo } from '../../../utils/ShowNotifInfo';
 
 const PreparationView = ({ onClose, blocks, setShowMiniTab, handleUpdateBlocks, id_user }) => {
     const [currentBlock, setCurrentBlock] = useState(0);

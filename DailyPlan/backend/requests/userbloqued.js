@@ -4,8 +4,8 @@ const getUsersBlocked = (req, res) => {
   const user_id = req.body.user_id;
   const query = {
     sql: "SELECT ub.userblocked_id, ub.user_id_sourse, ub.user_id_target, u.user_mail " +
-         "FROM `usersblocked` ub " +
-         "LEFT JOIN `users` u ON (ub.user_id_target = u.user_id) " +
+         "FROM `usersblocked` AS ub " +
+         "LEFT JOIN `users` AS u ON (ub.user_id_target = u.user_id) " +
          "WHERE ub.`user_id_sourse` = ?",
     values: [user_id],
   };
@@ -21,10 +21,9 @@ const getUsersBlocked = (req, res) => {
 };
 
 const addUserBlocked = (req, res) => {
-  const { user_id_sourse, user_id_target } = req.body;
   const query = {
     sql: "INSERT INTO `usersblocked`(`user_id_sourse`, `user_id_target`) VALUES (?, ?)",
-    values: [user_id_sourse, user_id_target],
+    values: [req.body.user_id_sourse, req.body.user_id_target],
   };
   db.query(query.sql, query.values, (err, data) => {
     if (err) {
@@ -48,4 +47,18 @@ const delUserBlocked = (req, res) => {
   });
 };
 
-export { getUsersBlocked, addUserBlocked, delUserBlocked };
+const isUserBlocked = (req, res) => {
+  const query = {
+    sql: "SELECT COUNT(*) AS count FROM `usersblocked` WHERE `user_id_sourse` = ? AND `user_id_target` = ?",
+    values: [req.body.user_id_sourse, req.body.user_id_target],
+  };
+  db.query(query.sql, query.values, (err, data) => {
+    if (err) {
+      return res.json({ message: "Error checking user blocked status", error: err });
+    }
+    const isBlocked = data[0].count > 0;
+    return res.json({ isBlocked });
+  });
+};
+
+export { getUsersBlocked, addUserBlocked, delUserBlocked, isUserBlocked };

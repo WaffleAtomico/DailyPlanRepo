@@ -11,6 +11,7 @@ import { myPojo } from '../../../utils/ShowNotifInfo';
 import { grantArchivement, isCompleted } from '../../../utils/archivements/grantArchivement';
 import CancelReasonModal from './CancelReasonModal';  // Importamos el nuevo modal
 import { IoAlertCircleOutline } from 'react-icons/io5';
+import InvUserList from './InvUsers';
 
 export default function InvitationView(props) {
     const [data, setData] = useState([]);
@@ -19,6 +20,7 @@ export default function InvitationView(props) {
 
     const [showCancelModal, setShowCancelModal] = useState(false);
     const [currentInvId, setCurrentInvId] = useState(null);
+    const [showUserList, setShowUserList] = useState(false);
 
     useEffect(() => {
         // Function to fetch invitations from the API
@@ -103,10 +105,14 @@ export default function InvitationView(props) {
         //aceptar la invitacion recibida
         //si fue aceptada correctamente, entrega el logro
         updateInvitationState(inv_id, 1).then(res => {
-            if (res) {
+            if (res.status) {
                 grant4Archivement();
             }
         }).catch(err => { console.log(err) })
+    }
+    const handleInvUsers = (inv_id) =>{
+        setCurrentInvId(inv_id);
+        setShowUserList(!showUserList);
     }
 
     const handleInvRejected = (inv_id) => {
@@ -127,7 +133,6 @@ export default function InvitationView(props) {
     const handleSaveCancelReason = (reason) => {
         setShowCancelModal(false);
         updateInvitationReason(currentInvId, (reason.length > 0 ? reason : null)).then(res => {
-
             if (res) {
                 updateInvitationState(currentInvId, 0).then(res => {
                     if (reason.length > 0) {
@@ -177,18 +182,20 @@ export default function InvitationView(props) {
                         content={data ? data.filter(invitation => invitation.state === null
                             && invitation.user_id_owner != parseInt(props.user_id, 10)) : []}
                         flag={1}
+                        handleInvUsers={handleInvUsers}
                         handleInvAccepted={handleInvAccepted}
                         handleInvRejected={handleInvRejected}
                     />
                 </Col>
                 <Col xs={12} className="invitation-card-container">
-                    <InvitationCard
+                    <InvitationCard 
                         name="Invitaciones activas"
                         color="#00B85A"
                         Icon={FaUserCheck}
                         content={data ? data.filter(invitation => invitation.state === 1
                             && invitation.user_id_owner != parseInt(props.user_id, 10)) : []}
                         flag={2}
+                        handleInvUsers={handleInvUsers}
                         handleInvCanceled={handleInvCanceled}
                         handleInvObjectives={handleInvObjectives}
                     />
@@ -201,6 +208,7 @@ export default function InvitationView(props) {
                         content={data ? data.filter(invitation => invitation.state === 1
                             && invitation.user_id_owner === parseInt(props.user_id, 10)) : []}
                         flag={3}
+                        handleInvUsers={handleInvUsers}
                         handleInvObjectives={handleInvObjectives}
                         handleInvSettings={handleInvSettings}
                         handleInvDelete={handleInvDelete}
@@ -212,6 +220,7 @@ export default function InvitationView(props) {
                 onClose={() => setShowCancelModal(false)}
                 onSave={handleSaveCancelReason}
             />
+            {showUserList && <InvUserList inv_id={currentInvId} user_id={props.user_id} />}
         </Container>
     );
 }
