@@ -15,7 +15,7 @@ import ChronoIndicator from "./advices/ChronoMsjs";
 import GeneralNotif from "./advices/GeneralNotif";
 
 
-import { timeFormatSec } from "../../utils/timeFormat";
+import { calculateWeekRange, timeFormatSec } from "../../utils/timeFormat";
 import { myPojo, changeCounter } from "../../utils/ShowNotifInfo";
 
 
@@ -38,6 +38,7 @@ import { getReminderById, getRemindersByWeek } from "../../utils/validations/rem
 
 import { getPuntualityById } from "../../utils/validations/puntuality";
 import WeekSumerize from "./advices/WeekSumerize";
+import { useBootstrapBreakpoints } from "react-bootstrap/esm/ThemeProvider";
 
 
 export default function OriginPage() {
@@ -220,46 +221,127 @@ export default function OriginPage() {
   }, [id, selectedOption]);
   //#endregion
 
-  /*---------------------- PREPARACION ---------------------- */
-  const [targetDate, setTargetDate] = useState(null);
-  const [mostrarPreparacion, setMostrarPreparacion] = useState(false);
-  const [showMiniTab, setShowMiniTab] = useState(true);
 
+/*---------------------- PREPARACION ---------------------- */
+const [targetDate, setTargetDate] = useState(null);
+const [mostrarPreparacion, setMostrarPreparacion] = useState(false);
+const [showMiniTab, setShowMiniTab] = useState(true);
+const [reminders, setReminders] = useState([]);
+const [blocks, setBlocks] = useState([
+  {
+    name: 'Bloque 1',
+    timeLimit: 5,
+    objectives: [
+      { id: 1, text: 'Objetivo 1', confirmed: false },
+      { id: 2, text: 'Objetivo 2', confirmed: false },
+      { id: 3, text: 'Objetivo 3', confirmed: false }
+    ],
+    travelTime: 40,
+    reminderDate: '2024-07-26',
+    reminderHour: 13,
+    reminderMin: 0 
+  },
+  {
+    name: 'Bloque 2',
+    timeLimit: 5,
+    objectives: [
+      { id: 4, text: 'Objetivo 4', confirmed: false },
+      { id: 5, text: 'Objetivo 5', confirmed: false },
+      { id: 6, text: 'Objetivo 6', confirmed: false },
+      { id: 7, text: 'Objetivo 7', confirmed: false }
+    ],
+    travelTime: 40,
+    reminderDate: '2024-07-26',
+    reminderHour: 14,
+    reminderMin: 0
+  },
+]);
 
-  //Calcular la fecha del momento en que se deba de mostrar el bloque de objetivos
-  useEffect(() => {
+useEffect(() => {
+  const calculatePreparationTime = (reminderDate, reminderHour, reminderMin, travelTime, blockDuration) => {
+    const reminderDateTime = new Date(reminderDate);
+    reminderDateTime.setHours(reminderHour);
+    reminderDateTime.setMinutes(reminderMin);
+    reminderDateTime.setSeconds(0);
+    reminderDateTime.setMilliseconds(0);
 
-    //    getRemindersByWeek(id, first day of the week, last day of the week)
-
-  }, [id])
-
-
-  const handleClosePreparationView = () => {
-    setMostrarPreparacion(false);
+    const preparationTime = reminderDateTime.getTime() - (travelTime * 60 * 1000) - (blockDuration * 60 * 1000);
+    return new Date(preparationTime);
   };
-  const [blocks, setBlocks] = useState([
-    {
-      name: 'Bloque 1',
-      timeLimit: 5,
-      objectives: [
-        { id: 1, text: 'Objetivo 1', confirmed: false },
-        { id: 2, text: 'Objetivo 2', confirmed: false },
-        { id: 3, text: 'Objetivo 3', confirmed: false }
-      ],
-      timeDifference: null
-    },
-    {
-      name: 'Bloque 2',
-      timeLimit: 5,
-      objectives: [
-        { id: 4, text: 'Objetivo 4', confirmed: false },
-        { id: 5, text: 'Objetivo 5', confirmed: false },
-        { id: 6, text: 'Objetivo 6', confirmed: false },
-        { id: 7, text: 'Objetivo 7', confirmed: false }
-      ],
-      timeDifference: null
-    },
-  ]);
+
+  const checkReminders = () => {
+    const currentTime = new Date();
+
+    const upcomingReminder = blocks.find(block => {
+      const totalBlockDuration = block.objectives.length * block.timeLimit; // total time for the block
+      const preparationTime = calculatePreparationTime(block.reminderDate, block.reminderHour, block.reminderMin, block.travelTime, totalBlockDuration);
+      const reminderTime = new Date(block.reminderDate);
+      reminderTime.setHours(block.reminderHour);
+      reminderTime.setMinutes(block.reminderMin);
+      reminderTime.setSeconds(0);
+      reminderTime.setMilliseconds(0);
+          
+      return currentTime >= preparationTime && currentTime < reminderTime;
+    });
+
+    if (upcomingReminder) {
+      setShowMiniTab(true);
+    } else {
+      setShowMiniTab(false);
+    }
+  };
+
+  const interval = setInterval(checkReminders, 20000); // Check every 20 seconds
+  return () => clearInterval(interval);
+}, [blocks]);
+
+useEffect(() => {
+  const { startDate, endDate } = calculateWeekRange();
+
+  getRemindersByWeek(startDate, endDate, id)
+    .then(data => {
+      const processedBlocks = data.reduce((acc, reminder) => {
+        const existingBlock = acc.find(block => block.name === reminder.objblo_name);
+        const objective = {
+          id: reminder.obj_id,
+          text: reminder.obj_name,
+          confirmed: false
+        };
+
+        if (existingBlock) {
+          existingBlock.objectives.push(objective);
+        } else {
+          acc.push({
+            id: reminder.objblo_id,
+            name: reminder.objblo_name,
+            timeLimit: reminder.objblo_duration_min,
+            objectives: [objective],
+            travelTime: reminder.reminder_travel_time,
+            reminderDate: reminder.reminder_date,
+            reminderHour: reminder.reminder_hour,
+            reminderMin: reminder.reminder_min
+          });
+        }
+      
+        return acc;
+      }, []);
+      setBlocks(processedBlocks);
+    })
+    .catch(error => {
+      console.log("No se pudieron obtener los recordatorios de la semana", error);
+    });
+}, [id]);
+
+
+const handleClosePreparationView = () => {
+  setMostrarPreparacion(false);
+};
+
+
+
+
+
+
 
   const handleUpdateBlocks = (updatedBlocks) => {
     setBlocks(updatedBlocks);

@@ -16,6 +16,7 @@ import { addNewEvent, addSchedule, checkScheduleConflict, findConflictEvent } fr
 import { myPojo } from '../../../utils/ShowNotifInfo';
 import { getPermissionById } from '../../../utils/validations/permission';
 import { addInvitation } from '../../../utils/validations/invitation';
+import { addLocation } from '../../../utils/validations/location';
 
 
 const ReminderFormView = (props) => {
@@ -41,6 +42,8 @@ const ReminderFormView = (props) => {
     const [showShareUsers, setShowShareUsers] = useState(false);
     const [arrivalLatLng, setArrivalLatLng] = useState([null, null]);
     const [departureLatLng, setDepartureLatLng] = useState([null, null]);
+    
+
     const [Transport, setTransport] = useState('driving');
     const [permission, setPermission] = useState(null);
     const [active, setActive] = useState(false);
@@ -70,16 +73,18 @@ const ReminderFormView = (props) => {
 
         getPermissionById(props.user_id).then(response => {console.log("El permiso es:", response); 
 
-            if(response !== null && response[0].permision_active === 1)
-                {
+            if (response !== null && response.length > 0) {
+                if (response[0].permision_active === 1) {
                     console.log("Se encuentra activo");
                     setActive(true);
-                }
-                else
-                {
+                } else {
                     console.log("No se encuentra activo");
                     setActive(false);
                 }
+            } else {
+                console.log("El array está vacío o es nulo");
+                setActive(false);
+            }
 
         }).catch(console.log("No se pudieron obtener los permisos"));
 
@@ -209,7 +214,8 @@ const ReminderFormView = (props) => {
             schedule_eventname: formData.name,
             schedule_duration_hour: hours,
             schedule_duration_min: minutes,
-            schedule_datetime: formData.date // Assuming this is where the datetime is coming from
+            schedule_datetime: formData.date, // Assuming this is where the datetime is coming from
+            user_id:  props.user_id,
         };
 
         // Verificar existencia de conflicto
@@ -226,6 +232,9 @@ const ReminderFormView = (props) => {
 
         addSchedule(newEvent);
         addNewEvent(newEvent);
+
+
+        
 
         const saveTone = formData.alarmTone ? addTone(formData) : Promise.resolve({ data: { tone_id: null } });
 
@@ -252,12 +261,46 @@ const ReminderFormView = (props) => {
             saveUserReminder(reminder).then(response => {
                 const { reminder_id } = response.data;
 
+
+                            //Tratar de almacenar las ubicaciones asignadas
+
+            //Verificar que, únicamente si ambos arreglos se llenan se trate de guardar: sino, nada            
+            if(arrivalLatLng != [null, null]
+                && departureLatLng != [null, null]
+            )
+            {
+            const arriveLocation = {
+                    location_x: arrivalLatLng[0],
+                    location_y: arrivalLatLng[1],
+                    location_type: 0,
+                    reminder_id: reminder_id,
+                }
+            const departureLocation = {
+                    location_x: departureLatLng[0],
+                    location_y: departureLatLng[1],
+                    reminder_id: 1,
+                    reminder_id: reminder_id,
+            }
+
+                addLocation(arriveLocation).then(response => {
+
+                    addLocation(departureLocation)
+
+                })
+
+
+            }
+    
+
                 // Tratar de guardar la localización
 
                 if (formData.goalList.length > 0) {
                     formData.goalList.forEach(goal => {
                         const objectiveBlockData = {
                             objblo_name: goal.name,
+                            objblo_duration_min: goal.time,
+                            objblo_durationreal_min: 0,
+                            objblo_check: false,
                             reminder_id: reminder_id,
                         };
 
@@ -267,9 +310,7 @@ const ReminderFormView = (props) => {
                             goal.objectives.forEach(objective => {
                                 const goalData = {
                                     obj_name: objective,
-                                    obj_duration_min: goal.time,
-                                    obj_durationreal_min: 0,
-                                    obj_check: false,
+                                    
                                     objblo_id: objblo_id,
                                     id_user: props.user_id,
                                 };

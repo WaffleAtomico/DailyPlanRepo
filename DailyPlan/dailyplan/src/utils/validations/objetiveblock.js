@@ -4,7 +4,8 @@ import {
     GET_OBJECTIVES_BLOCKS_URL,
     GET_OBJECTIVES_BLOCK_BY_ID_URL,
     UPDATE_OBJECTIVES_BLOCK_URL,
-    DELETE_OBJECTIVES_BLOCK_URL
+    DELETE_OBJECTIVES_BLOCK_URL,
+    COMPLETE_OBJECTIVEBLOCK_URL
 } from '../routes';
 
 export const saveObjectivesBlock = async (blockInfo) => {
@@ -37,7 +38,8 @@ export const getObjectivesBlockById = async (objblo_id) => {
 
 export const updateObjectivesBlock = async (blockInfo, objblo_id) => {
     try {
-        await axios.post(UPDATE_OBJECTIVES_BLOCK_URL, { ...blockInfo, objblo_id });
+        console.log("Se trato de actualizar");
+        await axios.post(UPDATE_OBJECTIVES_BLOCK_URL, {blockInfo, objblo_id });
         return true;
     } catch (err) {
         console.error("Error updating objective block:", err);
@@ -51,6 +53,20 @@ export const deleteObjectivesBlock = async (objblo_id) => {
         return true;
     } catch (err) {
         console.error("Error deleting objective block:", err);
+        return false;
+    }
+};
+
+
+export const completeObjectivesBlock = async (blockInfo, objblo_id) => {
+    try {
+       console.log("Se mando", objblo_id);
+       console.log("así como:", blockInfo);
+       
+        await axios.post(COMPLETE_OBJECTIVEBLOCK_URL, { blockInfo, objblo_id });
+        return true;
+    } catch (err) {
+        console.error("Error updating objective block:", err);
         return false;
     }
 };

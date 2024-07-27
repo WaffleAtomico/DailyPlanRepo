@@ -39,7 +39,7 @@ export const getReminderById = async (reminder_id) => {
 
 export const updateReminder = async (reminderInfo) => {
     try {
-        await axios.post(UPDATE_REMINDER_URL, reminderInfo);
+        await axios.post(UPDATE_REMINDER_URL, {reminderInfo});
         return true;
     } catch (err) {
         console.log(err);
@@ -67,7 +67,7 @@ export const getRemindersByMonth = async (month, user_id) => {
 export const getRemindersByWeek = async (startDate, endDate, user_id) => {
     try {
         const response = await axios.post(GET_REMINDERS_BY_WEEK_URL, { startDate, endDate, user_id });
-        return response;
+        return response.data;
     } catch (err) {
         console.log(err);
     }

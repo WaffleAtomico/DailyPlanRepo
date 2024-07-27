@@ -122,7 +122,9 @@ import {
   getObjectivesBlocks,
   getObjectivesBlockById,
   updateObjectivesBlock,
-  deleteObjectivesBlock
+  deleteObjectivesBlock,
+  CompleteObjectivesBlock
+
 } from './requests/objectivesblock.js';
 
 import {
@@ -413,6 +415,8 @@ app.post(urls.GET_OBJECTIVESBLOCKS_URL, getObjectivesBlocks);
 app.post(urls.GET_OBJECTIVESBLOCK_BY_ID_URL, getObjectivesBlockById);
 app.post(urls.UPDATE_OBJECTIVESBLOCK_URL, updateObjectivesBlock);
 app.post(urls.DELETE_OBJECTIVESBLOCK_URL, deleteObjectivesBlock);
+app.post(urls.COMPLETE_OBJECTIVEBLOCK_URL, CompleteObjectivesBlock);
+
 
 /*-------------------------------Permissions-------------------------*/
 app.post(urls.ADD_PERMISSION_URL, addPermision);
