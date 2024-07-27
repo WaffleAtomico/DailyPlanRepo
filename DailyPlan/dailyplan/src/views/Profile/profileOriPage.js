@@ -11,6 +11,7 @@ import { IoIosArrowBack } from "react-icons/io";
 import { FaUserClock } from "react-icons/fa6";
 import GeneralNotif from "../UI/advices/GeneralNotif";
 import { getPuntualityById } from "../../utils/validations/puntuality";
+import { myPojo, changeCounter } from "../../utils/ShowNotifInfo";
 
 export default function ProfileOriPage() {
   const { id } = useParams();
@@ -55,11 +56,12 @@ export default function ProfileOriPage() {
     const getUserName = (user_id) => {
       // const response = await 
       getUsrName(user_id).then(response => {
-        console.log("Response in front");
-        console.log(response.data);
+        // console.log("Response in front");
+        // console.log(response.data);
         setUsername(response.data[0].user_name);
       }).catch(error => {
         console.error(error);
+        navigate("/login");
       });
     };
     const getUserPuntuality = (user_id) => {
@@ -83,16 +85,33 @@ export default function ProfileOriPage() {
   };
 
 
-  /*-------------------- Notifications --------------------*/
+/*-------------------- NOTIFICATIONS --------------------*/
+  //#region 
   const [mostrarNotificacion, setMostrarNotificacion] = useState(false);
+  const [counter, setCounter] = useState(changeCounter);
 
-  const handleShowNotificacion = () => {
-    setMostrarNotificacion(true);
-  };
+  useEffect(() => {
+    // console.log("Usestate "+mostrarNotificacion);
+    // console.log("Pojo ", myPojo._isShow);
+    if (myPojo._isShow === true) {
+      setMostrarNotificacion(true);
+      // console.log("Se muestra");
+    } else if (myPojo._isShow === false) {
+      setMostrarNotificacion(false);
+      // console.log("No se muestra");
+    }
+  }, [counter]);
 
-  const handleCloseNotificacion = () => {
-    setMostrarNotificacion(false);
-  };
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCounter(changeCounter);
+    }, 100); // Ajusta el intervalo según sea necesario
+
+    return () => clearInterval(interval);
+  }, []);
+
+  //#endregion
+  
 
   return (
     <div className="prof-main-container">
@@ -124,9 +143,8 @@ export default function ProfileOriPage() {
 
       {mostrarNotificacion && (
         <GeneralNotif
-          mensaje="Este es el mensaje de la notificación"
-          onClose={handleCloseNotificacion}
-          componente={<div>Componente adicional</div>}
+          mensaje={myPojo.HeadText}
+          componente={myPojo.content}
         />
       )}
     </div>

@@ -18,6 +18,7 @@ const USER_ALARM_LIMIT_REACHED_URL = `${urlreference}/alarms-limit-user`;
 const ADD_USER_BLOCKED_URL = `${urlreference}/bloqusr`;
 const DELETE_USER_BLOCKED_URL = `${urlreference}/unbloq`;
 const GET_USERS_BLOCKED_URL = `${urlreference}/getusrbloq`;
+const CHECK_USER_BLOCKED_URL = `${urlreference}/check-user-blocked`;
 
 const ADD_CLOCK_URL = `${urlreference}/clock-id`;
 const GET_CLOCK_URL = `${urlreference}/clock-byid`;
@@ -39,6 +40,7 @@ const USER_EXISTS_NUMBER_URL = `${urlreference}/users-existnumber`;
 const GET_USER_INFO_URL = `${urlreference}/get-userinfo`;
 const GET_USER_BY_MAIL_URL = `${urlreference}/user-bymail`;
 const GET_USER_BY_PHONE_URL = `${urlreference}/user-byphone`;
+const UPDATE_USER_TITLE_URL = `${urlreference}/user-updtitle`;
 
 const SEND_MAIL_URL = `${urlreference}/send`;
 const SEND_MAILJT_URL = `${urlreference}/sendjt`;
@@ -190,6 +192,7 @@ export {
     ADD_USER_BLOCKED_URL,
     DELETE_USER_BLOCKED_URL,
     GET_USERS_BLOCKED_URL,
+    CHECK_USER_BLOCKED_URL,
     ADD_CLOCK_URL,
     GET_CLOCK_URL,
     DELETE_CLOCK_URL,
@@ -204,6 +207,7 @@ export {
     GET_USER_INFO_URL,
     GET_USER_BY_MAIL_URL,
     GET_USER_BY_PHONE_URL,
+    UPDATE_USER_TITLE_URL,
     SEND_MAIL_URL,
     SEND_MAILJT_URL,
     ADD_TIMER_URL,

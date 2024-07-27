@@ -43,6 +43,7 @@ import {
   getUsersBlocked,
   addUserBlocked,
   delUserBlocked,
+  isUserBlocked,
 } from "./requests/userbloqued.js";
 
 import {
@@ -345,6 +346,7 @@ app.post(urls.UPDATE_TITLE_STATUS_URL, updateTitleStatus);
 app.post(urls.ADD_USER_BLOCKED_URL, addUserBlocked);
 app.post(urls.DELETE_USER_BLOCKED_URL, delUserBlocked);
 app.post(urls.GET_USERS_BLOCKED_URL, getUsersBlocked);
+app.post(urls.CHECK_USER_BLOCKED_URL, isUserBlocked);
 
 /*-------------------------------Alarm------------------------- */
 app.post(urls.ADD_ALARM_URL, addAlarm);

@@ -15,6 +15,8 @@ import { getDistanceTimeMatrix } from '../../../utils/validations/services/dista
 import { addNewEvent, addSchedule, checkScheduleConflict, findConflictEvent } from '../../../utils/validations/schedule';
 import { myPojo } from '../../../utils/ShowNotifInfo';
 import { getPermissionById } from '../../../utils/validations/permission';
+import { addInvitation } from '../../../utils/validations/invitation';
+import { addLocation } from '../../../utils/validations/location';
 
 
 const ReminderFormView = (props) => {
@@ -35,7 +37,6 @@ const ReminderFormView = (props) => {
         goalList: [],
         shareUsers: []
     });
-
     const [reminder, setReminder] = useState([]);
     const [showObjectiveBlocks, setShowObjectiveBlocks] = useState(false);
     const [showShareUsers, setShowShareUsers] = useState(false);
@@ -47,7 +48,6 @@ const ReminderFormView = (props) => {
     const [permission, setPermission] = useState(null);
     const [active, setActive] = useState(false);
     const [result, setResult] = useState({
-
         distance: { text: "", value: 0 },
         duration: { text: "", value: 0 }
     });
@@ -88,11 +88,9 @@ const ReminderFormView = (props) => {
 
         }).catch(console.log("No se pudieron obtener los permisos"));
 
-     
-
     }, [props.user_id]);
 
-    useEffect(() => { //esta pendiente obtener los valores
+    useEffect(() => { //Si en invitaciones se puede editar, entonces se va a editar
         const fetchReminderData = (id) => {
 
             getReminderById(id).then(response => {
@@ -137,8 +135,6 @@ const ReminderFormView = (props) => {
     };
 
     const handlePlaceSelect = (type, place, latLng, modeTransport) => {
-
-
         if (type === 'arrival') {
             setFormData(prevData => ({
                 ...prevData,
@@ -159,13 +155,11 @@ const ReminderFormView = (props) => {
             console.log("la respuesta del calculo es:", response);
                 setResult(response);
 
-
           }); 
         }
 
         setTransport(modeTransport);
     };
-
 
     const handleFileChange = (event) => {
         const { name, files } = event.target;
@@ -197,7 +191,6 @@ const ReminderFormView = (props) => {
     };
 
     const handleAddUser = (user) => {
-
         setFormData((prevData) => ({
             ...prevData,
             shareUsers: [...prevData.shareUsers, user]
@@ -210,6 +203,7 @@ const ReminderFormView = (props) => {
             shareUsers: prevData.shareUsers.filter(user => user.name !== name)
         }));
     };
+
     const handleSubmit = (event) => {
         event.preventDefault(); // Evitar envíos por defecto o nulos
 
@@ -233,7 +227,6 @@ const ReminderFormView = (props) => {
                 const { schedule_eventname, schedule_datetime } = conflictingEvent;
                 myPojo.setNotif("¡Cuidado!", `Se tiene conflicto con el evento ${schedule_eventname} en el día ${schedule_datetime}`);
             }
-
             return;
         }
 
@@ -247,12 +240,7 @@ const ReminderFormView = (props) => {
 
         saveTone.then(response => {
             const { tone_id } = response.data;
-
-
-
-
-
-
+            //Tratar de almacenar las ubicaciones asignadas
             const reminder = {
                 reminder_name: formData.name,
                 reminder_date: formData.date,
@@ -278,10 +266,8 @@ const ReminderFormView = (props) => {
 
             //Verificar que, únicamente si ambos arreglos se llenan se trate de guardar: sino, nada            
             if(arrivalLatLng != [null, null]
-
                 && departureLatLng != [null, null]
             )
-            
             {
             const arriveLocation = {
                     location_x: arrivalLatLng[0],
@@ -289,13 +275,19 @@ const ReminderFormView = (props) => {
                     location_type: 0,
                     reminder_id: reminder_id,
                 }
-
             const departureLocation = {
                     location_x: departureLatLng[0],
                     location_y: departureLatLng[1],
                     reminder_id: 1,
                     reminder_id: reminder_id,
             }
+
+                addLocation(arriveLocation).then(response => {
+
+                    addLocation(departureLocation)
+
+                })
+
 
             }
     
@@ -322,7 +314,6 @@ const ReminderFormView = (props) => {
                                     objblo_id: objblo_id,
                                     id_user: props.user_id,
                                 };
-
                                 saveObjective(goalData).then(response => {
                                     console.log("Objective saved:", response.data);
                                 }).catch(error => {
@@ -334,6 +325,25 @@ const ReminderFormView = (props) => {
                         });
                     });
                 }
+                if(formData.shareUsers.length > 0){
+                    formData.shareUsers.forEach(invUser => {
+                        const invitationUserData = {
+                            reminder_id: reminder_id,
+                            alarm_id: null,
+                            user_id_owner: props.user_id,
+                            user_id_target: invUser.id,
+                            inv_state: null,
+                            inv_reason: null,
+                        };
+                        addInvitation(invitationUserData).then(res=>{
+                            console.log("Si se guarda bien la invitacion");
+                            console.log(res);
+                        }).catch(error => {
+                            console.error("Error saving invitation ", error);
+                        });
+
+                    });
+                }
             }).catch(error => {
                 console.error("Error saving reminder share", error);
             });
@@ -342,8 +352,6 @@ const ReminderFormView = (props) => {
         });
         props.showform();
     };
-
-
 
     const handleDeleteReminder = () => {
         deleteReminder(props.Reminder_id).then(res => {
@@ -361,9 +369,6 @@ const ReminderFormView = (props) => {
         const [hours, minutes] = timeString.split(':').map(Number);
         return { hours, minutes };
     }
-
-
-
 
     return (
         <div>
@@ -443,7 +448,6 @@ const ReminderFormView = (props) => {
                                         />
                                     </Form.Group>
                                 </Col>
-
                                 <p>Tiempo de llegada: {result.duration.text}</p>
                                 <p> Distancia de: {result.distance.text}</p>
                             </Row>
@@ -594,6 +598,8 @@ const ReminderFormView = (props) => {
                     )}
                     {(showShareUsers && !showObjectiveBlocks) && (
                         <ShareUsers
+                            // revisar user_id
+                            user_id={props.user_id}
                             onAddUser={handleAddUser}
                             onRemoveUser={handleRemoveUser}
                             userList={formData.shareUsers}

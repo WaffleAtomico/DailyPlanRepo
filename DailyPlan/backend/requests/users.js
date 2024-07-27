@@ -20,10 +20,10 @@ const getConn = (req, res) => {
   });
 };
 
-const getUser = (req, res) => {
+const getUser = (req, res) => { //activo
   // console.log("(getUser)En back el id: " + req.body.user_id);
   const query = {
-    sql: "SELECT * FROM users WHERE `user_id` = ?",
+    sql: "SELECT * FROM users WHERE `user_id` = ? AND `user_status` = 1",
     values: [req.body.user_id],
   };
   db.query(query.sql, query.values, (err, data) => {
@@ -122,6 +122,7 @@ const updateUserPwd = (req, res) => {
   });
 };
 
+
 /* json para postman
 {
     "user_id": 1
@@ -133,6 +134,7 @@ const updateUserTitle = (req, res) => {
     sql: "UPDATE `users` SET `title_id` = ? WHERE `user_id` = ?",
     values: [
       req.body.title_id,
+      req.body.user_id,
     ],
   };
   db.query(query.sql, query.values, (err, data) => {

@@ -33,6 +33,7 @@ const UPDATE_TITLE_STATUS_URL = '/title-updateone';
 const ADD_USER_BLOCKED_URL = '/bloqusr';
 const DELETE_USER_BLOCKED_URL = '/unbloq';
 const GET_USERS_BLOCKED_URL = '/getusrbloq';
+const CHECK_USER_BLOCKED_URL = '/check-user-blocked';
 
 const ADD_ALARM_URL = '/add-alarm';
 const GET_ALARMS_FOR_USER_URL = '/get-user-alarms';
@@ -196,6 +197,7 @@ export {
     ADD_USER_BLOCKED_URL,
     DELETE_USER_BLOCKED_URL,
     GET_USERS_BLOCKED_URL,
+    CHECK_USER_BLOCKED_URL,
     ADD_ALARM_URL,
     GET_ALARMS_FOR_USER_URL,
     GET_ALARM_BY_ID_URL,

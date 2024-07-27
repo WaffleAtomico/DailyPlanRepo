@@ -2,9 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { startOfWeek, endOfWeek, addDays, format, isSameDay, parseISO } from 'date-fns';
 import HourBlock from './HourBlock';
 import '../../../styles/UI/Calendar/Calendar_view.css';
-import { FaArrowAltCircleLeft , FaArrowAltCircleRight } from "react-icons/fa";
-
-
+import { FaArrowAltCircleLeft, FaArrowAltCircleRight } from "react-icons/fa";
 import { getRemindersByWeek } from '../../../utils/validations/reminders';
 import { useParams } from "react-router-dom";
 
@@ -31,7 +29,7 @@ const WeekView = ({ date, setDate, showform, setHour, setSelectDate, setReminder
     console.log(reminder_id);
     setReminderId(reminder_id);
     showform();
-  }
+  };
 
   const [reminders, setReminders] = useState([]);
 
@@ -42,38 +40,34 @@ const WeekView = ({ date, setDate, showform, setHour, setSelectDate, setReminder
     const formattedStartOfWeek = format(startOfCurrentWeek, 'yyyy-MM-dd');
     const formattedEndOfWeek = format(endOfCurrentWeek, 'yyyy-MM-dd');
 
-    // console.log('Primer día de la semana:', formattedStartOfWeek);
-    // console.log('Último día de la semana:', formattedEndOfWeek);
-    // console.log('id user:', id);
-
-
-    
-
-    getRemindersByWeek(formattedStartOfWeek, formattedEndOfWeek, id)
-      .then(data => {
-
+    const GetRemByWeek = async (start, end) => {
+      try {
+        const data = await getRemindersByWeek(start, end, id);
         console.log("La data obtenida es:", data);
         if (Array.isArray(data)) {
-          // Formatear las fechas y asignar al estado
           const formattedReminders = data.map(reminder => ({
             id: reminder.reminder_id,
             name: reminder.reminder_name,
-            date: reminder.reminder_date.substring(0, 10), // Primeros 10 caracteres de reminder_date
+            date: reminder.reminder_date.substring(0, 10),
             time: reminder.reminder_hour ? String(reminder.reminder_hour) : ''
           }));
           setReminders(formattedReminders);
         } else {
           console.error("Expected an array but received:", data);
-          setReminders([]); // Set to empty array to avoid map error
+          setReminders([]);
         }
-      })
-      .catch(err => {
+      } catch (err) {
         console.log(err);
-        setReminders([]); // Set to empty array in case of error
-      });
+        setReminders([]);
+      }
+    };
+
+    const interval = setInterval(() => {
+      GetRemByWeek(formattedStartOfWeek, formattedEndOfWeek);
+    }, 3000);
+    return () => clearInterval(interval);
   }, [date, id]);
 
-  // Ordenar recordatorios por fecha y hora
   const sortedReminders = reminders.sort((a, b) => {
     const dateComparison = parseISO(a.date) - parseISO(b.date);
     if (dateComparison !== 0) {
@@ -106,8 +100,8 @@ const WeekView = ({ date, setDate, showform, setHour, setSelectDate, setReminder
   return (
     <div className="week-view-container">
       <div className="week-nav">
-        <div style={{color: "green"}} onClick={previousWeek}><FaArrowAltCircleLeft size={50}/></div>
-        <div style={{color: "green"}} onClick={nextWeek}><FaArrowAltCircleRight size={50}/></div>
+        <div style={{ color: "green" }} onClick={previousWeek}><FaArrowAltCircleLeft size={50} /></div>
+        <div style={{ color: "green" }} onClick={nextWeek}><FaArrowAltCircleRight size={50} /></div>
       </div>
       <div className="week-days">
         {daysOfWeek.map((day, dayIndex) => (
