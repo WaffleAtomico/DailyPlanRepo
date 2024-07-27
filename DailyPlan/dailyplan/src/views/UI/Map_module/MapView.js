@@ -105,7 +105,6 @@ const MapView = ({ onPlaceSelect, active }) => {
         setError('Error checking geolocation permission');
       }
     };
-
     getCurrentPosition();
   }, [active]);
 

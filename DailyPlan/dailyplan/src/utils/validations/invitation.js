@@ -12,6 +12,16 @@ import {
 
 // Function to add an invitation
 export const addInvitation = async (invitationInfo) => {
+    /*
+     values: [
+            req.body.reminder_id,
+            req.body.alarm_id,
+            req.body.user_id_owner,
+            req.body.user_id_target,
+            req.body.inv_state,
+            req.body.inv_reason,
+        ],
+    */
     try {
         const response = await axios.post(ADD_INVITATION_URL, invitationInfo);
         return response;

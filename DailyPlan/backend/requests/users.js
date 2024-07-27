@@ -20,10 +20,10 @@ const getConn = (req, res) => {
   });
 };
 
-const getUser = (req, res) => {
+const getUser = (req, res) => { //activo
   // console.log("(getUser)En back el id: " + req.body.user_id);
   const query = {
-    sql: "SELECT * FROM users WHERE `user_id` = ?",
+    sql: "SELECT * FROM users WHERE `user_id` = ? AND `user_status` = 1",
     values: [req.body.user_id],
   };
   db.query(query.sql, query.values, (err, data) => {
