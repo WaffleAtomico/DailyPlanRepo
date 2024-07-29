@@ -69,7 +69,6 @@ export default function OriginPage() {
         console.error(error);
         navigate("/login");
       });
-
     };
     const getUserPuntuality = (user_id) => {
       getPuntualityById(user_id).then(res => {

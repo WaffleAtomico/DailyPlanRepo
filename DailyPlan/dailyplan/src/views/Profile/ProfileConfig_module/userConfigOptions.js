@@ -19,6 +19,7 @@ import { addPermission, getPermissionById } from "../../../utils/validations/per
 import { updateUserTitle } from "../../../utils/validations/user";
 import { myPojo } from "../../../utils/ShowNotifInfo";
 import { GoGear } from "react-icons/go";
+import { getUserNotifications } from "../../../utils/validations/notification";
 
 
 
@@ -110,12 +111,12 @@ const BloqUser = (props) => {
 
   const handleUnblock = (userblocked_id, user_mail) => {
     console.log(userblocked_id);
-    delUserBlocked(userblocked_id).then(res=>{
-      if(res.status){
+    delUserBlocked(userblocked_id).then(res => {
+      if (res.status) {
         getBlockedUsers(props.id);
-        myPojo.setNotif(`Has desbloqueado a: ${user_mail}`,<></>);
+        myPojo.setNotif(`Has desbloqueado a: ${user_mail}`, <></>);
       }
-    }).catch(err=>{console.log(err)})
+    }).catch(err => { console.log(err) })
   }
 
   return (
@@ -136,17 +137,17 @@ const BloqUser = (props) => {
                   <td className="otif-date-cell">{blockedUsr.user_mail}</td>
                   <td className="otif-date-cell">
                     <div className="titl-circle-check"
-                      onClick={()=>handleUnblock(blockedUsr.userblocked_id, blockedUsr.user_mail)}
+                      onClick={() => handleUnblock(blockedUsr.userblocked_id, blockedUsr.user_mail)}
                       onMouseEnter={() => setHoveredIndex(blockedUsr.user_id_target)}
                       onMouseLeave={() => setHoveredIndex(null)}
                       style={{ cursor: 'pointer' }}
                     >
-                       {hoveredIndex === blockedUsr.user_id_target ? (
+                      {hoveredIndex === blockedUsr.user_id_target ? (
                         <FaUserCheck size={40} />
                       ) : (
                         <RiUserForbidLine size={40} />
                       )}
-                      
+
                     </div>
                   </td>
                 </tr>
@@ -165,19 +166,25 @@ const UserNotif = (props) => {
   const [notifications, setNotifications] = useState([]);
 
   useEffect(() => {
-    // Simular una solicitud de datos
     const fetchNotifications = () => {
-      // Aquí puedes simular una solicitud de datos
-      setTimeout(() => {
-        const dummyData = [
-          { id: 1, date: '2024-07-10', name: 'Invitación a Evento' },
-          { id: 2, date: '2024-07-11', name: 'Nuevo Título Obtenido' },
-          { id: 3, date: '2024-07-12', name: 'Reinicio Semanal Completado' },
-        ];
-        setNotifications(dummyData);
-      }, 1000); // Simulación de demora de solicitud
+      getUserNotifications(props.id).then(res => {
+        if (res.status) {
+          console.log(res.data);
+          const notifs = res.data;
+          const newNotifs = notifs.map(item => ({
+            id: item.notification_id,
+            date: new Date(item.notification_date).toISOString().split('T')[0],
+            name: item.notification_name,
+          }));
+          setNotifications(prevNotifications => {
+            if (!prevNotifications.some(notif => notif.id === newNotifs.id)) {
+              return [...prevNotifications, newNotifs];
+            }
+            return prevNotifications;
+          });
+        }
+      }).catch(err => { console.log(err) })
     };
-
     fetchNotifications();
   }, []);
 
