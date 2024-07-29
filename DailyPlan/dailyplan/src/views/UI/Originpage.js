@@ -13,7 +13,6 @@ import Pomodoro from "./Pomodoro_module/Pomodoro";
 import PuntButton from "./Puntuality_module/punt_button";
 import ChronoIndicator from "./advices/ChronoMsjs";
 import GeneralNotif from "./advices/GeneralNotif";
-import WeeklyScorecard from "./WeeklyScorecard_module/weeklyscorecard";
 
 
 import { calculateWeekRange, timeFormatSec } from "../../utils/timeFormat";
@@ -38,6 +37,7 @@ import PreparationView from "./advices/Preparation";
 import { getReminderById, getRemindersByWeek } from "../../utils/validations/reminders";
 
 import { getPuntualityById } from "../../utils/validations/puntuality";
+import { isUserWeeklyScorecard, getWeeklyScorecardForUser } from "../../utils/validations/weeklyscorecard";
 import WeekSumerize from "./advices/WeekSumerize";
 import { useBootstrapBreakpoints } from "react-bootstrap/esm/ThemeProvider";
 
@@ -73,13 +73,26 @@ export default function OriginPage() {
 
     };
     const getUserPuntuality = (user_id) => {
-      getPuntualityById(user_id).then(res => {
-        if (isNaN(res.data[0])) {
+      getWeeklyScorecardForUser(user_id).then(res => {
+        if (isNaN(res.data)) {
           // console.log("Puntualidad ", res.data[0]);
           setPuntuality(0);
           // myPojo.setNotif("¿No tienes puntualidad?", <> Cada domingo a las 6pm con base en tus resultados de esa semana se te asignará un valor de puntualidad. ¡Esfuerzate cada semana para obtener distintos logros y hasta un marco especial para tu usuario!</>)
         } else {
-          setPuntuality(res.data[0]);
+          if (res.data.length > 1) {
+            if (res.data[1].punt_value > 0) {
+              if (res.data[0].punt_value > 0) {
+                const sum_punt = res.data[0].punt_value + res.data[1].punt_value;
+                setPuntuality(Math.round(sum_punt / 2));
+              } else {
+                setPuntuality(res.data[1].punt_value);
+              }
+            } else {
+              setPuntuality(res.data[0].punt_value);
+            }
+          } else {
+            setPuntuality(res.data[0].punt_value);
+          }
         }
       }).catch(error => {
         console.error(error);
@@ -111,10 +124,18 @@ export default function OriginPage() {
   useEffect(() => {
     const showSumarize = () => {
       //Preguntar si existe o si esta en 0 o 1
-      myPojo.setNotif("Resumen Semanal de Puntualidad", <WeekSumerize />);
+      const count = 0;
+      isUserWeeklyScorecard(user_id).then(res => {
+        count = res.data.isLimitReached;
+      }).catch(err => { console.log(err) });
+
+      if (count > 0) {
+          myPojo.setNotif("Resumen Semanal de Puntualidad", <WeekSumerize />);
+
+          showSumarize();
+      }
     }
-    // showSumarize();
-  }, [])
+  },[])
 
   const GoToProfileModule = () => {
     navigate(`/dailyplanconfig/${id}`);
