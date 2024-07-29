@@ -80,6 +80,9 @@ const getPuntualityByUserIdAndDate = (req, res) => {
 };
 
 
+
+
+
 const updatePuntuality = (req, res) => {
 
     console.log("Se manda a actualizar:", req.body.puntualityInfo);

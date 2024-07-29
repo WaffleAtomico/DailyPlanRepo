@@ -3,7 +3,7 @@ import axios from 'axios';
 import { DISTANCE_MATRIX_URL } from '../../routes';
 
 
-export const getDistanceTimeMatrix = async (origins, destinations, mode) => {
+export const getDistanceTimeMatrix = async (origins, destinations, mode='driving') => {
   try {
     const response = await axios.post(DISTANCE_MATRIX_URL, { origins, destinations, mode });
 

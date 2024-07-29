@@ -25,9 +25,9 @@ export const getLocations = async () => {
     }
 };
 
-export const getLocationById = async (locationId) => {
+export const getLocationById = async (reminderId) => {
     try {
-        const response = await axios.post(GET_LOCATION_BY_ID_URL, { location_id: locationId });
+        const response = await axios.post(GET_LOCATION_BY_ID_URL, {reminder_id: reminderId });
         return response.data;
     } catch (err) {
         console.error("Error retrieving location by ID:", err);

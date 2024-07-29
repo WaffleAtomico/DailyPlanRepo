@@ -6,7 +6,8 @@ import {
     UPDATE_REMINDER_URL,
     DELETE_REMINDER_URL,
     GET_REMINDERS_BY_MONTH_URL,
-    GET_REMINDERS_BY_WEEK_URL
+    GET_REMINDERS_BY_WEEK_URL,
+    GET_REMINDER_BY_DAY_URL
 } from '../routes.js';
 
 export const saveUserReminder = async (reminderInfo) => {
@@ -67,6 +68,16 @@ export const getRemindersByMonth = async (month, user_id) => {
 export const getRemindersByWeek = async (startDate, endDate, user_id) => {
     try {
         const response = await axios.post(GET_REMINDERS_BY_WEEK_URL, { startDate, endDate, user_id });
+        return response.data;
+    } catch (err) {
+        console.log(err);
+    }
+};
+
+
+export const getRemindersByDay = async (date, user_id) => {
+    try {
+        const response = await axios.post(GET_REMINDER_BY_DAY_URL, { date,  user_id });
         return response.data;
     } catch (err) {
         console.log(err);

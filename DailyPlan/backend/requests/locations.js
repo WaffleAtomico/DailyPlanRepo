@@ -34,9 +34,10 @@ const getLocations = (req, res) => {
 };
 
 const getLocationById = (req, res) => {
+   
     const query = {
-        sql: "SELECT `location_id`, `location_x`, `location_y`, `location_type`, `reminder_id` FROM `locations` WHERE `location_id` = ?",
-        values: [req.params.location_id],
+        sql: "SELECT `location_id`, `location_x`, `location_y`, `location_type`, `reminder_id` FROM `locations` WHERE `reminder_id` = ?",
+        values: [req.body.reminder_id],
     };
     db.query(query.sql, query.values, (err, data) => {
         if (err) {

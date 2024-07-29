@@ -64,11 +64,42 @@ const getRemindersByMonth = (req, res) => {
         return res.json(data);
     });
 };
+
+
 const getRemindersByWeek = (req, res) => {
 
     // console.log("Se quiere obtener los recordatorios:", req.body);
     const startDate = req.body.startDate;  // Expects 'YYYY-MM-DD'
     const endDate = req.body.endDate;  // Expects 'YYYY-MM-DD'
+    const user_id = req.body.user_id;  // Expects the user ID
+
+    const query = {
+        sql: `SELECT reminder_id, reminder_name, reminder_hour, reminder_date, reminder_min, reminder_travel_time
+            FROM 
+                reminders
+            WHERE 
+                user_id = ? 
+                AND reminder_date BETWEEN ? AND ?
+            ORDER BY 
+                reminder_date, 
+                reminder_hour`,
+        values: [user_id, startDate, endDate],
+    };
+
+    db.query(query.sql, query.values, (err, data) => {
+        if (err) {
+            return res.json({ message: "Error retrieving reminders for week", error: err });
+        }
+        
+        return res.json(data);
+    });
+};
+
+const getRemindersByDay = (req, res) => {
+
+    // console.log("Se quiere obtener los recordatorios:", req.body);
+    console.log("Se mando:", req.body.date);
+    const date = req.body.date;  // Expects 'YYYY-MM-DD'
     const user_id = req.body.user_id;  // Expects the user ID
 
     const query = {
@@ -83,21 +114,23 @@ const getRemindersByWeek = (req, res) => {
                 objectives o ON ob.objblo_id = o.objblo_id
             WHERE 
                 r.user_id = ? 
-                AND r.reminder_date BETWEEN ? AND ?
+                AND r.reminder_date = ?
             ORDER BY 
                 r.reminder_date, 
                 r.reminder_hour`,
-        values: [user_id, startDate, endDate],
+        values: [user_id, date],
     };
 
     db.query(query.sql, query.values, (err, data) => {
         if (err) {
-            return res.json({ message: "Error retrieving reminders for week", error: err });
+            console.log("Error al tomar los recordatorios del día", err);
+            return res.json({ message: "Error retrieving reminders for the day", error: err });
         }
-        
+        console.log("Recordatorios del día:", data);
         return res.json(data);
     });
 };
+
 
 
 const getReminderById = (req, res) => {
@@ -161,5 +194,6 @@ export {
     getRemindersByWeek,
     getReminderById,
     updateReminder,
-    deleteReminder 
+    deleteReminder,
+    getRemindersByDay
 };

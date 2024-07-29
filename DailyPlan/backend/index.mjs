@@ -159,7 +159,8 @@ import {
   getRemindersByWeek,
   getReminderById,
   updateReminder,
-  deleteReminder
+  deleteReminder,
+  getRemindersByDay
 } from './requests/reminder.js';
 
 import {
@@ -454,6 +455,7 @@ app.post(urls.GET_REMINDERS_URL, getReminders);
 app.post(urls.GET_REMINDERS_BY_MONTH_URL, getRemindersByMonth);
 app.post(urls.GET_REMINDERS_BY_WEEK_URL, getRemindersByWeek);
 app.post(urls.GET_REMINDER_BY_ID_URL, getReminderById);
+app.post(urls.GET_REMINDER_BY_DAY_URL, getRemindersByDay);
 app.post(urls.UPDATE_REMINDER_URL, updateReminder);
 app.post(urls.DELETE_REMINDER_URL, deleteReminder);
 
