@@ -1,0 +1,1 @@
+ALTER TABLE `sleepmode` ADD `sleep_rep_incr` INT NULL DEFAULT '0' AFTER `tone_id`; 

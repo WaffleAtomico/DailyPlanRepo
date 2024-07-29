@@ -10,7 +10,7 @@ import { timeFormatHHMMSS, timeFormatSec } from '../../../utils/timeFormat';
 import { myPojo } from '../../../utils/ShowNotifInfo';
 import { grantArchivement, isCompleted } from '../../../utils/archivements/grantArchivement';
 import { addChronometer, deleteChronometer, getChronometersForUser } from '../../../utils/validations/chrono';
-import { getPercentages, getPuntuality, getPuntualityById, updatePuntuality } from '../../../utils/validations/puntuality';
+import { getPercentages, getPuntuality, getPuntualityById, getPuntualityByUserId, updatePuntuality } from '../../../utils/validations/puntuality';
 
 import ChronoList from './ChronoList';
 import TimeReportChart from '../advices/TimeReportChart';
@@ -162,15 +162,18 @@ export default function Chrono_view(props) {
             //Checar este pedo de la puntualidad
 
             // Update the punctuality
-            getPuntualityById(props.id_user).then(response => {
-                setPuntuality(response.data)
+            getPuntualityByUserId(props.id_user).then(response => {
+                console.log("Puntualidad:", response);
+                setPuntuality(response)
             })
                 .catch(error => {
                     console.log("error", error);
                 });
+
             if (puntuality[0] == null && puntuality[0].punt_percent_chro == null) return;
 
             const punt = puntuality[0];
+            punt.punt_num_chro = chronos.length;
             // console.log("Puntualidad antigua", punt.punt_percent_chro);
             if (punt.punt_percent_chro != 0) {
                 const newPunctuality = (punt.punt_percent_chro + getPercentages(timesFromUser, savedmarks,)) / 2;
