@@ -113,22 +113,25 @@ const InvitationCard = ({ name, color, Icon, content, flag, handleInvAccepted,
                             {selectType(item.alarm_id, item.reminder_id) ? <p className='invitation-text'>Fecha: <br /><samp>{detailedContent[index]?.invDate || ""}</samp></p> : <></>}
                             <p className='invitation-text'>Hora: <br /><samp>{detailedContent[index]?.invHour || ""}h</samp></p>
                             <div className="invitation-buttons">
-                                <Button variant="success" className="button-large" onClick={()=>handleInvUsers(item.inv_id)}>
-                                    <MdGroups3 size={20}/>
+                                <Button variant="success" className="button-large" onClick={() => handleInvUsers(item.inv_id)}>
+                                    <MdGroups3 size={20} />
                                 </Button>
                                 {flag === 1 && (
                                     <>
-                                        <Button variant="success" className="button-large" onClick={()=>handleInvAccepted(item.inv_id)}>
+                                        <Button variant="success" className="button-large" onClick={() => handleInvAccepted(item.inv_id,
+                                            selectType(item.alarm_id, item.reminder_id),
+                                            (item.reminder_id ? item.reminder_id : null), (item.alarm_id ? item.alarm_id : null)
+                                        )}>
                                             <FaCheck /> Aceptar
                                         </Button>
-                                        <Button variant="danger" className="button-large" onClick={()=>handleInvRejected(item.inv_id)}>
+                                        <Button variant="danger" className="button-large" onClick={() => handleInvRejected(item.inv_id, item.user_id_owner)}>
                                             <ImCross /> Cancelar
                                         </Button>
                                     </>
                                 )}
                                 {flag === 2 && (
                                     <>
-                                       
+
                                         <Button variant="primary" className="button-large" onClick={() => handleInvObjectives(item.inv_id)}>
                                             <FaTasks /> Objetivos
                                         </Button>
@@ -139,7 +142,7 @@ const InvitationCard = ({ name, color, Icon, content, flag, handleInvAccepted,
                                 )}
                                 {flag === 3 && (
                                     <>
-                                       
+
                                         <Button variant="info" className="button-large" onClick={() => handleInvChange(item.inv_id)}>
                                             <FaCog /> Ajustes
                                         </Button>

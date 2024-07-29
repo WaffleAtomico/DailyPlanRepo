@@ -3,7 +3,7 @@ const PORT = "3001";
 const urlserver = "https://dailyplan-api.javateam.mx";
 
 //cambair depende del contexto
-const urlreference = urllocal+PORT;
+const urlreference = urllocal + PORT;
 // const urlreference = urlserver;
 
 
@@ -163,7 +163,7 @@ const GET_SLEEP_QUALITIES_URL = `${urlreference}/get-sleepqualities`;
 const GET_SLEEP_QUALITY_BY_ID_URL = `${urlreference}/get-sleepquality`;
 const GET_SLEEPQUALITIES_BY_DATE_RANGE_URL = `${urlreference}/get-sleepqualities-by-date-range`;
 const UPDATE_SLEEP_QUALITY_URL = `${urlreference}/update-sleepquality`;
-const GET_SLEEPQUALITIES_BY_USER_URL =  `${urlreference}/get-sleepqualities-by-user`;
+const GET_SLEEPQUALITIES_BY_USER_URL = `${urlreference}/get-sleepqualities-by-user`;
 const UPDATE_SLEEP_REP_INCR_URL = `${urlreference}/update-sleepquality-rep`;
 const DELETE_SLEEP_QUALITY_URL = `${urlreference}/delete-sleepquality`;
 
@@ -174,11 +174,14 @@ const GET_TONE_BY_ID_URL = `${urlreference}/get-tone`;
 const UPDATE_TONE_URL = `${urlreference}/update-tone`;
 const DELETE_TONE_URL = `${urlreference}/delete-tone`;
 
+const ADD_NOTIFICATION_URL = `${urlreference}/add-notification`;
+const GET_USER_NOTIFICATIONS_URL = `${urlreference}/get-user-notifications`;
+
 
 /*External services:------------------------------------------- */
 
 /*Google */
-const DISTANCE_MATRIX_URL = `${urlreference}/distance-matrix`; 
+const DISTANCE_MATRIX_URL = `${urlreference}/distance-matrix`;
 
 export {
     urlreference,
@@ -239,38 +242,45 @@ export {
     UPDATE_INVITATION_REASON_URL,
     UPDATE_INVITATION_URL,
     DELETE_INVITATION_URL,
+
     ADD_LOCATION_URL,
     GET_LOCATIONS_URL,
     GET_LOCATION_BY_ID_URL,
     UPDATE_LOCATION_URL,
     DELETE_LOCATION_URL,
+
     ADD_OBJECTIVE_URL,
     GET_OBJECTIVES_URL,
     GET_OBJECTIVE_BY_ID_URL,
     UPDATE_OBJECTIVE_URL,
     DELETE_OBJECTIVE_URL,
+
     ADD_OBJECTIVES_BLOCK_URL,
     GET_OBJECTIVES_BLOCKS_URL,
     GET_OBJECTIVES_BLOCK_BY_ID_URL,
     UPDATE_OBJECTIVES_BLOCK_URL,
     DELETE_OBJECTIVES_BLOCK_URL,
     COMPLETE_OBJECTIVEBLOCK_URL,
+
     ADD_PERMISSION_URL,
     GET_PERMISSIONS_URL,
     GET_PERMISSION_BY_ID_URL,
     UPDATE_PERMISSION_URL,
     DELETE_PERMISSION_URL,
+
     ADD_POMODORO_URL,
     GET_POMODOROS_URL,
     GET_POMODORO_BY_ID_URL,
     UPDATE_POMODORO_URL,
     DELETE_POMODORO_URL,
+
     ADD_PUNTUALITY_URL,
     GET_PUNTUALITIES_URL,
     GET_PUNTUALITY_BY_ID_URL,
     UPDATE_PUNTUALITY_URL,
     DELETE_PUNTUALITY_URL,
     GET_PUNTUALITY_BY_USER_ID_AND_DATE_URL,
+
     ADD_REMINDER_URL,
     GET_REMINDERS_URL,
     GET_REMINDERS_FOR_USER_URL,
@@ -279,29 +289,33 @@ export {
     DELETE_REMINDER_URL,
     GET_REMINDERS_BY_MONTH_URL,
     GET_REMINDERS_BY_WEEK_URL,
+
     ADD_REMINDERSHARE_URL,
     GET_REMINDERSHARES_URL,
     GET_REMINDERSHARES_FOR_USER_URL,
     GET_REMINDERSHARE_BY_ID_URL,
     UPDATE_REMINDERSHARE_URL,
     DELETE_REMINDERSHARE_URL,
-  
+
     ADD_REPETITIONDAY_URL,
     GET_REPETITIONDAYS_URL,
     GET_REPETITIONDAY_BY_ID_URL,
     UPDATE_REPETITIONDAY_URL,
     DELETE_REPETITIONDAY_URL,
+
     ADD_SCHEDULE_URL,
     GET_SCHEDULES_URL,
     GET_SCHEDULE_BY_ID_URL,
     UPDATE_SCHEDULE_URL,
     DELETE_SCHEDULE_URL,
+
     ADD_SLEEP_MODE_URL,
     GET_SLEEP_MODES_URL,
     GET_SLEEP_MODE_BY_ID_URL,
     UPDATE_SLEEP_MODE_REP_URL,
     UPDATE_SLEEP_MODE_URL,
     DELETE_SLEEP_MODE_URL,
+
     ADD_SLEEP_QUALITY_URL,
     GET_SLEEP_QUALITIES_URL,
     GET_SLEEP_QUALITY_BY_ID_URL,
@@ -310,18 +324,22 @@ export {
     UPDATE_SLEEP_QUALITY_URL,
     UPDATE_SLEEP_REP_INCR_URL,
     DELETE_SLEEP_QUALITY_URL,
+
     ADD_TONE_URL,
     GET_TONES_URL,
     GET_TONE_BY_ID_URL,
     UPDATE_TONE_URL,
     DELETE_TONE_URL,
-  
+
     ADD_SCHEDULE_POMODORO_URL,
     ADD_SCHEDULE_SLEEP_URL,
     DELETE_SCHEDULE_POMODORO_URL,
     DELETE_SCHEDULE_SLEEP_URL,
-    
+
     CREATE_ALL_TITLES,
     GET_ALL_TITLES,
     UPDATE_ONE_TITLE,
+
+    ADD_NOTIFICATION_URL,
+    GET_USER_NOTIFICATIONS_URL,
 };

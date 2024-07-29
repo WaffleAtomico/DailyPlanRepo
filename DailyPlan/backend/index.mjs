@@ -222,6 +222,7 @@ import {
 
 
 import { sendMailrest, sendMailrestjt } from "./requests/mail.js";
+import { addNotification, getUserNotifications } from "./requests/notifications.js";
 
 const app = express();
 
@@ -504,7 +505,10 @@ app.post(urls.GET_TONE_BY_ID_URL, getToneById);
 app.post(urls.UPDATE_TONE_URL, updateTone);
 app.post(urls.DELETE_TONE_URL, deleteTone);
 
+/*----------------------------- Notifications -----------------------------*/
 
+app.post(urls.ADD_NOTIFICATION_URL, addNotification);
+app.post(urls.GET_USER_NOTIFICATIONS_URL, getUserNotifications);
 
 
 /*-------------------------------spotify------------------------- */

@@ -17,7 +17,7 @@ const addReminderShare = (req, res) => {
         return res.status(200).json({ message: "Reminder share added successfully", remindsha_id: result.insertId });
     });
 };
-
+//inservible
 const getReminderShares = (req, res) => {
     const query = {
         sql: "SELECT `remindsha_id`, `rs_user_id_target`, `reminder_id` FROM `remindershare` WHERE 1",
@@ -33,7 +33,7 @@ const getReminderShares = (req, res) => {
 const getReminderShareById = (req, res) => {
     const query = {
         sql: "SELECT `remindsha_id`, `rs_user_id_target`, `reminder_id` FROM `remindershare` WHERE `remindsha_id` = ?",
-        values: [req.params.remindsha_id],
+        values: [req.body.remindsha_id],
     };
     db.query(query.sql, query.values, (err, data) => {
         if (err) {
@@ -49,7 +49,7 @@ const updateReminderShare = (req, res) => {
         values: [
             req.body.rs_user_id_target,
             req.body.reminder_id,
-            req.params.remindsha_id,
+            req.body.remindsha_id,
         ],
     };
     db.query(query.sql, query.values, (err, data) => {
@@ -63,7 +63,7 @@ const updateReminderShare = (req, res) => {
 const deleteReminderShare = (req, res) => {
     const query = {
         sql: "DELETE FROM `remindershare` WHERE `remindsha_id` = ?",
-        values: [req.params.remindsha_id],
+        values: [req.body.remindsha_id],
     };
     db.query(query.sql, query.values, (err, data) => {
         if (err) {
