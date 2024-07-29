@@ -167,12 +167,18 @@ const GET_SLEEPQUALITIES_BY_USER_URL = `${urlreference}/get-sleepqualities-by-us
 const UPDATE_SLEEP_REP_INCR_URL = `${urlreference}/update-sleepquality-rep`;
 const DELETE_SLEEP_QUALITY_URL = `${urlreference}/delete-sleepquality`;
 
-
 const ADD_TONE_URL = `${urlreference}/add-tone`;
 const GET_TONES_URL = `${urlreference}/get-tones`;
 const GET_TONE_BY_ID_URL = `${urlreference}/get-tone`;
 const UPDATE_TONE_URL = `${urlreference}/update-tone`;
 const DELETE_TONE_URL = `${urlreference}/delete-tone`;
+
+/*-------------------------------weeklyscorecard-------------------------*/
+const GET_WEEKLY_SCORECARD_URL = `${urlreference}/get-weekly-scorecards`;
+const GET_WEEKLY_SCORECARD_BY_ID_URL = `${urlreference}/get-weekly-scorecard`;
+const GET_WEEKLY_SCORECARD_FOR_USER_URL = `${urlreference}/get-weekly-scorecard-by-user`;
+const GET_IS_USER_WEEKLY_SCORECARD_URL = `${urlreference}/get-is-weekly-scorecard`;
+const UPD_TITLE_USER = `${urlreference}/upd-title-user`;
 
 const ADD_NOTIFICATION_URL = `${urlreference}/add-notification`;
 const GET_USER_NOTIFICATIONS_URL = `${urlreference}/get-user-notifications`;
@@ -339,6 +345,13 @@ export {
     CREATE_ALL_TITLES,
     GET_ALL_TITLES,
     UPDATE_ONE_TITLE,
+
+    /*---weeklyscorecard---*/
+    GET_WEEKLY_SCORECARD_URL,
+    GET_WEEKLY_SCORECARD_BY_ID_URL,
+    GET_WEEKLY_SCORECARD_FOR_USER_URL,
+    GET_IS_USER_WEEKLY_SCORECARD_URL,
+    UPD_TITLE_USER,
 
     ADD_NOTIFICATION_URL,
     GET_USER_NOTIFICATIONS_URL,
