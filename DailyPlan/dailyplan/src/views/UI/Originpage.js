@@ -112,7 +112,7 @@ export default function OriginPage() {
       //Preguntar si existe o si esta en 0 o 1
       myPojo.setNotif("Resumen Semanal de Puntualidad", <WeekSumerize />);
     }
-    showSumarize();
+    // showSumarize();
   }, [])
 
   const GoToProfileModule = () => {

@@ -89,11 +89,12 @@ const updateInvitation = (req, res) => {
 };
 
 const updateInvitationState = (req, res) => {
+    console.log("Body y si entre al correcto ", req.body)
     const query = {
         sql: "UPDATE `invitations` SET `inv_state` = ? WHERE `inv_id` = ?",
         values: [
             req.body.inv_state,
-            req.params.inv_id,
+            req.body.inv_id,
         ],
     };
     db.query(query.sql, query.values, (err, data) => {

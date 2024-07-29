@@ -41,9 +41,9 @@ const WeekView = ({ date, setDate, showform, setHour, setSelectDate, setReminder
     const formattedEndOfWeek = format(endOfCurrentWeek, 'yyyy-MM-dd');
 
     const GetRemByWeek = async (start, end) => {
-      try {
-        const data = await getRemindersByWeek(start, end, id);
-        console.log("La data obtenida es:", data);
+      getRemindersByWeek(formattedStartOfWeek, formattedEndOfWeek, id)
+      .then(data => {
+        // console.log("La data obtenida es:", data);
         if (Array.isArray(data)) {
           const formattedReminders = data.map(reminder => ({
             id: reminder.reminder_id,
@@ -53,13 +53,30 @@ const WeekView = ({ date, setDate, showform, setHour, setSelectDate, setReminder
           }));
           setReminders(formattedReminders);
         } else {
-          console.error("Expected an array but received:", data);
+          // console.error("Expected an array but received:", data);
           setReminders([]);
         }
-      } catch (err) {
-        console.log(err);
-        setReminders([]);
-      }
+      }).catch(err => {console.log(err)});
+
+      // try {
+      //   const data = await getRemindersByWeek(start, end, id);
+      //   // console.log("La data obtenida es:", data);
+      //   if (Array.isArray(data)) {
+      //     const formattedReminders = data.map(reminder => ({
+      //       id: reminder.reminder_id,
+      //       name: reminder.reminder_name,
+      //       date: reminder.reminder_date.substring(0, 10),
+      //       time: reminder.reminder_hour ? String(reminder.reminder_hour) : ''
+      //     }));
+      //     setReminders(formattedReminders);
+      //   } else {
+      //     console.error("Expected an array but received:", data);
+      //     setReminders([]);
+      //   }
+      // } catch (err) {
+      //   console.log(err);
+      //   setReminders([]);
+      // }
     };
 
     const interval = setInterval(() => {
