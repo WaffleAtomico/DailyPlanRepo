@@ -13,7 +13,7 @@ import Pomodoro from "./Pomodoro_module/Pomodoro";
 import PuntButton from "./Puntuality_module/punt_button";
 import ChronoIndicator from "./advices/ChronoMsjs";
 import GeneralNotif from "./advices/GeneralNotif";
-
+import { formatDate } from "../../utils/timeFormat";
 
 import { calculateWeekRange, timeFormatSec } from "../../utils/timeFormat";
 import { myPojo, changeCounter } from "../../utils/ShowNotifInfo";
@@ -34,7 +34,7 @@ import { addChronometer } from "../../utils/validations/chrono";
 import { getScheduleById } from "../../utils/validations/schedule";
 
 import PreparationView from "./advices/Preparation";
-import { getReminderById, getRemindersByWeek } from "../../utils/validations/reminders";
+import { getReminderById,  getRemindersByDay} from "../../utils/validations/reminders";
 
 import { getPuntualityById } from "../../utils/validations/puntuality";
 import { isUserWeeklyScorecard, getWeeklyScorecardForUser, updateTitleUser } from "../../utils/validations/weeklyscorecard";
@@ -290,10 +290,12 @@ useEffect(() => {
 }, [blocks]);
 
 useEffect(() => {
-  const { startDate, endDate } = calculateWeekRange();
-
-  getRemindersByWeek(startDate, endDate, id)
+  
+  
+getRemindersByDay(formatDate(new Date()), id)
     .then(data => {
+
+      console.log("Recordatorios del día", data);
       const processedBlocks = data.reduce((acc, reminder) => {
         const existingBlock = acc.find(block => block.name === reminder.objblo_name);
         const objective = {
@@ -306,6 +308,7 @@ useEffect(() => {
           existingBlock.objectives.push(objective);
         } else {
           acc.push({
+            reminder_id: reminder.reminder_id,
             id: reminder.objblo_id,
             name: reminder.objblo_name,
             timeLimit: reminder.objblo_duration_min,
@@ -313,7 +316,8 @@ useEffect(() => {
             travelTime: reminder.reminder_travel_time,
             reminderDate: reminder.reminder_date,
             reminderHour: reminder.reminder_hour,
-            reminderMin: reminder.reminder_min
+            reminderMin: reminder.reminder_min,
+            check: reminder.objblo_check
           });
         }
       

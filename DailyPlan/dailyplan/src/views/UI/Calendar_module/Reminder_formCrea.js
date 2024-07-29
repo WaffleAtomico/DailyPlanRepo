@@ -3,7 +3,7 @@ import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import { saveUserReminder, getReminderById, deleteReminder } from '../../../utils/validations/reminders';
 import '../../../styles/UI/Calendar/Reminder_formCrea.css';
 import { IoTrashSharp } from "react-icons/io5";
-
+import { Alert } from 'react-bootstrap';
 import ObjectiveBlocks from './ObjectivesBlocks';
 import ShareUsers from './ShareReminder';
 import { addTone } from '../../../utils/validations/tone';
@@ -128,13 +128,58 @@ const ReminderFormView = (props) => {
         }
     }, [props.Reminder_id]);
 
+
+
+    //función para verificar los cambios a los campos.
     const handleChange = (event) => {
         const { name, value, type, checked } = event.target;
+        const updatedValue = type === 'checkbox' ? checked : value;
+    
+        // Get current date and time
+        const today = new Date();
+        today.setHours(0, 0, 0, 0); // Reset time to the beginning of the day
+    
+        // Validation logic for date
+        if (name === 'date') {
+            const selectedDate = new Date(value);
+    
+            if (selectedDate < today) {
+                myPojo.setNotif("fecha", <Alert variant="danger">La fecha no puede ser anterior a hoy.</Alert>);
+                setFormData((prevData) => ({
+                    ...prevData,
+                    [name]: today.toISOString().split('T')[0], // Set today's date in YYYY-MM-DD format
+                }));
+                return;
+            }
+        }
+    
+        // Validation logic for time
+        if (name === 'time') {
+            const selectedDate = new Date(formData.date);
+            const currentTime = new Date();
+            const selectedTime = new Date(`${formData.date}T${value}:00`);
+    
+            // Reset current time to current date for comparison
+            const currentDateTime = new Date();
+            currentDateTime.setSeconds(0, 0);
+    
+            if (selectedDate.getTime() === today.getTime() && selectedTime < currentDateTime) {
+                myPojo.setNotif("hora", <Alert variant="danger">La hora no puede ser anterior a la hora actual.</Alert>);
+                setFormData((prevData) => ({
+                    ...prevData,
+                    [name]: currentDateTime.toTimeString().slice(0, 5), // Set current time in HH:MM format
+                }));
+                return;
+            }
+        }
+    
         setFormData((prevData) => ({
             ...prevData,
-            [name]: type === 'checkbox' ? checked : value
+            [name]: updatedValue,
         }));
     };
+    
+    
 
     const handlePlaceSelect = (type, place, latLng, modeTransport) => {
         if (type === 'arrival') {
@@ -290,6 +335,7 @@ const ReminderFormView = (props) => {
 
                     })
                 }
+          
                 // Tratar de guardar la localización
 
                 if (formData.goalList.length > 0) {

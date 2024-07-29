@@ -14,7 +14,7 @@ CREATE TABLE `dailyplan`.`notifications` (`notification_id` INT NULL DEFAULT NUL
 
 
 ALTER TABLE `notifications` ADD CONSTRAINT `notification_user_user_id` FOREIGN KEY (`user_id`) REFERENCES `users`(`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
+k
 
 
 -- Cambio de valor por defecto de columna objblo_duration_min
