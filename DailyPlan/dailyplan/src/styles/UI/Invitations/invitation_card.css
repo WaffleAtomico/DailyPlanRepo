@@ -1,107 +1,157 @@
 /* InvitationCard.css */
 .invitation-card {
-    display: flex;
-    flex-direction: column;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
-  }
-  
-  .invitation-card:hover {
-    transform: translateY(-5px);
-  }
-  
-  .invitation-content {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1.5rem;
-    cursor: pointer;
-  }
-  
-  .invitation-text {
-    flex-grow: 1;
-    text-align: left;
-  }
-  
-  .invitation-name {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #fff;
-  }
-  
-  .invitation-icon-container {
-    display: flex;
-    justify-content: flex-end;
-  }
-  
-  .invitation-icon {
-    font-size: 2rem;
-    color: #fff;
-  }.invitation-detail {
-    margin-bottom: 1rem;
-    color: black;
-    display: flex;
-    justify-content: space-between;
-    flex-direction: row;
-    align-items: center;
-    background-color: #fff;
-    padding: 10px;
-    margin-left: 20%;
-    margin-right: 20%;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.invitation-card:hover {
+  transform: translateY(-5px);
+}
+
+.invitation-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem;
+  cursor: pointer;
+}
+
+.invitation-text {
+  flex-grow: 1;
+  text-align: left;
+  font-style: oblique;
+  color: #000000;
+}
+
+.invitation-name {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #fff;
+}
+
+.invitation-icon-container {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.invitation-icon {
+  font-size: 2rem;
+  color: #fff;
+}
+
+.invitation-detail {
+  width: 100%;
+  margin-bottom: 1rem;
+  font-size: large;
+  color: black;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  align-items: center;
+  background-color: #e9e2e2c7;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .invitation-details {
-    padding: 1rem;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-
+  padding: 1rem;
+  background-color: #f9f9f9;
+  border-radius: 8px;
 }
 
 .invitation-buttons {
-    display: flex;
-  
-    gap: 10px;
+  display: flex;
+  gap: 10px;
+  margin-right: 1rem;
 }
 
 .button-large {
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  border-radius: 4px;
+  margin-right: 5px; /* Espacio entre botones */
+  transition: transform 0.2s;
+  z-index: 200;
 }
 
 .button-large:hover {
-    background-color: #0056b3;
-    color: #fff;
+  transform: scale(1.05);
 }
 
 .custom-pagination {
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
 }
 
 .custom-pagination .page-item {
-    margin: 0 5px;
+  margin: 0 5px;
 }
 
 .custom-pagination .page-link {
-    color: #ffffff;
-    background-color: #007bff;
-    border: 1px solid #007bff;
+  color: #ffffff;
+  background-color: #007bff;
+  border: 1px solid #007bff;
 }
 
 .custom-pagination .page-link:hover {
-    background-color: #0056b3;
-    border-color: #0056b3;
+  background-color: #0056b3;
+  border-color: #0056b3;
 }
 
 .custom-pagination .page-item.active .page-link {
-    background-color: #0056b3;
-    border-color: #0056b3;
+  background-color: #0056b3;
+  border-color: #0056b3;
+}
+
+/* Media Queries para Responsividad */
+@media (max-width: 768px) {
+  .invitation-content, .invitation-detail {
+      flex-direction: column;
+      align-items: flex-start;
+  }
+
+  .invitation-text {
+      text-align: left;
+      margin-bottom: 10px;
+  }
+
+  .invitation-buttons {
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 5px;
+      margin-right: 0;
+  }
+
+  .button-large {
+      width: 100%;
+      margin-bottom: 5px;
+  }
+
+  .custom-pagination .page-link {
+      padding: 5px 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .invitation-content {
+      padding: 1rem;
+  }
+
+  .invitation-name {
+      font-size: 1.2rem;
+  }
+
+  .invitation-icon {
+      font-size: 1.5rem;
+  }
+
+  .button-large {
+      font-size: 0.9rem;
+      padding: 0.4rem 0.8rem;
+  }
 }

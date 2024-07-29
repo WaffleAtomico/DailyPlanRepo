@@ -241,6 +241,7 @@ const ReminderFormView = (props) => {
         saveTone.then(response => {
             const tone_id = response.tone_id;
             //Tratar de almacenar las ubicaciones asignadas
+
             const reminder = {
                 reminder_name: formData.name,
                 reminder_date: formData.date,
@@ -262,7 +263,7 @@ const ReminderFormView = (props) => {
                 const { reminder_id } = response.data;
 
 
-                            //Tratar de almacenar las ubicaciones asignadas
+            //Tratar de almacenar las ubicaciones asignadas
 
             //Verificar que, únicamente si ambos arreglos se llenan se trate de guardar: sino, nada            
             if(arrivalLatLng != [null, null]
@@ -287,11 +288,7 @@ const ReminderFormView = (props) => {
                     addLocation(departureLocation)
 
                 })
-
-
             }
-    
-
                 // Tratar de guardar la localización
 
                 if (formData.goalList.length > 0) {

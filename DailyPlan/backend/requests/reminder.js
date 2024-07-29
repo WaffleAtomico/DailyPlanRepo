@@ -66,28 +66,15 @@ const getRemindersByMonth = (req, res) => {
 };
 const getRemindersByWeek = (req, res) => {
 
-    console.log("Se quiere obtener los recordatorios:", req.body);
+    // console.log("Se quiere obtener los recordatorios:", req.body);
     const startDate = req.body.startDate;  // Expects 'YYYY-MM-DD'
     const endDate = req.body.endDate;  // Expects 'YYYY-MM-DD'
     const user_id = req.body.user_id;  // Expects the user ID
 
     const query = {
-        sql: `
-            SELECT 
-                r.reminder_id, 
-                r.reminder_name, 
-                r.reminder_hour, 
-                r.reminder_date,
-                r.reminder_min,
-                r.reminder_travel_time,
-                ob.objblo_id,
-                ob.objblo_name,
-                ob.objblo_check,
-                ob.objblo_duration_min,
-                ob.objblo_durationreal_min,
-                o.obj_id,
-                o.obj_name,
-                o.id_user
+        sql: `SELECT r.reminder_id, r.reminder_name, r.reminder_hour, r.reminder_date, r.reminder_min,
+         r.reminder_travel_time, ob.objblo_id, ob.objblo_name, ob.objblo_check, ob.objblo_duration_min, 
+         ob.objblo_durationreal_min, o.obj_id, o.obj_name, o.id_user
             FROM 
                 reminders r
             INNER JOIN 
@@ -99,8 +86,7 @@ const getRemindersByWeek = (req, res) => {
                 AND r.reminder_date BETWEEN ? AND ?
             ORDER BY 
                 r.reminder_date, 
-                r.reminder_hour
-        `,
+                r.reminder_hour`,
         values: [user_id, startDate, endDate],
     };
 

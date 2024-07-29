@@ -29,8 +29,6 @@ const Pomodoro_view = (props) => {
     const [isTimerRunning, setIsTimerRunning] = useState(false);
     const [pomodoro, setPomodoro] = useState(null);
 
-  
-
     useEffect(() => {
         getPomodoroById(props.id_user)
             .then(response => {
@@ -47,6 +45,7 @@ const Pomodoro_view = (props) => {
             .catch(error => {
                 console.log(error);
             });
+            confirmArchivement(props.id_user);
     }, [props.id_user]);
 
     const confirmArchivement = (user_id) => {
