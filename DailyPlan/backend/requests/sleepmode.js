@@ -2,6 +2,7 @@ import { db } from '../config/connection.js';
 //este
 const addSleepmode = (req, res) => {
 
+    console.log("Se trata de guardar el sueño:", req.body);
     
 
     const query = {

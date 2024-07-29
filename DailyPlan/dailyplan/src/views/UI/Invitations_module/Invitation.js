@@ -12,6 +12,7 @@ import { grantArchivement, isCompleted } from '../../../utils/archivements/grant
 import CancelReasonModal from './CancelReasonModal';  // Importamos el nuevo modal
 import { IoAlertCircleOutline } from 'react-icons/io5';
 import InvUserList from './InvUsers';
+import { saveReminderShare } from '../../../utils/validations/remindershare';
 
 export default function InvitationView(props) {
     const [data, setData] = useState([]);
@@ -20,6 +21,7 @@ export default function InvitationView(props) {
 
     const [showCancelModal, setShowCancelModal] = useState(false);
     const [currentInvId, setCurrentInvId] = useState(null);
+    const [CurrentOwner, setCurrentOwner] = useState(null);
     const [showUserList, setShowUserList] = useState(false);
 
     const [pendingInvitations, setPendingInvitations] = useState([]);
@@ -58,6 +60,7 @@ export default function InvitationView(props) {
                         .map(invitation => ({
                             inv_id: invitation.inv_id,
                             reminder_id: invitation.reminder_id,
+                            alarm_id: invitation.alarm_id,
                             user_id_owner: invitation.user_id_owner,
                             inv_state: invitation.inv_state,
                             inv_reason: invitation.inv_reason,
@@ -70,6 +73,7 @@ export default function InvitationView(props) {
                         .map(invitation => ({
                             inv_id: invitation.inv_id,
                             reminder_id: invitation.reminder_id,
+                            alarm_id: invitation.alarm_id,
                             user_id_owner: invitation.user_id_owner,
                             inv_state: invitation.inv_state,
                             inv_reason: invitation.inv_reason,
@@ -83,7 +87,7 @@ export default function InvitationView(props) {
                     // console.log("active: ", active);
                     setCreatedInvitations(created);
                     // console.log("Created: ", created);
-                    
+
                 }
             })
             .catch(error => {
@@ -146,17 +150,32 @@ export default function InvitationView(props) {
     NULL ==== WAITING
     
     */
-    const handleInvAccepted = (inv_id) => {
+    const handleInvAccepted = (inv_id, invType, reminder_id, alarm_id) => {
         //aceptar la invitacion recibida
         //si fue aceptada correctamente, entrega el logro
         console.log("Entre a invitaciones aceptadas", inv_id);
-        
+
         updateInvitationState(true, inv_id).then(res => {
             console.log(res)
             if (res.status) {
-                console.log("Si jala bn, o deberia de actualizar")
+                // console.log("Si jala bn, o deberia de actualizar");
                 fetchInvitations();
-                // grant4Archivement();
+
+                if (invType) { //true reminder
+                    const reminderShareInfo = {
+                        rs_user_id_target: props.user_id, //yo soy qn la acepta, por ende soy el target
+                        reminder_id: reminder_id,
+                    }
+                    saveReminderShare(reminderShareInfo).then(res => {
+                        if (res.status) {
+                            console.log(res.data);
+                            // grant4Archivement();
+                        }
+                    }
+                    ).catch(err => { console.log(err) })
+                } else { //false alarm
+
+                }
             }
         }).catch(err => { console.log(err) })
     }
@@ -176,10 +195,15 @@ export default function InvitationView(props) {
         }).catch(err => { console.log(err) })
     }
 
-    const handleInvCanceled = (inv_id) => {
+    const handleInvCanceled = (inv_id, user_id_owner) => {
         // Mostrar el modal para ingresar el motivo de cancelación
-        setShowCancelModal(true);
-        setCurrentInvId(inv_id);
+        if(inv_id && user_id_owner){
+            setShowCancelModal(true);
+            setCurrentInvId(inv_id);
+            setCurrentOwner(user_id_owner);
+        }
+       
+        // CurrentOwner
     }
 
     const handleSaveCancelReason = (reason) => {
@@ -187,7 +211,8 @@ export default function InvitationView(props) {
         updateInvitationReason(currentInvId, (reason.length > 0 ? reason : null)).then(res => {
             if (res) {
                 updateInvitationState(currentInvId, 0).then(res => {
-                    if (reason.length > 0) {
+                    if (res.status && reason.length > 0) {
+                        
                         grant5Archivement();
                     }
                 }).catch(err => { console.log(err) })

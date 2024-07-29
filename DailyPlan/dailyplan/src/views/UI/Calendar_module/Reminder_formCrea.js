@@ -17,6 +17,7 @@ import { myPojo } from '../../../utils/ShowNotifInfo';
 import { getPermissionById } from '../../../utils/validations/permission';
 import { addInvitation } from '../../../utils/validations/invitation';
 import { addLocation } from '../../../utils/validations/location';
+import { checkIfUserBlocked } from '../../../utils/validations/blockedurs';
 
 
 const ReminderFormView = (props) => {
@@ -42,7 +43,7 @@ const ReminderFormView = (props) => {
     const [showShareUsers, setShowShareUsers] = useState(false);
     const [arrivalLatLng, setArrivalLatLng] = useState([null, null]);
     const [departureLatLng, setDepartureLatLng] = useState([null, null]);
-    
+
 
     const [Transport, setTransport] = useState('driving');
     const [permission, setPermission] = useState(null);
@@ -71,7 +72,8 @@ const ReminderFormView = (props) => {
 
     useEffect(() => {
 
-        getPermissionById(props.user_id).then(response => {console.log("El permiso es:", response); 
+        getPermissionById(props.user_id).then(response => {
+            console.log("El permiso es:", response);
 
             if (response !== null && response.length > 0) {
                 if (response[0].permision_active === 1) {
@@ -150,12 +152,12 @@ const ReminderFormView = (props) => {
         }
 
         if (departureLatLng[0] !== null && arrivalLatLng[0] != null && modeTransport != null) {
-        
-          getDistanceTimeMatrix(departureLatLng, arrivalLatLng, modeTransport).then(response => {
-            console.log("la respuesta del calculo es:", response);
+
+            getDistanceTimeMatrix(departureLatLng, arrivalLatLng, modeTransport).then(response => {
+                console.log("la respuesta del calculo es:", response);
                 setResult(response);
 
-          }); 
+            });
         }
 
         setTransport(modeTransport);
@@ -215,7 +217,7 @@ const ReminderFormView = (props) => {
             schedule_duration_hour: hours,
             schedule_duration_min: minutes,
             schedule_datetime: formData.date, // Assuming this is where the datetime is coming from
-            user_id:  props.user_id,
+            user_id: props.user_id,
         };
 
         // Verificar existencia de conflicto
@@ -234,7 +236,7 @@ const ReminderFormView = (props) => {
         addNewEvent(newEvent);
 
 
-        
+
 
         const saveTone = formData.alarmTone ? addTone(formData) : Promise.resolve({ data: { tone_id: null } });
 
@@ -253,7 +255,7 @@ const ReminderFormView = (props) => {
                 reminder_img: formData.image,
                 reminder_desc: formData.description,
                 reminder_days_suspended: parseInt(formData.snooze, 10),
-                reminder_share: 0, 
+                reminder_share: 0,
                 tone_id: tone_id,
                 reminder_travel_time: result.duration.value,
                 user_id: props.user_id
@@ -263,32 +265,31 @@ const ReminderFormView = (props) => {
                 const { reminder_id } = response.data;
 
 
-            //Tratar de almacenar las ubicaciones asignadas
+                //Tratar de almacenar las ubicaciones asignadas
 
-            //Verificar que, únicamente si ambos arreglos se llenan se trate de guardar: sino, nada            
-            if(arrivalLatLng != [null, null]
-                && departureLatLng != [null, null]
-            )
-            {
-            const arriveLocation = {
-                    location_x: arrivalLatLng[0],
-                    location_y: arrivalLatLng[1],
-                    location_type: 0,
-                    reminder_id: reminder_id,
+                //Verificar que, únicamente si ambos arreglos se llenan se trate de guardar: sino, nada            
+                if (arrivalLatLng != [null, null]
+                    && departureLatLng != [null, null]
+                ) {
+                    const arriveLocation = {
+                        location_x: arrivalLatLng[0],
+                        location_y: arrivalLatLng[1],
+                        location_type: 0,
+                        reminder_id: reminder_id,
+                    }
+                    const departureLocation = {
+                        location_x: departureLatLng[0],
+                        location_y: departureLatLng[1],
+                        reminder_id: 1,
+                        reminder_id: reminder_id,
+                    }
+
+                    addLocation(arriveLocation).then(response => {
+
+                        addLocation(departureLocation)
+
+                    })
                 }
-            const departureLocation = {
-                    location_x: departureLatLng[0],
-                    location_y: departureLatLng[1],
-                    reminder_id: 1,
-                    reminder_id: reminder_id,
-            }
-
-                addLocation(arriveLocation).then(response => {
-
-                    addLocation(departureLocation)
-
-                })
-            }
                 // Tratar de guardar la localización
 
                 if (formData.goalList.length > 0) {
@@ -307,7 +308,7 @@ const ReminderFormView = (props) => {
                             goal.objectives.forEach(objective => {
                                 const goalData = {
                                     obj_name: objective,
-                                    
+
                                     objblo_id: objblo_id,
                                     id_user: props.user_id,
                                 };
@@ -322,22 +323,29 @@ const ReminderFormView = (props) => {
                         });
                     });
                 }
-                if(formData.shareUsers.length > 0){
+                if (formData.shareUsers.length > 0) {
                     formData.shareUsers.forEach(invUser => {
-                        const invitationUserData = {
-                            reminder_id: reminder_id,
-                            alarm_id: null,
-                            user_id_owner: props.user_id,
-                            user_id_target: invUser.id,
-                            inv_state: null,
-                            inv_reason: null,
-                        };
-                        addInvitation(invitationUserData).then(res=>{
-                            console.log("Si se guarda bien la invitacion");
-                            console.log(res);
-                        }).catch(error => {
-                            console.error("Error saving invitation ", error);
-                        });
+                        checkIfUserBlocked(props.user_i, invUser.id).then(res => {
+                            // console.log(res.data.isBlocked);
+                            if(!res.data.isBlocked){ //si no esta bloqueado, lo hace
+                                const invitationUserData = {
+                                    reminder_id: reminder_id,
+                                    alarm_id: null,
+                                    user_id_owner: props.user_id,
+                                    user_id_target: invUser.id,
+                                    inv_state: null,
+                                    inv_reason: null,
+                                };
+                                addInvitation(invitationUserData).then(res => {
+                                    if(res.status)
+                                    console.log("Si se guarda bien la invitacion");
+                                    console.log(res);
+                                }).catch(error => {
+                                    console.error("Error saving invitation ", error);
+                                });
+                            }
+                        }
+                        ).catch(err => { console.log(err) })
 
                     });
                 }
@@ -451,7 +459,7 @@ const ReminderFormView = (props) => {
                             <Row>
                                 <Col xs={12}>
                                     <div className="map-placeholder" style={{ height: '200px', backgroundColor: '#f0f0f0', margin: '1rem 0' }}>
-                                        <MapView onPlaceSelect={handlePlaceSelect} active = {active}/>
+                                        <MapView onPlaceSelect={handlePlaceSelect} active={active} />
                                     </div>
                                 </Col>
                             </Row>

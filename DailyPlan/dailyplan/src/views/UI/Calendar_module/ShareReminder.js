@@ -4,14 +4,12 @@ import { getUsrByEmail } from '../../../utils/validations/user';
 
 const ShareUsers = ({ user_id, onAddUser, onRemoveUser, userList }) => {
     const [userName, setUserName] = useState('');
-
     const handleAddUser = () => {
         getUsrByEmail(userName).then(emailExist => {
             const userData = emailExist.data[0];
             if (userData && user_id != userData.user_id) {
                 // Verificar si el usuario ya está en la lista
                 const userExists = userList.some(user => user.id === userData.user_id);
-
                 if (!userExists) {
                     onAddUser({ id: userData.user_id, name: userData.user_mail });
                     setUserName('');

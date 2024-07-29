@@ -45,9 +45,10 @@ export const getPuntualityById = async (user_id) => {
 };
 
 // Function to get punctuality by user ID and date
-export const getPuntualityByUserIdAndDate = async (user_id, date) => {
+export const getPuntualityByUserId = async (user_id, date) => {
     try {
-        const response = await axios.post(GET_PUNTUALITY_BY_USER_ID_AND_DATE_URL, { user_id, date });
+        console.log("Se llamo la punualidad por el usuario:", user_id);
+        const response = await axios.post(GET_PUNTUALITY_BY_USER_ID_AND_DATE_URL, { user_id });
         return response.data;
     } catch (err) {
         console.log("Error retrieving punctuality by date:", err);

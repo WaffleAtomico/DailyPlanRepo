@@ -52,9 +52,8 @@ const getPuntualityById = (req, res) => {
         return res.json(data);
     });
 };
-
 const getPuntualityByUserIdAndDate = (req, res) => {
-    const { user_id, date } = req.body;
+    const { user_id } = req.body;
 
     const query = {
         sql: `
@@ -63,19 +62,23 @@ const getPuntualityByUserIdAndDate = (req, res) => {
                 punt_percent_rem, punt_num_alar, punt_percent_alar, 
                 punt_num_timer, punt_percent_timer, punt_num_chro, punt_percent_chro 
             FROM puntuality 
-            WHERE user_id = ? AND DATE(punt_date) = ?
+            WHERE user_id = ? AND DATE(punt_date) = CURRENT_DATE()
         `,
-        values: [user_id, date],
-    };
+        values: [user_id],
+    }; 
 
     db.query(query.sql, query.values, (err, data) => {
         if (err) {
             console.log("Error retrieving punctuality by date:", err);
             return res.json({ message: "Error retrieving punctuality", error: err });
         }
+
+
+        
         return res.json(data);
     });
 };
+
 
 const updatePuntuality = (req, res) => {
 
