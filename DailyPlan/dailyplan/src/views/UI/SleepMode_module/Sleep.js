@@ -8,12 +8,9 @@ import '../../../styles/UI/Sleep/Sleep.css';
 import { getSleepmodeById, updateSleepmode } from '../../../utils/validations/sleep';
 import { getSleepQualityById } from '../../../utils/validations/sleepquality';
 import { addTone } from '../../../utils/validations/tone';
-
-import { loadSchedulesFromLocalStorage, checkScheduleConflict, addSleepSchedule, addNewEvent } from '../../../utils/validations/schedule';
-
+import { loadSchedulesFromLocalStorage, checkScheduleConflict, addSleepSchedule, addNewEvent, findConflictEvent, checkScheduleSleep, findConflictSleep } from '../../../utils/validations/schedule';
 import { base64ToBlob, playAlarm, playBlobAudio, playRingtone } from '../../../utils/sounds';
 import { MdBedtime, MdBedtimeOff } from 'react-icons/md';
-
 
 export default function SleepAlarm(props) {
     const [isToggled, setIsToggled] = useState(false);
@@ -51,7 +48,6 @@ export default function SleepAlarm(props) {
                 }
             }
         }).catch(err => { console.log(err) });
-
     }, [props.id_user]);
 
     useEffect(() => {
@@ -89,58 +85,83 @@ export default function SleepAlarm(props) {
     const calcularDiferenciaHoras = (startHour, endHour) => {
         const start = formatTimeFromTinyInt(startHour);
         const end = formatTimeFromTinyInt(endHour);
+        
+        // Crear fechas ficticias con una fecha base para facilitar la comparación
         const fechaDormir = new Date(`2000-01-01T${start}`);
         const fechaDespertar = new Date(`2000-01-01T${end}`);
-        let diferenciaMilisegundos = fechaDespertar - fechaDormir;
-        if (diferenciaMilisegundos < 0) {
-            diferenciaMilisegundos += 24 * 3600000;
+    
+        // Si la hora de finalización es menor que la hora de inicio, se asume que es al día siguiente
+        if (fechaDespertar < fechaDormir) {
+            fechaDespertar.setDate(fechaDespertar.getDate() + 1);
         }
+    
+        // Calcular la diferencia en milisegundos
+        const diferenciaMilisegundos = fechaDespertar - fechaDormir;
+    
+        // Convertir la diferencia en horas
         const horas = Math.floor(diferenciaMilisegundos / 3600000);
+        
+        // Mensaje de advertencia si la diferencia es mayor o igual a 10 horas o menor o igual a 4 horas
         if (horas >= 10 || horas <= 4) {
             myPojo.setNotif("¡CUIDADO!", <div style={{ fontSize: "larger" }}>Dormir por demasiado tiempo o muy poco puede afectar tu rendimiento</div>);
         }
+        
         return horas;
     };
-
-    const validateSleepTimes = (startHour, endHour) => {
-        const startHourInt = convertTimeToTinyInt(startHour);
-        const endHourInt = convertTimeToTinyInt(endHour);
-        const difference = endHourInt - startHourInt;
-
-        const now = moment();
-        const recommendedSleepTime = now.add(2, 'hours').format('HH:mm');
-        const recommendedSleepTimeInt = convertTimeToTinyInt(recommendedSleepTime);
-
-        if (startHourInt > endHourInt && startHourInt - endHourInt > 120) {
-            myPojo.setNotif("Advertencia", "El sistema no recomienda una segunda hora de dormir por más de 2 horas después de la hora que se despierta.");
-            return false;
+    
+    const calcularDiferenciaHorasDirecta = (startHour, endHour) => {
+        // Crear fechas ficticias con una fecha base para facilitar la comparación
+        const fechaDormir = new Date(`2000-01-01T${startHour}`);
+        const fechaDespertar = new Date(`2000-01-01T${endHour}`);
+    
+        // Si la hora de finalización es menor que la hora de inicio, se asume que es al día siguiente
+        if (fechaDespertar < fechaDormir) {
+            fechaDespertar.setDate(fechaDespertar.getDate() + 1);
         }
-
-        return true;
+    
+        // Calcular la diferencia en milisegundos
+        const diferenciaMilisegundos = fechaDespertar - fechaDormir;
+    
+        // Convertir la diferencia en horas
+        const horas = Math.floor(diferenciaMilisegundos / 3600000);
+    
+        // Mensaje de advertencia si la diferencia es mayor o igual a 10 horas o menor o igual a 4 horas
+        if (horas >= 10 || horas <= 4) {
+            myPojo.setNotif("¡CUIDADO!", <div style={{ fontSize: "larger" }}>Dormir por demasiado tiempo o muy poco puede afectar tu rendimiento</div>);
+        }
+    
+        return horas;
     };
+    
 
     const calculateSecondSleepTime = (startHour, endHour) => {
         const startHourInt = convertTimeToTinyInt(startHour);
         const endHourInt = convertTimeToTinyInt(endHour);
         const sleepDuration = endHourInt - startHourInt;
-
-        let secondSleepStartInt = endHourInt + 3 * 60; // Adding 3 hours after wake-up time
-        let secondSleepEndInt = secondSleepStartInt + sleepDuration;
-
-        if (secondSleepEndInt >= 1440) { // Adjust for the next day
+        
+        // Ajustar para el caso de dormir de la noche a la mañana
+        if (sleepDuration < 0) {
+            sleepDuration += 1440; // 1440 minutos = 24 horas
+        }
+    
+        // Calcular el tiempo de la segunda hora de dormir
+        let secondSleepStartInt = endHourInt + 300; // Agregar 5 horas (300 minutos) después del tiempo de despertar
+        let secondSleepEndInt = secondSleepStartInt + Math.min(sleepDuration, 120); // Duración máxima de 2 horas (120 minutos)
+    
+        // Ajustar si la segunda hora de dormir se extiende al siguiente día
+        if (secondSleepEndInt >= 1440) { // 1440 minutos = 24 horas
             secondSleepEndInt -= 1440;
         }
-
-        // Format the second sleep time as "HH:mm"
+    
+        // Convertir a formato "HH:mm"
         const secondSleepStart = formatTimeFromTinyInt(secondSleepStartInt);
         const secondSleepEnd = formatTimeFromTinyInt(secondSleepEndInt);
-
+    
         return {
             secondSleepStart,
             secondSleepEnd
         };
     };
-
     useEffect(() => {
         const interval = setInterval(() => {
             const horaActual = moment().format('HH:mm');
@@ -199,32 +220,37 @@ export default function SleepAlarm(props) {
     
         const sleepRep = calculateSleepRep();
     
-        if (!validateSleepTimes(horaDormir, horaDespertar)) {
-            return;
-        }
-    
         const newEvent = {
+            schedule_eventname: 'Sleep',
             schedule_datetime: `${moment().format('YYYY-MM-DD')} ${horaDormir}`,
             schedule_duration_hour: parseInt(horaDespertar.split(':')[0]) - parseInt(horaDormir.split(':')[0]),
             schedule_duration_min: parseInt(horaDespertar.split(':')[1]) - parseInt(horaDormir.split(':')[1]),
             user_id: props.id_user
         };
     
-        const existingEvents = loadSchedulesFromLocalStorage();
-        const conflictingEvent = checkScheduleConflict(newEvent, existingEvents);
-    /*
+        const conflictingEvent = checkScheduleSleep(newEvent);
+    
         if (conflictingEvent) {
-            myPojo.setNotif("Advertencia", `El evento "${conflictingEvent.schedule_eventname}" ya está programado en este horario.`);
+            const { schedule_datetime, schedule_eventname } = findConflictSleep(newEvent);
+    
+            const titulo = "Conflicto con otro evento";
+            const contenido = `Existe el evento ${schedule_eventname} a las ${schedule_datetime}`;
+    
+            myPojo.setNotif(titulo, contenido);
             return;
         }
-    */
+    
         addSleepSchedule(newEvent);
         addNewEvent(newEvent);
+        console.log("hora de dormir", horaDormir, "hora de despertar", horaDespertar);
+        const horadiff = calcularDiferenciaHorasDirecta(horaDormir, horaDespertar);
     
-        const horadiff = calcularDiferenciaHoras(horaDormir, horaDespertar);
-    
-        const { secondSleepStart, secondSleepEnd } = calculateSecondSleepTime(horaDormir, horaDespertar);
-        myPojo.setNotif("Recomendación", `Se recomienda una segunda hora para dormir de ${secondSleepStart} hasta ${secondSleepEnd}.`);
+        console.log("Las horas de diferencia son:", horadiff);
+        // Validar la diferencia de horas para la recomendación
+        if (horadiff < 7) {
+            const { secondSleepStart, secondSleepEnd } = calculateSecondSleepTime(horaDormir, horaDespertar);
+            myPojo.setNotif("Recomendación", `Se recomienda una segunda hora para dormir de ${secondSleepStart} hasta ${secondSleepEnd}.`);
+        }
     
         const saveSleepData = (tones_id = null) => {
             const sleepData = {
@@ -262,8 +288,6 @@ export default function SleepAlarm(props) {
         }
     };
     
-    
-
     const convertTimeToTinyInt = (time) => {
         const [hours, minutes] = time.split(':').map(Number);
         return hours * 60 + minutes;
@@ -288,7 +312,6 @@ export default function SleepAlarm(props) {
                 ) : (
                     <div className="sleep-alarma">
                         <div className="sleep-alarma-container">
-
                             <div className="sleep-input-container">
                                 Hora (24h) de dormir
                                 <div className="sleep-time-input">
@@ -331,7 +354,6 @@ export default function SleepAlarm(props) {
                                 </div>
                                 <br />
                             </div>
-                            
                             <div className="sleep-confirmar-button-container">
                                 <button className="sleep-confirm" onClick={confirmarModoDeSueno}>
                                     Confirmar hora de dormir
@@ -339,9 +361,7 @@ export default function SleepAlarm(props) {
                             </div>
                         </div>
                         <div className="sleep-horas-container">
-                            
                             <label className='sleep-horas'>{isNaN(horadiff) ? "" : horadiff}</label>
-
                             <label className='sleep-texto'>
                                 <div className="sleep-toggle-container">
                                     <MdBedtimeOff />
@@ -349,9 +369,10 @@ export default function SleepAlarm(props) {
                                         handleChange={() => setIsToggled(!isToggled)}
                                         isToggled={isToggled}
                                     />
-                                    <MdBedtime/>
+                                    <MdBedtime />
                                 </div>
-                                Horas<br />de<br />Sueño</label>
+                                Horas<br />de<br />Sueño
+                            </label>
                         </div>
                     </div>
                 )}

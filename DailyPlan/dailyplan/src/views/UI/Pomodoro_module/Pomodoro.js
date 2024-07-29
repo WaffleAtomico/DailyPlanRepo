@@ -8,7 +8,7 @@ import { myPojo } from '../../../utils/ShowNotifInfo';
 import { grantArchivement, isCompleted } from '../../../utils/archivements/grantArchivement';
 import { getPomodoroById, updatePomodoro } from '../../../utils/validations/pomodoro';
 import { addTone } from "../../../utils/validations/tone";
-import { addPomodoroSchedule } from '../../../utils/validations/schedule';
+import { addNewEvent, addPomodoroSchedule, findConflictEvent } from '../../../utils/validations/schedule';
 import { checkScheduleConflict } from '../../../utils/validations/schedule';
 import BreakOverlay from './BreakOverlay';
 import { getDistanceMatrix } from '../../../utils/validations/services/distanceMatrixClient';
@@ -174,18 +174,27 @@ const Pomodoro_view = (props) => {
 
         const now = new Date();
         const eventPomodoro = {
-            schedule_eventname: "Pomodoro",
+            schedule_eventname: "Sleep",
             schedule_datetime: now,
             schedule_duration_hour: Math.floor(workMinutes / 60),
             schedule_duration_min: workMinutes % 60,
             user_id: props.id_user
         };
 
+            //verificar por un conflicto con un evento
         if (checkScheduleConflict(eventPomodoro)) {
-            alert("Hay un conflicto con otro evento en el mismo horario.");
+            const { schedule_datetime, schedule_eventname } = findConflictEvent(eventPomodoro);
+        
+            const titulo = "Conflicto con otro evento";
+            const contenido = `Existe el evento ${schedule_eventname} a las ${schedule_datetime}`;
+        
+            myPojo.setNotif(titulo, contenido);
             return;
         }
 
+
+        
+        addNewEvent(eventPomodoro);
         addPomodoroSchedule(eventPomodoro)
             .then(() => {
                 updatePomodoro(updatedPomodoro)
