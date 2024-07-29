@@ -1,8 +1,9 @@
 En el form de reminder hay que hacer la validacion de la fecha
 
-Hace falta jalar bien la informacion de los recordatorios por semana
+Hace falta jalar bien la informacion de los recordatorios por semana 
 Ahorita jala al parecer tambien lo de la preparacion, el problema con eso es que
 hay un campo que no contempraba antes, esta raro, no muestra los recordatorios de una semana
+
 
 Hace falta hacer que invitaciones sean visibles
 Hace falta que cambie el funcionamiento de eso 
