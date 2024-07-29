@@ -3,7 +3,8 @@ import {
     GET_WEEKLY_SCORECARD_URL,
     GET_WEEKLY_SCORECARD_BY_ID_URL,
     GET_WEEKLY_SCORECARD_FOR_USER_URL,
-    GET_IS_USER_WEEKLY_SCORECARD_URL
+    GET_IS_USER_WEEKLY_SCORECARD_URL,
+    UPD_TITLE_USER
 } from '../routes';
 
 export const getWeeklyScorecard = async () => {
