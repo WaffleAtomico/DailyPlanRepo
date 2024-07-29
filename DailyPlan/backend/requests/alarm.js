@@ -2,7 +2,7 @@ import { db } from "../config/connection.js";
 
 const addAlarm = async (req, res) => {
 
-  const body = req.body.alarmData;b
+  const body = req.body.alarmData;
 
     const query = {
       sql: "INSERT INTO `alarms`(`alarm_name`, `daysel_id`, `alarm_hour`, `alarm_min`, `alarm_sec`, `alarm_rep_tone`, `tone_id`, `alarm_days_suspended`, `alarm_active`, `alarm_imgage`, `alarm_desc`, `user_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",

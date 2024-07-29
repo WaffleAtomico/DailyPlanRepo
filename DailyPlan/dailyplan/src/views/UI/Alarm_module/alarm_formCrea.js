@@ -2,7 +2,10 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import { FaRegCalendarAlt, FaRegBell, FaRegImage } from 'react-icons/fa';
+import { addAlarm } from "../../../utils/validations/alarm";
+import { addDaySelected } from "../../../utils/validations/dayselected";
 import '../../../styles/UI/Alarm/alarm_formCrea.css';
+import { myPojo } from '../../../utils/ShowNotifInfo';
 
 const AlarmFormView = (props) => {
     const [alarmTime, setAlarmTime] = useState('');
@@ -68,18 +71,41 @@ const AlarmFormView = (props) => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        // Aquí puedes agregar la lógica para enviar los datos al servidor
+        const days_select = 0
+
+        addDaySelected(repeatDays).then(response => {
+            days_select = response.data.id
+        }).catch(error => {
+            console.error(error);
+        });
+
+        const alarmInfoToSend = {
+            alarm_name: alarmName,
+            daysel_id: days_select,
+            alarm_hour: 11,
+            alarm_min: 11,
+            alarm_sec: 0,
+            alarm_rep_tone: 1,
+            tone_id: 1,
+            alarm_days_suspended: suspensionDays,
+            alarm_active: 1,
+            alarm_image: alarmImage,
+            alarm_desc: alarmDescription,
+            user_id: props.user_id
+          };
+
+        addAlarm(alarmInfoToSend).then(() => {
+        }).catch(error => {
+            console.error(error);
+            myPojo.setNotif("Error: No se pudo guardar la alarma", <div size={220} />);
+        });
+
         console.log('Datos del formulario:', {
             alarmTime,
-            repeatDays,
             reminderTime,
             alarmSound,
-            alarmName,
             alarmDuration,
-            alarmRepetition,
-            suspensionDays,
-            alarmImage,
-            alarmDescription,
+            alarmRepetition
         });
     };
 
@@ -244,16 +270,6 @@ const AlarmFormView = (props) => {
                                     </Form.Group>
                                 </Col>
                             </Row>
-                            {/* <Row>
-                                <Col xs={12} className="text-center">
-                                    <Button variant="primary" type="submit">
-                                        Guardar
-                                    </Button>
-                                    <Button variant="secondary" className="ml-3">
-                                        Compartir
-                                    </Button>
-                                </Col>
-                            </Row> */}
                         </Form>
                     </Container>
                     <div className="form-actions">

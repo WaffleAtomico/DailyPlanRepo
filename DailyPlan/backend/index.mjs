@@ -220,9 +220,16 @@ import {
   deleteTone
 } from './requests/tone.js';
 
-
+import {
+  getWeeklyScorecard,
+  getWeeklyScorecardById,
+  getWeeklyScorecardForUser,
+  isUserWeeklyScorecard,
+  updateTitleUser
+} from './requests/weeklyscorecard.js';
 
 import { sendMailrest, sendMailrestjt } from "./requests/mail.js";
+import { addNotification, getUserNotifications } from "./requests/notifications.js";
 
 const app = express();
 
@@ -506,8 +513,16 @@ app.post(urls.GET_TONE_BY_ID_URL, getToneById);
 app.post(urls.UPDATE_TONE_URL, updateTone);
 app.post(urls.DELETE_TONE_URL, deleteTone);
 
+/*-------------------------------weeklyscorecard-------------------------*/
+app.post(urls.GET_WEEKLY_SCORECARD_URL, getWeeklyScorecard);
+app.post(urls.GET_WEEKLY_SCORECARD_BY_ID_URL, getWeeklyScorecardById);
+app.post(urls.GET_WEEKLY_SCORECARD_FOR_USER_URL, getWeeklyScorecardForUser);
+app.post(urls.GET_IS_USER_WEEKLY_SCORECARD_URL, isUserWeeklyScorecard);
+app.post(urls.UPD_TITLE_USER, updateTitleUser);
 
-
+/*----------------------------- Notifications -----------------------------*/
+app.post(urls.ADD_NOTIFICATION_URL, addNotification);
+app.post(urls.GET_USER_NOTIFICATIONS_URL, getUserNotifications);
 
 /*-------------------------------spotify------------------------- */
 

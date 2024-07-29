@@ -12,6 +12,8 @@ import { grantArchivement, isCompleted } from '../../../utils/archivements/grant
 import CancelReasonModal from './CancelReasonModal';  // Importamos el nuevo modal
 import { IoAlertCircleOutline } from 'react-icons/io5';
 import InvUserList from './InvUsers';
+import { saveReminderShare } from '../../../utils/validations/remindershare';
+import { addNotification } from '../../../utils/validations/notification';
 
 export default function InvitationView(props) {
     const [data, setData] = useState([]);
@@ -20,6 +22,7 @@ export default function InvitationView(props) {
 
     const [showCancelModal, setShowCancelModal] = useState(false);
     const [currentInvId, setCurrentInvId] = useState(null);
+    const [CurrentOwner, setCurrentOwner] = useState(null);
     const [showUserList, setShowUserList] = useState(false);
 
     const [pendingInvitations, setPendingInvitations] = useState([]);
@@ -39,7 +42,7 @@ export default function InvitationView(props) {
             .then(response => {
                 if (response.data) {
                     setData(response.data);
-                    console.log("Data: ", response.data);
+                    // console.log("Data: ", response.data);
                     // Filtrado de invitaciones
                     const pending = response.data
                         .map(invitation => ({
@@ -58,6 +61,7 @@ export default function InvitationView(props) {
                         .map(invitation => ({
                             inv_id: invitation.inv_id,
                             reminder_id: invitation.reminder_id,
+                            alarm_id: invitation.alarm_id,
                             user_id_owner: invitation.user_id_owner,
                             inv_state: invitation.inv_state,
                             inv_reason: invitation.inv_reason,
@@ -70,6 +74,7 @@ export default function InvitationView(props) {
                         .map(invitation => ({
                             inv_id: invitation.inv_id,
                             reminder_id: invitation.reminder_id,
+                            alarm_id: invitation.alarm_id,
                             user_id_owner: invitation.user_id_owner,
                             inv_state: invitation.inv_state,
                             inv_reason: invitation.inv_reason,
@@ -83,18 +88,18 @@ export default function InvitationView(props) {
                     // console.log("active: ", active);
                     setCreatedInvitations(created);
                     // console.log("Created: ", created);
-                    
+
                 }
             })
             .catch(error => {
                 console.error('Error fetching invitations:', error);
             });
     };
-
     const confirmArchivement4 = (user_id) => {
         const grant_title_id = 3;
         isCompleted(user_id, grant_title_id).then(response => {
             if (response === false) {
+                // console.log("No esta completado el 4");
                 setIsCompletedArchivement1(response);
             }
         }).catch(error => {
@@ -109,6 +114,7 @@ export default function InvitationView(props) {
             grantArchivement(user_id, grant_title_id).then(res => {
                 console.log(res);
                 myPojo.setNotif("Logro: REUNION", <TiGroup size={220} />);
+                setIsCompletedArchivement1(true);
             }).catch(error => {
                 console.error("Error granting achievement:", error);
             });
@@ -118,7 +124,8 @@ export default function InvitationView(props) {
         const grant_title_id = 4;
         isCompleted(user_id, grant_title_id).then(response => {
             if (response === false) {
-                setIsCompletedArchivement1(response);
+                console.log("No esta completado el 5")
+                setIsCompletedArchivement2(response);
             }
         }).catch(error => {
             console.error("Error confirming achievement: ", error);
@@ -132,10 +139,27 @@ export default function InvitationView(props) {
             grantArchivement(user_id, grant_title_id).then(res => {
                 console.log(res);
                 myPojo.setNotif("Logro: CONCIENTE", <IoAlertCircleOutline size={220} />);
+                setIsCompletedArchivement1(true);
             }).catch(error => {
                 console.error("Error granting achievement:", error);
             });
         }
+    };
+    const grant6Archivement = (OwnerUser_id) => {
+        const grant_title_id = 6;
+        const user_id = OwnerUser_id;
+        // console.log("Is completed:? ", isCompletedArchivement2);
+        isCompleted(user_id, grant_title_id).then(response => {
+            if (response === false) {
+                grantArchivement(user_id, grant_title_id).then(res => {
+                    console.log(res);               
+                }).catch(error => {
+                    console.error("Error granting achievement:", error);
+                });
+            }
+        }).catch(error => {
+            console.error("Error confirming achievement: ", error);
+        });
     };
 
     /*
@@ -146,17 +170,32 @@ export default function InvitationView(props) {
     NULL ==== WAITING
     
     */
-    const handleInvAccepted = (inv_id) => {
+    const handleInvAccepted = (inv_id, user_id_owner, invType, reminder_id, alarm_id) => {
         //aceptar la invitacion recibida
         //si fue aceptada correctamente, entrega el logro
-        console.log("Entre a invitaciones aceptadas", inv_id);
-        
+        // console.log("Entre a invitaciones aceptadas", inv_id);
+
         updateInvitationState(true, inv_id).then(res => {
             console.log(res)
             if (res.status) {
-                console.log("Si jala bn, o deberia de actualizar")
+                // console.log("Si jala bn, o deberia de actualizar");
                 fetchInvitations();
-                // grant4Archivement();
+                if (invType) { //true reminder
+                    const reminderShareInfo = {
+                        rs_user_id_target: props.user_id, //yo soy qn la acepta, por ende soy el target
+                        reminder_id: reminder_id,
+                    }
+                    saveReminderShare(reminderShareInfo).then(res => {
+                        if (res.status) {
+                            console.log(res.data);
+                            // grant4Archivement();
+                            grant6Archivement(user_id_owner);
+                        }
+                    }
+                    ).catch(err => { console.log(err) })
+                } else { //false alarm
+
+                }
             }
         }).catch(err => { console.log(err) })
     }
@@ -176,19 +215,39 @@ export default function InvitationView(props) {
         }).catch(err => { console.log(err) })
     }
 
-    const handleInvCanceled = (inv_id) => {
+    const handleInvCanceled = (inv_id, user_id_owner) => {
         // Mostrar el modal para ingresar el motivo de cancelación
-        setShowCancelModal(true);
-        setCurrentInvId(inv_id);
+        console.log(user_id_owner);
+        if (inv_id && user_id_owner) {
+            setShowCancelModal(true);
+            setCurrentInvId(inv_id);
+            setCurrentOwner(user_id_owner);
+        }
     }
 
     const handleSaveCancelReason = (reason) => {
-        setShowCancelModal(false);
-        updateInvitationReason(currentInvId, (reason.length > 0 ? reason : null)).then(res => {
+        // console.log(reason ? (reason.length > 0 ? reason : "") : "");
+        updateInvitationReason(currentInvId, (reason ? (reason.length > 0 ? reason : "") : "")).then(res => {
+            // console.log("res updateInvitationReazon: ",res);
             if (res) {
-                updateInvitationState(currentInvId, 0).then(res => {
-                    if (reason.length > 0) {
-                        grant5Archivement();
+                // console.log(reason);
+                updateInvitationState(false, currentInvId).then(res => {
+                    if (res.status && (reason ? (reason.length > 0 ? true : false) : false)) {
+                        console.log("Si ha avisado que cancela");
+                        const notificationInfo = {
+                            notification_name: `Cancelación: ${reason}`,
+                            notification_type: 1,
+                            user_id: CurrentOwner,
+                        }
+                        // console.log(reason);
+                        addNotification(notificationInfo).then(res => {
+                            if (res.status) {
+                                grant5Archivement();
+                                console.log("Si ha avisado que cancela");
+                                fetchInvitations();
+                            }
+                        }).catch(err => { console.log(err) })
+                        setShowCancelModal(false);
                     }
                 }).catch(err => { console.log(err) })
             }
