@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Servidor: 127.0.0.1
--- Tiempo de generación: 22-07-2024 a las 19:51:26
--- Versión del servidor: 10.4.32-MariaDB
--- Versión de PHP: 8.2.12
+-- Servidor: localhost:3306
+-- Tiempo de generación: 26-07-2024 a las 21:42:08
+-- Versión del servidor: 8.0.30
+-- Versión de PHP: 8.1.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -27,20 +27,21 @@ SET time_zone = "+00:00";
 -- Estructura de tabla para la tabla `alarms`
 --
 
+DROP TABLE IF EXISTS `alarms`;
 CREATE TABLE `alarms` (
-  `alarm_id` int(11) NOT NULL,
-  `alarm_name` varchar(30) DEFAULT NULL,
-  `daysel_id` int(11) DEFAULT NULL,
-  `alarm_hour` tinyint(4) DEFAULT NULL,
-  `alarm_min` tinyint(4) DEFAULT NULL,
-  `alarm_sec` tinyint(4) DEFAULT NULL,
-  `alarm_rep_tone` text DEFAULT NULL,
-  `tone_id` int(11) DEFAULT NULL,
-  `alarm_days_suspended` tinyint(4) DEFAULT NULL,
+  `alarm_id` int NOT NULL,
+  `alarm_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `daysel_id` int DEFAULT NULL,
+  `alarm_hour` tinyint DEFAULT NULL,
+  `alarm_min` tinyint DEFAULT NULL,
+  `alarm_sec` tinyint DEFAULT NULL,
+  `alarm_rep_tone` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `tone_id` int DEFAULT NULL,
+  `alarm_days_suspended` tinyint DEFAULT NULL,
   `alarm_active` tinyint(1) DEFAULT NULL,
-  `alarm_image` text DEFAULT NULL,
-  `alarm_desc` varchar(300) DEFAULT NULL,
-  `user_id` int(11) DEFAULT NULL
+  `alarm_image` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `alarm_desc` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `user_id` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -49,10 +50,11 @@ CREATE TABLE `alarms` (
 -- Estructura de tabla para la tabla `alarmshare`
 --
 
+DROP TABLE IF EXISTS `alarmshare`;
 CREATE TABLE `alarmshare` (
-  `alarmsha_id` int(11) NOT NULL,
-  `ar_user_id_target` int(11) DEFAULT NULL,
-  `alarm_id` int(11) DEFAULT NULL
+  `alarmsha_id` int NOT NULL,
+  `ar_user_id_target` int DEFAULT NULL,
+  `alarm_id` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -61,13 +63,14 @@ CREATE TABLE `alarmshare` (
 -- Estructura de tabla para la tabla `chronometers`
 --
 
+DROP TABLE IF EXISTS `chronometers`;
 CREATE TABLE `chronometers` (
-  `chrono_id` int(11) NOT NULL,
-  `chrono_name` varchar(30) DEFAULT NULL,
-  `chrono_hour` tinyint(4) DEFAULT NULL,
-  `chrono_min` tinyint(4) DEFAULT NULL,
-  `chrono_sec` tinyint(4) DEFAULT NULL,
-  `user_id` int(11) DEFAULT NULL
+  `chrono_id` int NOT NULL,
+  `chrono_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `chrono_hour` tinyint DEFAULT NULL,
+  `chrono_min` tinyint DEFAULT NULL,
+  `chrono_sec` tinyint DEFAULT NULL,
+  `user_id` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -76,10 +79,11 @@ CREATE TABLE `chronometers` (
 -- Estructura de tabla para la tabla `clocks`
 --
 
+DROP TABLE IF EXISTS `clocks`;
 CREATE TABLE `clocks` (
-  `clock_id` int(11) NOT NULL,
-  `clock_name` varchar(40) DEFAULT NULL,
-  `user_id` int(11) DEFAULT NULL
+  `clock_id` int NOT NULL,
+  `clock_name` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `user_id` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -88,8 +92,9 @@ CREATE TABLE `clocks` (
 -- Estructura de tabla para la tabla `dayselected`
 --
 
+DROP TABLE IF EXISTS `dayselected`;
 CREATE TABLE `dayselected` (
-  `daysel_id` int(11) NOT NULL,
+  `daysel_id` int NOT NULL,
   `daysel_mon` tinyint(1) DEFAULT NULL,
   `daysel_tues` tinyint(1) DEFAULT NULL,
   `daysel_wed` tinyint(1) DEFAULT NULL,
@@ -161,14 +166,15 @@ INSERT INTO `dayselected` (`daysel_id`, `daysel_mon`, `daysel_tues`, `daysel_wed
 -- Estructura de tabla para la tabla `invitations`
 --
 
+DROP TABLE IF EXISTS `invitations`;
 CREATE TABLE `invitations` (
-  `inv_id` int(11) NOT NULL,
-  `reminder_id` int(11) DEFAULT NULL,
-  `alarm_id` int(11) DEFAULT NULL,
-  `user_id_owner` int(11) DEFAULT NULL,
-  `user_id_target` int(11) DEFAULT NULL,
+  `inv_id` int NOT NULL,
+  `reminder_id` int DEFAULT NULL,
+  `alarm_id` int DEFAULT NULL,
+  `user_id_owner` int DEFAULT NULL,
+  `user_id_target` int DEFAULT NULL,
   `inv_state` tinyint(1) DEFAULT NULL,
-  `inv_reason` varchar(250) DEFAULT NULL
+  `inv_reason` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -177,12 +183,13 @@ CREATE TABLE `invitations` (
 -- Estructura de tabla para la tabla `locations`
 --
 
+DROP TABLE IF EXISTS `locations`;
 CREATE TABLE `locations` (
-  `location_id` int(11) NOT NULL,
+  `location_id` int NOT NULL,
   `location_x` double DEFAULT NULL,
   `location_y` double DEFAULT NULL,
   `location_type` tinyint(1) DEFAULT NULL,
-  `reminder_id` int(11) DEFAULT NULL
+  `reminder_id` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -191,14 +198,15 @@ CREATE TABLE `locations` (
 -- Estructura de tabla para la tabla `objectives`
 --
 
+DROP TABLE IF EXISTS `objectives`;
 CREATE TABLE `objectives` (
-  `obj_id` int(11) NOT NULL,
-  `obj_name` varchar(30) DEFAULT NULL,
-  `obj_duration_min` tinyint(4) DEFAULT NULL,
-  `obj_durationreal_min` smallint(6) DEFAULT NULL,
+  `obj_id` int NOT NULL,
+  `obj_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `obj_duration_min` tinyint DEFAULT NULL,
+  `obj_durationreal_min` smallint DEFAULT NULL,
   `obj_check` tinyint(1) DEFAULT NULL,
-  `id_user` int(11) DEFAULT NULL,
-  `objblo_id` int(11) DEFAULT NULL
+  `id_user` int DEFAULT NULL,
+  `objblo_id` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -207,10 +215,11 @@ CREATE TABLE `objectives` (
 -- Estructura de tabla para la tabla `objectivesblock`
 --
 
+DROP TABLE IF EXISTS `objectivesblock`;
 CREATE TABLE `objectivesblock` (
-  `objblo_id` int(11) NOT NULL,
-  `reminder_id` int(11) DEFAULT NULL,
-  `objblo_name` varchar(25) DEFAULT NULL
+  `objblo_id` int NOT NULL,
+  `reminder_id` int DEFAULT NULL,
+  `objblo_name` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -219,10 +228,11 @@ CREATE TABLE `objectivesblock` (
 -- Estructura de tabla para la tabla `permisions`
 --
 
+DROP TABLE IF EXISTS `permisions`;
 CREATE TABLE `permisions` (
-  `permision_id` int(11) NOT NULL,
+  `permision_id` int NOT NULL,
   `permision_active` tinyint(1) DEFAULT NULL,
-  `user_id` int(11) DEFAULT NULL
+  `user_id` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -231,13 +241,14 @@ CREATE TABLE `permisions` (
 -- Estructura de tabla para la tabla `pomodoros`
 --
 
+DROP TABLE IF EXISTS `pomodoros`;
 CREATE TABLE `pomodoros` (
-  `pomodoro_id` int(11) NOT NULL,
-  `tpomodoro_hour_work` tinyint(4) DEFAULT NULL,
-  `pomodoro_min_work` tinyint(4) DEFAULT NULL,
-  `pomodoro_shortrest` tinyint(4) DEFAULT NULL,
-  `pomodoro_longrest` tinyint(4) DEFAULT NULL,
-  `tone_id` int(11) DEFAULT NULL
+  `pomodoro_id` int NOT NULL,
+  `tpomodoro_hour_work` tinyint DEFAULT NULL,
+  `pomodoro_min_work` tinyint DEFAULT NULL,
+  `pomodoro_shortrest` tinyint DEFAULT NULL,
+  `pomodoro_longrest` tinyint DEFAULT NULL,
+  `tone_id` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -302,20 +313,29 @@ INSERT INTO `pomodoros` (`pomodoro_id`, `tpomodoro_hour_work`, `pomodoro_min_wor
 -- Estructura de tabla para la tabla `puntuality`
 --
 
+DROP TABLE IF EXISTS `puntuality`;
 CREATE TABLE `puntuality` (
-  `punt_id` int(11) NOT NULL,
-  `user_id` int(11) DEFAULT NULL,
+  `punt_id` int NOT NULL,
+  `user_id` int DEFAULT NULL,
   `punt_date` date DEFAULT NULL,
-  `punt_value` tinyint(4) DEFAULT NULL,
-  `punt_num_rem` tinyint(4) DEFAULT NULL,
-  `punt_percent_rem` tinyint(4) DEFAULT NULL,
-  `punt_num_alar` tinyint(4) DEFAULT NULL,
-  `punt_percent_alar` tinyint(4) DEFAULT NULL,
-  `punt_num_timer` tinyint(4) DEFAULT NULL,
-  `punt_percent_timer` tinyint(4) DEFAULT NULL,
-  `punt_num_chro` tinyint(4) DEFAULT NULL,
-  `punt_percent_chro` tinyint(4) DEFAULT NULL
+  `punt_value` tinyint DEFAULT NULL,
+  `punt_num_rem` tinyint DEFAULT NULL,
+  `punt_percent_rem` tinyint DEFAULT NULL,
+  `punt_num_alar` tinyint DEFAULT NULL,
+  `punt_percent_alar` tinyint DEFAULT NULL,
+  `punt_num_timer` tinyint DEFAULT NULL,
+  `punt_percent_timer` tinyint DEFAULT NULL,
+  `punt_num_chro` tinyint DEFAULT NULL,
+  `punt_percent_chro` tinyint DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `puntuality`
+--
+
+INSERT INTO `puntuality` (`punt_id`, `user_id`, `punt_date`, `punt_value`, `punt_num_rem`, `punt_percent_rem`, `punt_num_alar`, `punt_percent_alar`, `punt_num_timer`, `punt_percent_timer`, `punt_num_chro`, `punt_percent_chro`) VALUES
+(784, 53, '2024-07-25', 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(785, 54, '2024-07-25', 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -323,23 +343,25 @@ CREATE TABLE `puntuality` (
 -- Estructura de tabla para la tabla `reminders`
 --
 
+DROP TABLE IF EXISTS `reminders`;
 CREATE TABLE `reminders` (
-  `reminder_id` int(11) NOT NULL,
-  `reminder_name` varchar(30) DEFAULT NULL,
+  `reminder_id` int NOT NULL,
+  `reminder_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `reminder_create` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `reminder_date` datetime DEFAULT NULL,
-  `reminder_hour` tinyint(4) DEFAULT NULL,
-  `reminder_min` tinyint(4) DEFAULT NULL,
+  `reminder_hour` tinyint DEFAULT NULL,
+  `reminder_min` tinyint DEFAULT NULL,
   `reminder_active` tinyint(1) DEFAULT NULL,
-  `repdays_id` int(11) DEFAULT NULL,
-  `reminder_tone_duration_sec` tinyint(4) DEFAULT NULL,
-  `reminder_advance_min` tinyint(4) DEFAULT NULL,
-  `reminder_img` text DEFAULT NULL,
-  `reminder_desc` varchar(300) DEFAULT NULL,
-  `reminder_days_suspended` tinyint(4) DEFAULT NULL,
+  `repdays_id` int DEFAULT NULL,
+  `reminder_tone_duration_sec` tinyint DEFAULT NULL,
+  `reminder_advance_min` tinyint DEFAULT NULL,
+  `reminder_img` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `reminder_desc` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `reminder_days_suspended` tinyint DEFAULT NULL,
   `reminder_share` tinyint(1) DEFAULT NULL,
-  `reminder_sourse_id` int(11) DEFAULT NULL,
-  `user_id` int(11) DEFAULT NULL,
-  `tone_id` int(11) DEFAULT NULL
+  `reminder_sourse_id` int DEFAULT NULL,
+  `user_id` int DEFAULT NULL,
+  `tone_id` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -348,10 +370,11 @@ CREATE TABLE `reminders` (
 -- Estructura de tabla para la tabla `remindershare`
 --
 
+DROP TABLE IF EXISTS `remindershare`;
 CREATE TABLE `remindershare` (
-  `remindsha_id` int(11) NOT NULL,
-  `rs_user_id_target` int(11) DEFAULT NULL,
-  `reminder_id` int(11) DEFAULT NULL
+  `remindsha_id` int NOT NULL,
+  `rs_user_id_target` int DEFAULT NULL,
+  `reminder_id` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -360,8 +383,9 @@ CREATE TABLE `remindershare` (
 -- Estructura de tabla para la tabla `repetitiondays`
 --
 
+DROP TABLE IF EXISTS `repetitiondays`;
 CREATE TABLE `repetitiondays` (
-  `repdays_id` int(11) NOT NULL,
+  `repdays_id` int NOT NULL,
   `repday_date` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -427,13 +451,14 @@ INSERT INTO `repetitiondays` (`repdays_id`, `repday_date`) VALUES
 -- Estructura de tabla para la tabla `schedules`
 --
 
+DROP TABLE IF EXISTS `schedules`;
 CREATE TABLE `schedules` (
-  `schedule_id` int(11) NOT NULL,
-  `schedule_eventname` varchar(50) DEFAULT NULL,
+  `schedule_id` int NOT NULL,
+  `schedule_eventname` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `schedule_datetime` datetime DEFAULT NULL,
-  `schedule_duration_hour` tinyint(4) DEFAULT NULL,
-  `schedule_duration_min` tinyint(4) DEFAULT NULL,
-  `user_id` int(11) DEFAULT NULL
+  `schedule_duration_hour` tinyint DEFAULT NULL,
+  `schedule_duration_min` tinyint DEFAULT NULL,
+  `user_id` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -498,15 +523,16 @@ INSERT INTO `schedules` (`schedule_id`, `schedule_eventname`, `schedule_datetime
 -- Estructura de tabla para la tabla `sleepmode`
 --
 
+DROP TABLE IF EXISTS `sleepmode`;
 CREATE TABLE `sleepmode` (
-  `sleep_id` int(11) NOT NULL,
-  `sleep_starthour` mediumint(9) DEFAULT NULL,
-  `sleep_endhour` mediumint(9) DEFAULT NULL,
+  `sleep_id` int NOT NULL,
+  `sleep_starthour` mediumint DEFAULT NULL,
+  `sleep_endhour` mediumint DEFAULT NULL,
   `sleep_active` tinyint(1) DEFAULT NULL,
-  `sleep_rep` tinyint(4) DEFAULT NULL,
-  `sleep_video_url` text DEFAULT NULL,
-  `sleep_rep_stopped` tinyint(4) DEFAULT NULL,
-  `tone_id` int(11) DEFAULT NULL
+  `sleep_rep` tinyint DEFAULT NULL,
+  `sleep_video_url` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `sleep_rep_stopped` tinyint DEFAULT NULL,
+  `tone_id` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -522,13 +548,14 @@ INSERT INTO `sleepmode` (`sleep_id`, `sleep_starthour`, `sleep_endhour`, `sleep_
 -- Estructura de tabla para la tabla `sleepquality`
 --
 
+DROP TABLE IF EXISTS `sleepquality`;
 CREATE TABLE `sleepquality` (
-  `quality_id` int(11) NOT NULL,
+  `quality_id` int NOT NULL,
   `quality_good` tinyint(1) DEFAULT NULL,
   `quality_medium` tinyint(1) DEFAULT NULL,
   `quiality_bad` tinyint(1) DEFAULT NULL,
-  `quality_date` timestamp NOT NULL DEFAULT current_timestamp(),
-  `sleep_id` int(11) NOT NULL
+  `quality_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `sleep_id` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -537,15 +564,16 @@ CREATE TABLE `sleepquality` (
 -- Estructura de tabla para la tabla `timers`
 --
 
+DROP TABLE IF EXISTS `timers`;
 CREATE TABLE `timers` (
-  `timer_id` int(11) NOT NULL,
-  `timer_hour` tinyint(4) DEFAULT NULL,
-  `timer_min` tinyint(4) DEFAULT NULL,
-  `timer_sec` tinyint(4) DEFAULT NULL,
-  `timer_duration` tinyint(4) DEFAULT NULL,
-  `timer_name` varchar(30) DEFAULT NULL,
-  `tone_id` int(11) DEFAULT NULL,
-  `user_id` int(11) DEFAULT NULL
+  `timer_id` int NOT NULL,
+  `timer_hour` tinyint DEFAULT NULL,
+  `timer_min` tinyint DEFAULT NULL,
+  `timer_sec` tinyint DEFAULT NULL,
+  `timer_duration` tinyint DEFAULT NULL,
+  `timer_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `tone_id` int DEFAULT NULL,
+  `user_id` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -554,9 +582,10 @@ CREATE TABLE `timers` (
 -- Estructura de tabla para la tabla `titles`
 --
 
+DROP TABLE IF EXISTS `titles`;
 CREATE TABLE `titles` (
-  `title_id` int(11) NOT NULL,
-  `title_name` varchar(30) DEFAULT NULL
+  `title_id` int NOT NULL,
+  `title_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -587,10 +616,11 @@ INSERT INTO `titles` (`title_id`, `title_name`) VALUES
 -- Estructura de tabla para la tabla `tones`
 --
 
+DROP TABLE IF EXISTS `tones`;
 CREATE TABLE `tones` (
-  `tone_id` int(11) NOT NULL,
-  `tone_name` varchar(30) DEFAULT NULL,
-  `tone_location` text DEFAULT NULL
+  `tone_id` int NOT NULL,
+  `tone_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `tone_location` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -655,14 +685,15 @@ INSERT INTO `tones` (`tone_id`, `tone_name`, `tone_location`) VALUES
 -- Estructura de tabla para la tabla `users`
 --
 
+DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
-  `user_id` int(11) NOT NULL,
-  `user_mail` varchar(50) DEFAULT NULL,
-  `user_name` varchar(20) DEFAULT NULL,
-  `user_password` varchar(40) DEFAULT NULL,
-  `user_number` varchar(10) DEFAULT NULL,
+  `user_id` int NOT NULL,
+  `user_mail` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `user_name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `user_password` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `user_number` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `user_status` tinyint(1) DEFAULT NULL,
-  `title_id` int(11) DEFAULT NULL
+  `title_id` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -679,10 +710,11 @@ INSERT INTO `users` (`user_id`, `user_mail`, `user_name`, `user_password`, `user
 -- Estructura de tabla para la tabla `usersblocked`
 --
 
+DROP TABLE IF EXISTS `usersblocked`;
 CREATE TABLE `usersblocked` (
-  `userblocked_id` int(11) NOT NULL,
-  `user_id_sourse` int(11) DEFAULT NULL,
-  `user_id_target` int(11) DEFAULT NULL
+  `userblocked_id` int NOT NULL,
+  `user_id_sourse` int DEFAULT NULL,
+  `user_id_target` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -691,9 +723,10 @@ CREATE TABLE `usersblocked` (
 -- Estructura de tabla para la tabla `user_titles`
 --
 
+DROP TABLE IF EXISTS `user_titles`;
 CREATE TABLE `user_titles` (
-  `user_id` int(11) NOT NULL,
-  `title_id` int(11) NOT NULL,
+  `user_id` int NOT NULL,
+  `title_id` int NOT NULL,
   `title_done` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -814,6 +847,35 @@ INSERT INTO `user_titles` (`user_id`, `title_id`, `title_done`) VALUES
 (54, 14, 0),
 (54, 15, 0),
 (54, 16, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `weeklyscorecard`
+--
+
+DROP TABLE IF EXISTS `weeklyscorecard`;
+CREATE TABLE `weeklyscorecard` (
+  `weeklyscorecard_id` int NOT NULL,
+  `user_id` int DEFAULT NULL,
+  `punt_weekly_date` timestamp NULL DEFAULT NULL,
+  `punt_value` tinyint DEFAULT NULL,
+  `punt_num_rem` tinyint DEFAULT NULL,
+  `punt_percent_rem` tinyint DEFAULT NULL,
+  `punt_num_alar` tinyint DEFAULT NULL,
+  `punt_percent_alar` tinyint DEFAULT NULL,
+  `punt_num_timer` tinyint DEFAULT NULL,
+  `punt_percent_timer` tinyint DEFAULT NULL,
+  `punt_num_chro` tinyint DEFAULT NULL,
+  `punt_percent_chro` tinyint DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `weeklyscorecard`
+--
+
+INSERT INTO `weeklyscorecard` (`weeklyscorecard_id`, `user_id`, `punt_weekly_date`, `punt_value`, `punt_num_rem`, `punt_percent_rem`, `punt_num_alar`, `punt_percent_alar`, `punt_num_timer`, `punt_percent_timer`, `punt_num_chro`, `punt_percent_chro`) VALUES
+(18, 53, '2024-07-25 21:38:00', 10, 10, 10, 10, 10, 10, 10, 10, 10);
 
 --
 -- Índices para tablas volcadas
@@ -997,6 +1059,13 @@ ALTER TABLE `user_titles`
   ADD KEY `user_titles_ibfk_1` (`title_id`);
 
 --
+-- Indices de la tabla `weeklyscorecard`
+--
+ALTER TABLE `weeklyscorecard`
+  ADD PRIMARY KEY (`weeklyscorecard_id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
 -- AUTO_INCREMENT de las tablas volcadas
 --
 
@@ -1004,133 +1073,139 @@ ALTER TABLE `user_titles`
 -- AUTO_INCREMENT de la tabla `alarms`
 --
 ALTER TABLE `alarms`
-  MODIFY `alarm_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+  MODIFY `alarm_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT de la tabla `alarmshare`
 --
 ALTER TABLE `alarmshare`
-  MODIFY `alarmsha_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+  MODIFY `alarmsha_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT de la tabla `chronometers`
 --
 ALTER TABLE `chronometers`
-  MODIFY `chrono_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `chrono_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
 
 --
 -- AUTO_INCREMENT de la tabla `clocks`
 --
 ALTER TABLE `clocks`
-  MODIFY `clock_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=97;
+  MODIFY `clock_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=97;
 
 --
 -- AUTO_INCREMENT de la tabla `dayselected`
 --
 ALTER TABLE `dayselected`
-  MODIFY `daysel_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+  MODIFY `daysel_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT de la tabla `invitations`
 --
 ALTER TABLE `invitations`
-  MODIFY `inv_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `inv_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT de la tabla `locations`
 --
 ALTER TABLE `locations`
-  MODIFY `location_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+  MODIFY `location_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT de la tabla `objectives`
 --
 ALTER TABLE `objectives`
-  MODIFY `obj_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+  MODIFY `obj_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT de la tabla `objectivesblock`
 --
 ALTER TABLE `objectivesblock`
-  MODIFY `objblo_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+  MODIFY `objblo_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT de la tabla `permisions`
 --
 ALTER TABLE `permisions`
-  MODIFY `permision_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+  MODIFY `permision_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT de la tabla `pomodoros`
 --
 ALTER TABLE `pomodoros`
-  MODIFY `pomodoro_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+  MODIFY `pomodoro_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT de la tabla `puntuality`
 --
 ALTER TABLE `puntuality`
-  MODIFY `punt_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=784;
+  MODIFY `punt_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=786;
 
 --
 -- AUTO_INCREMENT de la tabla `reminders`
 --
 ALTER TABLE `reminders`
-  MODIFY `reminder_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `reminder_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
 
 --
 -- AUTO_INCREMENT de la tabla `remindershare`
 --
 ALTER TABLE `remindershare`
-  MODIFY `remindsha_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+  MODIFY `remindsha_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT de la tabla `repetitiondays`
 --
 ALTER TABLE `repetitiondays`
-  MODIFY `repdays_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+  MODIFY `repdays_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT de la tabla `schedules`
 --
 ALTER TABLE `schedules`
-  MODIFY `schedule_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+  MODIFY `schedule_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT de la tabla `sleepquality`
 --
 ALTER TABLE `sleepquality`
-  MODIFY `quality_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `quality_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
 
 --
 -- AUTO_INCREMENT de la tabla `timers`
 --
 ALTER TABLE `timers`
-  MODIFY `timer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+  MODIFY `timer_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT de la tabla `titles`
 --
 ALTER TABLE `titles`
-  MODIFY `title_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `title_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT de la tabla `tones`
 --
 ALTER TABLE `tones`
-  MODIFY `tone_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+  MODIFY `tone_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
+  MODIFY `user_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
 
 --
 -- AUTO_INCREMENT de la tabla `usersblocked`
 --
 ALTER TABLE `usersblocked`
-  MODIFY `userblocked_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `userblocked_id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `weeklyscorecard`
+--
+ALTER TABLE `weeklyscorecard`
+  MODIFY `weeklyscorecard_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- Restricciones para tablas volcadas
@@ -1268,6 +1343,33 @@ ALTER TABLE `usersblocked`
 --
 ALTER TABLE `user_titles`
   ADD CONSTRAINT `user_titles_ibfk_1` FOREIGN KEY (`title_id`) REFERENCES `titles` (`title_id`) ON DELETE CASCADE;
+
+--
+-- Filtros para la tabla `weeklyscorecard`
+--
+ALTER TABLE `weeklyscorecard`
+  ADD CONSTRAINT `weeklyscorecard_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
+
+DELIMITER $$
+--
+-- Eventos
+--
+DROP EVENT IF EXISTS `WeeklyScoreCard`$$
+CREATE DEFINER=`root`@`localhost` EVENT `WeeklyScoreCard` ON SCHEDULE EVERY 1 WEEK STARTS '2024-07-28 18:00:00' ON COMPLETION PRESERVE ENABLE COMMENT 'Evento semanal, calcula el promedio de puntualidad' DO INSERT INTO `weeklyscorecard` (`user_id`, `punt_weekly_date`, `punt_value`, `punt_num_rem`, `punt_percent_rem`, `punt_num_alar`, `punt_percent_alar`, `punt_num_timer`, `punt_percent_timer`, `punt_num_chro`, `punt_percent_chro`)
+    SELECT `user_id`, AVG(`punt_date`), AVG(`punt_value`), AVG(`punt_num_rem`), AVG(`punt_percent_rem`), AVG(`punt_num_alar`), AVG(`punt_percent_alar`), AVG(`punt_num_timer`), AVG(`punt_percent_timer`), AVG(`punt_num_chro`), AVG(`punt_percent_chro`)
+    FROM `puntuality`
+    WHERE (SELECT count(*) AS count FROM `puntuality` WHERE `punt_date` BETWEEN date_add(CURRENT_TIMESTAMP, INTERVAL -7 DAY) AND CURRENT_TIMESTAMP) > 0 AND `punt_date` BETWEEN date_add(CURRENT_TIMESTAMP, INTERVAL -7 DAY) AND CURRENT_TIMESTAMP
+    GROUP BY `user_id`$$
+
+DROP EVENT IF EXISTS `DailyPuntuality`$$
+CREATE DEFINER=`root`@`localhost` EVENT `DailyPuntuality` ON SCHEDULE EVERY 1 DAY STARTS '2024-07-26 00:00:00' ON COMPLETION PRESERVE ENABLE COMMENT 'Se genera entrada en puntualidad cada día a media noche' DO INSERT INTO `puntuality` (`user_id`, `punt_date`, `punt_value`, `punt_num_rem`, `punt_percent_rem`, `punt_num_alar`, `punt_percent_alar`, `punt_num_timer`, `punt_percent_timer`, `punt_num_chro`, `punt_percent_chro`)
+SELECT `user_id`, CURRENT_TIMESTAMP, 0, 0, 0, 0, 0, 0, 0, 0, 0
+FROM `users`$$
+
+DROP EVENT IF EXISTS `ReminderCancel`$$
+CREATE DEFINER=`root`@`localhost` EVENT `ReminderCancel` ON SCHEDULE EVERY 1 MINUTE STARTS '2024-07-25 00:00:00' ON COMPLETION NOT PRESERVE DISABLE COMMENT 'Cancela el recordatorio si supero el 80% de tiempo antes de verl' DO SELECT * FROM `reminder`$$
+
+DELIMITER ;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

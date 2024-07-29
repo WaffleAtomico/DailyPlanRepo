@@ -37,6 +37,7 @@ import PreparationView from "./advices/Preparation";
 import { getReminderById, getRemindersByWeek } from "../../utils/validations/reminders";
 
 import { getPuntualityById } from "../../utils/validations/puntuality";
+import { isUserWeeklyScorecard, getWeeklyScorecardForUser, updateTitleUser } from "../../utils/validations/weeklyscorecard";
 import WeekSumerize from "./advices/WeekSumerize";
 import { useBootstrapBreakpoints } from "react-bootstrap/esm/ThemeProvider";
 
@@ -71,20 +72,49 @@ export default function OriginPage() {
       });
     };
     const getUserPuntuality = (user_id) => {
-      getPuntualityById(user_id).then(res => {
-        if (isNaN(res.data[0])) {
+      getWeeklyScorecardForUser(user_id).then(res => {
+        if (res.data.length == 0) {
           // console.log("Puntualidad ", res.data[0]);
           setPuntuality(0);
           // myPojo.setNotif("¿No tienes puntualidad?", <> Cada domingo a las 6pm con base en tus resultados de esa semana se te asignará un valor de puntualidad. ¡Esfuerzate cada semana para obtener distintos logros y hasta un marco especial para tu usuario!</>)
         } else {
-          setPuntuality(res.data[0]);
+          if (res.data.length > 1) {
+            if (res.data[1].punt_value > 0) {
+              if (res.data[0].punt_value > 0) {
+                const sum_punt = res.data[0].punt_value + res.data[1].punt_value;
+                const rest_punt = res.data[0].punt_value - res.data[1].punt_value;
+                setPuntuality(Math.round(sum_punt / 2));
+
+                if (rest_punt > 5) {
+                  updateTitleUser(1, user_id, 11).then(res => {});
+                }
+              } else {
+                setPuntuality(res.data[1].punt_value);
+              }
+            } else {
+              setPuntuality(res.data[0].punt_value);
+            }
+          } else {
+            setPuntuality(res.data[0].punt_value);
+          }
         }
       }).catch(error => {
         console.error(error);
       });
     };
+
+    const showSumarize = (user_id) => {
+      //Preguntar si existe o si esta en 0 o 1
+      isUserWeeklyScorecard(user_id).then(res => {
+        if (res.data.isLimitReached) {
+            myPojo.setNotif("Resumen Semanal de Puntualidad", <WeekSumerize user_id={user_id}/>);
+        }
+      }).catch(err => { console.log(err) });
+    }
+    
     getUserName(id);
     getUserPuntuality(id);
+    showSumarize(id);
   }, []);
 
   const handleSuboption = (index) => {
@@ -105,14 +135,6 @@ export default function OriginPage() {
         break;
     }
   };
-
-  useEffect(() => {
-    const showSumarize = () => {
-      //Preguntar si existe o si esta en 0 o 1
-      myPojo.setNotif("Resumen Semanal de Puntualidad", <WeekSumerize />);
-    }
-    // showSumarize();
-  }, [])
 
   const GoToProfileModule = () => {
     navigate(`/dailyplanconfig/${id}`);
