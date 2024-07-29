@@ -223,7 +223,8 @@ import {
   getWeeklyScorecard,
   getWeeklyScorecardById,
   getWeeklyScorecardForUser,
-  isUserWeeklyScorecard
+  isUserWeeklyScorecard,
+  updateTitleUser
 } from './requests/weeklyscorecard.js';
 
 import { sendMailrest, sendMailrestjt } from "./requests/mail.js";
