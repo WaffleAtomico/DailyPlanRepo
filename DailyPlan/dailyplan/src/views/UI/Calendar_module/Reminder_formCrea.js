@@ -335,19 +335,7 @@ const ReminderFormView = (props) => {
 
                     })
                 }
-            const departureLocation = {
-                    location_x: departureLatLng[0],
-                    location_y: departureLatLng[1],
-                    location_type: 1,
-                    reminder_id: reminder_id,
-            }
-
-                addLocation(arriveLocation).then(response => {
-
-                    addLocation(departureLocation)
-
-                })
-            
+          
                 // Tratar de guardar la localización
 
                 if (formData.goalList.length > 0) {
