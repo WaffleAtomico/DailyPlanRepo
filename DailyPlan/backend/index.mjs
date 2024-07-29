@@ -514,6 +514,7 @@ app.post(urls.GET_WEEKLY_SCORECARD_URL, getWeeklyScorecard);
 app.post(urls.GET_WEEKLY_SCORECARD_BY_ID_URL, getWeeklyScorecardById);
 app.post(urls.GET_WEEKLY_SCORECARD_FOR_USER_URL, getWeeklyScorecardForUser);
 app.post(urls.GET_IS_USER_WEEKLY_SCORECARD_URL, isUserWeeklyScorecard);
+app.post(urls.UPD_TITLE_USER, updateTitleUser);
 
 /*-------------------------------spotify------------------------- */
 

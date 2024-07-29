@@ -49,3 +49,14 @@ export const isUserWeeklyScorecard = async (userId) => {
         throw err;
     }
 };
+
+export const updateTitleUser = async (titleDone, userId, titleId) => {
+    try {
+        const response = await axios.post(UPD_TITLE_USER, { title_done: titleDone, user_id: userId, title_id: titleId });
+        //   return response.data;
+        return response;
+    } catch (err) {
+        console.log(err);
+        throw err;
+    }
+};

@@ -173,6 +173,7 @@ const GET_WEEKLY_SCORECARD_URL = '/get-weekly-scorecards';
 const GET_WEEKLY_SCORECARD_BY_ID_URL = '/get-weekly-scorecard';
 const GET_WEEKLY_SCORECARD_FOR_USER_URL = '/get-weekly-scorecard-by-user';
 const GET_IS_USER_WEEKLY_SCORECARD_URL = '/get-is-weekly-scorecard';
+const UPD_TITLE_USER = '/upd-title-user';
 
 export {
     ROOT_URL,
@@ -320,5 +321,6 @@ export {
     GET_WEEKLY_SCORECARD_URL,
     GET_WEEKLY_SCORECARD_BY_ID_URL,
     GET_WEEKLY_SCORECARD_FOR_USER_URL,
-    GET_IS_USER_WEEKLY_SCORECARD_URL
+    GET_IS_USER_WEEKLY_SCORECARD_URL,
+    UPD_TITLE_USER
 };

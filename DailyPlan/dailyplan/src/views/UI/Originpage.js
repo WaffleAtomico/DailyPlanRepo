@@ -37,7 +37,7 @@ import PreparationView from "./advices/Preparation";
 import { getReminderById, getRemindersByWeek } from "../../utils/validations/reminders";
 
 import { getPuntualityById } from "../../utils/validations/puntuality";
-import { isUserWeeklyScorecard, getWeeklyScorecardForUser } from "../../utils/validations/weeklyscorecard";
+import { isUserWeeklyScorecard, getWeeklyScorecardForUser, updateTitleUser } from "../../utils/validations/weeklyscorecard";
 import WeekSumerize from "./advices/WeekSumerize";
 import { useBootstrapBreakpoints } from "react-bootstrap/esm/ThemeProvider";
 
@@ -83,7 +83,12 @@ export default function OriginPage() {
             if (res.data[1].punt_value > 0) {
               if (res.data[0].punt_value > 0) {
                 const sum_punt = res.data[0].punt_value + res.data[1].punt_value;
+                const rest_punt = res.data[0].punt_value - res.data[1].punt_value;
                 setPuntuality(Math.round(sum_punt / 2));
+
+                if (rest_punt > 5) {
+                  updateTitleUser(1, user_id, 11).then(res => {});
+                }
               } else {
                 setPuntuality(res.data[1].punt_value);
               }

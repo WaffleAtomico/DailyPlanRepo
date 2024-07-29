@@ -55,9 +55,27 @@ const isUserWeeklyScorecard = async (req, res) => {
   }
 };
 
+const updateTitleUser = (req, res) => {
+  const query = {
+      sql: "UPDATE `user_titles` SET `title_done` = ? WHERE `user_id ` = ? AND `title_id ` = ?",
+      values: [
+          req.body.title_done,
+          req.body.user_id,
+          req.body.title_id,
+      ],
+  };
+  db.query(query.sql, query.values, (err, data) => {
+      if (err) {
+          return res.json({ message: "Error updating User title", error: err });
+      }
+      return res.json({ message: "User title updated successfully" });
+  });
+};
+
 export {
     getWeeklyScorecard,
     getWeeklyScorecardById,
     getWeeklyScorecardForUser,
-    isUserWeeklyScorecard
+    isUserWeeklyScorecard,
+    updateTitleUser
 }
