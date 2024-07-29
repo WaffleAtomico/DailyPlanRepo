@@ -1,11 +1,11 @@
 import { db } from '../config/connection.js';
 
 const addNotification = (req, res) => {
+    console.log(req.body);
     const query = {
-        sql: "INSERT INTO `notifications`(`notification_name`, `notification_date`, `notification_type`, `user_id`) VALUES (?, ?, ?, ?)",
+        sql: "INSERT INTO `notifications`(`notification_name` , `notification_type`, `user_id`) VALUES (?, ?, ?)",
         values: [
             req.body.notification_name,
-            req.body.notification_date,
             req.body.notification_type,
             req.body.user_id,
         ],

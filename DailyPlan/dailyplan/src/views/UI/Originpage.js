@@ -70,7 +70,6 @@ export default function OriginPage() {
         console.error(error);
         navigate("/login");
       });
-
     };
     const getUserPuntuality = (user_id) => {
       getWeeklyScorecardForUser(user_id).then(res => {

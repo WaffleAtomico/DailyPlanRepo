@@ -6,6 +6,18 @@ import {
 
 // Function to add a notification
 export const addNotification = async (notificationInfo) => {
+    /**
+     values: [
+            req.body.notification_name,
+            req.body.notification_type,
+            req.body.user_id,
+        ],
+     */
+    /*
+        type 0: Resumen semanal
+        type 1: Cancelaciones
+        type 2: Logros entre usuarios de recordatorio? No recuerdo
+    */
     try {
         const response = await axios.post(ADD_NOTIFICATION_URL, notificationInfo);
         return response;

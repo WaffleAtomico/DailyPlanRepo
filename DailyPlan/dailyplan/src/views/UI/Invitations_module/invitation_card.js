@@ -118,13 +118,13 @@ const InvitationCard = ({ name, color, Icon, content, flag, handleInvAccepted,
                                 </Button>
                                 {flag === 1 && (
                                     <>
-                                        <Button variant="success" className="button-large" onClick={() => handleInvAccepted(item.inv_id,
+                                        <Button variant="success" className="button-large" onClick={() => handleInvAccepted(item.inv_id, item.user_id_owner,
                                             selectType(item.alarm_id, item.reminder_id),
                                             (item.reminder_id ? item.reminder_id : null), (item.alarm_id ? item.alarm_id : null)
                                         )}>
                                             <FaCheck /> Aceptar
                                         </Button>
-                                        <Button variant="danger" className="button-large" onClick={() => handleInvRejected(item.inv_id, item.user_id_owner)}>
+                                        <Button variant="danger" className="button-large" onClick={() => handleInvRejected(item.inv_id)}>
                                             <ImCross /> Cancelar
                                         </Button>
                                     </>
@@ -135,7 +135,7 @@ const InvitationCard = ({ name, color, Icon, content, flag, handleInvAccepted,
                                         <Button variant="primary" className="button-large" onClick={() => handleInvObjectives(item.inv_id)}>
                                             <FaTasks /> Objetivos
                                         </Button>
-                                        <Button variant="danger" className="button-large" onClick={() => handleInvCanceled(item.inv_id)}>
+                                        <Button variant="danger" className="button-large" onClick={() => handleInvCanceled(item.inv_id, item.user_id_owner)}>
                                             <MdBlock /> Eliminar
                                         </Button>
                                     </>
