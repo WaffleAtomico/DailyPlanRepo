@@ -10,11 +10,17 @@ function timeFormatSec(seconds){
     }
 }
 
+const formatDate = (date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based, so add 1
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+};
 
 
 function timeFormatHHMMSS(seconds) {
     const hours = Math.floor(seconds / 3600);
-    const minutes = Math.floor((seconds % 3600) / 60);
+    const minutes = Math.floor((seconds % 3600) / 60); 
     const secs = seconds % 60;
 
     return {
@@ -23,6 +29,20 @@ function timeFormatHHMMSS(seconds) {
         seconds: secs
     };
 }
+
+function timeFormatHHMMSSString(seconds) {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const secs = seconds % 60;
+
+    // Format each component to be two digits
+    const formattedHours = hours.toString().padStart(2, '0');
+    const formattedMinutes = minutes.toString().padStart(2, '0');
+    const formattedSeconds = secs.toString().padStart(2, '0');
+
+    return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+}
+
 
 const calculateWeekRange = () => {
     const today = new Date();
@@ -46,5 +66,5 @@ const calculateWeekRange = () => {
 
 
 export {
-    timeFormatSec, timeFormatHHMMSS, calculateWeekRange
+    timeFormatSec, timeFormatHHMMSS, calculateWeekRange, formatDate, timeFormatHHMMSSString
 }

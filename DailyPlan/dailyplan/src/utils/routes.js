@@ -117,11 +117,11 @@ const UPDATE_PUNTUALITY_URL = `${urlreference}/update-puntuality`;
 const DELETE_PUNTUALITY_URL = `${urlreference}/delete-puntuality`;
 const GET_PUNTUALITY_BY_USER_ID_AND_DATE_URL = `${urlreference}/getPuntualityByUserIdAndDate`;
 
-
 const GET_REMINDERS_URL = `${urlreference}/get-reminders`;
 const ADD_REMINDER_URL = `${urlreference}/add-reminder`;
 const GET_REMINDERS_FOR_USER_URL = `${urlreference}/get-user-reminders`;
 const GET_REMINDER_BY_ID_URL = `${urlreference}/get-reminder`;
+const GET_REMINDER_BY_DAY_URL = `${urlreference}/get-reminders-by-day`;
 const UPDATE_REMINDER_URL = `${urlreference}/update-reminder`;
 const DELETE_REMINDER_URL = `${urlreference}/delete-reminder`;
 const GET_REMINDERS_BY_MONTH_URL = `${urlreference}/get-reminders-by-month`;
@@ -279,6 +279,7 @@ export {
     DELETE_REMINDER_URL,
     GET_REMINDERS_BY_MONTH_URL,
     GET_REMINDERS_BY_WEEK_URL,
+    GET_REMINDER_BY_DAY_URL,
     ADD_REMINDERSHARE_URL,
     GET_REMINDERSHARES_URL,
     GET_REMINDERSHARES_FOR_USER_URL,
