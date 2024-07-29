@@ -1,36 +1,42 @@
 import React, { useState, useEffect } from "react";
-import { getAllArchivements } from "../../../utils/archivements/grantArchivement";
+import { getAllArchivements, grantArchivement, isCompleted } from "../../../utils/archivements/grantArchivement";
+import { useNavigate } from "react-router-dom";
 import { CiCircleCheck } from "react-icons/ci";
 import RealTimeLocationComponent from "../../../utils/components/location/RealTimeLocation";
-import { getUsersBlocked } from "../../../utils/validations/blockedurs";
+import { delUserBlocked, getUsersBlocked } from "../../../utils/validations/blockedurs";
 import { RiUserForbidLine } from "react-icons/ri";
-import { FaCheckCircle, FaRegCircle, FaSpotify } from 'react-icons/fa';
+import { FaCheckCircle, FaRegCircle, FaSpotify, FaUserCheck } from 'react-icons/fa';
 
-import { SpotifyApiContext } from 'react-spotify-api'
-import Cookies from 'js-cookie'
-import { SpotifyAuth, Scopes } from 'react-spotify-auth'
-import 'react-spotify-auth/dist/index.css'
+import { SpotifyApiContext } from 'react-spotify-api';
+import Cookies from 'js-cookie';
+import { SpotifyAuth, Scopes } from 'react-spotify-auth';
+import 'react-spotify-auth/dist/index.css';
 
 import "../../../styles/UI/profile/configOptions.css";
 import "../../../styles/UI/profile/notifView.css";
 import "../../../styles/UI/profile/profileInfo.css";
 import { addPermission, getPermissionById } from "../../../utils/validations/permission";
+import { updateUserTitle } from "../../../utils/validations/user";
+import { myPojo } from "../../../utils/ShowNotifInfo";
+import { GoGear } from "react-icons/go";
 
 
 
 const PersoInfo = () => {
+  const navigate = useNavigate();
   const [userName, setUserName] = useState('Nombre Usuario');
   const [showConfirmation, setShowConfirmation] = useState(false);
-  const [isChecked, setIsChecked] = useState(false);
+  // const [isChecked, setIsChecked] = useState(false);
 
   const handleDeleteAccount = () => {
     console.log('Cuenta eliminada');
+    navigate("/login");
   };
 
-  const handleCheckboxChange = (checked) => {
-    setIsChecked(checked);
-    console.log('Checkbox in PersoInfo is now', checked);
-  };
+  // const handleCheckboxChange = (checked) => {
+  //   setIsChecked(checked);
+  //   console.log('Checkbox in PersoInfo is now', checked);
+  // };
 
   return (
     <div className="info-container">
@@ -44,7 +50,7 @@ const PersoInfo = () => {
           className="info-input"
         />
       </div>
-    
+
       <div className="info-field">
         <label>Título:</label>
         <p className="info-value">Mi Título</p>
@@ -85,52 +91,69 @@ const PersoInfo = () => {
     </div>
   );
 };
+
 const BloqUser = (props) => {
   const [blockedUsers, setBlockedUsers] = useState([]);
-  const [isChecked, setIsChecked] = useState(false);
+  const [hoveredIndex, setHoveredIndex] = useState(null);
 
   useEffect(() => {
     getBlockedUsers(props.id);
+    console.log(blockedUsers);
   }, [props.id]);
 
   const getBlockedUsers = (user_id) => {
     getUsersBlocked(user_id).then(blockedUsersData => {
-      setBlockedUsers(blockedUsersData);
+      setBlockedUsers(blockedUsersData.data);
+      console.log(blockedUsersData.data);
     }).catch(err => { console.log(err) });
   };
 
-  const handleCheckboxChange = (checked) => {
-    setIsChecked(checked);
-    console.log('Checkbox in BloqUser is now', checked);
-  };
+  const handleUnblock = (userblocked_id, user_mail) => {
+    console.log(userblocked_id);
+    delUserBlocked(userblocked_id).then(res=>{
+      if(res.status){
+        getBlockedUsers(props.id);
+        myPojo.setNotif(`Has desbloqueado a: ${user_mail}`,<></>);
+      }
+    }).catch(err=>{console.log(err)})
+  }
 
   return (
-    <div style={{ backgroundColor: "#f0f0f0" }}>
-      <h2>Usuarios bloqueados {blockedUsers.length} </h2>
-      <CustomCheckbox
-        label="Check me"
-        isChecked={isChecked}
-        onChange={handleCheckboxChange}
-      />
+    <div style={{ backgroundColor: "#f0f0f0" }} className="notif-container">
+      <h2 className="notif-title">Usuarios bloqueados: {blockedUsers.length ? blockedUsers.length : 0} </h2>
       {blockedUsers.length > 0 ? (
-        <table className="titl-custom-table">
-          <thead>
-            <tr>
-              <th className="titl-table-header">Usuario</th>
-              <th className="titl-table-header">Seleccionar</th>
-            </tr>
-          </thead>
-          <tbody>
-            {blockedUsers.map((blockedUsr) => (
-              <tr key={blockedUsr.user_id_target}>
-                <td className="titl-table-cell">{blockedUsr.user_mail}</td>
-                <td className="titl-table-cell">
-                  <div className="titl-circle-check"><RiUserForbidLine /></div>
-                </td>
+        <div className="notif-table-container">
+          <table className="notif-table">
+            <thead>
+              <tr>
+                <th className="notif-date-header">Usuario</th>
+                <th className="notif-date-header">Desbloquear</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {blockedUsers.map((blockedUsr) => (
+                <tr key={blockedUsr.user_id_target}>
+                  <td className="otif-date-cell">{blockedUsr.user_mail}</td>
+                  <td className="otif-date-cell">
+                    <div className="titl-circle-check"
+                      onClick={()=>handleUnblock(blockedUsr.userblocked_id, blockedUsr.user_mail)}
+                      onMouseEnter={() => setHoveredIndex(blockedUsr.user_id_target)}
+                      onMouseLeave={() => setHoveredIndex(null)}
+                      style={{ cursor: 'pointer' }}
+                    >
+                       {hoveredIndex === blockedUsr.user_id_target ? (
+                        <FaUserCheck size={40} />
+                      ) : (
+                        <RiUserForbidLine size={40} />
+                      )}
+                      
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       ) : (
         <p>No tienes bloqueado a ningún usuario.</p>
       )}
@@ -189,7 +212,7 @@ const UserNotif = (props) => {
   );
 };
 
-const UserConnections = (props) => { 
+const UserConnections = (props) => {
   const [spotifyConnected, setSpotifyConnected] = useState(false);
   const [token, setToken] = React.useState(Cookies.get("spotifyAuthToken"))
   //cambiar a como sea necesario para llamar a la funcion de conexion
@@ -234,22 +257,6 @@ const UserConnections = (props) => {
 */
 
 
-//Checkbox
-const CustomCheckbox = ({ label, isChecked, onChange }) => {
-  return (
-    <div className="checkbox-container">
-      <label>
-        {label}
-        <input
-          type="checkbox"
-          checked={isChecked}
-          onChange={(e) => onChange(e.target.checked)}
-        />
-      </label>
-    </div>
-  );
-};
-
 //Componente que sirve para obtener los permisos de ubicación de la persona
 
 const UserPermissions = (props) => {
@@ -273,7 +280,7 @@ const UserPermissions = (props) => {
       permision_active: locationPermission ? 0 : 1,
       user_id: props.id
     };
-    
+
     if (!locationPermission) {
       // If the permission is being turned on, fetch the location and then update the DB
       fetchUserLocation(permission);
@@ -297,7 +304,7 @@ const UserPermissions = (props) => {
         if (permission) addPermission(permission); // Update DB after getting location
       },
       error => {
-        
+
         setError('No se pudo obtener la ubicación. Quite el bloqueo del navegador');
       }
     );
@@ -322,23 +329,23 @@ const UserPermissions = (props) => {
   );
 };
 
-
-
 const UserTitles = (props) => {
   const [titles, setTitles] = useState([]);
   const [error, setError] = useState(null);
   const [hoveredIndex, setHoveredIndex] = useState(null);
+  const [isCompletedArchivement, setIsCompletedArchivement] = useState(true);
+
 
   useEffect(() => {
-
     getUserArchivement(props.id);
+    confirmArchivement(props.id);
   }, [props.id]);
 
   const getUserArchivement = async (user_id) => {
     try {
       const res = await getAllArchivements(user_id);
       const titlesData = res.data;
-      console.log("Títulos recibidos: ", titlesData);
+      // console.log("Títulos recibidos: ", titlesData);
       if (Array.isArray(titlesData)) {
         const validTitles = [];
         titlesData.forEach(title => {
@@ -346,7 +353,7 @@ const UserTitles = (props) => {
             validTitles.push(title);
           }
         });
-        console.log("Títulos válidos: ", validTitles);
+        // console.log("Títulos válidos: ", validTitles);
         setTitles(validTitles);
       } else {
         throw new Error("El formato de datos recibidos no es un arreglo.");
@@ -356,11 +363,45 @@ const UserTitles = (props) => {
       setError("No se pudieron obtener los títulos. Por favor, inténtalo más tarde.");
     }
   };
-  const selectUserTitle = (title_id) => {
-    console.log("Es necesario enviar el title_id para actualizar ese campo en user, solo ese", title_id);
+
+  const confirmArchivement = (user_id) => {
+    const grant_title_id = 12;
+    isCompleted(user_id, grant_title_id).then(response => {
+      // console.log("IsCompleted", response);
+      if (response == false) {
+        // console.log("Si es falso?", response)
+        setIsCompletedArchivement(response);
+      }
+    }).catch(error => {
+      console.error("Error confirming achievement: ", error);
+    });
+  }
+
+  const grant13Archivement = (user_id) => {
+    const grant_title_id = 13;
+    console.log("Is completed:? ", isCompletedArchivement);
+    if (!isCompletedArchivement) { //si no esta completado hay que entregarlo
+      grantArchivement(user_id, grant_title_id).then(res => {
+        myPojo.setNotif("Logro: TITULADO", <GoGear size={220} />);
+        setIsCompletedArchivement(true);
+      }).catch(error => {
+        console.error("Error granting achievement:", error);
+      });
+    }
+    // }).catch(err => { console.log(err) })
   };
 
-
+  const selectUserTitle = (title_id, title_name) => {
+    updateUserTitle(title_id, props.id).then(res => {
+      if (res.status) {
+        if (!isCompletedArchivement) {
+          grant13Archivement(props.id);
+        } else {
+          myPojo.setNotif(`Asignaste: ${title_name}, como tu nuevo titulo`, <></>);
+        }
+      }
+    })
+  };
 
   return (
     <div className="notif-container">
@@ -381,7 +422,7 @@ const UserTitles = (props) => {
                   <td className="notif-date-cell">{title.title_name}</td>
                   <td
                     className="notif-name-cell"
-                    onClick={() => selectUserTitle(title.title_id)}
+                    onClick={() => selectUserTitle(title.title_id, title.title_name)}
                   >
                     <div
                       className="titl-circle-check"

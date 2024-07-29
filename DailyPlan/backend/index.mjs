@@ -43,6 +43,7 @@ import {
   getUsersBlocked,
   addUserBlocked,
   delUserBlocked,
+  isUserBlocked,
 } from "./requests/userbloqued.js";
 
 import {
@@ -121,7 +122,9 @@ import {
   getObjectivesBlocks,
   getObjectivesBlockById,
   updateObjectivesBlock,
-  deleteObjectivesBlock
+  deleteObjectivesBlock,
+  CompleteObjectivesBlock
+
 } from './requests/objectivesblock.js';
 
 import {
@@ -145,7 +148,8 @@ import {
   getPuntuality,
   getPuntualityById,
   updatePuntuality,
-  deletePuntuality 
+  deletePuntuality, 
+  getPuntualityByUserIdAndDate
 } from './requests/puntuality.js'
 
 import {
@@ -348,6 +352,7 @@ app.post(urls.UPDATE_TITLE_STATUS_URL, updateTitleStatus);
 app.post(urls.ADD_USER_BLOCKED_URL, addUserBlocked);
 app.post(urls.DELETE_USER_BLOCKED_URL, delUserBlocked);
 app.post(urls.GET_USERS_BLOCKED_URL, getUsersBlocked);
+app.post(urls.CHECK_USER_BLOCKED_URL, isUserBlocked);
 
 /*-------------------------------Alarm------------------------- */
 app.post(urls.ADD_ALARM_URL, addAlarm);
@@ -416,6 +421,8 @@ app.post(urls.GET_OBJECTIVESBLOCKS_URL, getObjectivesBlocks);
 app.post(urls.GET_OBJECTIVESBLOCK_BY_ID_URL, getObjectivesBlockById);
 app.post(urls.UPDATE_OBJECTIVESBLOCK_URL, updateObjectivesBlock);
 app.post(urls.DELETE_OBJECTIVESBLOCK_URL, deleteObjectivesBlock);
+app.post(urls.COMPLETE_OBJECTIVEBLOCK_URL, CompleteObjectivesBlock);
+
 
 /*-------------------------------Permissions-------------------------*/
 app.post(urls.ADD_PERMISSION_URL, addPermision);
@@ -437,6 +444,7 @@ app.post(urls.GET_PUNTUALITIES_URL, getPuntuality);
 app.post(urls.GET_PUNTUALITY_BY_ID_URL, getPuntualityById);
 app.post(urls.UPDATE_PUNTUALITY_URL, updatePuntuality);
 app.post(urls.DELETE_PUNTUALITY_URL, deletePuntuality);
+app.post(urls.GET_PUNTUALITY_BY_USER_ID_AND_DATE_URL, getPuntualityByUserIdAndDate);
 
 /*-------------------------------Reminders-------------------------*/
 app.post(urls.ADD_REMINDER_URL, addReminder);

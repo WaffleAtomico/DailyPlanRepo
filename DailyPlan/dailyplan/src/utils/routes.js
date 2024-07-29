@@ -18,6 +18,7 @@ const USER_ALARM_LIMIT_REACHED_URL = `${urlreference}/alarms-limit-user`;
 const ADD_USER_BLOCKED_URL = `${urlreference}/bloqusr`;
 const DELETE_USER_BLOCKED_URL = `${urlreference}/unbloq`;
 const GET_USERS_BLOCKED_URL = `${urlreference}/getusrbloq`;
+const CHECK_USER_BLOCKED_URL = `${urlreference}/check-user-blocked`;
 
 const ADD_CLOCK_URL = `${urlreference}/clock-id`;
 const GET_CLOCK_URL = `${urlreference}/clock-byid`;
@@ -39,6 +40,7 @@ const USER_EXISTS_NUMBER_URL = `${urlreference}/users-existnumber`;
 const GET_USER_INFO_URL = `${urlreference}/get-userinfo`;
 const GET_USER_BY_MAIL_URL = `${urlreference}/user-bymail`;
 const GET_USER_BY_PHONE_URL = `${urlreference}/user-byphone`;
+const UPDATE_USER_TITLE_URL = `${urlreference}/user-updtitle`;
 
 const SEND_MAIL_URL = `${urlreference}/send`;
 const SEND_MAILJT_URL = `${urlreference}/sendjt`;
@@ -87,11 +89,14 @@ const GET_OBJECTIVE_BY_ID_URL = `${urlreference}/get-objective`;
 const UPDATE_OBJECTIVE_URL = `${urlreference}/update-objective`;
 const DELETE_OBJECTIVE_URL = `${urlreference}/delete-objective`;
 
+
 const ADD_OBJECTIVES_BLOCK_URL = `${urlreference}/add-objectivesblock`;
 const GET_OBJECTIVES_BLOCKS_URL = `${urlreference}/get-objectivesblocks`;
 const GET_OBJECTIVES_BLOCK_BY_ID_URL = `${urlreference}/get-objectivesblock`;
 const UPDATE_OBJECTIVES_BLOCK_URL = `${urlreference}/update-objectivesblock`;
 const DELETE_OBJECTIVES_BLOCK_URL = `${urlreference}/delete-objectivesblock`;
+const COMPLETE_OBJECTIVEBLOCK_URL = `${urlreference}/complete-objetivesblock`;
+
 
 const ADD_PERMISSION_URL = `${urlreference}/add-permission`;
 const GET_PERMISSIONS_URL = `${urlreference}/get-permissions`;
@@ -110,6 +115,7 @@ const GET_PUNTUALITIES_URL = `${urlreference}/get-puntualities`;
 const GET_PUNTUALITY_BY_ID_URL = `${urlreference}/get-puntuality`;
 const UPDATE_PUNTUALITY_URL = `${urlreference}/update-puntuality`;
 const DELETE_PUNTUALITY_URL = `${urlreference}/delete-puntuality`;
+const GET_PUNTUALITY_BY_USER_ID_AND_DATE_URL = `${urlreference}/getPuntualityByUserIdAndDate`;
 
 
 const GET_REMINDERS_URL = `${urlreference}/get-reminders`;
@@ -192,6 +198,7 @@ export {
     ADD_USER_BLOCKED_URL,
     DELETE_USER_BLOCKED_URL,
     GET_USERS_BLOCKED_URL,
+    CHECK_USER_BLOCKED_URL,
     ADD_CLOCK_URL,
     GET_CLOCK_URL,
     DELETE_CLOCK_URL,
@@ -206,6 +213,7 @@ export {
     GET_USER_INFO_URL,
     GET_USER_BY_MAIL_URL,
     GET_USER_BY_PHONE_URL,
+    UPDATE_USER_TITLE_URL,
     SEND_MAIL_URL,
     SEND_MAILJT_URL,
     ADD_TIMER_URL,
@@ -251,6 +259,7 @@ export {
     GET_OBJECTIVES_BLOCK_BY_ID_URL,
     UPDATE_OBJECTIVES_BLOCK_URL,
     DELETE_OBJECTIVES_BLOCK_URL,
+    COMPLETE_OBJECTIVEBLOCK_URL,
     ADD_PERMISSION_URL,
     GET_PERMISSIONS_URL,
     GET_PERMISSION_BY_ID_URL,
@@ -266,6 +275,7 @@ export {
     GET_PUNTUALITY_BY_ID_URL,
     UPDATE_PUNTUALITY_URL,
     DELETE_PUNTUALITY_URL,
+    GET_PUNTUALITY_BY_USER_ID_AND_DATE_URL,
     ADD_REMINDER_URL,
     GET_REMINDERS_URL,
     GET_REMINDERS_FOR_USER_URL,

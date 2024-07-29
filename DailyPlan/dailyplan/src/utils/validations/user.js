@@ -11,7 +11,8 @@ import {
     GET_USER_BY_MAIL_URL,
     GET_USER_BY_PHONE_URL,
     SEND_MAIL_URL,
-    SEND_MAILJT_URL
+    SEND_MAILJT_URL,
+    UPDATE_USER_TITLE_URL,
 } from '../routes';
 
 export const isValidEmail = (email) => {
@@ -188,3 +189,18 @@ export const enviaCorreojt = async (email, nombre, codigo) => {
         console.log(err);
     }
 };
+
+export const updateUserTitle = async (title_id, user_id) => {
+    // values: [
+    //     req.body.title_id,
+    //     req.body.user_id,
+    //   ],
+    try {
+        const response = await axios.post(UPDATE_USER_TITLE_URL, { title_id, user_id  });
+        //     return res.json({ message: "Usertitle updated successfully" });
+        return response
+    } catch (err) {
+        console.log(err)
+        
+    }
+}

@@ -105,7 +105,6 @@ const MapView = ({ onPlaceSelect, active }) => {
         setError('Error checking geolocation permission');
       }
     };
-
     getCurrentPosition();
   }, [active]);
 
@@ -119,13 +118,13 @@ const MapView = ({ onPlaceSelect, active }) => {
 
   if (!active) {
     return (
-      <div className="no-permission">
+      <div className="map-no-permission">
         <FaExclamationTriangle size={50} color="red" />
         <p>No se dio el permiso. Verifíquelo en Permisos.</p>
       </div>
     );
   }
-
+  
   return (
     <div style={{ height: '100%', width: '100%' }}>
       {locationPermission ? (
@@ -155,17 +154,17 @@ const MapView = ({ onPlaceSelect, active }) => {
           )}
         </MapContainer>
       ) : (
-        <div className="no-permission">
+        <div className="map-no-permission">
           <FaExclamationTriangle size={50} color="red" />
           <p>No se dio el permiso. Verifíquelo en Permisos.</p>
         </div>
       )}
-      <div className={`sidebar ${sidebarVisible ? 'visible' : 'hidden'}`}>
+      <div className={`map-sidebar ${sidebarVisible ? 'visible' : 'hidden'}`}>
         <DropdownButton
           id="dropdown-basic-button"
           title="Modo de Transporte"
           onSelect={(mode) => setTransportMode(mode)}
-          className="dropdown-button"
+          className="map-dropdown-button"
         >
           <Dropdown.Item eventKey="driving">Conduciendo</Dropdown.Item>
           <Dropdown.Item eventKey="walking">Caminando</Dropdown.Item>
@@ -194,13 +193,13 @@ const MapView = ({ onPlaceSelect, active }) => {
         </Button>
       </div>
       <Button
-        className="toggle-sidebar"
+        className="map-toggle-sidebar"
         onClick={() => setSidebarVisible(!sidebarVisible)}
       >
         {sidebarVisible ? 'Ocultar' : 'Mostrar'}
       </Button>
     </div>
   );
-};
+};  
 
 export default MapView;

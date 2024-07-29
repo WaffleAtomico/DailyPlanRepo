@@ -2,12 +2,15 @@ import { db } from '../config/connection.js';
 const addObjectivesBlock = (req, res) => {
 
     console.log("meter bloque,", req.body);
-
+    const body = req.body.blockInfo;
     const query = {
-        sql: "INSERT INTO `objectivesblock`(`reminder_id`, `objblo_name`) VALUES (?, ?)",
+        sql: "INSERT INTO `objectivesblock`(`reminder_id`, `objblo_name`, `objblo_check`, `objblo_duration_min`, `objblo_durationreal_min`) VALUES (?, ?, ?, ?, ?)",
         values: [
-            req.body.reminder_id,
-            req.body.objblo_name,
+            body.reminder_id,
+            body.objblo_name,
+            body.objblo_check,
+            body.objblo_duration_min,
+            body.objblo_durationreal_min
         ],
     };
     db.query(query.sql, query.values, (err, result) => {
@@ -33,8 +36,8 @@ const getObjectivesBlocks = (req, res) => {
 
 const getObjectivesBlockById = (req, res) => {
     const query = {
-        sql: "SELECT `objblo_id`, `reminder_id`, `objblo_name` FROM `objectivesblock` WHERE `objblo_id` = ?",
-        values: [req.params.objblo_id],
+        sql: "SELECT *FROM `objectivesblock` WHERE `objblo_id` = ?",
+        values: [req.body.objblo_id],
     };
     db.query(query.sql, query.values, (err, data) => {
         if (err) {
@@ -45,14 +48,20 @@ const getObjectivesBlockById = (req, res) => {
 };
 
 const updateObjectivesBlock = (req, res) => {
+    console.log("Se mando a actualizar", req.body);
+    const idObj = req.body.objblo_id;
+    const body = req.body.blockInfo;
     const query = {
-        sql: "UPDATE `objectivesblock` SET `reminder_id` = ?, `objblo_name` = ? WHERE `objblo_id` = ?",
+        sql: "UPDATE `objectivesblock` SET `reminder_id` = ?, `objblo_name` = ?, `objblo_check` = ?, `objblo_duration_min` = ?, `objblo_durationreal_min` = ? WHERE `objblo_id` = ?",
         values: [
-            req.body.reminder_id,
-            req.body.objblo_name,
-            req.params.objblo_id,
+            body.reminder_id,
+            body.objblo_name,
+            body.objblo_check,
+            body.objblo_duration_min,
+            body.objblo_durationreal_min,
+            idObj
         ],
-    };
+    }
     db.query(query.sql, query.values, (err, data) => {
         if (err) {
             return res.json({ message: "Error updating objective block", error: err });
@@ -74,9 +83,36 @@ const deleteObjectivesBlock = (req, res) => {
     });
 };
 
+
+const CompleteObjectivesBlock = (req, res) => {
+    console.log("Se mando a completar", req.body);
+    const idObj = req.body.objblo_id;
+    const { objblo_check, objblo_durationreal_min } = req.body.blockInfo;
+
+    const query = {
+        sql: "UPDATE `objectivesblock` SET `objblo_check` = ?, `objblo_durationreal_min` = ? WHERE `objblo_id` = ?",
+        values: [
+            objblo_check,
+            objblo_durationreal_min,
+            idObj
+        ],
+    };
+
+    db.query(query.sql, query.values, (err, data) => {
+        if (err) {
+            return res.json({ message: "Error updating objective block", error: err });
+        }
+        return res.json({ message: "Objective block updated successfully" });
+    });
+};
+
+export default updateObjectivesBlock;
+
+
 export { 
     addObjectivesBlock,
     getObjectivesBlocks,
+    CompleteObjectivesBlock,
     getObjectivesBlockById,
     updateObjectivesBlock,
     deleteObjectivesBlock 

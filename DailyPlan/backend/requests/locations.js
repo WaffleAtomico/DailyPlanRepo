@@ -1,13 +1,16 @@
 import { db } from '../config/connection.js';
 
 const addLocation = (req, res) => {
+
+    const body = req.body.locationInfo;
+
     const query = {
         sql: "INSERT INTO `locations`(`location_x`, `location_y`, `location_type`, `reminder_id`) VALUES (?, ?, ?, ?)",
         values: [
-            req.body.location_x,
-            req.body.location_y,
-            req.body.location_type,
-            req.body.reminder_id,
+            body.location_x,
+            body.location_y,
+            body.location_type,
+            body.reminder_id,
         ],
     };
     db.query(query.sql, query.values, (err, data) => {

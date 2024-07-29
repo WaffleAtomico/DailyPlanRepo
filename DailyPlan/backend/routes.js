@@ -33,6 +33,7 @@ const UPDATE_TITLE_STATUS_URL = '/title-updateone';
 const ADD_USER_BLOCKED_URL = '/bloqusr';
 const DELETE_USER_BLOCKED_URL = '/unbloq';
 const GET_USERS_BLOCKED_URL = '/getusrbloq';
+const CHECK_USER_BLOCKED_URL = '/check-user-blocked';
 
 const ADD_ALARM_URL = '/add-alarm';
 const GET_ALARMS_FOR_USER_URL = '/get-user-alarms';
@@ -92,6 +93,8 @@ const GET_OBJECTIVESBLOCKS_URL = '/get-objectivesblocks';
 const GET_OBJECTIVESBLOCK_BY_ID_URL = '/get-objectivesblock';
 const UPDATE_OBJECTIVESBLOCK_URL = '/update-objectivesblock';
 const DELETE_OBJECTIVESBLOCK_URL = '/delete-objectivesblock';
+const COMPLETE_OBJECTIVEBLOCK_URL = '/complete-objetivesblock';
+
 
 const ADD_PERMISSION_URL = '/add-permission';
 const GET_PERMISSIONS_URL = '/get-permissions';
@@ -110,6 +113,8 @@ const GET_PUNTUALITIES_URL = '/get-puntualities';
 const GET_PUNTUALITY_BY_ID_URL = '/get-puntuality';
 const UPDATE_PUNTUALITY_URL = '/update-puntuality';
 const DELETE_PUNTUALITY_URL = '/delete-puntuality';
+const GET_PUNTUALITY_BY_USER_ID_AND_DATE_URL = '/getPuntualityByUserIdAndDate';
+
 
 const ADD_REMINDER_URL = '/add-reminder';
 const GET_REMINDERS_URL = '/get-reminders';
@@ -198,6 +203,7 @@ export {
     ADD_USER_BLOCKED_URL,
     DELETE_USER_BLOCKED_URL,
     GET_USERS_BLOCKED_URL,
+    CHECK_USER_BLOCKED_URL,
     ADD_ALARM_URL,
     GET_ALARMS_FOR_USER_URL,
     GET_ALARM_BY_ID_URL,
@@ -248,6 +254,7 @@ export {
     GET_OBJECTIVESBLOCK_BY_ID_URL,
     UPDATE_OBJECTIVESBLOCK_URL,
     DELETE_OBJECTIVESBLOCK_URL,
+    COMPLETE_OBJECTIVEBLOCK_URL,
     ADD_PERMISSION_URL,
     GET_PERMISSIONS_URL,
     GET_PERMISSION_BY_ID_URL,
@@ -263,6 +270,7 @@ export {
     GET_PUNTUALITY_BY_ID_URL,
     UPDATE_PUNTUALITY_URL,
     DELETE_PUNTUALITY_URL,
+    GET_PUNTUALITY_BY_USER_ID_AND_DATE_URL,
     ADD_REMINDER_URL,
     GET_REMINDERS_URL,
     GET_REMINDERS_BY_MONTH_URL,
