@@ -30,8 +30,8 @@ const getAlarmShares = (req, res) => {
 
 const getAlarmShareById = (req, res) => {
     const query = {
-        sql: "SELECT `alarmsha_id`, `ar_user_id_target`, `alarm_id` FROM `alarmshare` WHERE `alarmsha_id` = ?",
-        values: [req.params.alarmsha_id],
+        sql: "SELECT `alarmsha_id`, `ar_user_id_target`, `alarm_id` FROM `alarmshare` WHERE `alarm_id` = ?",
+        values: [req.body.alarm_id],
     };
     db.query(query.sql, query.values, (err, data) => {
         if (err) {
@@ -47,7 +47,7 @@ const updateAlarmShare = (req, res) => {
         values: [
             req.body.ar_user_id_target,
             req.body.alarm_id,
-            req.params.alarmsha_id,
+            req.body.alarmsha_id,
         ],
     };
     db.query(query.sql, query.values, (err, data) => {
@@ -61,7 +61,7 @@ const updateAlarmShare = (req, res) => {
 const deleteAlarmShare = (req, res) => {
     const query = {
         sql: "DELETE FROM `alarmshare` WHERE `alarmsha_id` = ?",
-        values: [req.params.alarmsha_id],
+        values: [req.body.alarmsha_id],
     };
     db.query(query.sql, query.values, (err, data) => {
         if (err) {
