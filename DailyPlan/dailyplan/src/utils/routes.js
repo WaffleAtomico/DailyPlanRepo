@@ -33,6 +33,8 @@ const UPDATE_ONE_TITLE = `${urlreference}/title-updateone`;
 
 const CREATE_USER_URL = `${urlreference}/users`;
 const UPDATE_USER_PWD_URL = `${urlreference}/users-pwd`;
+const UPDATE_USER_NAME_URL = `${urlreference}/users-name`;
+
 const USER_EXISTS_URL = `${urlreference}/users-exist`;
 const USER_EXISTS_MAIL_URL = `${urlreference}/users-existmail`;
 const USER_EXISTS_NAME_URL = `${urlreference}/users-existname`;
@@ -210,6 +212,7 @@ export {
     CONN_URL,
     CREATE_USER_URL,
     UPDATE_USER_PWD_URL,
+    UPDATE_USER_NAME_URL,
     USER_EXISTS_URL,
     USER_EXISTS_MAIL_URL,
     USER_EXISTS_NAME_URL,

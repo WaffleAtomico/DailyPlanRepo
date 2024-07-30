@@ -146,6 +146,24 @@ const updateUserTitle = (req, res) => {
 };
 
 
+const updateUserName = (req, res) => {
+  const query = {
+    sql: "UPDATE `users` SET `user_name` = ? WHERE `user_id` = ?",
+    values: [
+      req.body.user_name,
+      req.body.user_id,
+    ],
+  };
+
+  db.query(query.sql, query.values, (err, data) => {
+    if (err) {
+      return res.json({ message: "Error updating user name", error: err });
+    }
+    return res.json({ message: "User name updated successfully" });
+  });
+};
+
+
 // Función para eliminar un usuario
 const deleteUser = (req, res) => {
   const query = {
@@ -267,6 +285,7 @@ export { getUsers,
         getUser,
         createUser,
         updateUser,
+        updateUserName,
         deleteUser,
         updateUserPwd,
         userExists,

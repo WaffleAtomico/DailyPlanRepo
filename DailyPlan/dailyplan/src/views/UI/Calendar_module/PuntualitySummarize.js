@@ -5,17 +5,6 @@ import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Toolti
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const PuntualitySummarize = ({ chartData }) => {
-    const data = {
-        labels: chartData.labels,
-        datasets: [
-            {
-                label: 'Estadísticas del Bloque',
-                data: chartData.data,
-                backgroundColor: ['#36A2EB', '#FF6384', '#FFCE56']
-            }
-        ]
-    };
-
     const options = {
         responsive: true,
         plugins: {
@@ -26,12 +15,26 @@ const PuntualitySummarize = ({ chartData }) => {
                 display: true,
                 text: 'Estadísticas del Bloque'
             }
+        },
+        scales: {
+            y: {
+                title: {
+                    display: true,
+                    text: 'Objective Block Time (seconds)'
+                }
+            },
+            x: {
+                title: {
+                    display: true,
+                    text: 'Time (seconds)'
+                }
+            }
         }
     };
 
     return (
         <div style={{ width: '80%', height: 'auto', margin: '0 auto' }}>
-            <Bar data={data} options={options} />
+            <Bar data={chartData} options={options} />
         </div>
     );
 }

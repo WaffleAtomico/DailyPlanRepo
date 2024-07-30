@@ -317,7 +317,8 @@ getRemindersByDay(formatDate(new Date()), id)
             reminderDate: reminder.reminder_date,
             reminderHour: reminder.reminder_hour,
             reminderMin: reminder.reminder_min,
-            check: reminder.objblo_check
+            check: reminder.objblo_check,
+            timeSpent: 0
           });
         }
       
