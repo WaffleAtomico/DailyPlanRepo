@@ -7,6 +7,7 @@ import {
 } from '../routes';
 
 export const addUserBlocked = async (userBlockedInfo) => {
+    //[req.body.user_id_sourse, req.body.user_id_target]
     try {
         const response = await axios.post(ADD_USER_BLOCKED_URL, userBlockedInfo);
         // return response.data;

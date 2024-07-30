@@ -27,6 +27,7 @@ export default function InvitationView(props) {
 
     const [CurrentReminderId, setCurrentReminderId] = useState(null);
     const [CurrentAlarmId, setCurrentAlarmId] = useState(null)
+    const [CurrentOwnerId, setCurrentOwnerId] = useState(null);
     const [pendingInvitations, setPendingInvitations] = useState([]);
     const [activeInvitations, setActiveInvitations] = useState([]);
     const [createdInvitations, setCreatedInvitations] = useState([]);
@@ -101,7 +102,7 @@ export default function InvitationView(props) {
         const grant_title_id = 3;
         isCompleted(user_id, grant_title_id).then(response => {
             if (response === false) {
-                // console.log("No esta completado el 4");
+                console.log("No esta completado el 4");
                 setIsCompletedArchivement1(response);
             }
         }).catch(error => {
@@ -147,14 +148,14 @@ export default function InvitationView(props) {
             });
         }
     };
-    const grant6Archivement = (OwnerUser_id) => {
-        const grant_title_id = 6;
+    const grant12Archivement = (OwnerUser_id) => {
+        const grant_title_id = 12;
         const user_id = OwnerUser_id;
         // console.log("Is completed:? ", isCompletedArchivement2);
-        isCompleted(user_id, grant_title_id).then(response => {
+        isCompleted(user_id, (grant_title_id-1)).then(response => {
             if (response === false) {
                 grantArchivement(user_id, grant_title_id).then(res => {
-                    console.log(res);
+                    console.log("Si le otorgue el logro a el otro usuario: ",res);
                 }).catch(error => {
                     console.error("Error granting achievement:", error);
                 });
@@ -163,14 +164,11 @@ export default function InvitationView(props) {
             console.error("Error confirming achievement: ", error);
         });
     };
-
     /*
-    
     INVITATIONS STATES
     1 ============ ACCEPTED
     0 ============ REJECTED
     NULL ==== WAITING
-    
     */
     const handleInvAccepted = (inv_id, user_id_owner, invType, reminder_id, alarm_id) => {
         //aceptar la invitacion recibida
@@ -178,7 +176,7 @@ export default function InvitationView(props) {
         // console.log("Entre a invitaciones aceptadas", inv_id);
 
         updateInvitationState(true, inv_id).then(res => {
-            console.log(res)
+            // console.log(res)
             if (res.status) {
                 // console.log("Si jala bn, o deberia de actualizar");
                 fetchInvitations();
@@ -188,10 +186,11 @@ export default function InvitationView(props) {
                         reminder_id: reminder_id,
                     }
                     saveReminderShare(reminderShareInfo).then(res => {
-                        if (res.status) {
-                            console.log(res.data);
-                            // grant4Archivement();
-                            grant6Archivement(user_id_owner);
+                        // console.log("Reminder share response ",res)
+                        if (res) {
+                            // console.log("Si agrego el registro de reminderShare",res.data);
+                            grant4Archivement();
+                            grant12Archivement(user_id_owner);
                         }
                     }
                     ).catch(err => { console.log(err) })
@@ -202,12 +201,15 @@ export default function InvitationView(props) {
         }).catch(err => { console.log(err) })
     }
 
-    const handleInvUsers = (inv_id, invRemId, invAlarmId) => {
+    const handleInvUsers = (inv_id, ownerId, invRemId, invAlarmId) => {
+        // console.log("Owner",ownerId);
         if (invRemId) {
+            setCurrentOwner(ownerId);
             setCurrentReminderId(invRemId);
             setCurrentAlarmId(null);
         }
         if (invAlarmId) {
+            setCurrentOwner(ownerId);
             setCurrentAlarmId(invAlarmId);
             setCurrentReminderId(null);
         }
@@ -218,9 +220,10 @@ export default function InvitationView(props) {
         if(showUserList == false){
             setCurrentReminderId(null);
             setCurrentAlarmId(null);
+            setCurrentOwner(null);
         }
-        console.log(CurrentAlarmId);
-        console.log(CurrentReminderId)
+        // console.log(CurrentAlarmId);
+        // console.log(CurrentReminderId)
     }, [showUserList])
 
     const handleInvRejected = (inv_id) => {
@@ -265,9 +268,11 @@ export default function InvitationView(props) {
                                 console.log("Si ha avisado que cancela");
                                 fetchInvitations();
                             }
-                        }).catch(err => { console.log(err) })
+                        }).catch(err => { console.log(err) });
+                        
                         setShowCancelModal(false);
                     }
+                    fetchInvitations();
                 }).catch(err => { console.log(err) })
             }
         }).catch(err => { console.log(err) })
@@ -349,6 +354,7 @@ export default function InvitationView(props) {
             />
             {showUserList && <InvUserList
                 inv_id={currentInvId} 
+                ownerId={CurrentOwner}
                 user_id={props.user_id} 
                 reminderId={CurrentReminderId}
                 alarmId={CurrentAlarmId}

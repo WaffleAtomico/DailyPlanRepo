@@ -32,14 +32,16 @@ const PersoInfo = (props) => {
     user_number: "12345",
     achievement: "Titulo",
   });
+  const [userTitle, setUserTitle] = useState("No title");
   const [showConfirmation, setShowConfirmation] = useState(false);
 
   useEffect(() => {
-    const fetchUserName = async () => {
-      try {
-        const response = await getUsrName(props.id);
+    const fetchUserName = () => {
+
+      getUsrName(props.id).then(response => {
         if (response.data.length > 0) {
           const _user = response.data[0];
+          console.log(_user);
           setUser((prevUser) => ({
             ...prevUser,
             user_mail: _user.user_mail,
@@ -47,22 +49,25 @@ const PersoInfo = (props) => {
             user_number: _user.user_number,
             title_id: _user.title_id,
           }));
+          getAllArchivements(props.id).then(res => {
+            const responseAchievements = res;
+            if (responseAchievements.data.length > 0) {
+              const achievements = responseAchievements.data;
+              console.log(achievements);
+              const userAchievement = achievements.find(
+                (ach) => ach.title_id === _user.title_id
+              );
+              // console.log(_user.title_id);
+              // console.log(userAchievement);
+              setUserTitle(userAchievement ? userAchievement.title_name : "No Title")
+              // setUser((prevUser) => ({
+              //   ...prevUser,
+              //   achievement: userAchievement ? userAchievement.title_name : "No Title",
+              // }));
+            }
+          });
         }
-
-        const responseAchievements = await getAllArchivements(props.id);
-        if (responseAchievements.data.length > 0) {
-          const achievements = responseAchievements.data;
-          const userAchievement = achievements.find(
-            (ach) => ach.title_id === user.title_id
-          );
-          setUser((prevUser) => ({
-            ...prevUser,
-            achievement: userAchievement ? userAchievement.title_name : "No Title",
-          }));
-        }
-      } catch (error) {
-        console.error("Error fetching user name: ", error);
-      }
+      }).catch(err => { console.log(err) });
     };
 
     fetchUserName();
@@ -112,11 +117,17 @@ const PersoInfo = (props) => {
           onChange={handleInputChange}
           className="info-input"
         />
+        <button
+          onClick={handleUpdateName}
+          className="confirmation-button"
+        >
+          Actualizar nombre de usuario
+        </button>
       </div>
 
       <div className="info-field">
         <label>Título:</label>
-        <p className="info-value">{user.achievement}</p>
+        <p className="info-value">{userTitle}</p>
       </div>
       <div className="info-field">
         <label>Correo Registrado:</label>
@@ -132,12 +143,7 @@ const PersoInfo = (props) => {
       >
         Eliminar Cuenta
       </button>
-      <button
-        onClick={handleUpdateName}
-        className="confirmation-button"
-      >
-        Actualizar nombre de usuario
-      </button>
+
 
       {showConfirmation && (
         <div className="confirmation-overlay">
@@ -244,7 +250,7 @@ const UserNotif = (props) => {
             name: item.notification_name,
             type: item.notification_type,
           }));
-          
+
           setNotifications(prevNotifications => {
             // Filtrar las nuevas notificaciones para evitar duplicados
             const uniqueNotifs = notifs.filter(newNotif =>

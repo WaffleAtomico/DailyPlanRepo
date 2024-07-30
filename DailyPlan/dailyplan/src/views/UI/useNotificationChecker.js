@@ -10,7 +10,7 @@ const useNotificationChecker = (id) => {
   useEffect(() => {
     const fetchNotifications = () => {
       getUserNotifications(id).then(res => {
-        // console.log("Me ejecute");
+        console.log("Check");
         if (res.status) {
           const notifs = res.data.map(item => ({
             id: item.notification_id,
@@ -23,6 +23,11 @@ const useNotificationChecker = (id) => {
             notifs.forEach(newNotif => {
               if (newNotif.type === 1 && !displayedNotifs.current.has(newNotif.id)) {
                 myPojo.setNotif("Cancelación", <>{newNotif.name}</>);
+                displayedNotifs.current.add(newNotif.id); // Marcar la notificación como mostrada
+              }
+              //notificacion 7 es para el logro de Sintonía
+              if (newNotif.type === 7 && !displayedNotifs.current.has(newNotif.id)) {
+                myPojo.setNotif(`Cancelación ${newNotif.name}`, <>{newNotif.name}</>);
                 displayedNotifs.current.add(newNotif.id); // Marcar la notificación como mostrada
               }
             });

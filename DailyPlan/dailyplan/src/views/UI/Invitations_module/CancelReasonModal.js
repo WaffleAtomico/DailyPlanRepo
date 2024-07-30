@@ -7,6 +7,7 @@ const CancelReasonModal = ({ show, onClose, onSave }) => {
     const handleSave = () => {
         onSave(reason || null);
         setReason('');
+        onClose();
     };
 
     return (
