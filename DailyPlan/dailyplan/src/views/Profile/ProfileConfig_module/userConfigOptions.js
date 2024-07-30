@@ -16,28 +16,89 @@ import "../../../styles/UI/profile/configOptions.css";
 import "../../../styles/UI/profile/notifView.css";
 import "../../../styles/UI/profile/profileInfo.css";
 import { addPermission, getPermissionById } from "../../../utils/validations/permission";
-import { updateUserTitle } from "../../../utils/validations/user";
+import { updateUserName, updateUserTitle } from "../../../utils/validations/user";
 import { myPojo } from "../../../utils/ShowNotifInfo";
 import { GoGear } from "react-icons/go";
 import { getUserNotifications } from "../../../utils/validations/notification";
 
+import { getUsrName } from "../../../utils/validations/user";
 
 
-const PersoInfo = () => {
+const PersoInfo = (props) => {
   const navigate = useNavigate();
-  const [userName, setUserName] = useState('Nombre Usuario');
+  const [user, setUser] = useState({
+    user_mail: "usuario@gmail.com",
+    user_name: "usuario",
+    user_number: "12345",
+    achievement: "Titulo",
+  });
   const [showConfirmation, setShowConfirmation] = useState(false);
-  // const [isChecked, setIsChecked] = useState(false);
+
+  useEffect(() => {
+    const fetchUserName = async () => {
+      try {
+        const response = await getUsrName(props.id);
+        if (response.data.length > 0) {
+          const _user = response.data[0];
+          setUser((prevUser) => ({
+            ...prevUser,
+            user_mail: _user.user_mail,
+            user_name: _user.user_name,
+            user_number: _user.user_number,
+            title_id: _user.title_id,
+          }));
+        }
+
+        const responseAchievements = await getAllArchivements(props.id);
+        if (responseAchievements.data.length > 0) {
+          const achievements = responseAchievements.data;
+          const userAchievement = achievements.find(
+            (ach) => ach.title_id === user.title_id
+          );
+          setUser((prevUser) => ({
+            ...prevUser,
+            achievement: userAchievement ? userAchievement.title_name : "No Title",
+          }));
+        }
+      } catch (error) {
+        console.error("Error fetching user name: ", error);
+      }
+    };
+
+    fetchUserName();
+  }, [props.id]);
 
   const handleDeleteAccount = () => {
     console.log('Cuenta eliminada');
     navigate("/login");
   };
 
-  // const handleCheckboxChange = (checked) => {
-  //   setIsChecked(checked);
-  //   console.log('Checkbox in PersoInfo is now', checked);
-  // };
+  const handleUpdateName = async () => {
+    const updateCountKey = `updateCount_${props.id}`;
+    let updateCount = parseInt(localStorage.getItem(updateCountKey)) || 0;
+
+    if (updateCount >= 2) {
+      alert('No puedes actualizar el nombre de usuario más de dos veces.');
+      return;
+    }
+
+    try {
+      const response = await updateUserName(user.user_name, props.id);
+      console.log(response);
+      updateCount += 1;
+      localStorage.setItem(updateCountKey, updateCount);
+    } catch (error) {
+      console.error("Error updating user name: ", error);
+    }
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setUser((prevUser) => ({
+      ...prevUser,
+      [name]: value,
+    }));
+  };
 
   return (
     <div className="info-container">
@@ -46,23 +107,24 @@ const PersoInfo = () => {
         <label>Nombre de Usuario:</label>
         <input
           type="text"
-          value={userName}
-          onChange={(e) => setUserName(e.target.value)}
+          name="user_name"
+          value={user.user_name}
+          onChange={handleInputChange}
           className="info-input"
         />
       </div>
 
       <div className="info-field">
         <label>Título:</label>
-        <p className="info-value">Mi Título</p>
+        <p className="info-value">{user.achievement}</p>
       </div>
       <div className="info-field">
         <label>Correo Registrado:</label>
-        <p className="info-value">usuario@correo.com</p>
+        <p className="info-value">{user.user_mail}</p>
       </div>
       <div className="info-field">
         <label>Número Telefónico:</label>
-        <p className="info-value">123-456-7890</p>
+        <p className="info-value">{user.user_number}</p>
       </div>
       <button
         className="info-delete-button"
@@ -70,6 +132,13 @@ const PersoInfo = () => {
       >
         Eliminar Cuenta
       </button>
+      <button
+        onClick={handleUpdateName}
+        className="confirmation-button"
+      >
+        Actualizar nombre de usuario
+      </button>
+
       {showConfirmation && (
         <div className="confirmation-overlay">
           <div className="confirmation-box">
@@ -92,6 +161,7 @@ const PersoInfo = () => {
     </div>
   );
 };
+/*BLOCK USERS*/
 
 const BloqUser = (props) => {
   const [blockedUsers, setBlockedUsers] = useState([]);

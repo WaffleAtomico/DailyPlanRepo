@@ -13,6 +13,7 @@ import {
     SEND_MAIL_URL,
     SEND_MAILJT_URL,
     UPDATE_USER_TITLE_URL,
+    UPDATE_USER_NAME_URL,
 } from '../routes';
 
 export const isValidEmail = (email) => {
@@ -131,7 +132,8 @@ export const NameExist = async (user_name) => {
 
 // Campos que se deben enviar en user_id:
 // user_id
-export const getUsrName = async (user_id) => {
+export const 
+getUsrName = async (user_id) => {
     // console.log("id en funcion "+ user_id);
     try {
         const response = await axios.post(GET_USER_INFO_URL, { user_id });
@@ -204,3 +206,14 @@ export const updateUserTitle = async (title_id, user_id) => {
         
     }
 }
+
+export const updateUserName = async (user_name, user_id) => {
+    try {
+      const response = await axios.post(UPDATE_USER_NAME_URL, { user_name, user_id });
+      return response;
+    } catch (err) {
+      console.log(err);
+      return "Error updating user name";
+    }
+  };
+
