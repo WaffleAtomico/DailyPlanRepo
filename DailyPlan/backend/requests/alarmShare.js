@@ -71,10 +71,25 @@ const deleteAlarmShare = (req, res) => {
     });
 };
 
+const getUserIdsByAlarm = (req, res) => {
+    const query = {
+        sql: "SELECT `ar_user_id_target` FROM `alarmshare` WHERE `alarm_id` = ?",
+        values: [req.body.alarm_id],
+    };
+    db.query(query.sql, query.values, (err, data) => {
+        if (err) {
+            return res.json({ message: "Error retrieving user IDs", error: err });
+        }
+        return res.json(data);
+    });
+};
+
 export { 
     addAlarmShare,
     getAlarmShares, 
     getAlarmShareById, 
     updateAlarmShare,
-    deleteAlarmShare 
+    deleteAlarmShare,
+    getUserIdsByAlarm,
+    
 };

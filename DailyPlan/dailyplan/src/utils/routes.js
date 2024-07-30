@@ -133,6 +133,7 @@ const GET_REMINDERSHARE_BY_ID_URL = `${urlreference}/get-remindershare`;
 const UPDATE_REMINDERSHARE_URL = `${urlreference}/update-remindershare`;
 const DELETE_REMINDERSHARE_URL = `${urlreference}/delete-remindershare`;
 const GET_REMINDERSHARES_URL = `${urlreference}/get-remindershares`;
+const GET_USER_IDS_BY_REMINDER_URL = `${urlreference}/get-user-ids-by-reminder`;
 
 
 const ADD_REPETITIONDAY_URL = `${urlreference}/add-repetitionday`;
@@ -296,12 +297,14 @@ export {
     GET_REMINDERS_BY_MONTH_URL,
     GET_REMINDERS_BY_WEEK_URL,
     GET_REMINDER_BY_DAY_URL,
+    
     ADD_REMINDERSHARE_URL,
     GET_REMINDERSHARES_URL,
     GET_REMINDERSHARES_FOR_USER_URL,
     GET_REMINDERSHARE_BY_ID_URL,
     UPDATE_REMINDERSHARE_URL,
     DELETE_REMINDERSHARE_URL,
+    GET_USER_IDS_BY_REMINDER_URL,
 
     ADD_REPETITIONDAY_URL,
     GET_REPETITIONDAYS_URL,

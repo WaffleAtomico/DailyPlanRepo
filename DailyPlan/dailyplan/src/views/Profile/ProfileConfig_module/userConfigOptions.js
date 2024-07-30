@@ -164,29 +164,31 @@ const BloqUser = (props) => {
 
 const UserNotif = (props) => {
   const [notifications, setNotifications] = useState([]);
-
   useEffect(() => {
     const fetchNotifications = () => {
       getUserNotifications(props.id).then(res => {
         if (res.status) {
-          console.log(res.data);
-          const notifs = res.data;
-          const newNotifs = notifs.map(item => ({
+          const notifs = res.data.map(item => ({
             id: item.notification_id,
             date: new Date(item.notification_date).toISOString().split('T')[0],
             name: item.notification_name,
+            type: item.notification_type,
           }));
+          
           setNotifications(prevNotifications => {
-            if (!prevNotifications.some(notif => notif.id === newNotifs.id)) {
-              return [...prevNotifications, newNotifs];
-            }
-            return prevNotifications;
+            // Filtrar las nuevas notificaciones para evitar duplicados
+            const uniqueNotifs = notifs.filter(newNotif =>
+              !prevNotifications.some(existingNotif => existingNotif.id === newNotif.id)
+            );
+
+            // Retornar el estado anterior junto con las nuevas notificaciones únicas
+            return [...prevNotifications, ...uniqueNotifs];
           });
         }
-      }).catch(err => { console.log(err) })
+      }).catch(err => { console.log(err) });
     };
     fetchNotifications();
-  }, []);
+  }, [props.id]);
 
   return (
     <div className="notif-container">
@@ -218,6 +220,7 @@ const UserNotif = (props) => {
     </div>
   );
 };
+
 
 const UserConnections = (props) => {
   const [spotifyConnected, setSpotifyConnected] = useState(false);
@@ -262,7 +265,6 @@ const UserConnections = (props) => {
         </button>
       )}
 */
-
 
 //Componente que sirve para obtener los permisos de ubicación de la persona
 

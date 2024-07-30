@@ -5,7 +5,8 @@ import {
     GET_REMINDERSHARE_BY_ID_URL,
     UPDATE_REMINDERSHARE_URL,
     DELETE_REMINDERSHARE_URL,
-    GET_REMINDERSHARES_URL
+    GET_REMINDERSHARES_URL,
+    GET_USER_IDS_BY_REMINDER_URL
 } from '../routes';
 
 // Function to add a reminder share
@@ -80,5 +81,15 @@ export const deleteReminderShare = async (remindsha_id) => {
     } catch (err) {
         console.log(err);
         return { error: err };
+    }
+};
+
+export const getUserIdsByReminder = async (reminder_id) => {
+    try {
+        const response = await axios.post(GET_USER_IDS_BY_REMINDER_URL, { reminder_id });
+        return response;
+    } catch (err) {
+        console.log("Error retrieving user IDs:", err);
+        return "Error retrieving user IDs";
     }
 };

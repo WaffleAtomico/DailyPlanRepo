@@ -79,7 +79,8 @@ import {
   getAlarmShares,
   getAlarmShareById,
   updateAlarmShare,
-  deleteAlarmShare
+  deleteAlarmShare,
+  getUserIdsByAlarm,
 } from './requests/alarmShare.js';
 
 import {
@@ -168,7 +169,8 @@ import {
   getReminderShares,
   getReminderShareById,
   updateReminderShare,
-  deleteReminderShare
+  deleteReminderShare,
+  getUserIdsByReminder
 } from './requests/remindershare.js';
 
 import {
@@ -386,6 +388,7 @@ app.post(urls.GET_ALARMSHARES_URL, getAlarmShares);
 app.post(urls.GET_ALARMSHARE_BY_ID_URL, getAlarmShareById);
 app.post(urls.UPDATE_ALARMSHARE_URL, updateAlarmShare);
 app.post(urls.DELETE_ALARMSHARE_URL, deleteAlarmShare);
+app.post(urls.GET_USER_IDS_BY_ALARM_URL, getUserIdsByAlarm);
 
 /*-------------------------------Dayselected-------------------------*/
 app.post(urls.ADD_DAYSELECTED_URL, addDayselected);
@@ -465,6 +468,7 @@ app.post(urls.GET_REMINDERSHARES_URL, getReminderShares);
 app.post(urls.GET_REMINDERSHARE_BY_ID_URL, getReminderShareById);
 app.post(urls.UPDATE_REMINDERSHARE_URL, updateReminderShare);
 app.post(urls.DELETE_REMINDERSHARE_URL, deleteReminderShare);
+app.post(urls.GET_USER_IDS_BY_REMINDER_URL, getUserIdsByReminder);
 
 
 /*-------------------------------RepetitionDay-------------------------*/
