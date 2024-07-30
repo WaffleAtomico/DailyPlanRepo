@@ -148,27 +148,6 @@ const PreparationView = ({ onClose, blocks, setShowMiniTab, handleUpdateBlocks, 
         
     };
 
-    useEffect(() => {
-        if (blocks && blocks.length > 0) {
-            // Prepare data for the chart
-            const labels = blocks.map((block, index) => `Block ${index + 1}`);
-            const data = blocks.map(block => block.timeSpent || 0); // Use block.timeSpent or any other metric
-    
-            setChartData({
-                labels: labels,
-                datasets: [
-                    {
-                        label: 'Time Spent (in seconds)',
-                        data: data,
-                        backgroundColor: 'rgba(75,192,192,0.4)',
-                        borderColor: 'rgba(75,192,192,1)',
-                        borderWidth: 1,
-                    }
-                ]
-            });
-        }
-    }, [blocks]);
-    
 
     const handleNextBlock = () => {
         if (objectiveList.length > 0) {
@@ -219,15 +198,46 @@ const PreparationView = ({ onClose, blocks, setShowMiniTab, handleUpdateBlocks, 
         const timeLeft = counter;
         const timeSpentForBlock = blocks[currentBlock].timeLimit * 60 - timeLeft;
         updatedBlocks[currentBlock].timeSpent = Math.abs(timeSpentForBlock); // Store time spent in seconds
-
+    
         const completeInfo = {
             objblo_check: 1,
             objblo_durationreal_min: timeSpentForBlock / 60 // Convert seconds to minutes
         };
-
+    
         completeObjectivesBlock(completeInfo, updatedBlocks[currentBlock].id);
+    
+        if (blocks && blocks.length > 0) {
+            // Prepare data for the chart
+            const labels = blocks.map((block, index) => `Block ${index + 1}`);
+            const plannedTime = blocks.map(block => block.timeLimit * 60); // Planned time in seconds
+            const obtainedTime = blocks.map(block => block.timeSpent || 0); // Obtained time in seconds
+    
+            setChartData({
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Planned Time (in seconds)',
+                        data: plannedTime,
+                        backgroundColor: 'rgba(75,192,192,0.4)',
+                        borderColor: 'rgba(75,192,192,1)',
+                        borderWidth: 1,
+                    },
+                    {
+                        label: 'Obtained Time (in seconds)',
+                        data: obtainedTime,
+                        backgroundColor: 'rgba(255,99,132,0.4)',
+                        borderColor: 'rgba(255,99,132,1)',
+                        borderWidth: 1,
+                    }
+                ]
+            });
+        }
+    
         setBlocksToUpd(updatedBlocks);
     };
+    
+
+
     const CalculateDistance = () => {
         navigator.geolocation.getCurrentPosition(position => {
             const { latitude, longitude } = position.coords;

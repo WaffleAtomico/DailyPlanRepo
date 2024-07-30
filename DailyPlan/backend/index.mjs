@@ -23,7 +23,8 @@ import {
   userExistsByNumber,
   getUserByMail,
   getUserByNumber,
-  updateUserTitle
+  updateUserTitle,
+  updateUserName
 } from './requests/users.js';
 
 import {
@@ -332,6 +333,7 @@ app.get(urls.GET_USERS_URL, getUsers);
 app.post(urls.GET_USER_INFO_URL, getUser);
 app.post(urls.CREATE_USER_URL, createUser);
 app.post(urls.UPDATE_USER_URL, updateUser);
+app.post(urls.UPDATE_USER_NAME_URL, updateUserName);
 app.post(urls.DELETE_USER_URL, deleteUser);
 app.post(urls.UPDATE_USER_PWD_URL, updateUserPwd);
 app.post(urls.USER_EXISTS_URL, userExists);

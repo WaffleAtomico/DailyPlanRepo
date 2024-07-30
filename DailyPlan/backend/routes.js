@@ -13,6 +13,7 @@ const CREATE_USER_URL = '/users';
 const UPDATE_USER_URL = '/users';
 const DELETE_USER_URL = '/users';
 const UPDATE_USER_PWD_URL = '/users-pwd';
+const UPDATE_USER_NAME_URL = '/users-name';
 const USER_EXISTS_URL = '/users-exist';
 const USER_EXISTS_MAIL_URL = '/users-existmail';
 const USER_EXISTS_NAME_URL = '/users-existname';
@@ -199,6 +200,7 @@ export {
     USER_EXISTS_NAME_URL,
     USER_EXISTS_NUMBER_URL,
     UPDATE_USER_TITLE_URL,
+    UPDATE_USER_NAME_URL,
     GET_USER_BY_MAIL_URL,
     GET_USER_BY_NUMBER_URL,
     ADD_CLOCK_URL,
