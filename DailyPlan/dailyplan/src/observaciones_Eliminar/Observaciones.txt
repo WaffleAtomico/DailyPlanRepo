@@ -1,17 +1,9 @@
-En el form de reminder hay que hacer la validacion de la fecha
 
-Hace falta jalar bien la informacion de los recordatorios por semana 
-Ahorita jala al parecer tambien lo de la preparacion, el problema con eso es que
-hay un campo que no contempraba antes, esta raro, no muestra los recordatorios de una semana
-
-
-Hace falta hacer que invitaciones sean visibles
 Hace falta que cambie el funcionamiento de eso 
 
 Falta poder entregar los logros, eso ya cuando de perdida se tengan las invitaciones
 
 Falta terminar configuracion
-Poner las notificaciones
 Eliminacion de cuenta
 
 Que cuando se acepte una invitacion se guarde en el usuario

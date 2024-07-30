@@ -40,6 +40,7 @@ import { getPuntualityById } from "../../utils/validations/puntuality";
 import { isUserWeeklyScorecard, getWeeklyScorecardForUser, updateTitleUser } from "../../utils/validations/weeklyscorecard";
 import WeekSumerize from "./advices/WeekSumerize";
 import { useBootstrapBreakpoints } from "react-bootstrap/esm/ThemeProvider";
+import useNotificationChecker from "./useNotificationChecker";
 
 
 export default function OriginPage() {
@@ -145,6 +146,8 @@ export default function OriginPage() {
   //#region 
   const [mostrarNotificacion, setMostrarNotificacion] = useState(false);
   const [counter, setCounter] = useState(changeCounter);
+
+  useNotificationChecker(id);
 
   useEffect(() => {
     // console.log("Usestate "+mostrarNotificacion);

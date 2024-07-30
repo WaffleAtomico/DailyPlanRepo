@@ -25,6 +25,8 @@ export default function InvitationView(props) {
     const [CurrentOwner, setCurrentOwner] = useState(null);
     const [showUserList, setShowUserList] = useState(false);
 
+    const [CurrentReminderId, setCurrentReminderId] = useState(null);
+    const [CurrentAlarmId, setCurrentAlarmId] = useState(null)
     const [pendingInvitations, setPendingInvitations] = useState([]);
     const [activeInvitations, setActiveInvitations] = useState([]);
     const [createdInvitations, setCreatedInvitations] = useState([]);
@@ -152,7 +154,7 @@ export default function InvitationView(props) {
         isCompleted(user_id, grant_title_id).then(response => {
             if (response === false) {
                 grantArchivement(user_id, grant_title_id).then(res => {
-                    console.log(res);               
+                    console.log(res);
                 }).catch(error => {
                     console.error("Error granting achievement:", error);
                 });
@@ -199,10 +201,27 @@ export default function InvitationView(props) {
             }
         }).catch(err => { console.log(err) })
     }
-    const handleInvUsers = (inv_id) => {
-        setCurrentInvId(inv_id);
-        setShowUserList(!showUserList);
+
+    const handleInvUsers = (inv_id, invRemId, invAlarmId) => {
+        if (invRemId) {
+            setCurrentReminderId(invRemId);
+            setCurrentAlarmId(null);
+        }
+        if (invAlarmId) {
+            setCurrentAlarmId(invAlarmId);
+            setCurrentReminderId(null);
+        }
+        setShowUserList(true);
     }
+
+    useEffect(()=>{
+        if(showUserList == false){
+            setCurrentReminderId(null);
+            setCurrentAlarmId(null);
+        }
+        console.log(CurrentAlarmId);
+        console.log(CurrentReminderId)
+    }, [showUserList])
 
     const handleInvRejected = (inv_id) => {
         // Cancelar una invitación que no ha sido aceptada
@@ -291,8 +310,6 @@ export default function InvitationView(props) {
                         color="#EE7D02"
                         Icon={FaUserFriends}
                         content={pendingInvitations}
-                        // content={data ? data.filter(invitation => invitation.state === null
-                        //     && invitation.user_id_owner != parseInt(props.user_id, 10)) : []}
                         flag={1}
                         handleInvUsers={handleInvUsers}
                         handleInvAccepted={handleInvAccepted}
@@ -304,8 +321,6 @@ export default function InvitationView(props) {
                         name="Invitaciones activas"
                         color="#00B85A"
                         Icon={FaUserCheck}
-                        // content={data ? data.filter(invitation => invitation.state === 1
-                        //     && invitation.user_id_owner != parseInt(props.user_id, 10)) : []}
                         flag={2}
                         content={activeInvitations}
                         handleInvUsers={handleInvUsers}
@@ -319,8 +334,6 @@ export default function InvitationView(props) {
                         color="#5368DC"
                         Icon={FaUserPlus}
                         content={createdInvitations}
-                        // content={data ? data.filter(invitation => invitation.state === 1
-                        //     && invitation.user_id_owner === parseInt(props.user_id, 10)) : []}
                         flag={3}
                         handleInvUsers={handleInvUsers}
                         handleInvObjectives={handleInvObjectives}
@@ -334,7 +347,14 @@ export default function InvitationView(props) {
                 onClose={() => setShowCancelModal(false)}
                 onSave={handleSaveCancelReason}
             />
-            {showUserList && <InvUserList inv_id={currentInvId} user_id={props.user_id} />}
+            {showUserList && <InvUserList
+                inv_id={currentInvId} 
+                user_id={props.user_id} 
+                reminderId={CurrentReminderId}
+                alarmId={CurrentAlarmId}
+                showUserList={showUserList} 
+                setShowUserList={setShowUserList}
+            />}
         </Container>
     );
 }

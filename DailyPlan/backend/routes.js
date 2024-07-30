@@ -61,6 +61,7 @@ const GET_ALARMSHARES_URL = '/get-alarmshares';
 const GET_ALARMSHARE_BY_ID_URL = '/get-alarmshare';
 const UPDATE_ALARMSHARE_URL = '/update-alarmshare';
 const DELETE_ALARMSHARE_URL = '/delete-alarmshare';
+const GET_USER_IDS_BY_ALARM_URL = '/get-user-ids-by-alarm';
 
 const ADD_DAYSELECTED_URL = '/add-dayselected';
 const GET_DAYSELECTEDS_URL = '/get-dayselecteds';
@@ -132,6 +133,7 @@ const GET_REMINDERSHARES_URL = '/get-remindershares';
 const GET_REMINDERSHARE_BY_ID_URL = '/get-remindershare';
 const UPDATE_REMINDERSHARE_URL = '/update-remindershare';
 const DELETE_REMINDERSHARE_URL = '/delete-remindershare';
+const GET_USER_IDS_BY_REMINDER_URL = '/get-user-ids-by-reminder';
 
 const ADD_REPETITIONDAY_URL = '/add-repetitionday';
 const GET_REPETITIONDAYS_URL = '/get-repetitiondays';
@@ -229,11 +231,14 @@ export {
     GET_CHRONOMETER_BY_ID_URL,
     UPDATE_CHRONOMETER_URL,
     DELETE_CHRONOMETER_URL,
+    
     ADD_ALARMSHARE_URL,
     GET_ALARMSHARES_URL,
     GET_ALARMSHARE_BY_ID_URL,
     UPDATE_ALARMSHARE_URL,
     DELETE_ALARMSHARE_URL,
+    GET_USER_IDS_BY_ALARM_URL,
+
     ADD_DAYSELECTED_URL,
     GET_DAYSELECTEDS_URL,
     GET_DAYSELECTED_BY_ID_URL,
@@ -287,11 +292,14 @@ export {
     GET_REMINDER_BY_ID_URL,
     UPDATE_REMINDER_URL,
     DELETE_REMINDER_URL,
+    
     ADD_REMINDERSHARE_URL,
     GET_REMINDERSHARES_URL,
     GET_REMINDERSHARE_BY_ID_URL,
     UPDATE_REMINDERSHARE_URL,
     DELETE_REMINDERSHARE_URL,
+    GET_USER_IDS_BY_REMINDER_URL,
+
     ADD_REPETITIONDAY_URL,
     GET_REPETITIONDAYS_URL,
     UPDATE_SLEEP_MODE_REP_URL,

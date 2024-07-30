@@ -73,10 +73,25 @@ const deleteReminderShare = (req, res) => {
     });
 };
 
+const getUserIdsByReminder = (req, res) => {
+    
+    const query = {
+        sql: "SELECT `rs_user_id_target` FROM `remindershare` WHERE `reminder_id` = ?",
+        values: [req.body.reminder_id],
+    };
+    db.query(query.sql, query.values, (err, data) => {
+        if (err) {
+            return res.json({ message: "Error retrieving user IDs", error: err });
+        }
+        return res.json(data);
+    });
+};
+
 export { 
     addReminderShare,
     getReminderShares,
     getReminderShareById,
     updateReminderShare,
-    deleteReminderShare 
+    deleteReminderShare,
+    getUserIdsByReminder
 };

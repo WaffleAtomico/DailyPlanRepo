@@ -371,8 +371,8 @@ const ReminderFormView = (props) => {
                 }
                 if (formData.shareUsers.length > 0) {
                     formData.shareUsers.forEach(invUser => {
-                        checkIfUserBlocked(props.user_i, invUser.id).then(res => {
-                            // console.log(res.data.isBlocked);
+                        checkIfUserBlocked(invUser.id, props.user_id).then(res => {
+                            console.log("Esta bloqueado? ",res.data.isBlocked);
                             if(!res.data.isBlocked){ //si no esta bloqueado, lo hace
                                 const invitationUserData = {
                                     reminder_id: reminder_id,

@@ -41,6 +41,7 @@ const InvitationCard = ({ name, color, Icon, content, flag, handleInvAccepted,
                     const dataRem = res.data[0];
                     const newDetail = {
                         invId: item.inv_id,
+                        invRemId: dataRem.reminder_id,
                         invCreator: creatorName,
                         invName: dataRem.reminder_name,
                         invHour: dataRem.reminder_hour,
@@ -53,7 +54,7 @@ const InvitationCard = ({ name, color, Icon, content, flag, handleInvAccepted,
                         }
                         return detailedContent;
                     });
-                    // console.log("DetailedContent ", detailedContent);
+                    console.log("DetailedContent ", detailedContent);
                 }
                 ).catch(err => { console.log(err) })
             } else {
@@ -113,7 +114,7 @@ const InvitationCard = ({ name, color, Icon, content, flag, handleInvAccepted,
                             {selectType(item.alarm_id, item.reminder_id) ? <p className='invitation-text'>Fecha: <br /><samp>{detailedContent[index]?.invDate || ""}</samp></p> : <></>}
                             <p className='invitation-text'>Hora: <br /><samp>{detailedContent[index]?.invHour || ""}h</samp></p>
                             <div className="invitation-buttons">
-                                <Button variant="success" className="button-large" onClick={() => handleInvUsers(item.inv_id)}>
+                                <Button variant="success" className="button-large" onClick={() => handleInvUsers(item.inv_id, detailedContent[index].invRemId)}>
                                     <MdGroups3 size={20} />
                                 </Button>
                                 {flag === 1 && (
