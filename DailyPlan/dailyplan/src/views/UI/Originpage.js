@@ -173,9 +173,9 @@ export default function OriginPage() {
   //Si si tiene esa notificacion, se lo va a mostrar aca
   //Como con un true, si no le llega esa notificacion tecnicamente no lo tiene
   const [reminderArchi, setReminderArchi] = useState({
-    timeObj: false,
-    allObj: false,
-    fasArrival: false,
+    timeObj: true,
+    allObj: true,
+    fasArrival: true,
   });
   const [currentAchievement, setCurrentAchievement] = useState(null);
   
@@ -304,7 +304,8 @@ getRemindersByDay(formatDate(new Date()), id)
         const objective = {
           id: reminder.obj_id,
           text: reminder.obj_name,
-          confirmed: false
+          confirmed: reminder.obj_check,
+          at_time: reminder.obj_at_time
         };
 
         if (existingBlock) {
