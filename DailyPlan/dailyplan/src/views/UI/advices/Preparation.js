@@ -215,10 +215,15 @@ const PreparationView = ({ onClose, blocks, setShowMiniTab, handleUpdateBlocks, 
                 );
 
                 if (nextUnconfirmedBlockIndex === -1) {
-                    console.log("Todos los objetivos están completados en todos los bloques.");
-                    setShowMiniTab(false);
-                    onClose();
-                    return;
+                    if (allObjectives.every(item => item.confirmed)) {
+                        console.log("Todos los objetivos fueron completados en el tiempo.");
+                        completeBlock(updatedBlocks);
+                        setShowTravelMessage(true);
+                        setTimeUp(true);
+                    } else {
+                        setShowMiniTab(false);
+                        onClose();
+                    }
                 }
 
                 setCurrentBlock(nextUnconfirmedBlockIndex);
