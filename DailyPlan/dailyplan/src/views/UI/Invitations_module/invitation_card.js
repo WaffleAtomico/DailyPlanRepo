@@ -134,10 +134,11 @@ const InvitationCard = ({ name, color, Icon, content, flag, handleInvAccepted,
                                 )}
                                 {flag === 2 && (
                                     <>
-
-                                        <Button variant="primary" className="button-large" onClick={() => handleInvObjectives(item.inv_id)}>
-                                            <FaTasks /> Objetivos
-                                        </Button>
+                                        {item.reminder_id &&
+                                            <Button variant="primary" className="button-large" onClick={() => handleInvObjectives(item.inv_id)}>
+                                                <FaTasks /> Objetivos
+                                            </Button>
+                                        }
                                         <Button variant="danger" className="button-large" onClick={() => handleInvCanceled(item.inv_id, item.user_id_owner)}>
                                             <MdBlock /> Eliminar
                                         </Button>
@@ -149,9 +150,11 @@ const InvitationCard = ({ name, color, Icon, content, flag, handleInvAccepted,
                                         {/* <Button variant="info" className="button-large" onClick={() => handleInvChange(item.inv_id)}>
                                             <FaCog /> Ajustes
                                         </Button> */}
-                                        <Button variant="alert" className="button-large" onClick={() => handleInvObjectives(item.inv_id)}>
-                                            <FaTasks /> Objetivos
-                                        </Button>
+                                        {item.reminder_id &&
+                                            <Button variant="alert" className="button-large" onClick={() => handleInvObjectives(item.inv_id)}>
+                                                <FaTasks /> Objetivos
+                                            </Button>
+                                        }
                                         <Button variant="danger" className="button-large" onClick={() => handleInvDelete(item.inv_id)}>
                                             <MdBlock /> Eliminar
                                         </Button>

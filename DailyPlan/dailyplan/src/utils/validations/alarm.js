@@ -11,7 +11,7 @@ import {
 
 export const addAlarm = async (alarmData) => {
     try {
-        const response = await axios.post(ADD_ALARM_URL, {alarmData});
+        const response = await axios.post(ADD_ALARM_URL, { alarmData });
         //   return response.data;
         return response;
     } catch (err) {

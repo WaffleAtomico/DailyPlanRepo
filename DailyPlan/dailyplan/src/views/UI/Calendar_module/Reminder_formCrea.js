@@ -369,6 +369,9 @@ const ReminderFormView = (props) => {
                         });
                     });
                 }
+
+                //trata de guardar los usuarios invitados
+
                 if (formData.shareUsers.length > 0) {
                     formData.shareUsers.forEach(invUser => {
                         checkIfUserBlocked(invUser.id, props.user_id).then(res => {
