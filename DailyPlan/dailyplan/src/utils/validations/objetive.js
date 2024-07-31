@@ -4,7 +4,8 @@ import {
     GET_OBJECTIVES_URL,
     GET_OBJECTIVE_BY_ID_URL,
     UPDATE_OBJECTIVE_URL,
-    DELETE_OBJECTIVE_URL
+    DELETE_OBJECTIVE_URL,
+    UPDATE_OBJECTIVE_STATUS_URL
 } from '../routes';
 
 export const saveObjective = async (objectiveInfo) => {
@@ -42,6 +43,19 @@ export const updateObjective = async (objectiveInfo, obj_id) => {
     } catch (err) {
         console.error("Error updating objective:", err);
         return false;
+    }
+};
+
+export const updateObjectiveStatus = async (objectiveId, completedWithinTime) => {
+    try {
+        const response = await axios.post(UPDATE_OBJECTIVE_STATUS_URL, {
+            obj_id: objectiveId,
+            obj_at_time: completedWithinTime
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error updating objective status:', error);
+        throw error;
     }
 };
 

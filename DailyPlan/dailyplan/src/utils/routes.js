@@ -90,7 +90,7 @@ const GET_OBJECTIVES_URL = `${urlreference}/get-objectives`;
 const GET_OBJECTIVE_BY_ID_URL = `${urlreference}/get-objective`;
 const UPDATE_OBJECTIVE_URL = `${urlreference}/update-objective`;
 const DELETE_OBJECTIVE_URL = `${urlreference}/delete-objective`;
-
+const UPDATE_OBJECTIVE_STATUS_URL = `${urlreference}/update-objective-status`;
 
 const ADD_OBJECTIVES_BLOCK_URL = `${urlreference}/add-objectivesblock`;
 const GET_OBJECTIVES_BLOCKS_URL = `${urlreference}/get-objectivesblocks`;
@@ -361,4 +361,5 @@ export {
 
     ADD_NOTIFICATION_URL,
     GET_USER_NOTIFICATIONS_URL,
+    UPDATE_OBJECTIVE_STATUS_URL
 };
