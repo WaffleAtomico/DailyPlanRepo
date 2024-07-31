@@ -6,6 +6,9 @@ import { addAlarm } from "../../../utils/validations/alarm";
 import { addDaySelected } from "../../../utils/validations/dayselected";
 import '../../../styles/UI/Alarm/alarm_formCrea.css';
 import { myPojo } from '../../../utils/ShowNotifInfo';
+import ShareUsers from '../Calendar_module/ShareReminder';
+import { checkIfUserBlocked } from '../../../utils/validations/blockedurs';
+import { addInvitation } from '../../../utils/validations/invitation';
 
 const AlarmFormView = (props) => {
     const [alarmTime, setAlarmTime] = useState('');
@@ -18,6 +21,8 @@ const AlarmFormView = (props) => {
     const [suspensionDays, setSuspensionDays] = useState(0);
     const [alarmImage, setAlarmImage] = useState(null);
     const [alarmDescription, setAlarmDescription] = useState('');
+    const [ShareUser, setShareUser] = useState([])
+    const [showShareUsers, setShowShareUsers] = useState(false)
 
     const handleAlarmTimeChange = (event) => {
         setAlarmTime(event.target.value);
@@ -92,9 +97,42 @@ const AlarmFormView = (props) => {
             alarm_image: alarmImage,
             alarm_desc: alarmDescription,
             user_id: props.user_id
-          };
+        };
 
-        addAlarm(alarmInfoToSend).then(() => {
+        addAlarm(alarmInfoToSend).then(res => {
+            if (res) {
+                const { alarm_id } = res.data;
+                console.log(alarm_id);
+
+                if (ShareUser.length > 0) {
+                    ShareUser.forEach(invUser => {
+                        
+                        checkIfUserBlocked(invUser.id, props.user_id).then(res => {
+                            console.log("Esta bloqueado? ", res.data.isBlocked);
+                            if (!res.data.isBlocked) { //si no esta bloqueado, lo hace
+                                const invitationUserData = {
+                                    reminder_id: null,
+                                    alarm_id: alarm_id,
+                                    user_id_owner: props.user_id,
+                                    user_id_target: invUser.id,
+                                    inv_state: null,
+                                    inv_reason: null,
+                                };                                
+                                addInvitation(invitationUserData).then(res => {
+                                    if (res.status)
+                                        console.log("Si se guarda bien la invitacion");
+                                    console.log(res);
+                                }).catch(error => {
+                                    console.error("Error saving invitation ", error);
+                                });
+                            }
+                        }
+                        ).catch(err => { console.log(err) })
+
+                    });
+                }
+
+            }
         }).catch(error => {
             console.error(error);
             myPojo.setNotif("Error: No se pudo guardar la alarma", <div size={220} />);
@@ -107,6 +145,19 @@ const AlarmFormView = (props) => {
             alarmDuration,
             alarmRepetition
         });
+    };
+
+    const handleAddUser = (user) => {
+        setShareUser((prevData) => [
+            ...prevData,
+            user
+        ]);
+    };
+
+    const handleRemoveUser = (name) => {
+        setShareUser((prevData) =>
+            prevData.filter(user => user.name !== name)
+        );
     };
 
     return (
@@ -273,14 +324,26 @@ const AlarmFormView = (props) => {
                         </Form>
                     </Container>
                     <div className="form-actions">
+                        <button type="button" className="btn btn-secondary"
+                            onClick={() => setShowShareUsers(showShareUsers => !showShareUsers)}
+                        >
+                            Compartir
+                        </button>
                         <button type="submit" className="btn btn-primary">
                             Guardar
                         </button>
-                        <button type="button" className="btn btn-secondary">
-                            Compartir
-                        </button>
                     </div>
                 </form>
+                <br></br>
+                {showShareUsers &&
+                    <ShareUsers
+                        // revisar user_id
+                        user_id={props.user_id}
+                        onAddUser={handleAddUser}
+                        onRemoveUser={handleRemoveUser}
+                        userList={ShareUser}
+                    />
+                }
             </div>
         </div>
     );
