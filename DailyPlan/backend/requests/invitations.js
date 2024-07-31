@@ -128,6 +128,7 @@ const deleteInvitation = (req, res) => {
         sql: "DELETE FROM `invitations` WHERE `inv_id` = ?",
         values: [req.body.inv_id],
     };
+    console.log("Si entre ", query.values)
     db.query(query.sql, query.values, (err, data) => {
         if (err) {
             return res.json({ message: "Error deleting invitation", error: err });
