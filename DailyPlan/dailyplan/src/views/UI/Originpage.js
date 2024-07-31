@@ -249,7 +249,7 @@ export default function OriginPage() {
 /*---------------------- PREPARACION ---------------------- */
 const [targetDate, setTargetDate] = useState(null);
 const [mostrarPreparacion, setMostrarPreparacion] = useState(false);
-const [showMiniTab, setShowMiniTab] = useState(true);
+const [showMiniTab, setShowMiniTab] = useState(false);
 const [reminders, setReminders] = useState([]);
 const [blocks, setBlocks] = useState([
 ]);
@@ -263,6 +263,7 @@ useEffect(() => {
     reminderDateTime.setMilliseconds(0);
 
     const preparationTime = reminderDateTime.getTime() - (travelTime * 60 * 1000) - (blockDuration * 60 * 1000);
+    console.log("preparation time:", preparationTime);
     return new Date(preparationTime);
   };
 
@@ -272,12 +273,14 @@ useEffect(() => {
     const upcomingReminder = blocks.find(block => {
       const totalBlockDuration = block.objectives.length * block.timeLimit; // total time for the block
       const preparationTime = calculatePreparationTime(block.reminderDate, block.reminderHour, block.reminderMin, block.travelTime, totalBlockDuration);
+
       const reminderTime = new Date(block.reminderDate);
       reminderTime.setHours(block.reminderHour);
       reminderTime.setMinutes(block.reminderMin);
       reminderTime.setSeconds(0);
       reminderTime.setMilliseconds(0);
-          
+          console.log("currenTime:", currentTime);
+          console.log("reminderTime:", reminderTime);
       return currentTime >= preparationTime && currentTime < reminderTime;
     });
 
