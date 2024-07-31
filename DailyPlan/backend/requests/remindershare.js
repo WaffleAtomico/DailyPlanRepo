@@ -62,8 +62,8 @@ const updateReminderShare = (req, res) => {
 
 const deleteReminderShare = (req, res) => {
     const query = {
-        sql: "DELETE FROM `remindershare` WHERE `remindsha_id` = ?",
-        values: [req.body.remindsha_id],
+        sql: "DELETE FROM `remindershare` WHERE `rs_user_id_target` = ? AND `reminder_id` = ?",
+        values: [req.body.rs_user_id_target, req.body.reminder_id],
     };
     db.query(query.sql, query.values, (err, data) => {
         if (err) {

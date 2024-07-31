@@ -60,8 +60,8 @@ const updateAlarmShare = (req, res) => {
 
 const deleteAlarmShare = (req, res) => {
     const query = {
-        sql: "DELETE FROM `alarmshare` WHERE `alarmsha_id` = ?",
-        values: [req.body.alarmsha_id],
+        sql: "DELETE FROM `alarmshare` WHERE `ar_user_id_target`= ? AND `alarm_id`= ?",
+        values: [req.body.ar_user_id_target, req.body.alarm_id],
     };
     db.query(query.sql, query.values, (err, data) => {
         if (err) {

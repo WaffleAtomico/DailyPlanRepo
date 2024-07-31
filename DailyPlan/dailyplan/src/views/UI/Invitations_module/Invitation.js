@@ -12,7 +12,7 @@ import { grantArchivement, isCompleted } from '../../../utils/archivements/grant
 import CancelReasonModal from './CancelReasonModal';  // Importamos el nuevo modal
 import { IoAlertCircleOutline } from 'react-icons/io5';
 import InvUserList from './InvUsers';
-import { saveReminderShare } from '../../../utils/validations/remindershare';
+import { deleteReminderShare, saveReminderShare } from '../../../utils/validations/remindershare';
 import { addNotification } from '../../../utils/validations/notification';
 
 export default function InvitationView(props) {
@@ -237,8 +237,16 @@ export default function InvitationView(props) {
         }).catch(err => { console.log(err) })
     }
 
-    const handleInvCanceled = (inv_id, user_id_owner) => {
+    const handleInvCanceled = (inv_id, user_id_owner, reminder_id, alarm_id) => {
         // Mostrar el modal para ingresar el motivo de cancelación
+        if(reminder_id){
+            setCurrentReminderId(reminder_id);
+            setCurrentAlarmId(null);
+        }
+        if(alarm_id){
+            setCurrentAlarmId(alarm_id);
+            setCurrentReminderId(null);
+        }
         console.log(user_id_owner);
         if (inv_id && user_id_owner) {
             setShowCancelModal(true);
@@ -272,6 +280,7 @@ export default function InvitationView(props) {
                         
                         setShowCancelModal(false);
                     }
+                    deleteReminderShare(props.user_id, CurrentReminderId);
                     fetchInvitations();
                 }).catch(err => { console.log(err) })
             }
@@ -291,17 +300,12 @@ export default function InvitationView(props) {
         //Tambien si tiene objetivos, se va a mostrar el tiempo de viaje que tiene 
     }
 
-    const handleInvSettings = (inv_id) => {
-        //ver la configuracion de una alarma y cambiarla
-        fetchInvitations();
-    }
-
     const handleInvDelete = (inv_id) => {
         //eliminar el recordatorio por parte del creador
         deleteInvitation(inv_id).then(res => {
             if (res) {
-                fetchInvitations();
                 myPojo.setNotif("Invitacion cancelada", <LuMailX size={220} />)
+                fetchInvitations();
             }
         }).catch(err => { console.log(err) })
     }
@@ -342,7 +346,6 @@ export default function InvitationView(props) {
                         flag={3}
                         handleInvUsers={handleInvUsers}
                         handleInvObjectives={handleInvObjectives}
-                        handleInvSettings={handleInvSettings}
                         handleInvDelete={handleInvDelete}
                     />
                 </Col>

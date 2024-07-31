@@ -10,7 +10,7 @@ import { getReminderById } from '../../../utils/validations/reminders';
 import { getUsrName } from '../../../utils/validations/user';
 
 const InvitationCard = ({ name, color, Icon, content, flag, handleInvAccepted,
-    handleInvRejected, handleInvObjectives, handleInvChange,
+    handleInvRejected, handleInvObjectives,
     handleInvCanceled, handleInvDelete, handleInvUsers,
 }) => {
     const [isExpanded, setIsExpanded] = useState(false);
@@ -139,7 +139,9 @@ const InvitationCard = ({ name, color, Icon, content, flag, handleInvAccepted,
                                                 <FaTasks /> Objetivos
                                             </Button>
                                         }
-                                        <Button variant="danger" className="button-large" onClick={() => handleInvCanceled(item.inv_id, item.user_id_owner)}>
+                                        <Button variant="danger" className="button-large" onClick={() => handleInvCanceled(item.inv_id, item.user_id_owner
+                                            (item.reminder_id ? item.reminder_id : null), (item.alarm_id ? item.alarm_id : null)
+                                        )}>
                                             <MdBlock /> Eliminar
                                         </Button>
                                     </>

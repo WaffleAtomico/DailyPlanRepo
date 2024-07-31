@@ -73,9 +73,9 @@ export const updateReminderShare = async (remindsha_id, reminderShareInfo) => {
 };
 
 // Function to delete a reminder share
-export const deleteReminderShare = async (remindsha_id) => {
+export const deleteReminderShare = async (rs_user_id_target, reminder_id) => {
     try {
-        const response = await axios.post(DELETE_REMINDERSHARE_URL, { remindsha_id });
+        const response = await axios.post(DELETE_REMINDERSHARE_URL, { rs_user_id_target, reminder_id });
         // return response.data;
         return response;
     } catch (err) {
