@@ -36,7 +36,7 @@ import { getScheduleById } from "../../utils/validations/schedule";
 import PreparationView from "./advices/Preparation";
 import { getReminderById,  getRemindersByDay} from "../../utils/validations/reminders";
 
-import { getPuntualityById } from "../../utils/validations/puntuality";
+import { getPuntualityById, updatePuntualityStreak } from "../../utils/validations/puntuality";
 import { isUserWeeklyScorecard, getWeeklyScorecardForUser, updateTitleUser } from "../../utils/validations/weeklyscorecard";
 import WeekSumerize from "./advices/WeekSumerize";
 import { useBootstrapBreakpoints } from "react-bootstrap/esm/ThemeProvider";
@@ -88,6 +88,28 @@ export default function OriginPage() {
 
                 if (rest_punt > 5) {
                   updateTitleUser(1, user_id, 11).then(res => {});
+                }
+
+                if (rest_punt >= 0) {
+                  getPuntualityById(user_id).then(res_punt => {
+                    if (res_punt.data.length > 0) {
+                      const date = new Date();
+
+                      const day = String(date.getDay()).padStart(2, '0');
+                      const month = String(date.getMonth()).padStart(2, '0');
+                      const year = String(date.getFullYear()).padStart(2, '0');
+
+                      updatePuntualityStreak(1, `${year}-${month}-${day}`, res_punt.data[0].punt_id).then(res => {});
+                    }
+                  });
+                }
+
+                if (rest_punt <= 5) {
+                  getPuntualityById(user_id).then(res_punt => {
+                    if (res_punt.data.length > 0) {
+                      updatePuntualityStreak(0, null, res_punt.data[0].punt_id).then(res => {});
+                    }
+                  });
                 }
               } else {
                 setPuntuality(res.data[1].punt_value);
