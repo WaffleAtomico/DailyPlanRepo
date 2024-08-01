@@ -95,25 +95,25 @@ const AlarmFormView = (props) => {
         days.daysel_sun = 0
         
         repeatDays.forEach(day_select => {
-            if (day_select == 'L') {
+            if (day_select === 'L') {
                 days.daysel_mon = 1
             }
-            if (day_select == 'M') {
+            if (day_select === 'M') {
                 days.daysel_tues = 1
             }
-            if (day_select == 'Mi') {
+            if (day_select === 'Mi') {
                 days.daysel_wed = 1
             }
-            if (day_select == 'J') {
+            if (day_select === 'J') {
                 days.daysel_thur = 1
             }
-            if (day_select == 'V') {
+            if (day_select === 'V') {
                 days.daysel_fri = 1
             }
-            if (day_select == 'S') {
+            if (day_select === 'S') {
                 days.daysel_sat = 1
             }
-            if (day_select == 'D') {
+            if (day_select === 'D') {
                 days.daysel_sun = 1
             }
         });

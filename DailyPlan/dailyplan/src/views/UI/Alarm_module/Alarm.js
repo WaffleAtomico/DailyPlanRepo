@@ -22,9 +22,9 @@ function Alarm_view(props) {
         getAlarmsForUser(props.user_id).then(response => {
             const tempItem = [];
             response.data.forEach(alarm => {
-                const newitems = tempItem.filter(x=>x.id==alarm.alarm_id);
+                const newitems = tempItem.filter(x=>x.id===alarm.alarm_id);
                 console.log('test', newitems.length, newitems);
-                if (newitems.length == 0) {
+                if (newitems.length === 0) {
                     getDaySelectedById(alarm.daysel_id).then(res => {
                         if (res.data.length > 0) {
                             tempItem.push({id: alarm.alarm_id, name: alarm.alarm_name, hour: `${alarm.alarm_hour}:${alarm.alarm_min}`, days: res.data[0]});
@@ -101,25 +101,25 @@ function Alarm_view(props) {
                                 <br/>
                                 <h1>{item.hour}</h1>
                                 <br/>
-                                <div className={item.days.daysel_mon == 1 ? "day-selected" : "day-not-selected"}>
+                                <div className={item.days.daysel_mon === 1 ? "day-selected" : "day-not-selected"}>
                                     <h4>L</h4>
                                 </div>
-                                <div className={item.days.daysel_tues == 1 ? "day-selected" : "day-not-selected"}>
+                                <div className={item.days.daysel_tues === 1 ? "day-selected" : "day-not-selected"}>
                                     <h4>M</h4>
                                 </div>
-                                <div className={item.days.daysel_wed == 1 ? "day-selected" : "day-not-selected"}>
+                                <div className={item.days.daysel_wed === 1 ? "day-selected" : "day-not-selected"}>
                                     <h4>Mi</h4>
                                 </div>
-                                <div className={item.days.daysel_thur == 1 ? "day-selected" : "day-not-selected"}>
+                                <div className={item.days.daysel_thur === 1 ? "day-selected" : "day-not-selected"}>
                                     <h4>J</h4>
                                 </div>
-                                <div className={item.days.daysel_fri == 1 ? "day-selected" : "day-not-selected"}>
+                                <div className={item.days.daysel_fri === 1 ? "day-selected" : "day-not-selected"}>
                                     <h4>V</h4>
                                 </div>
-                                <div className={item.days.daysel_sat == 1 ? "day-selected" : "day-not-selected"}>
+                                <div className={item.days.daysel_sat === 1 ? "day-selected" : "day-not-selected"}>
                                     <h4>S</h4>
                                 </div>
-                                <div className={item.days.daysel_sun == 1 ? "day-selected" : "day-not-selected"}>
+                                <div className={item.days.daysel_sun === 1 ? "day-selected" : "day-not-selected"}>
                                     <h4>D</h4>
                                 </div>
                             </div>
@@ -133,25 +133,25 @@ function Alarm_view(props) {
                                     <br/>
                                     <h1>{item.hour}</h1>
                                     <br/>
-                                    <div className={item.days.daysel_mon == 1 ? "day-selected" : "day-not-selected"}>
+                                    <div className={item.days.daysel_mon === 1 ? "day-selected" : "day-not-selected"}>
                                         <h4>L</h4>
                                     </div>
-                                    <div className={item.days.daysel_tues == 1 ? "day-selected" : "day-not-selected"}>
+                                    <div className={item.days.daysel_tues === 1 ? "day-selected" : "day-not-selected"}>
                                         <h4>M</h4>
                                     </div>
-                                    <div className={item.days.daysel_wed == 1 ? "day-selected" : "day-not-selected"}>
+                                    <div className={item.days.daysel_wed === 1 ? "day-selected" : "day-not-selected"}>
                                         <h4>Mi</h4>
                                     </div>
-                                    <div className={item.days.daysel_thur == 1 ? "day-selected" : "day-not-selected"}>
+                                    <div className={item.days.daysel_thur === 1 ? "day-selected" : "day-not-selected"}>
                                         <h4>J</h4>
                                     </div>
-                                    <div className={item.days.daysel_fri == 1 ? "day-selected" : "day-not-selected"}>
+                                    <div className={item.days.daysel_fri === 1 ? "day-selected" : "day-not-selected"}>
                                         <h4>V</h4>
                                     </div>
-                                    <div className={item.days.daysel_sat == 1 ? "day-selected" : "day-not-selected"}>
+                                    <div className={item.days.daysel_sat === 1 ? "day-selected" : "day-not-selected"}>
                                         <h4>S</h4>
                                     </div>
-                                    <div className={item.days.daysel_sun == 1 ? "day-selected" : "day-not-selected"}>
+                                    <div className={item.days.daysel_sun === 1 ? "day-selected" : "day-not-selected"}>
                                         <h4>D</h4>
                                     </div>
                                 </div>
