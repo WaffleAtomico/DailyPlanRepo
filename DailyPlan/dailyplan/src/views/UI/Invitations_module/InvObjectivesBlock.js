@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Table } from 'react-bootstrap';
-// import './InvObjectivesBlock.css';
+import '../../../styles/UI/Invitations/InvObjectivesBlock.css';
 
 const InvObjectivesBlock = ({ users }) => {
   const [showBlock, setShowBlock] = useState(false);
@@ -36,7 +36,7 @@ const InvObjectivesBlock = ({ users }) => {
                     </tr>
                   </thead>
                   <tbody>
-                    {users.map((user) => (
+                    {users && users.map((user) => (
                       <tr key={user.id} onClick={() => handleShowBlock(user)}>
                         <td>{user.name}</td>
                       </tr>
