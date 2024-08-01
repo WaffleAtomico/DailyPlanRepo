@@ -5,7 +5,7 @@ const addAlarm = (req, res) => {
   const body = req.body.alarmData;
 
   const query = {
-    sql: "INSERT INTO `alarms`(`alarm_name`, `daysel_id`, `alarm_hour`, `alarm_min`, `alarm_sec`, `alarm_rep_tone`, `tone_id`, `alarm_days_suspended`, `alarm_active`, `alarm_imgage`, `alarm_desc`, `user_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+    sql: "INSERT INTO `alarms`(`alarm_name`, `daysel_id`, `alarm_hour`, `alarm_min`, `alarm_sec`, `alarm_rep_tone`, `tone_id`, `alarm_days_suspended`, `alarm_active`, `alarm_image`, `alarm_desc`, `user_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
     values: [
       body.alarm_name,
       body.daysel_id,
@@ -33,7 +33,7 @@ const addAlarm = (req, res) => {
 // Obtener todas las alarmas para un usuario
 const getAlarms = (req, res) => {
   const query = {
-    sql: "SELECT `alarm_id`, `alarm_name`, `daysel_id`, `alarm_hour`, `alarm_min`, `alarm_sec`, `alarm_rep_tone`, `tone_id`, `alarm_days_suspended`, `alarm_active`, `alarm_imgage`, `alarm_desc`, `user_id` FROM `alarms` WHERE `user_id` = ?",
+    sql: "SELECT `alarm_id`, `alarm_name`, `daysel_id`, `alarm_hour`, `alarm_min`, `alarm_sec`, `alarm_rep_tone`, `tone_id`, `alarm_days_suspended`, `alarm_active`, `alarm_image`, `alarm_desc`, `user_id` FROM `alarms` WHERE `user_id` = ?",
     values: [req.params.user_id],
   };
 
@@ -48,7 +48,7 @@ const getAlarms = (req, res) => {
 // Obtener una alarma por ID
 const getAlarmById = (req, res) => {
   const query = {
-    sql: "SELECT `alarm_id`, `alarm_name`, `daysel_id`, `alarm_hour`, `alarm_min`, `alarm_sec`, `alarm_rep_tone`, `tone_id`, `alarm_days_suspended`, `alarm_active`, `alarm_imgage`, `alarm_desc`, `user_id` FROM `alarms` WHERE `alarm_id` = ?",
+    sql: "SELECT `alarm_id`, `alarm_name`, `daysel_id`, `alarm_hour`, `alarm_min`, `alarm_sec`, `alarm_rep_tone`, `tone_id`, `alarm_days_suspended`, `alarm_active`, `alarm_image`, `alarm_desc`, `user_id` FROM `alarms` WHERE `alarm_id` = ?",
     values: [req.params.alarm_id],
   };
 
@@ -63,7 +63,7 @@ const getAlarmById = (req, res) => {
 // Actualizar alarma
 const updateAlarm = (req, res) => {
   const query = {
-    sql: "UPDATE `alarms` SET `alarm_name` = ?, `daysel_id` = ?, `alarm_hour` = ?, `alarm_min` = ?, `alarm_sec` = ?, `alarm_rep_tone` = ?, `tone_id` = ?, `alarm_days_suspended` = ?, `alarm_active` = ?, `alarm_imgage` = ?, `alarm_desc` = ? WHERE `alarm_id` = ?",
+    sql: "UPDATE `alarms` SET `alarm_name` = ?, `daysel_id` = ?, `alarm_hour` = ?, `alarm_min` = ?, `alarm_sec` = ?, `alarm_rep_tone` = ?, `tone_id` = ?, `alarm_days_suspended` = ?, `alarm_active` = ?, `alarm_image` = ?, `alarm_desc` = ? WHERE `alarm_id` = ?",
     values: [
       req.body.alarm_name,
       req.body.daysel_id,
@@ -106,8 +106,8 @@ const deleteAlarm = (req, res) => {
 // Obtener todas las alarmas para un usuario
 const getAlarmsForUser = (req, res) => {
   const query = {
-    sql: "SELECT `alarm_id`, `alarm_name`, `daysel_id`, `alarm_hour`, `alarm_min`, `alarm_sec`, `alarm_rep_tone`, `tone_id`, `alarm_days_suspended`, `alarm_active`, `alarm_imgage`, `alarm_desc`, `user_id` FROM `alarms` WHERE `user_id` = ?",
-    values: [req.params.user_id],
+    sql: "SELECT `alarm_id`, `alarm_name`, `daysel_id`, `alarm_hour`, `alarm_min`, `alarm_sec`, `alarm_rep_tone`, `tone_id`, `alarm_days_suspended`, `alarm_active`, `alarm_image`, `alarm_desc`, `user_id` FROM `alarms` WHERE `user_id` = ?",
+    values: [req.body.user_id],
   };
 
   db.query(query.sql, query.values, (err, data) => {
