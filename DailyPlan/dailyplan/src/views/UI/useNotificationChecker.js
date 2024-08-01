@@ -89,12 +89,12 @@ const useNotificationChecker = (id) => {
                 myPojo.setNotif("Alarma", <>{alarma.alarm_name}</>);
                 displayedNotifs.current.add(alarma.alarm_id); // Marcar la notificación como mostrada
               }
-            }).catch(err => { console.log(err) });
+            }).catch(err => {  });
           });
         }
         setInitialLoad(false);
       }
-    }).catch(err => { console.log(err) });
+    }).catch(err => {  });
   };
 
   return null;

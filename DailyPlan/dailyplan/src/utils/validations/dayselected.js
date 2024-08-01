@@ -10,9 +10,9 @@ import {
 export const addDaySelected = async (daySelectedData) => {
     try {
         const response = await axios.post(ADD_DAYSELECTED_URL, daySelectedData);
-        //   return response.data;
-        console.log(response)
-        return response;
+        return response.data;
+        // console.log('addDaySelected', response.data.data.insertId)
+        // return response;
     } catch (err) {
         console.log(err);
         throw err;

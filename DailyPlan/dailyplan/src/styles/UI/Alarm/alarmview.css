@@ -42,3 +42,20 @@
     color: black;
     border-color: white;
 }
+
+.day-selected {
+    width: 35px;           /* Ancho de 150 píxeles */
+    height: 35px;          /* Alto de 150 píxeles */
+    color: white;
+    background: rgb(13, 160, 0);        /* Fondo de color rojo */
+    border: 1px solid #000; /* Borde color negro y de 1 píxel de grosor */
+    display:inline-block;
+}
+
+.day-not-selected {
+    width: 35px;           /* Ancho de 150 píxeles */
+    height: 35px;          /* Alto de 150 píxeles */
+    background: rgb(255, 255, 255);        /* Fondo de color rojo */
+    border: 1px solid #000; /* Borde color negro y de 1 píxel de grosor */
+    display:inline-block;
+}
