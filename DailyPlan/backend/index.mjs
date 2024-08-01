@@ -116,7 +116,8 @@ import {
   getObjectives,
   getObjectiveById,
   updateObjective,
-  deleteObjective
+  deleteObjective,
+  updateObjectiveStatus
 } from './requests/objectives.js';
 
 import {
@@ -422,6 +423,7 @@ app.post(urls.ADD_OBJECTIVE_URL, addObjective);
 app.post(urls.GET_OBJECTIVES_URL, getObjectives);
 app.post(urls.GET_OBJECTIVE_BY_ID_URL, getObjectiveById);
 app.post(urls.UPDATE_OBJECTIVE_URL, updateObjective);
+app.post(urls.UPDATE_OBJECTIVE_STATUS_URL, updateObjectiveStatus)
 app.post(urls.DELETE_OBJECTIVE_URL, deleteObjective);
 
 /*-------------------------------ObjectivesBlock-------------------------*/

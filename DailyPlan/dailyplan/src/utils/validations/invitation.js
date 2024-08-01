@@ -90,7 +90,7 @@ export const updateInvitationReason = async (inv_id, inv_reason) => {
 // Function to update an invitation
 export const updateInvitation = async (inv_id, invitationInfo) => {
     try {
-        const response = await axios.put(UPDATE_INVITATION_URL, invitationInfo);
+        const response = await axios.post(UPDATE_INVITATION_URL, invitationInfo);
         return response;
     } catch (err) {
         console.log("Error updating invitation:", err);
@@ -101,7 +101,7 @@ export const updateInvitation = async (inv_id, invitationInfo) => {
 // Function to delete an invitation
 export const deleteInvitation = async (inv_id) => {
     try {
-        const response = await axios.delete(DELETE_INVITATION_URL, { inv_id });
+        const response = await axios.post(DELETE_INVITATION_URL, { inv_id });
         return response;
     } catch (err) {
         console.log("Error deleting invitation:", err);

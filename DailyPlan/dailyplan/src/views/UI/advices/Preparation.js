@@ -10,6 +10,7 @@ import { myPojo } from '../../../utils/ShowNotifInfo';
 import { getDistanceTimeMatrix } from '../../../utils/validations/services/distanceMatrixClient';
 import { getLocationById } from '../../../utils/validations/location';
 import PuntualitySummarize from '../Calendar_module/PuntualitySummarize';
+import { updateObjectiveStatus } from '../../../utils/validations/objetive';
 
 
 const PreparationView = ({ onClose, blocks, setShowMiniTab, handleUpdateBlocks, id_user }) => {
@@ -36,7 +37,7 @@ const PreparationView = ({ onClose, blocks, setShowMiniTab, handleUpdateBlocks, 
     }, []);
 
     const confirmArchivement1 = (user_id) => {
-        const grant_title_id = 9;
+        const grant_title_id = 8;
         isCompleted(user_id, grant_title_id).then(response => {
             if (!response) {
                 setIsCompletedArchivement1(response);
@@ -59,7 +60,7 @@ const PreparationView = ({ onClose, blocks, setShowMiniTab, handleUpdateBlocks, 
 
     const grant10Archivement = (user_id) => {
         const grant_title_id = 10;
-        if (!isCompletedArchivement1) {
+        if (!isCompletedArchivement2) {
             grantArchivement(user_id, grant_title_id).then(res => {
                 myPojo.setNotif("Logro: TODO EN SU LUGAR", <FaListCheck size={220} />);
             }).catch(error => {
@@ -68,11 +69,24 @@ const PreparationView = ({ onClose, blocks, setShowMiniTab, handleUpdateBlocks, 
         }
     };
 
+    /*
     const grant11Archivement = (user_id) => {
         const grant_title_id = 11;
         if (!isCompletedArchivement2) {
             grantArchivement(user_id, grant_title_id).then(res => {
                 myPojo.setNotif("Logro: GANANDO TIEMPO AL TIEMPO", <MdOutlineTimelapse size={220} />);
+            }).catch(error => {
+                console.error("Error granting achievement:", error);
+            });
+        
+        }
+    };
+*/
+    const grant9Archivement = (user_id) => {
+        const grant_title_id = 9;
+        if (!isCompletedArchivement1) {
+            grantArchivement(user_id, grant_title_id).then(res => {
+                myPojo.setNotif("Logro: ENLISTADO", <FaListCheck size={220} />);
             }).catch(error => {
                 console.error("Error granting achievement:", error);
             });
@@ -91,22 +105,37 @@ const PreparationView = ({ onClose, blocks, setShowMiniTab, handleUpdateBlocks, 
     useEffect(() => {
         console.log("Los bloques son:", blocks);
         if (blocks && blocks.length > 0) {
-            const newObjectives = blocks[0].objectives;
-            console.log("New Objectives: ", newObjectives); // Add this line for debugging
-            const newCounter = blocks[0].timeLimit * 60; // convert to seconds
-            const newTotalTimeLeft = blocks.reduce((acc, block) => acc + block.timeLimit * 60, 0); // convert to seconds
-            console.log("Tiempo restante (al inicio)", newTotalTimeLeft);
-            const newAllObjectives = blocks.flatMap(block =>
-                block.objectives.map(obj => ({ ...obj, confirmed: false }))
+            let initialBlockIndex = blocks.findIndex(block =>
+                block.objectives.some(obj => !obj.confirmed)
             );
 
-            setObjectiveList(newObjectives);
+            if (initialBlockIndex === -1) {
+                // All objectives are completed
+                console.log("Todos los objetivos están completados desde el inicio.");
+                setObjectiveList([]);
+                setCounter(0);
+                setTotalTimeLeft(0);
+                setAllObjectives([]);
+                setStartTime(Date.now());
+                setTimeUp(true);
+                setShowTravelMessage(true);
+                return;
+            }
+
+            let initialObjectives = blocks[initialBlockIndex].objectives.filter(obj => !obj.confirmed);
+            let newCounter = blocks[initialBlockIndex].timeLimit * 60; // convert to seconds
+            let newTotalTimeLeft = blocks.reduce((acc, block) => acc + block.timeLimit * 60, 0); // convert to seconds
+            console.log("Tiempo restante (al inicio)", newTotalTimeLeft);
+            let newAllObjectives = blocks.flatMap(block =>
+                block.objectives.map(obj => ({ ...obj, confirmed: obj.confirmed, at_time: obj.at_time }))
+            );
+
+            setCurrentBlock(initialBlockIndex);
+            setObjectiveList(initialObjectives);
             setCounter(newCounter);
             setTotalTimeLeft(newTotalTimeLeft);
             setAllObjectives(newAllObjectives);
             setStartTime(Date.now());
-
-
         }
     }, [blocks]);
 
@@ -130,10 +159,12 @@ const PreparationView = ({ onClose, blocks, setShowMiniTab, handleUpdateBlocks, 
         }
     }, [objectiveList]);
 
+
     const handleConfirm = (id) => {
+        const completedWithinTime = counter > 0;
         setObjectiveList(prevList =>
             prevList.map(item =>
-                item.id === id ? { ...item, confirmed: true, removing: true } : item
+                item.id === id ? { ...item, confirmed: true, removing: true, at_time: completedWithinTime } : item
             )
         );
         setTimeout(() => {
@@ -141,77 +172,110 @@ const PreparationView = ({ onClose, blocks, setShowMiniTab, handleUpdateBlocks, 
         }, 500);
         setAllObjectives(prevList =>
             prevList.map(item =>
-                item.id === id ? { ...item, confirmed: true } : item
+                item.id === id ? { ...item, confirmed: true, at_time: completedWithinTime } : item
             )
         );
 
-        
+        // Call updateObjectiveStatus here
+        updateObjectiveStatus(id, completedWithinTime)
+            .then(response => {
+                console.log('Objective status updated:', response);
+            })
+            .catch(error => {
+                console.error('Error updating objective status:', error);
+            });
     };
 
-
     const handleNextBlock = () => {
-        if (objectiveList.length > 0) {
-            const currentBlockObjectivesCompleted = objectiveList.every(item => item.confirmed);
-            const updatedBlocks = [...blocks];
+        const updatedBlocks = [...blocks];
+        const currentBlockObjectivesCompleted = objectiveList.every(item => item.confirmed);
+        const completedWithinTime = counter > 0;
 
-            console.log("Tiempo restante:", totalTimeLeft);
+        const updateObjectivesTime = () => {
+            updatedBlocks[currentBlock].objectives = updatedBlocks[currentBlock].objectives.map(obj => {
+                if (obj.confirmed && !obj.at_time) {
+                    return { ...obj, at_time: completedWithinTime };
+                }
+                return obj;
+            });
+        };
 
-            if (currentBlockObjectivesCompleted) {
-                console.log("Objetivos del bloque actual completados.");
-                completeBlock(updatedBlocks);
-                if (currentBlock < blocks.length - 1) {
-                    const nextBlock = currentBlock + 1;
-                    const unconfirmedObjectives = objectiveList.filter(item => !item.confirmed);
+        console.log("Tiempo restante:", totalTimeLeft);
 
-                    console.log("Pasando al siguiente bloque:", nextBlock);
-                    console.log("Objetivos no confirmados del bloque actual:", unconfirmedObjectives);
+        if (currentBlockObjectivesCompleted) {
+            console.log("Objetivos del bloque actual completados.");
+            updateObjectivesTime();
+            completeBlock(updatedBlocks);
 
-                    setCurrentBlock(nextBlock);
-                    setObjectiveList([...unconfirmedObjectives, ...blocks[nextBlock].objectives]);
-                    setCounter(blocks[nextBlock].timeLimit * 60);
-                    setAdvice(dummyData[Math.floor(Math.random() * dummyData.length)]);
-                    setBlocksToUpd(updatedBlocks);
-                    setStartTime(Date.now());
-                } else {
+            if (currentBlock < blocks.length - 1) {
+                const nextBlock = currentBlock + 1;
+
+                let nextUnconfirmedBlockIndex = blocks.findIndex((block, index) =>
+                    index > currentBlock && block.objectives.some(obj => !obj.confirmed)
+                );
+
+                if (nextUnconfirmedBlockIndex === -1) {
                     if (allObjectives.every(item => item.confirmed)) {
-                        console.log("Tiempo total agotado.");
+                        console.log("Todos los objetivos fueron completados en el tiempo.");
                         completeBlock(updatedBlocks);
                         setShowTravelMessage(true);
                         setTimeUp(true);
-                    }
-                    else {
+                    } else {
                         setShowMiniTab(false);
                         onClose();
                     }
                 }
-            } else if (totalTimeLeft <= 0) {
-                console.log("Tiempo total agotado.");
-                completeBlock(updatedBlocks);
-                setShowTravelMessage(true);
-                setTimeUp(true);
+
+                setCurrentBlock(nextUnconfirmedBlockIndex);
+                setObjectiveList(blocks[nextUnconfirmedBlockIndex].objectives.filter(obj => !obj.confirmed));
+                setCounter(blocks[nextUnconfirmedBlockIndex].timeLimit * 60);
+                setAdvice(dummyData[Math.floor(Math.random() * dummyData.length)]);
+                setBlocksToUpd(updatedBlocks);
+                setStartTime(Date.now());
+
+                if (completedWithinTime) {
+                    grant10Archivement(id_user);
+                }
+            } else {
+                if (allObjectives.every(item => item.confirmed && item.at_time)) {
+                    console.log("Todos los objetivos fueron completados en el tiempo.");
+                    completeBlock(updatedBlocks);
+                    setShowTravelMessage(true);
+                    setTimeUp(true);
+                } else {
+                    setShowMiniTab(false);
+                    onClose();
+                }
             }
+        } else if (totalTimeLeft <= 0) {
+            console.log("Tiempo total agotado.");
+            completeBlock(updatedBlocks);
+            setShowTravelMessage(true);
+            setTimeUp(true);
         }
     };
 
 
+
     const completeBlock = (updatedBlocks) => {
+        grant9Archivement(id_user);
         const timeLeft = counter;
         const timeSpentForBlock = blocks[currentBlock].timeLimit * 60 - timeLeft;
         updatedBlocks[currentBlock].timeSpent = Math.abs(timeSpentForBlock); // Store time spent in seconds
-    
+
         const completeInfo = {
             objblo_check: 1,
             objblo_durationreal_min: timeSpentForBlock / 60 // Convert seconds to minutes
         };
-    
+
         completeObjectivesBlock(completeInfo, updatedBlocks[currentBlock].id);
-    
+
         if (blocks && blocks.length > 0) {
             // Prepare data for the chart
             const labels = blocks.map((block, index) => `Block ${index + 1}`);
             const plannedTime = blocks.map(block => block.timeLimit * 60); // Planned time in seconds
             const obtainedTime = blocks.map(block => block.timeSpent || 0); // Obtained time in seconds
-    
+
             setChartData({
                 labels: labels,
                 datasets: [
@@ -232,19 +296,19 @@ const PreparationView = ({ onClose, blocks, setShowMiniTab, handleUpdateBlocks, 
                 ]
             });
         }
-    
+
         setBlocksToUpd(updatedBlocks);
     };
-    
+
 
 
     const CalculateDistance = () => {
         navigator.geolocation.getCurrentPosition(position => {
             const { latitude, longitude } = position.coords;
-    
+
             // Define initial arrivalLatLng as null
             let arrivalLatLng = null;
-    
+
             getLocationById(blocks[0].reminder_id)
                 .then(response => {
                     if (response.length > 0) {
@@ -253,28 +317,28 @@ const PreparationView = ({ onClose, blocks, setShowMiniTab, handleUpdateBlocks, 
                             arrivalLatLng = [location.location_x, location.location_y];
                         }
                     }
-    
+
                     // Check if arrivalLatLng is still null after processing the response
                     if (!arrivalLatLng) {
                         console.error('Arrival location not found.');
                         alert('Arrival location not found.');
                         return;
                     }
-    
+
                     const actualLatLng = [latitude, longitude];
                     const distance = getDistanceTimeMatrix(
                         arrivalLatLng,
                         actualLatLng
                     );
-    
+
                     if (distance > 100) {
                         alert('Todavía estás a más de 100 metros de distancia');
                     } else {
                         alert('¡Felicidades!, estas a menos de 100 metros de distancia');
-                         
-                         myPojo.setNotif("Resultado", <PuntualitySummarize chartData={chartData}/> );
-                         
-                        
+
+                        myPojo.setNotif("Resultado", <PuntualitySummarize chartData={chartData} />);
+
+
                     }
                 })
                 .catch(error => {
@@ -283,7 +347,7 @@ const PreparationView = ({ onClose, blocks, setShowMiniTab, handleUpdateBlocks, 
                 });
         });
     };
-    
+
 
     return (
         <div className="preparation-fullscreen-container">
@@ -340,10 +404,10 @@ const PreparationView = ({ onClose, blocks, setShowMiniTab, handleUpdateBlocks, 
                     )}
                 </div>
             )}
-        
+
         </div>
     );
-    
+
 };
 
 export default PreparationView;

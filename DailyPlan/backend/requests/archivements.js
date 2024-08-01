@@ -55,6 +55,7 @@ const getUserTitles = (req, res) => {
 
 const updateTitleStatus = (req, res) => {
   // const userId = req.body.user_id;
+  console.log("Se trata de actualizar el titulo:", req.body);
   // const titleIdToUpdate = req.body.title_id;
   const query = {
     sql: "UPDATE `user_titles` SET `title_done` = 1 WHERE `user_id` = ? AND `title_id` = ?",

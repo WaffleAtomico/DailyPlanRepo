@@ -45,9 +45,9 @@ export const updateAlarmShare = async ( alarmShareInfo) => {
     }
 };
 
-export const deleteAlarmShare = async (alarmsha_id) => {
+export const deleteAlarmShare = async (ar_user_id_target, alarm_id) => {
     try {
-        const response = await axios.post(DELETE_ALARMSHARE_URL,{alarmsha_id});
+        const response = await axios.post(DELETE_ALARMSHARE_URL,{ar_user_id_target, alarm_id});
         return response.data;
     } catch (err) {
         console.error(err);
