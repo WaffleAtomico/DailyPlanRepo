@@ -14,6 +14,7 @@ import { IoAlertCircleOutline } from 'react-icons/io5';
 import InvUserList from './InvUsers';
 import { deleteReminderShare, saveReminderShare } from '../../../utils/validations/remindershare';
 import { addNotification } from '../../../utils/validations/notification';
+import InvObjectivesBlock from './InvObjectivesBlock';
 
 export default function InvitationView(props) {
     const [data, setData] = useState([]);
@@ -24,6 +25,8 @@ export default function InvitationView(props) {
     const [currentInvId, setCurrentInvId] = useState(null);
     const [CurrentOwner, setCurrentOwner] = useState(null);
     const [showUserList, setShowUserList] = useState(false);
+    const [showObjectivesBlock, setshowObjectivesBlock] = useState(false);
+
 
     const [CurrentReminderId, setCurrentReminderId] = useState(null);
     const [CurrentAlarmId, setCurrentAlarmId] = useState(null)
@@ -152,10 +155,10 @@ export default function InvitationView(props) {
         const grant_title_id = 12;
         const user_id = OwnerUser_id;
         // console.log("Is completed:? ", isCompletedArchivement2);
-        isCompleted(user_id, (grant_title_id-1)).then(response => {
+        isCompleted(user_id, (grant_title_id - 1)).then(response => {
             if (response === false) {
                 grantArchivement(user_id, grant_title_id).then(res => {
-                    console.log("Si le otorgue el logro a el otro usuario: ",res);
+                    console.log("Si le otorgue el logro a el otro usuario: ", res);
                 }).catch(error => {
                     console.error("Error granting achievement:", error);
                 });
@@ -216,8 +219,8 @@ export default function InvitationView(props) {
         setShowUserList(true);
     }
 
-    useEffect(()=>{
-        if(showUserList == false){
+    useEffect(() => {
+        if (showUserList == false) {
             setCurrentReminderId(null);
             setCurrentAlarmId(null);
             setCurrentOwner(null);
@@ -239,11 +242,11 @@ export default function InvitationView(props) {
 
     const handleInvCanceled = (inv_id, user_id_owner, reminder_id, alarm_id) => {
         // Mostrar el modal para ingresar el motivo de cancelación
-        if(reminder_id){
+        if (reminder_id) {
             setCurrentReminderId(reminder_id);
             setCurrentAlarmId(null);
         }
-        if(alarm_id){
+        if (alarm_id) {
             setCurrentAlarmId(alarm_id);
             setCurrentReminderId(null);
         }
@@ -277,7 +280,7 @@ export default function InvitationView(props) {
                                 fetchInvitations();
                             }
                         }).catch(err => { console.log(err) });
-                        
+
                         setShowCancelModal(false);
                     }
                     deleteReminderShare(props.user_id, CurrentReminderId);
@@ -288,7 +291,11 @@ export default function InvitationView(props) {
 
     }
 
-    const handleInvObjectives = () => {
+    const handleInvObjectives = (reminder_id) => {
+        //Es ver el id del usuario, y el id de los que lo han aceptado
+        //o sea, todos los usuarios quienes han
+        setCurrentReminderId(reminder_id);
+        setshowObjectivesBlock(true);
         //en este se va a poder ver una vista de los objetivos de un recordatorio
         //Y si, son los objetivos de todas las personas dentro de un recordatorio
         //Todos los usuarios que agregaron objetivos en su recordatorio o tengan X numero de tiempo
@@ -355,13 +362,18 @@ export default function InvitationView(props) {
                 onClose={() => setShowCancelModal(false)}
                 onSave={handleSaveCancelReason}
             />
+            {showObjectivesBlock && <>
+            <InvObjectivesBlock 
+            />
+            </>
+            }
             {showUserList && <InvUserList
-                inv_id={currentInvId} 
+                inv_id={currentInvId}
                 ownerId={CurrentOwner}
-                user_id={props.user_id} 
+                user_id={props.user_id}
                 reminderId={CurrentReminderId}
                 alarmId={CurrentAlarmId}
-                showUserList={showUserList} 
+                showUserList={showUserList}
                 setShowUserList={setShowUserList}
             />}
         </Container>

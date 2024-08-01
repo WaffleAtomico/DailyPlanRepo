@@ -153,7 +153,7 @@ const InvitationCard = ({ name, color, Icon, content, flag, handleInvAccepted,
                                             <FaCog /> Ajustes
                                         </Button> */}
                                         {item.reminder_id &&
-                                            <Button variant="alert" className="button-large" onClick={() => handleInvObjectives(item.inv_id)}>
+                                            <Button variant="alert" className="button-large" onClick={() => handleInvObjectives(item.reminder_id)}>
                                                 <FaTasks /> Objetivos
                                             </Button>
                                         }
