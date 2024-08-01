@@ -116,7 +116,8 @@ import {
   getObjectives,
   getObjectiveById,
   updateObjective,
-  deleteObjective
+  deleteObjective,
+  updateObjectiveStatus
 } from './requests/objectives.js';
 
 import {
@@ -150,6 +151,7 @@ import {
   getPuntuality,
   getPuntualityById,
   updatePuntuality,
+  updatePuntualityStreak,
   deletePuntuality, 
   getPuntualityByUserIdAndDate
 } from './requests/puntuality.js'
@@ -421,6 +423,7 @@ app.post(urls.ADD_OBJECTIVE_URL, addObjective);
 app.post(urls.GET_OBJECTIVES_URL, getObjectives);
 app.post(urls.GET_OBJECTIVE_BY_ID_URL, getObjectiveById);
 app.post(urls.UPDATE_OBJECTIVE_URL, updateObjective);
+app.post(urls.UPDATE_OBJECTIVE_STATUS_URL, updateObjectiveStatus)
 app.post(urls.DELETE_OBJECTIVE_URL, deleteObjective);
 
 /*-------------------------------ObjectivesBlock-------------------------*/
@@ -451,6 +454,7 @@ app.post(urls.ADD_PUNTUALITY_URL, addPuntuality);
 app.post(urls.GET_PUNTUALITIES_URL, getPuntuality);
 app.post(urls.GET_PUNTUALITY_BY_ID_URL, getPuntualityById);
 app.post(urls.UPDATE_PUNTUALITY_URL, updatePuntuality);
+app.post(urls.UPDATE_PUNTUALITY_STREAK_URL, updatePuntualityStreak);
 app.post(urls.DELETE_PUNTUALITY_URL, deletePuntuality);
 app.post(urls.GET_PUNTUALITY_BY_USER_ID_AND_DATE_URL, getPuntualityByUserIdAndDate);
 

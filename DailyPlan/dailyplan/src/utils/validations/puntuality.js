@@ -3,10 +3,11 @@
 import axios from 'axios';
 import {
     ADD_PUNTUALITY_URL,
-   GET_PUNTUALITIES_URL,
-   GET_PUNTUALITY_BY_ID_URL,
-   GET_PUNTUALITY_BY_USER_ID_AND_DATE_URL,
+    GET_PUNTUALITIES_URL,
+    GET_PUNTUALITY_BY_ID_URL,
+    GET_PUNTUALITY_BY_USER_ID_AND_DATE_URL,
     UPDATE_PUNTUALITY_URL,
+    UPDATE_PUNTUALITY_STREAK_URL,
     DELETE_PUNTUALITY_URL
 } from '../routes';
 
@@ -67,6 +68,16 @@ export const updatePuntuality = async ( puntualityInfo) => {
     } catch (err) {
         console.log("Error updating punctuality:", err);
         return "Error updating punctuality";
+    }
+};
+
+export const updatePuntualityStreak = async ( puntualityInfo ) => {
+    try {
+        const response = await axios.post(UPDATE_PUNTUALITY_STREAK_URL, {puntualityInfo});
+        return response;
+    } catch (err) {
+        console.log("Error updating punctuality streak:", err);
+        return "Error updating punctuality steak";
     }
 };
 

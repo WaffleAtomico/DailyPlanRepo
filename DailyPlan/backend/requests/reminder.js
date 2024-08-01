@@ -105,7 +105,7 @@ const getRemindersByDay = (req, res) => {
     const query = {
         sql: `SELECT r.reminder_id, r.reminder_name, r.reminder_hour, r.reminder_date, r.reminder_min,
          r.reminder_travel_time, ob.objblo_id, ob.objblo_name, ob.objblo_check, ob.objblo_duration_min, 
-         ob.objblo_durationreal_min, o.obj_id, o.obj_name, o.id_user
+         ob.objblo_durationreal_min, o.obj_id, o.obj_name, o.id_user, o.obj_check, o.obj_at_time
             FROM 
                 reminders r
             INNER JOIN 

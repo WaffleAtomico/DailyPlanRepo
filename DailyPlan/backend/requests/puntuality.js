@@ -112,6 +112,26 @@ const updatePuntuality = (req, res) => {
     });
 };
 
+const updatePuntualityStreak = (req, res) => {
+
+    console.log("Se manda a actualizar:", req.body.puntualityInfo);
+
+    const query = {
+        sql: "UPDATE `puntuality` SET `streak` = ?, `streak_start_date` = ? WHERE `punt_id` = ?",
+        values: [
+            req.body.puntualityInfo.streak,
+            req.body.puntualityInfo.streak_start_date,
+            req.body.puntualityInfo.punt_id,
+        ],
+    };
+    db.query(query.sql, query.values, (err, data) => {
+        if (err) {
+            return res.json({ message: "Error updating puntuality streak", error: err });
+        }
+        return res.json({ message: "Puntuality streak updated successfully" });
+    });
+};
+
 const deletePuntuality = (req, res) => {
     const query = {
         sql: "DELETE FROM `puntuality` WHERE `punt_id` = ?",
@@ -133,5 +153,6 @@ export {
     getPuntualityById,
     updatePuntuality,
     getPuntualityByUserIdAndDate,
+    updatePuntualityStreak,
     deletePuntuality 
 };

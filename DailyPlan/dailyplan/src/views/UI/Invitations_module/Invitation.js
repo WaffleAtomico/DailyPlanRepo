@@ -3,8 +3,10 @@ import { Container, Row, Col } from 'react-bootstrap';
 import { FaUserFriends, FaUserCheck, FaUserPlus } from 'react-icons/fa';
 import { LuMailX } from "react-icons/lu";
 import { TiGroup } from 'react-icons/ti';
+import { checkScheduleConflict, findConflictEvent } from '../../../utils/validations/schedule';
 import '../../../styles/UI/Invitations/invitation_view.css';
-
+import { getAlarmById } from '../../../utils/validations/alarm';
+import { getReminderById } from '../../../utils/validations/reminders';
 import InvitationCard from './invitation_card';
 import { deleteInvitation, getInvitationByUser, updateInvitationReason, updateInvitationState } from '../../../utils/validations/invitation';
 import { myPojo } from '../../../utils/ShowNotifInfo';
@@ -178,6 +180,22 @@ export default function InvitationView(props) {
         //si fue aceptada correctamente, entrega el logro
         // console.log("Entre a invitaciones aceptadas", inv_id);
 
+        //Crear objecto para verificar conflicto
+        
+        if(reminder_id ===  null && alarm_id !== null)
+        {
+            getAlarmById(alarm_id).then(response => {
+
+                    if(response.data.length > 0)
+                    {
+                        const alarmEvent = response.data[0];
+                        
+                    }
+            })
+
+        }
+
+
         updateInvitationState(true, inv_id).then(res => {
             // console.log(res)
             if (res.status) {
@@ -198,7 +216,7 @@ export default function InvitationView(props) {
                     }
                     ).catch(err => { console.log(err) })
                 } else { //false alarm
-
+ 
                 }
             }
         }).catch(err => { console.log(err) })

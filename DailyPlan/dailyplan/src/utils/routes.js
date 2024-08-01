@@ -90,7 +90,7 @@ const GET_OBJECTIVES_URL = `${urlreference}/get-objectives`;
 const GET_OBJECTIVE_BY_ID_URL = `${urlreference}/get-objective`;
 const UPDATE_OBJECTIVE_URL = `${urlreference}/update-objective`;
 const DELETE_OBJECTIVE_URL = `${urlreference}/delete-objective`;
-
+const UPDATE_OBJECTIVE_STATUS_URL = `${urlreference}/update-objective-status`;
 
 const ADD_OBJECTIVES_BLOCK_URL = `${urlreference}/add-objectivesblock`;
 const GET_OBJECTIVES_BLOCKS_URL = `${urlreference}/get-objectivesblocks`;
@@ -116,6 +116,7 @@ const ADD_PUNTUALITY_URL = `${urlreference}/add-puntuality`;
 const GET_PUNTUALITIES_URL = `${urlreference}/get-puntualities`;
 const GET_PUNTUALITY_BY_ID_URL = `${urlreference}/get-puntuality`;
 const UPDATE_PUNTUALITY_URL = `${urlreference}/update-puntuality`;
+const UPDATE_PUNTUALITY_STREAK_URL = `/update-puntuality-streak`;
 const DELETE_PUNTUALITY_URL = `${urlreference}/delete-puntuality`;
 const GET_PUNTUALITY_BY_USER_ID_AND_DATE_URL = `${urlreference}/getPuntualityByUserIdAndDate`;
 
@@ -288,6 +289,7 @@ export {
     GET_PUNTUALITIES_URL,
     GET_PUNTUALITY_BY_ID_URL,
     UPDATE_PUNTUALITY_URL,
+    UPDATE_PUNTUALITY_STREAK_URL,
     DELETE_PUNTUALITY_URL,
     GET_PUNTUALITY_BY_USER_ID_AND_DATE_URL,
 
@@ -361,4 +363,5 @@ export {
 
     ADD_NOTIFICATION_URL,
     GET_USER_NOTIFICATIONS_URL,
+    UPDATE_OBJECTIVE_STATUS_URL
 };

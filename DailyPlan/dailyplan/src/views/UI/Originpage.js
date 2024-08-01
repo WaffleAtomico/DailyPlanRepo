@@ -36,7 +36,7 @@ import { getScheduleById } from "../../utils/validations/schedule";
 import PreparationView from "./advices/Preparation";
 import { getReminderById,  getRemindersByDay} from "../../utils/validations/reminders";
 
-import { getPuntualityById } from "../../utils/validations/puntuality";
+import { getPuntualityById, updatePuntualityStreak } from "../../utils/validations/puntuality";
 import { isUserWeeklyScorecard, getWeeklyScorecardForUser, updateTitleUser } from "../../utils/validations/weeklyscorecard";
 import WeekSumerize from "./advices/WeekSumerize";
 import { useBootstrapBreakpoints } from "react-bootstrap/esm/ThemeProvider";
@@ -88,6 +88,28 @@ export default function OriginPage() {
 
                 if (rest_punt > 5) {
                   updateTitleUser(1, user_id, 11).then(res => {});
+                }
+
+                if (rest_punt >= 0) {
+                  getPuntualityById(user_id).then(res_punt => {
+                    if (res_punt.data.length > 0) {
+                      const date = new Date();
+
+                      const day = String(date.getDay()).padStart(2, '0');
+                      const month = String(date.getMonth()).padStart(2, '0');
+                      const year = String(date.getFullYear()).padStart(2, '0');
+
+                      updatePuntualityStreak(1, `${year}-${month}-${day}`, res_punt.data[0].punt_id).then(res => {});
+                    }
+                  });
+                }
+
+                if (rest_punt <= 5) {
+                  getPuntualityById(user_id).then(res_punt => {
+                    if (res_punt.data.length > 0) {
+                      updatePuntualityStreak(0, null, res_punt.data[0].punt_id).then(res => {});
+                    }
+                  });
                 }
               } else {
                 setPuntuality(res.data[1].punt_value);
@@ -173,9 +195,9 @@ export default function OriginPage() {
   //Si si tiene esa notificacion, se lo va a mostrar aca
   //Como con un true, si no le llega esa notificacion tecnicamente no lo tiene
   const [reminderArchi, setReminderArchi] = useState({
-    timeObj: false,
-    allObj: false,
-    fasArrival: false,
+    timeObj: true,
+    allObj: true,
+    fasArrival: true,
   });
   const [currentAchievement, setCurrentAchievement] = useState(null);
   
@@ -249,7 +271,7 @@ export default function OriginPage() {
 /*---------------------- PREPARACION ---------------------- */
 const [targetDate, setTargetDate] = useState(null);
 const [mostrarPreparacion, setMostrarPreparacion] = useState(false);
-const [showMiniTab, setShowMiniTab] = useState(true);
+const [showMiniTab, setShowMiniTab] = useState(false);
 const [reminders, setReminders] = useState([]);
 const [blocks, setBlocks] = useState([
 ]);
@@ -263,6 +285,7 @@ useEffect(() => {
     reminderDateTime.setMilliseconds(0);
 
     const preparationTime = reminderDateTime.getTime() - (travelTime * 60 * 1000) - (blockDuration * 60 * 1000);
+    console.log("preparation time:", preparationTime);
     return new Date(preparationTime);
   };
 
@@ -272,12 +295,14 @@ useEffect(() => {
     const upcomingReminder = blocks.find(block => {
       const totalBlockDuration = block.objectives.length * block.timeLimit; // total time for the block
       const preparationTime = calculatePreparationTime(block.reminderDate, block.reminderHour, block.reminderMin, block.travelTime, totalBlockDuration);
+
       const reminderTime = new Date(block.reminderDate);
       reminderTime.setHours(block.reminderHour);
       reminderTime.setMinutes(block.reminderMin);
       reminderTime.setSeconds(0);
       reminderTime.setMilliseconds(0);
-          
+          console.log("currenTime:", currentTime);
+          console.log("reminderTime:", reminderTime);
       return currentTime >= preparationTime && currentTime < reminderTime;
     });
 
@@ -304,7 +329,8 @@ getRemindersByDay(formatDate(new Date()), id)
         const objective = {
           id: reminder.obj_id,
           text: reminder.obj_name,
-          confirmed: false
+          confirmed: reminder.obj_check,
+          at_time: reminder.obj_at_time
         };
 
         if (existingBlock) {
