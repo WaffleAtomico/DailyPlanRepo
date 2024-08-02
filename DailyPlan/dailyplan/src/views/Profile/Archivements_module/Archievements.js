@@ -14,6 +14,7 @@ import { GoGear } from "react-icons/go";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../../styles/UI/profile/archivementView.css';
+import { myPojo } from '../../../utils/ShowNotifInfo';
 
 
 export default function Archivement_view(props) {
@@ -53,62 +54,37 @@ export default function Archivement_view(props) {
                     }
                     return title;
                 });
-                if (checkAllAchievementsDone(updatedTitles)) {
-                    // console.log("Cumple la condición");
+                setTitlesfromuser(updatedTitles);
+                // console.log("Titulos chidos: ", updatedTitles);
+               
+                // setTitlesfromuser(updatedTitles);
+                if (checkAllAchievementsDone(updatedTitles) && updatedTitles[15].title_done ==0) {
+                    console.log("No completado");
                     grant16Archivement(user_id);
                 }
-                setTitlesfromuser(updatedTitles);
+                
             }).catch(error => {
                 console.error(error);
             });
-
-            // try {
-            //     const gettitles = await getAllArchivements(user_id);
-            //     const updatedTitles = gettitles.map(title => {
-            //         if (additionalFields[title.title_id]) {
-            //             return {
-            //                 ...title,
-            //                 ...additionalFields[title.title_id]
-            //             };
-            //         }
-            //         return title;
-            //     });
-            //     setTitlesfromuser(updatedTitles);
-
-            //     if (checkAllAchievementsDone(updatedTitles)) {
-            //         console.log("Cumple la condición");
-            //         await grant16Archivement(user_id);
-            //     }
-
-            // } catch (error) {
-            //     console.error("Error fetching titles:", error);
-            // }
         };
-        console.log("Entre")
+        // console.log("Entre")
         getUserArchivement(props.user_id);
     }, [props.user_id]);
 
-    // useEffect(() => {
-    //     if (titlesfromuser.length > 0) {
-    //         console.log("Titles from user", titlesfromuser[0].title_id);
-    //         console.log("Titles from user", titlesfromuser[0].title_name);
-    //         console.log("Titles from user", titlesfromuser[0].title_done);
-    //     }
-    // }, [titlesfromuser]);
-
     const checkAllAchievementsDone = (achievements) => {
-        return achievements.every(achievement => achievement.title_done);
+        const allExceptOneDone = achievements
+        .filter((_, index) => index !== 15) 
+        .every(achievement => achievement.title_done); 
+        // console.log(allExceptOneDone);
+        return allExceptOneDone;
     };
 
     const grant16Archivement = (user_id) => {
-        grantArchivement(user_id, 16).then(response => { }).catch(error => {
+        grantArchivement(user_id, 16).then(response => { 
+            myPojo.setNotif("Logro: Rey del Tiempo", <FaHourglassStart size={220}/>)
+        }).catch(error => {
             console.error("Error granting achievement:", error);
         });
-        // try {
-        //     await grantArchivement(user_id, 16);
-        // } catch (error) {
-        //     console.error("Error granting achievement:", error);
-        // }
     };
 
     return (

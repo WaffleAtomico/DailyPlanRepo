@@ -35,7 +35,6 @@ export function playAlarm(repetitions = 1, durationInSeconds = 3, repeatInterval
 
   return new Promise((resolve) => {
     let currentRepetitions = 0;
-
     const playAudio = () => {
       audio.currentTime = 0;
       audio.play();

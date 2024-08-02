@@ -37,7 +37,6 @@ const PersoInfo = (props) => {
 
   useEffect(() => {
     const fetchUserName = () => {
-
       getUsrName(props.id).then(response => {
         if (response.data.length > 0) {
           const _user = response.data[0];

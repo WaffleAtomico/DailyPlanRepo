@@ -14,6 +14,7 @@ const PuntButton = (props) => {
   const [isCompletedArchivement1, setIsCompletedArchivement1] = useState(true);
   const [isCompletedArchivement2, setIsCompletedArchivement2] = useState(true);
   const [isCompletedArchivement3, setIsCompletedArchivement3] = useState(true);
+  const [wsActive, setWsActive] =useState(false);
 
   useEffect(() => {
     // console.log("Soy un boton");
@@ -89,7 +90,7 @@ const PuntButton = (props) => {
 
   return (
     <div className="punt_button-container">
-      <button className="punt_button-circle" onClick={togglePopup}>
+      <button className={wsActive ? "punt_button-circle-notif": "punt_button-circle"} onClick={togglePopup}>
         <span className="punt_button-text">{puntuality}%</span>
       </button>
       {showPopup && <PopupWindow closePopup={togglePopup} props = {props} />}
