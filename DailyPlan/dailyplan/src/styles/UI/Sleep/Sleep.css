@@ -12,10 +12,10 @@
     min-height: 100vh;
 }
 .sleep-body-link{
-    padding-top: 30rem;
+    padding-top: 5rem;
     padding-bottom: 8rem; 
     font-family: Arial;
-    background-color: #ffecd4;
+    /* background-color: #ffecd4; */
     font-size: 18px;
     display: flex;
     justify-content: center;

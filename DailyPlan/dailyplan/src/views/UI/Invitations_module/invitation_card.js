@@ -8,6 +8,7 @@ import { Button } from 'react-bootstrap';
 import '../../../styles/UI/Invitations/invitation_card.css';
 import { getReminderById } from '../../../utils/validations/reminders';
 import { getUsrName } from '../../../utils/validations/user';
+import { getAlarmById } from '../../../utils/validations/alarm';
 
 const InvitationCard = ({ name, color, Icon, content, flag, handleInvAccepted,
     handleInvRejected, handleInvObjectives,
@@ -25,17 +26,16 @@ const InvitationCard = ({ name, color, Icon, content, flag, handleInvAccepted,
 
     useEffect(() => {
         content.map((item) => {
+            let creatorName = "CreatorUsrName";
+            getUsrName(item.user_id_owner).then(response => {
+                if (response) {
+                    creatorName = response.data[0].user_name;
+                }
+            }).catch(error => {
+                console.error(error);
+            })
             if (selectType(item.alarm_id, item.reminder_id)) {
                 //reminder sol
-                let creatorName = "CreatorUsrName";
-                getUsrName(item.user_id_owner).then(response => {
-                    if (response) {
-                        creatorName = response.data[0].user_name;
-                    }
-                }).catch(error => {
-                    console.error(error);
-                })
-
                 getReminderById(item.reminder_id).then(res => {
                     // console.log("reminder: ", res.data);
                     const dataRem = res.data[0];
@@ -59,6 +59,24 @@ const InvitationCard = ({ name, color, Icon, content, flag, handleInvAccepted,
                 ).catch(err => { console.log(err) })
             } else {
                 //alarm solicitud
+                getAlarmById(item.alarm_id).then(res=>{
+                    const dataAlarm = res.data[0];
+                    const newDetail = {
+                        invId: item.inv_id,
+                        invAlarmId: dataAlarm.alarm_id,
+                        invCreator: creatorName,
+                        invName: dataAlarm.alarm_name,
+                        invHour: `${dataAlarm.alarm_hour}:${dataAlarm.alarm_min}`,
+                    };
+                    // console.log("NewDetail: ",newDetail)
+                    setDetailedContent(detailedContent => {
+                        if (!detailedContent.some(detail => detail.invId === newDetail.invId)) {
+                            return [...detailedContent, newDetail];
+                        }
+                        return detailedContent;
+                    });
+                    
+                }).catch(err=>{console.log(err)})
             }
         })
     }, [content])
@@ -139,7 +157,7 @@ const InvitationCard = ({ name, color, Icon, content, flag, handleInvAccepted,
                                                 <FaTasks /> Objetivos
                                             </Button>
                                         }
-                                        <Button variant="danger" className="button-large" onClick={() => handleInvCanceled(item.inv_id, item.user_id_owner
+                                        <Button variant="danger" className="button-large" onClick={() => handleInvCanceled(item.inv_id, item.user_id_owner,
                                             (item.reminder_id ? item.reminder_id : null), (item.alarm_id ? item.alarm_id : null)
                                         )}>
                                             <MdBlock /> Eliminar

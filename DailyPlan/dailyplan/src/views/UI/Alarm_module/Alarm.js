@@ -10,7 +10,7 @@ import '../../../styles/UI/Alarm/alarmview.css';
 function Alarm_view() {
     const [visible, setVisibilty] = useState(false);
     const [items, setItems] = useState([]);
-    
+
     const addItem = () => {
         setVisibilty(visible => !visible);
 
