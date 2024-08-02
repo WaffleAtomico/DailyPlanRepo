@@ -23,6 +23,16 @@ const AlarmFormView = (props) => {
     const [alarmDescription, setAlarmDescription] = useState('');
     const [ShareUser, setShareUser] = useState([])
     const [showShareUsers, setShowShareUsers] = useState(false)
+    const [days, setDays] = useState({
+        daysel_mon: 0,
+        daysel_tues: 0,
+        daysel_wed: 0,
+        daysel_thur: 0,
+        daysel_fri: 0,
+        daysel_sat: 0,
+        daysel_sun: 0,
+    });
+    const [daysSelectId, setdaysSelectId] = useState(0);
 
     const handleAlarmTimeChange = (event) => {
         setAlarmTime(event.target.value);
@@ -76,74 +86,97 @@ const AlarmFormView = (props) => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        const days_select = 0
-
-        addDaySelected(repeatDays).then(response => {
-            days_select = response.data.id
-        }).catch(error => {
-            console.error(error);
-        });
-
-        const alarmInfoToSend = {
-            alarm_name: alarmName,
-            daysel_id: days_select,
-            alarm_hour: 11,
-            alarm_min: 11,
-            alarm_sec: 0,
-            alarm_rep_tone: 1,
-            tone_id: 1,
-            alarm_days_suspended: suspensionDays,
-            alarm_active: 1,
-            alarm_image: alarmImage,
-            alarm_desc: alarmDescription,
-            user_id: props.user_id
-        };
-
-        addAlarm(alarmInfoToSend).then(res => {
-            if (res) {
-                const { alarm_id } = res.data;
-                console.log(alarm_id);
-
-                if (ShareUser.length > 0) {
-                    ShareUser.forEach(invUser => {
-                        
-                        checkIfUserBlocked(invUser.id, props.user_id).then(res => {
-                            console.log("Esta bloqueado? ", res.data.isBlocked);
-                            if (!res.data.isBlocked) { //si no esta bloqueado, lo hace
-                                const invitationUserData = {
-                                    reminder_id: null,
-                                    alarm_id: alarm_id,
-                                    user_id_owner: props.user_id,
-                                    user_id_target: invUser.id,
-                                    inv_state: null,
-                                    inv_reason: null,
-                                };                                
-                                addInvitation(invitationUserData).then(res => {
-                                    if (res.status)
-                                        console.log("Si se guarda bien la invitacion");
-                                    console.log(res);
-                                }).catch(error => {
-                                    console.error("Error saving invitation ", error);
-                                });
-                            }
-                        }
-                        ).catch(err => { console.log(err) })
-
-                    });
-                }
-
+        days.daysel_mon = 0
+        days.daysel_tues = 0
+        days.daysel_wed = 0
+        days.daysel_thur = 0
+        days.daysel_fri = 0
+        days.daysel_sat = 0
+        days.daysel_sun = 0
+        
+        repeatDays.forEach(day_select => {
+            if (day_select === 'L') {
+                days.daysel_mon = 1
             }
-        }).catch(error => {
-            console.error(error);
-            myPojo.setNotif("Error: No se pudo guardar la alarma", <div size={220} />);
+            if (day_select === 'M') {
+                days.daysel_tues = 1
+            }
+            if (day_select === 'Mi') {
+                days.daysel_wed = 1
+            }
+            if (day_select === 'J') {
+                days.daysel_thur = 1
+            }
+            if (day_select === 'V') {
+                days.daysel_fri = 1
+            }
+            if (day_select === 'S') {
+                days.daysel_sat = 1
+            }
+            if (day_select === 'D') {
+                days.daysel_sun = 1
+            }
         });
 
-        console.log('Datos del formulario:', {
-            alarmTime,
-            reminderTime,
-            alarmSound,
-            alarmDuration,
-            alarmRepetition
+        addDaySelected(days).then(response => {
+            const alarmTime_array = alarmTime.split(':');
+
+            const alarmInfoToSend = {
+                alarm_name: alarmName,
+                daysel_id: response.data.insertId,
+                alarm_hour: alarmTime_array[0],
+                alarm_min: alarmTime_array[1],
+                alarm_sec: 0,
+                alarm_rep_tone: 1,
+                tone_id: 1,
+                alarm_days_suspended: suspensionDays,
+                alarm_active: 1,
+                alarm_image: alarmImage,
+                alarm_desc: alarmDescription,
+                user_id: props.user_id
+            };
+
+            addAlarm(alarmInfoToSend).then(res => {
+                if (res) {
+                    const { alarm_id } = res.data;
+                    console.log(alarm_id);
+
+                    if (ShareUser.length > 0) {
+                        ShareUser.forEach(invUser => {
+                            
+                            checkIfUserBlocked(invUser.id, props.user_id).then(res => {
+                                console.log("Esta bloqueado? ", res.data.isBlocked);
+                                if (!res.data.isBlocked) { //si no esta bloqueado, lo hace
+                                    const invitationUserData = {
+                                        reminder_id: null,
+                                        alarm_id: alarm_id,
+                                        user_id_owner: props.user_id,
+                                        user_id_target: invUser.id,
+                                        inv_state: null,
+                                        inv_reason: null,
+                                    };                                
+                                    addInvitation(invitationUserData).then(res => {
+                                        if (res.status)
+                                            console.log("Si se guarda bien la invitacion");
+                                        console.log(res);
+                                    }).catch(error => {
+                                        console.error("Error saving invitation ", error);
+                                    });
+                                }
+                            }
+                            ).catch(err => { console.log(err) })
+                        });
+                    }
+
+                }
+                
+                props.setVisibilty();
+            }).catch(error => {
+                console.error(error);
+                myPojo.setNotif("Error: No se pudo guardar la alarma", <div size={220} />);
+            });
+        }).catch(error => {
+            console.error(error);
         });
     };
 

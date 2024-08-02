@@ -61,40 +61,40 @@ const useNotificationChecker = (id) => {
               const hour = String(date.getHours()).padStart(2, '0');
               const min = String(date.getMinutes()).padStart(2, '0');
   
-              if (res_days.daysel_mon == 1 && day == "lun" && hour == alarma.alarm_hour && min == alarma.alarm_min) {
+              if (res_days.daysel_mon === 1 && day === "lun" && hour === alarma.alarm_hour && min === alarma.alarm_min) {
                 myPojo.setNotif("Alarma", <>{alarma.alarm_name}</>);
                 displayedNotifs.current.add(alarma.alarm_id); // Marcar la notificación como mostrada
               }
-              if (res_days.daysel_tues == 1 && day == "mar" && hour == alarma.alarm_hour && min == alarma.alarm_min) {
+              if (res_days.daysel_tues === 1 && day === "mar" && hour === alarma.alarm_hour && min === alarma.alarm_min) {
                 myPojo.setNotif("Alarma", <>{alarma.alarm_name}</>);
                 displayedNotifs.current.add(alarma.alarm_id); // Marcar la notificación como mostrada
               }
-              if (res_days.daysel_wed == 1 && day == "mie" && hour == alarma.alarm_hour && min == alarma.alarm_min) {
+              if (res_days.daysel_wed === 1 && day === "mie" && hour === alarma.alarm_hour && min === alarma.alarm_min) {
                 myPojo.setNotif("Alarma", <>{alarma.alarm_name}</>);
                 displayedNotifs.current.add(alarma.alarm_id); // Marcar la notificación como mostrada
               }
-              if (res_days.daysel_thur == 1 && day == "jue" && hour == alarma.alarm_hour && min == alarma.alarm_min) {
+              if (res_days.daysel_thur === 1 && day === "jue" && hour === alarma.alarm_hour && min === alarma.alarm_min) {
                 myPojo.setNotif("Alarma", <>{alarma.alarm_name}</>);
                 displayedNotifs.current.add(alarma.alarm_id); // Marcar la notificación como mostrada
               }
-              if (res_days.daysel_fri == 1 && day == "vie" && hour == alarma.alarm_hour && min == alarma.alarm_min) {
+              if (res_days.daysel_fri === 1 && day === "vie" && hour === alarma.alarm_hour && min === alarma.alarm_min) {
                 myPojo.setNotif("Alarma", <>{alarma.alarm_name}</>);
                 displayedNotifs.current.add(alarma.alarm_id); // Marcar la notificación como mostrada
               }
-              if (res_days.daysel_sat == 1 && day == "sab" && hour == alarma.alarm_hour && min == alarma.alarm_min) {
+              if (res_days.daysel_sat === 1 && day === "sab" && hour === alarma.alarm_hour && min === alarma.alarm_min) {
                 myPojo.setNotif("Alarma", <>{alarma.alarm_name}</>);
                 displayedNotifs.current.add(alarma.alarm_id); // Marcar la notificación como mostrada
               }
-              if (res_days.daysel_sun == 1 && day == "dom" && hour == alarma.alarm_hour && min == alarma.alarm_min) {
+              if (res_days.daysel_sun === 1 && day === "dom" && hour === alarma.alarm_hour && min === alarma.alarm_min) {
                 myPojo.setNotif("Alarma", <>{alarma.alarm_name}</>);
                 displayedNotifs.current.add(alarma.alarm_id); // Marcar la notificación como mostrada
               }
-            }).catch(err => { console.log(err) });
+            }).catch(err => {  });
           });
         }
         setInitialLoad(false);
       }
-    }).catch(err => { console.log(err) });
+    }).catch(err => {  });
   };
 
   return null;
