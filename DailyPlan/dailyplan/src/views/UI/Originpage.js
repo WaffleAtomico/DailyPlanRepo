@@ -53,7 +53,7 @@ export default function OriginPage() {
   const [username, setUsername] = useState("");
   const [schedule, setSchedule] = useState([]);
   const [puntuality, setPuntuality] = useState(0);
-
+  
 
   const handleOptionSelected = (index) => {
     setSelectedOption(index);
