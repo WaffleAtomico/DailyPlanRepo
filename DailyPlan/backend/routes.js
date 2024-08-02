@@ -115,6 +115,7 @@ const ADD_PUNTUALITY_URL = '/add-puntuality';
 const GET_PUNTUALITIES_URL = '/get-puntualities';
 const GET_PUNTUALITY_BY_ID_URL = '/get-puntuality';
 const UPDATE_PUNTUALITY_URL = '/update-puntuality';
+const UPDATE_PUNTUALITY_STREAK_URL = '/update-puntuality-streak';
 const DELETE_PUNTUALITY_URL = '/delete-puntuality';
 const GET_PUNTUALITY_BY_USER_ID_AND_DATE_URL = '/getPuntualityByUserIdAndDate';
 
@@ -283,6 +284,7 @@ export {
     GET_PUNTUALITIES_URL,
     GET_PUNTUALITY_BY_ID_URL,
     UPDATE_PUNTUALITY_URL,
+    UPDATE_PUNTUALITY_STREAK_URL,
     DELETE_PUNTUALITY_URL,
     GET_PUNTUALITY_BY_USER_ID_AND_DATE_URL,
     ADD_REMINDER_URL,
