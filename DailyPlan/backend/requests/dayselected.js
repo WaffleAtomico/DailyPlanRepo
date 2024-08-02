@@ -36,7 +36,7 @@ const getDayselecteds = (req, res) => {
 const getDayselectedById = (req, res) => {
     const query = {
         sql: "SELECT `daysel_id`, `daysel_mon`, `daysel_tues`, `daysel_wed`, `daysel_thur`, `daysel_fri`, `daysel_sat`, `daysel_sun` FROM `dayselected` WHERE `daysel_id` = ?",
-        values: [req.params.daysel_id],
+        values: [req.body.daysel_id],
     };
     db.query(query.sql, query.values, (err, data) => {
         if (err) {
