@@ -34,7 +34,7 @@ import { addChronometer } from "../../utils/validations/chrono";
 import { getScheduleById } from "../../utils/validations/schedule";
 
 import PreparationView from "./advices/Preparation";
-import { getReminderById,  getRemindersByDay} from "../../utils/validations/reminders";
+import { getReminderById, getRemindersByDay } from "../../utils/validations/reminders";
 
 import { getPuntualityById, updatePuntualityStreak } from "../../utils/validations/puntuality";
 import { isUserWeeklyScorecard, getWeeklyScorecardForUser, updateTitleUser } from "../../utils/validations/weeklyscorecard";
@@ -66,7 +66,7 @@ export default function OriginPage() {
         // console.log("Response in front");
         // console.log(response.data);
         setUsername(response.data[0].user_name);
-        
+
       }).catch(error => {
         console.error(error);
         navigate("/login");
@@ -87,7 +87,7 @@ export default function OriginPage() {
                 setPuntuality(Math.round(sum_punt / 2));
 
                 if (rest_punt > 5) {
-                  updateTitleUser(1, user_id, 11).then(res => {});
+                  updateTitleUser(1, user_id, 11).then(res => { });
                 }
 
                 if (rest_punt >= 0) {
@@ -99,7 +99,7 @@ export default function OriginPage() {
                       const month = String(date.getMonth()).padStart(2, '0');
                       const year = String(date.getFullYear()).padStart(2, '0');
 
-                      updatePuntualityStreak(1, `${year}-${month}-${day}`, res_punt.data[0].punt_id).then(res => {});
+                      updatePuntualityStreak(1, `${year}-${month}-${day}`, res_punt.data[0].punt_id).then(res => { });
                     }
                   });
                 }
@@ -107,7 +107,7 @@ export default function OriginPage() {
                 if (rest_punt <= 5) {
                   getPuntualityById(user_id).then(res_punt => {
                     if (res_punt.data.length > 0) {
-                      updatePuntualityStreak(0, null, res_punt.data[0].punt_id).then(res => {});
+                      updatePuntualityStreak(0, null, res_punt.data[0].punt_id).then(res => { });
                     }
                   });
                 }
@@ -130,11 +130,11 @@ export default function OriginPage() {
       //Preguntar si existe o si esta en 0 o 1
       isUserWeeklyScorecard(user_id).then(res => {
         if (res.data.isLimitReached) {
-            myPojo.setNotif("Resumen Semanal de Puntualidad", <WeekSumerize user_id={user_id}/>);
+          myPojo.setNotif("Resumen Semanal de Puntualidad", <WeekSumerize user_id={user_id} />);
         }
       }).catch(err => { console.log(err) });
     }
-    
+
     getUserName(id);
     getUserPuntuality(id);
     showSumarize(id);
@@ -191,16 +191,24 @@ export default function OriginPage() {
     return () => clearInterval(interval);
   }, []);
 
-  //Se puede manejar como un 3er tipo de notificacion
+  //Se puede manejar como un 3er tipo de notificacion == notificacion de numero 2
+
+  /*
+  Notificacion 0 = notificacion normal, sin aviso
+  Notificacion 1 = Cancelacion
+  Notificacion 2 = puede ser esta
+  3 o 4, para resumen semanal
+  Notificacion 10> = logro que se necesita notificar a otro usuario
+  */
   //Si si tiene esa notificacion, se lo va a mostrar aca
   //Como con un true, si no le llega esa notificacion tecnicamente no lo tiene
   const [reminderArchi, setReminderArchi] = useState({
-    timeObj: true,
-    allObj: true,
-    fasArrival: true,
+    timeObj: false,
+    allObj: false,
+    fasArrival: false,
   });
   const [currentAchievement, setCurrentAchievement] = useState(null);
-  
+
   useEffect(() => {
     if (!myPojo._isShow) {
       if (currentAchievement === null || currentAchievement === 'fasArrival') {
@@ -238,7 +246,7 @@ export default function OriginPage() {
       }
     }
   }, [myPojo._isShow, counter, currentAchievement]);
-  
+
 
   const handleFastestTimeObj = () => {
     myPojo.setNotif("Felicidades, completaste tu primer grupo de objetivos antes que todos los demás");
@@ -268,102 +276,103 @@ export default function OriginPage() {
   //#endregion
 
 
-/*---------------------- PREPARACION ---------------------- */
-const [targetDate, setTargetDate] = useState(null);
-const [mostrarPreparacion, setMostrarPreparacion] = useState(false);
-const [showMiniTab, setShowMiniTab] = useState(false);
-const [reminders, setReminders] = useState([]);
-const [blocks, setBlocks] = useState([
-]);
+  /*---------------------- PREPARACION ---------------------- */
+//#region 
+  const [targetDate, setTargetDate] = useState(null);
+  const [mostrarPreparacion, setMostrarPreparacion] = useState(false);
+  const [showMiniTab, setShowMiniTab] = useState(false);
+  const [reminders, setReminders] = useState([]);
+  const [blocks, setBlocks] = useState([
+  ]);
 
-useEffect(() => {
-  const calculatePreparationTime = (reminderDate, reminderHour, reminderMin, travelTime, blockDuration) => {
-    const reminderDateTime = new Date(reminderDate);
-    reminderDateTime.setHours(reminderHour);
-    reminderDateTime.setMinutes(reminderMin);
-    reminderDateTime.setSeconds(0);
-    reminderDateTime.setMilliseconds(0);
+  useEffect(() => {
+    const calculatePreparationTime = (reminderDate, reminderHour, reminderMin, travelTime, blockDuration) => {
+      const reminderDateTime = new Date(reminderDate);
+      reminderDateTime.setHours(reminderHour);
+      reminderDateTime.setMinutes(reminderMin);
+      reminderDateTime.setSeconds(0);
+      reminderDateTime.setMilliseconds(0);
 
-    const preparationTime = reminderDateTime.getTime() - (travelTime * 60 * 1000) - (blockDuration * 60 * 1000);
-    console.log("preparation time:", preparationTime);
-    return new Date(preparationTime);
+      const preparationTime = reminderDateTime.getTime() - (travelTime * 60 * 1000) - (blockDuration * 60 * 1000);
+      console.log("preparation time:", preparationTime);
+      return new Date(preparationTime);
+    };
+
+    const checkReminders = () => {
+      const currentTime = new Date();
+
+      const upcomingReminder = blocks.find(block => {
+        const totalBlockDuration = block.objectives.length * block.timeLimit; // total time for the block
+        const preparationTime = calculatePreparationTime(block.reminderDate, block.reminderHour, block.reminderMin, block.travelTime, totalBlockDuration);
+
+        const reminderTime = new Date(block.reminderDate);
+        reminderTime.setHours(block.reminderHour);
+        reminderTime.setMinutes(block.reminderMin);
+        reminderTime.setSeconds(0);
+        reminderTime.setMilliseconds(0);
+        console.log("currenTime:", currentTime);
+        console.log("reminderTime:", reminderTime);
+        return currentTime >= preparationTime && currentTime < reminderTime;
+      });
+
+      if (upcomingReminder) {
+        setShowMiniTab(true);
+      } else {
+        setShowMiniTab(false);
+      }
+    };
+
+    const interval = setInterval(checkReminders, 20000); // Check every 20 seconds
+    return () => clearInterval(interval);
+  }, [blocks]);
+
+  useEffect(() => {
+
+
+    getRemindersByDay(formatDate(new Date()), id)
+      .then(data => {
+
+        console.log("Recordatorios del día", data);
+        const processedBlocks = data.reduce((acc, reminder) => {
+          const existingBlock = acc.find(block => block.name === reminder.objblo_name);
+          const objective = {
+            id: reminder.obj_id,
+            text: reminder.obj_name,
+            confirmed: reminder.obj_check,
+            at_time: reminder.obj_at_time
+          };
+
+          if (existingBlock) {
+            existingBlock.objectives.push(objective);
+          } else {
+            acc.push({
+              reminder_id: reminder.reminder_id,
+              id: reminder.objblo_id,
+              name: reminder.objblo_name,
+              timeLimit: reminder.objblo_duration_min,
+              objectives: [objective],
+              travelTime: reminder.reminder_travel_time,
+              reminderDate: reminder.reminder_date,
+              reminderHour: reminder.reminder_hour,
+              reminderMin: reminder.reminder_min,
+              check: reminder.objblo_check,
+              timeSpent: 0
+            });
+          }
+
+          return acc;
+        }, []);
+        setBlocks(processedBlocks);
+      })
+      .catch(error => {
+        console.log("No se pudieron obtener los recordatorios de la semana", error);
+      });
+  }, [id]);
+
+
+  const handleClosePreparationView = () => {
+    setMostrarPreparacion(false);
   };
-
-  const checkReminders = () => {
-    const currentTime = new Date();
-
-    const upcomingReminder = blocks.find(block => {
-      const totalBlockDuration = block.objectives.length * block.timeLimit; // total time for the block
-      const preparationTime = calculatePreparationTime(block.reminderDate, block.reminderHour, block.reminderMin, block.travelTime, totalBlockDuration);
-
-      const reminderTime = new Date(block.reminderDate);
-      reminderTime.setHours(block.reminderHour);
-      reminderTime.setMinutes(block.reminderMin);
-      reminderTime.setSeconds(0);
-      reminderTime.setMilliseconds(0);
-          console.log("currenTime:", currentTime);
-          console.log("reminderTime:", reminderTime);
-      return currentTime >= preparationTime && currentTime < reminderTime;
-    });
-
-    if (upcomingReminder) {
-      setShowMiniTab(true);
-    } else {
-      setShowMiniTab(false);
-    }
-  };
-
-  const interval = setInterval(checkReminders, 20000); // Check every 20 seconds
-  return () => clearInterval(interval);
-}, [blocks]);
-
-useEffect(() => {
-  
-  
-getRemindersByDay(formatDate(new Date()), id)
-    .then(data => {
-
-      console.log("Recordatorios del día", data);
-      const processedBlocks = data.reduce((acc, reminder) => {
-        const existingBlock = acc.find(block => block.name === reminder.objblo_name);
-        const objective = {
-          id: reminder.obj_id,
-          text: reminder.obj_name,
-          confirmed: reminder.obj_check,
-          at_time: reminder.obj_at_time
-        };
-
-        if (existingBlock) {
-          existingBlock.objectives.push(objective);
-        } else {
-          acc.push({
-            reminder_id: reminder.reminder_id,
-            id: reminder.objblo_id,
-            name: reminder.objblo_name,
-            timeLimit: reminder.objblo_duration_min,
-            objectives: [objective],
-            travelTime: reminder.reminder_travel_time,
-            reminderDate: reminder.reminder_date,
-            reminderHour: reminder.reminder_hour,
-            reminderMin: reminder.reminder_min,
-            check: reminder.objblo_check,
-            timeSpent: 0
-          });
-        }
-      
-        return acc;
-      }, []);
-      setBlocks(processedBlocks);
-    })
-    .catch(error => {
-      console.log("No se pudieron obtener los recordatorios de la semana", error);
-    });
-}, [id]);
-
-
-const handleClosePreparationView = () => {
-  setMostrarPreparacion(false);
-};
 
 
 

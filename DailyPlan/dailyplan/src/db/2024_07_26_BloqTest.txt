@@ -1,1 +1,0 @@
-INSERT INTO `usersblocked`(`user_id_sourse`, `user_id_target`) VALUES (55,57); 

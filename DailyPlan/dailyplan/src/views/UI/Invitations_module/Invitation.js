@@ -17,6 +17,7 @@ import InvUserList from './InvUsers';
 import { deleteReminderShare, saveReminderShare } from '../../../utils/validations/remindershare';
 import { addNotification } from '../../../utils/validations/notification';
 import InvObjectivesBlock from './InvObjectivesBlock';
+import { addAlarmShare } from '../../../utils/validations/alarmShare';
 
 export default function InvitationView(props) {
     const [data, setData] = useState([]);
@@ -40,6 +41,7 @@ export default function InvitationView(props) {
 
     useEffect(() => {
         // Function to fetch invitations from the API
+        console.log("Me ejecute");
         fetchInvitations();
         confirmArchivement4(props.user_id);
         confirmArchivement5(props.user_id);
@@ -103,6 +105,7 @@ export default function InvitationView(props) {
                 console.error('Error fetching invitations:', error);
             });
     };
+
     const confirmArchivement4 = (user_id) => {
         const grant_title_id = 3;
         isCompleted(user_id, grant_title_id).then(response => {
@@ -180,7 +183,7 @@ export default function InvitationView(props) {
         //si fue aceptada correctamente, entrega el logro
         // console.log("Entre a invitaciones aceptadas", inv_id);
 
-        //Crear objecto para verificar conflicto
+        //Crear objeto para verificar conflicto
         
         if(reminder_id ===  null && alarm_id !== null)
         {
@@ -194,8 +197,6 @@ export default function InvitationView(props) {
             })
 
         }
-
-
         updateInvitationState(true, inv_id).then(res => {
             // console.log(res)
             if (res.status) {
@@ -216,7 +217,15 @@ export default function InvitationView(props) {
                     }
                     ).catch(err => { console.log(err) })
                 } else { //false alarm
- 
+                    const alarmShareInfo = {
+                        as_user_id_target: props.user_id, //yo soy qn la acepta, por ende soy el target
+                        alarm_id: alarm_id,
+                    }
+                    addAlarmShare(alarmShareInfo).then(()=>{
+                        if (res) {
+                            
+                        }
+                    }).catch(err => { console.log(err) })
                 }
             }
         }).catch(err => { console.log(err) })
@@ -311,7 +320,7 @@ export default function InvitationView(props) {
 
     const handleInvObjectives = (reminder_id) => {
         //Es ver el id del usuario, y el id de los que lo han aceptado
-        //o sea, todos los usuarios quienes han
+        //o sea, todos los usuarios quienes estan involucrados en un mismo recordatorio
         setCurrentReminderId(reminder_id);
         setshowObjectivesBlock(true);
         //en este se va a poder ver una vista de los objetivos de un recordatorio
