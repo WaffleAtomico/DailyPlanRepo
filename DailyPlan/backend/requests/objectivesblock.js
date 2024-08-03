@@ -34,9 +34,22 @@ const getObjectivesBlocks = (req, res) => {
     });
 };
 
+const getObjectivesBlockByReminderId = (req, res) => {
+    const query = {
+        sql: "SELECT * FROM `objectivesblock` WHERE `reminder_id` = ?",
+        values: [req.body.reminder_id],
+    };
+    db.query(query.sql, query.values, (err, data) => {
+        if (err) {
+            return res.json({ message: "Error retrieving objective block", error: err });
+        }
+        return res.json(data);
+    });
+};
+
 const getObjectivesBlockById = (req, res) => {
     const query = {
-        sql: "SELECT *FROM `objectivesblock` WHERE `objblo_id` = ?",
+        sql: "SELECT * FROM `objectivesblock` WHERE `objblo_id` = ?",
         values: [req.body.objblo_id],
     };
     db.query(query.sql, query.values, (err, data) => {
@@ -48,7 +61,7 @@ const getObjectivesBlockById = (req, res) => {
 };
 
 const updateObjectivesBlock = (req, res) => {
-    console.log("Se mando a actualizar", req.body);
+    // console.log("Se mando a actualizar", req.body);
     const idObj = req.body.objblo_id;
     const body = req.body.blockInfo;
     const query = {
@@ -115,5 +128,6 @@ export {
     CompleteObjectivesBlock,
     getObjectivesBlockById,
     updateObjectivesBlock,
-    deleteObjectivesBlock 
+    deleteObjectivesBlock,
+    getObjectivesBlockByReminderId,
 };

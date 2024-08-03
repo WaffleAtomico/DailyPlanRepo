@@ -153,7 +153,7 @@ const InvitationCard = ({ name, color, Icon, content, flag, handleInvAccepted,
                                 {flag === 2 && (
                                     <>
                                         {item.reminder_id &&
-                                            <Button variant="primary" className="button-large" onClick={() => handleInvObjectives(item.inv_id)}>
+                                            <Button variant="primary" className="button-large" onClick={() => handleInvObjectives(item.user_id_owner, item.reminder_id)}>
                                                 <FaTasks /> Objetivos
                                             </Button>
                                         }
@@ -171,7 +171,7 @@ const InvitationCard = ({ name, color, Icon, content, flag, handleInvAccepted,
                                             <FaCog /> Ajustes
                                         </Button> */}
                                         {item.reminder_id &&
-                                            <Button variant="alert" className="button-large" onClick={() => handleInvObjectives(item.reminder_id)}>
+                                            <Button variant="primary" className="button-large" onClick={() => handleInvObjectives(item.user_id_owner, item.reminder_id)}>
                                                 <FaTasks /> Objetivos
                                             </Button>
                                         }

@@ -97,6 +97,7 @@ const GET_OBJECTIVESBLOCK_BY_ID_URL = '/get-objectivesblock';
 const UPDATE_OBJECTIVESBLOCK_URL = '/update-objectivesblock';
 const DELETE_OBJECTIVESBLOCK_URL = '/delete-objectivesblock';
 const COMPLETE_OBJECTIVEBLOCK_URL = '/complete-objetivesblock';
+const GET_OBJECTIVES_BLOCK_BY_REMINDER_ID_URL = '/get-objectives-block-by-reminder-id';
 
 
 const ADD_PERMISSION_URL = '/add-permission';
@@ -128,6 +129,7 @@ const GET_REMINDER_BY_ID_URL = '/get-reminder';
 const GET_REMINDER_BY_DAY_URL = '/get-reminders-by-day';
 const UPDATE_REMINDER_URL = '/update-reminder';
 const DELETE_REMINDER_URL = '/delete-reminder';
+const GET_REMINDER_BY_SOURCE_ID_AND_USER_ID_URL = '/get-reminder-by-source-id-and-user-id';
 
 
 const ADD_REMINDERSHARE_URL = '/add-remindershare';
@@ -270,6 +272,7 @@ export {
     UPDATE_OBJECTIVESBLOCK_URL,
     DELETE_OBJECTIVESBLOCK_URL,
     COMPLETE_OBJECTIVEBLOCK_URL,
+    GET_OBJECTIVES_BLOCK_BY_REMINDER_ID_URL,
     ADD_PERMISSION_URL,
     GET_PERMISSIONS_URL,
     GET_PERMISSION_BY_ID_URL,
@@ -295,6 +298,7 @@ export {
     GET_REMINDER_BY_ID_URL,
     UPDATE_REMINDER_URL,
     DELETE_REMINDER_URL,
+    GET_REMINDER_BY_SOURCE_ID_AND_USER_ID_URL,
     
     ADD_REMINDERSHARE_URL,
     GET_REMINDERSHARES_URL,

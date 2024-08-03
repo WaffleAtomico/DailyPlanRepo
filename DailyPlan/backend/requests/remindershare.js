@@ -10,6 +10,7 @@ const addReminderShare = (req, res) => {
             body.reminder_id,
         ],
     };
+    console.log(req.body);
     db.query(query.sql, query.values, (err, result) => {
         if (err) {
             return res.status(500).json({ message: "Error adding reminder share", error: err });
@@ -74,7 +75,6 @@ const deleteReminderShare = (req, res) => {
 };
 
 const getUserIdsByReminder = (req, res) => {
-    
     const query = {
         sql: "SELECT `rs_user_id_target` FROM `remindershare` WHERE `reminder_id` = ?",
         values: [req.body.reminder_id],

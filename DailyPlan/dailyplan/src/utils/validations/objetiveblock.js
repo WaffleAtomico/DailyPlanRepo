@@ -5,7 +5,8 @@ import {
     GET_OBJECTIVES_BLOCK_BY_ID_URL,
     UPDATE_OBJECTIVES_BLOCK_URL,
     DELETE_OBJECTIVES_BLOCK_URL,
-    COMPLETE_OBJECTIVEBLOCK_URL
+    COMPLETE_OBJECTIVEBLOCK_URL,
+    GET_OBJECTIVES_BLOCK_BY_REMINDER_ID_URL,
 } from '../routes';
 
 export const saveObjectivesBlock = async (blockInfo) => {
@@ -68,5 +69,15 @@ export const completeObjectivesBlock = async (blockInfo, objblo_id) => {
     } catch (err) {
         console.error("Error updating objective block:", err);
         return false;
+    }
+};
+
+export const getObjectivesBlockByReminderId = async (reminder_id) => {
+    try {
+        const response = await axios.post(GET_OBJECTIVES_BLOCK_BY_REMINDER_ID_URL, { reminder_id });
+        return response;
+    } catch (err) {
+        console.log("Error retrieving objective block:", err);
+        return "Error retrieving objective block";
     }
 };
