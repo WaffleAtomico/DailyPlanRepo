@@ -14,7 +14,7 @@ const useNotificationChecker = (id) => {
       userNotifications(id);
       alarmNotifications(id);
     };
-    const intervalId = setInterval(fetchNotifications, 10000); // 120000ms = 2 minutos
+    const intervalId = setInterval(fetchNotifications, 40000); // 120000ms = 2 minutos, 40000 = 40 segundos
     return () => clearInterval(intervalId);
   }, [id]);
   
