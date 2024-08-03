@@ -126,7 +126,8 @@ import {
   getObjectivesBlockById,
   updateObjectivesBlock,
   deleteObjectivesBlock,
-  CompleteObjectivesBlock
+  CompleteObjectivesBlock,
+  getObjectivesBlockByReminderId
 
 } from './requests/objectivesblock.js';
 
@@ -164,7 +165,8 @@ import {
   getReminderById,
   updateReminder,
   deleteReminder,
-  getRemindersByDay
+  getRemindersByDay,
+  getReminderBySourceIdAndUserId,
 } from './requests/reminder.js';
 
 import {
@@ -433,7 +435,7 @@ app.post(urls.GET_OBJECTIVESBLOCK_BY_ID_URL, getObjectivesBlockById);
 app.post(urls.UPDATE_OBJECTIVESBLOCK_URL, updateObjectivesBlock);
 app.post(urls.DELETE_OBJECTIVESBLOCK_URL, deleteObjectivesBlock);
 app.post(urls.COMPLETE_OBJECTIVEBLOCK_URL, CompleteObjectivesBlock);
-
+app.post(urls.GET_OBJECTIVES_BLOCK_BY_REMINDER_ID_URL, getObjectivesBlockByReminderId);
 
 /*-------------------------------Permissions-------------------------*/
 app.post(urls.ADD_PERMISSION_URL, addPermision);
@@ -467,6 +469,8 @@ app.post(urls.GET_REMINDER_BY_ID_URL, getReminderById);
 app.post(urls.GET_REMINDER_BY_DAY_URL, getRemindersByDay);
 app.post(urls.UPDATE_REMINDER_URL, updateReminder);
 app.post(urls.DELETE_REMINDER_URL, deleteReminder);
+app.post(urls.GET_REMINDER_BY_SOURCE_ID_AND_USER_ID_URL, getReminderBySourceIdAndUserId);
+
 
 /*-------------------------------ReminderShare-------------------------*/
 app.post(urls.ADD_REMINDERSHARE_URL, addReminderShare);

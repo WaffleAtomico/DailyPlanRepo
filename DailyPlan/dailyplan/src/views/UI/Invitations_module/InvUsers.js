@@ -5,6 +5,7 @@ import '../../../styles/UI/Invitations/InvUserList.css'
 import { getUsrName } from '../../../utils/validations/user';
 import { getUserIdsByReminder } from '../../../utils/validations/remindershare';
 import { addUserBlocked } from '../../../utils/validations/blockedurs';
+import { getUserIdsByAlarm } from '../../../utils/validations/alarmShare';
 
 const InvUserList = ({ inv_id, ownerId, user_id, reminderId, alarmId,
   showUserList, setShowUserList
@@ -70,19 +71,36 @@ const InvUserList = ({ inv_id, ownerId, user_id, reminderId, alarmId,
         }).catch(error => { console.error(error); })
       }
       if (alarmId) {
-        //ALARMS SHARE PTM
-        //variable de adentro: ar_user_id_target 
+        getUserIdsByAlarm(alarmId).then(res=>{
+          console.log(res);
+          const usersIds = res.data;
+          usersIds.map(user => {
+            if (user) {
+              const current_user_id = user.ar_user_id_target;
+              if (current_user_id != user_id) {
+                getUsrName(current_user_id)
+                  .then(response => {
+                    if (response) {
+                      const acceptedUser = {
+                        id: current_user_id,
+                        name: response.data[0].user_name,
+                      };
+                      setUsers(prevData => {
+                        if (!prevData.some(data => data.id === acceptedUser.id)) {
+                          return [...prevData, acceptedUser];
+                        }
+                        return prevData;
+                      });
+                    }
+                  }).catch(error => { console.error(error); })
+              }
+            }
+          })
+        }).catch(error => { console.error(error); })
       }
     };
     fetchcreator();
     fetchUsers();
-    // dummy
-    // const response = [
-    //   { id: 1, name: 'Usuario 1' },
-    //   { id: 2, name: 'Usuario 2' },
-    //   { id: 3, name: 'Usuario 3' },
-    // ];
-    // setUsers(response);
   }, []);
 
   const handleBlockUser = (user) => {

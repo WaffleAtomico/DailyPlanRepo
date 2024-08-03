@@ -150,7 +150,7 @@ export default function InvitationView(props) {
             grantArchivement(user_id, grant_title_id).then(res => {
                 console.log(res);
                 myPojo.setNotif("Logro: CONCIENTE", <IoAlertCircleOutline size={220} />);
-                setIsCompletedArchivement1(true);
+                setIsCompletedArchivement2(true);
             }).catch(error => {
                 console.error("Error granting achievement:", error);
             });
@@ -184,16 +184,14 @@ export default function InvitationView(props) {
         // console.log("Entre a invitaciones aceptadas", inv_id);
 
         //Crear objeto para verificar conflicto
-        
-        if(reminder_id ===  null && alarm_id !== null)
-        {
+
+        if (reminder_id === null && alarm_id !== null) {
             getAlarmById(alarm_id).then(response => {
 
-                    if(response.data.length > 0)
-                    {
-                        const alarmEvent = response.data[0];
-                        
-                    }
+                if (response.data.length > 0) {
+                    const alarmEvent = response.data[0];
+
+                }
             })
 
         }
@@ -201,7 +199,7 @@ export default function InvitationView(props) {
             // console.log(res)
             if (res.status) {
                 // console.log("Si jala bn, o deberia de actualizar");
-                fetchInvitations();
+               
                 if (invType) { //true reminder
                     const reminderShareInfo = {
                         rs_user_id_target: props.user_id, //yo soy qn la acepta, por ende soy el target
@@ -210,7 +208,7 @@ export default function InvitationView(props) {
                     saveReminderShare(reminderShareInfo).then(res => {
                         // console.log("Reminder share response ",res)
                         if (res) {
-                            // console.log("Si agrego el registro de reminderShare",res.data);
+                            console.log("Si agrego el registro de reminderShare ", res);
                             grant4Archivement();
                             grant12Archivement(user_id_owner);
                         }
@@ -221,12 +219,13 @@ export default function InvitationView(props) {
                         as_user_id_target: props.user_id, //yo soy qn la acepta, por ende soy el target
                         alarm_id: alarm_id,
                     }
-                    addAlarmShare(alarmShareInfo).then(()=>{
+                    addAlarmShare(alarmShareInfo).then(() => {
                         if (res) {
-                            
+
                         }
                     }).catch(err => { console.log(err) })
                 }
+                fetchInvitations();
             }
         }).catch(err => { console.log(err) })
     }
@@ -318,10 +317,15 @@ export default function InvitationView(props) {
 
     }
 
-    const handleInvObjectives = (reminder_id) => {
+    const handleInvObjectives = (ownerId, invRemId) => {
         //Es ver el id del usuario, y el id de los que lo han aceptado
         //o sea, todos los usuarios quienes estan involucrados en un mismo recordatorio
-        setCurrentReminderId(reminder_id);
+        setCurrentOwner(ownerId);
+        if (invRemId) {
+            setCurrentReminderId(invRemId);
+            setCurrentAlarmId(null);
+        }
+       
         setshowObjectivesBlock(true);
         //en este se va a poder ver una vista de los objetivos de un recordatorio
         //Y si, son los objetivos de todas las personas dentro de un recordatorio
@@ -390,8 +394,12 @@ export default function InvitationView(props) {
                 onSave={handleSaveCancelReason}
             />
             {showObjectivesBlock && <>
-            <InvObjectivesBlock 
-            />
+                <InvObjectivesBlock
+                    user_id={props.user_id}
+                    ownerId={CurrentOwner}
+                    reminderId={CurrentReminderId}
+                    setshowObjectivesBlock={setshowObjectivesBlock}
+                />
             </>
             }
             {showUserList && <InvUserList
