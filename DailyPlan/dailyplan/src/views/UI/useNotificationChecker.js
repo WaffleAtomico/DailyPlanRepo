@@ -20,7 +20,6 @@ const useNotificationChecker = (id) => {
   
   const userNotifications = (id) => {
     getUserNotifications(id).then(res => {
-      console.log("Check");
       if (res.status) {
         const notifs = res.data.map(item => ({
           id: item.notification_id,
@@ -49,7 +48,6 @@ const useNotificationChecker = (id) => {
   
   const alarmNotifications = (id) => {
     getAlarmsForUser(id).then(res => {
-      console.log("Alarm Check", res);
       if (res.status) {
         if (!initialLoad) {
           res.data.forEach(alarma => {
@@ -91,12 +89,12 @@ const useNotificationChecker = (id) => {
                 myPojo.setNotif("Alarma", <>{alarma.alarm_name}</>);
                 displayedNotifs.current.add(alarma.alarm_id); // Marcar la notificación como mostrada
               }
-            }).catch(err => {  });
+            }).catch(err => { console.log(err) });
           });
         }
         setInitialLoad(false);
       }
-    }).catch(err => {  });
+    }).catch(err => { console.log(err) });
   };
 
   return null;
