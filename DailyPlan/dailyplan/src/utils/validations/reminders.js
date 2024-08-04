@@ -7,7 +7,8 @@ import {
     DELETE_REMINDER_URL,
     GET_REMINDERS_BY_MONTH_URL,
     GET_REMINDERS_BY_WEEK_URL,
-    GET_REMINDER_BY_DAY_URL
+    GET_REMINDER_BY_DAY_URL,
+    GET_REMINDER_BY_SOURCE_ID_AND_USER_ID_URL 
 } from '../routes.js';
 
 export const saveUserReminder = async (reminderInfo) => {
@@ -81,5 +82,16 @@ export const getRemindersByDay = async (date, user_id) => {
         return response.data;
     } catch (err) {
         console.log(err);
+    }
+};
+
+
+export const getReminderBySourceIdAndUserId = async (reminder_sourse_id, user_id) => {
+    try {
+        const response = await axios.post(GET_REMINDER_BY_SOURCE_ID_AND_USER_ID_URL, { reminder_sourse_id, user_id });
+        return response;
+    } catch (err) {
+        console.log("Error retrieving reminder:", err);
+        return "Error retrieving reminder";
     }
 };

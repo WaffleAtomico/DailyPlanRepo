@@ -187,6 +187,21 @@ const deleteReminder = (req, res) => {
     });
 };
 
+
+
+const getReminderBySourceIdAndUserId = (req, res) => {
+    const query = {
+        sql: "SELECT `reminder_id`, `reminder_name`, `reminder_create`, `reminder_date`, `reminder_hour`, `reminder_min`, `reminder_active`, `repdays_id`, `reminder_tone_duration_sec`, `reminder_advance_min`, `reminder_img`, `reminder_desc`, `reminder_days_suspended`, `reminder_share`, `reminder_sourse_id`, `user_id`, `tone_id`, `reminder_travel_time` FROM `reminders` WHERE `reminder_sourse_id` = ? AND `user_id` = ?",
+        values: [req.body.reminder_sourse_id, req.body.user_id],
+    };
+    db.query(query.sql, query.values, (err, data) => {
+        if (err) {
+            return res.json({ message: "Error retrieving reminder", error: err });
+        }
+        return res.json(data);
+    });
+};
+
 export { 
     addReminder,
     getReminders,
@@ -195,5 +210,6 @@ export {
     getReminderById,
     updateReminder,
     deleteReminder,
-    getRemindersByDay
+    getRemindersByDay,
+    getReminderBySourceIdAndUserId,
 };

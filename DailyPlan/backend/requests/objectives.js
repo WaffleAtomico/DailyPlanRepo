@@ -32,11 +32,11 @@ const getObjectives = (req, res) => {
         return res.json(data);
     });
 };
-
+//esta se va a usar luego para los bloques
 const getObjectiveById = (req, res) => {
     const query = {
-        sql: "SELECT `obj_id`, `obj_name`,  `id_user`, `objblo_id` FROM `objectives` WHERE `obj_id` = ?",
-        values: [req.params.obj_id],
+        sql: "SELECT `obj_id`, `obj_name`,  `id_user`, `objblo_id` FROM `objectives` WHERE `objblo_id` = ?",
+        values: [req.params.objblo_id],
     };
     db.query(query.sql, query.values, (err, data) => {
         if (err) {

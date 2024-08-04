@@ -63,6 +63,7 @@ const GET_ALARMSHARES_URL = `${urlreference}/get-alarmshares`;
 const GET_ALARMSHARE_BY_ID_URL = `${urlreference}/get-alarmshare`;
 const UPDATE_ALARMSHARE_URL = `${urlreference}/update-alarmshare`;
 const DELETE_ALARMSHARE_URL = `${urlreference}/delete-alarmshare`;
+const GET_USER_IDS_BY_ALARM_URL = `${urlreference}/get-user-ids-by-alarm`
 
 const ADD_DAYSELECTED_URL = `${urlreference}/add-dayselected`;
 const GET_DAYSELECTEDS_URL = `${urlreference}/get-dayselecteds`;
@@ -98,7 +99,7 @@ const GET_OBJECTIVES_BLOCK_BY_ID_URL = `${urlreference}/get-objectivesblock`;
 const UPDATE_OBJECTIVES_BLOCK_URL = `${urlreference}/update-objectivesblock`;
 const DELETE_OBJECTIVES_BLOCK_URL = `${urlreference}/delete-objectivesblock`;
 const COMPLETE_OBJECTIVEBLOCK_URL = `${urlreference}/complete-objetivesblock`;
-
+const GET_OBJECTIVES_BLOCK_BY_REMINDER_ID_URL = `${urlreference}/get-objectives-block-by-reminder-id`;
 
 const ADD_PERMISSION_URL = `${urlreference}/add-permission`;
 const GET_PERMISSIONS_URL = `${urlreference}/get-permissions`;
@@ -129,6 +130,7 @@ const UPDATE_REMINDER_URL = `${urlreference}/update-reminder`;
 const DELETE_REMINDER_URL = `${urlreference}/delete-reminder`;
 const GET_REMINDERS_BY_MONTH_URL = `${urlreference}/get-reminders-by-month`;
 const GET_REMINDERS_BY_WEEK_URL = `${urlreference}/get-reminders-by-week`;
+const GET_REMINDER_BY_SOURCE_ID_AND_USER_ID_URL = `${urlreference}/get-reminder-by-source-id-and-user-id`;
 
 const ADD_REMINDERSHARE_URL = `${urlreference}/add-remindershare`;
 const GET_REMINDERSHARES_FOR_USER_URL = `${urlreference}/get-user-remindershares`;
@@ -195,7 +197,9 @@ const DISTANCE_MATRIX_URL = `${urlreference}/distance-matrix`;
 
 export {
     urlreference,
+    
     DISTANCE_MATRIX_URL,
+
     ADD_ALARM_URL,
     GET_ALARMS_FOR_USER_URL,
     GET_ALARM_BY_ID_URL,
@@ -203,15 +207,19 @@ export {
     DELETE_ALARM_URL,
     ALARM_NAME_EXISTS_URL,
     USER_ALARM_LIMIT_REACHED_URL,
+
     ADD_USER_BLOCKED_URL,
     DELETE_USER_BLOCKED_URL,
     GET_USERS_BLOCKED_URL,
     CHECK_USER_BLOCKED_URL,
+
     ADD_CLOCK_URL,
     GET_CLOCK_URL,
     DELETE_CLOCK_URL,
     CLOCK_EXISTS_ZONE_URL,
+
     CONN_URL,
+
     CREATE_USER_URL,
     UPDATE_USER_PWD_URL,
     UPDATE_USER_NAME_URL,
@@ -223,28 +231,35 @@ export {
     GET_USER_BY_MAIL_URL,
     GET_USER_BY_PHONE_URL,
     UPDATE_USER_TITLE_URL,
+
     SEND_MAIL_URL,
     SEND_MAILJT_URL,
+
     ADD_TIMER_URL,
     GET_TIMERS_FOR_USER_URL,
     GET_TIMER_BY_ID_URL,
     UPDATE_TIMER_URL,
     DELETE_TIMER_URL,
+
     ADD_CHRONOMETER_URL,
     GET_CHRONOMETERS_FOR_USER_URL,
     GET_CHRONOMETER_BY_ID_URL,
     UPDATE_CHRONOMETER_URL,
     DELETE_CHRONOMETER_URL,
+
     ADD_ALARMSHARE_URL,
     GET_ALARMSHARES_URL,
     GET_ALARMSHARE_BY_ID_URL,
     UPDATE_ALARMSHARE_URL,
     DELETE_ALARMSHARE_URL,
+    GET_USER_IDS_BY_ALARM_URL,
+
     ADD_DAYSELECTED_URL,
     GET_DAYSELECTEDS_URL,
     GET_DAYSELECTED_BY_ID_URL,
     UPDATE_DAYSELECTED_URL,
     DELETE_DAYSELECTED_URL,
+
     ADD_INVITATION_URL,
     GET_INVITATIONS_URL,
     GET_INVITATION_BY_USER_URL,
@@ -272,6 +287,7 @@ export {
     UPDATE_OBJECTIVES_BLOCK_URL,
     DELETE_OBJECTIVES_BLOCK_URL,
     COMPLETE_OBJECTIVEBLOCK_URL,
+    GET_OBJECTIVES_BLOCK_BY_REMINDER_ID_URL,
 
     ADD_PERMISSION_URL,
     GET_PERMISSIONS_URL,
@@ -302,6 +318,7 @@ export {
     GET_REMINDERS_BY_MONTH_URL,
     GET_REMINDERS_BY_WEEK_URL,
     GET_REMINDER_BY_DAY_URL,
+    GET_REMINDER_BY_SOURCE_ID_AND_USER_ID_URL,
     
     ADD_REMINDERSHARE_URL,
     GET_REMINDERSHARES_URL,
