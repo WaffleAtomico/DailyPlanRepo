@@ -1,0 +1,1 @@
+ALTER TABLE `sleepquality` ADD `sleep_rep_stopped` INT NULL AFTER `sleep_id`; 
