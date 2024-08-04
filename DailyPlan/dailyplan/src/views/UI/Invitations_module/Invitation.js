@@ -205,10 +205,10 @@ export default function InvitationView(props) {
                         rs_user_id_target: props.user_id, //yo soy qn la acepta, por ende soy el target
                         reminder_id: reminder_id,
                     }
-                    saveReminderShare(reminderShareInfo).then(res => {
+                    saveReminderShare(reminderShareInfo).then(resp => {
                         // console.log("Reminder share response ",res)
-                        if (res) {
-                            console.log("Si agrego el registro de reminderShare ", res);
+                        if (resp.status) {
+                            console.log("Si agrego el registro de reminderShare ", resp);
                             grant4Archivement();
                             grant12Archivement(user_id_owner);
                         }

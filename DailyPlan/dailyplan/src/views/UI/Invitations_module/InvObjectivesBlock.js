@@ -102,7 +102,7 @@ const InvObjectivesBlock = ({ user_id, reminderId, ownerId, setshowObjectivesBlo
         } else {
           console.log("No es un arreglo, estructura: ", res.data);
         }
-      }).catch(err => { console.log(err) })
+      }).catch(err => { console.log(err) });
     } else {
       // console.log("Usario normal");
       getReminderBySourceIdAndUserId(reminderId, user.id).then(res => {
@@ -128,10 +128,10 @@ const InvObjectivesBlock = ({ user_id, reminderId, ownerId, setshowObjectivesBlo
       objectiveBlocks.forEach(goal => {
         const objectiveBlockData = {
           objblo_name: goal.name,
-          objblo_duration_min: goal.time,
+          objblo_duration_min: (goal.time == 0 ? 5 :goal.time),
           objblo_durationreal_min: 0,
           objblo_check: false,
-          reminder_id: userRemId,
+          reminder_id: (user_id == ownerId ? reminderId : userRemId),
         };
         saveObjectivesBlock(objectiveBlockData).then(response => {
           const { objblo_id } = response.data;
@@ -149,13 +149,14 @@ const InvObjectivesBlock = ({ user_id, reminderId, ownerId, setshowObjectivesBlo
               console.error("Error saving objective", error);
             });
           });
+          setshowObjectivesBlock(false);
         }).catch(error => {
           console.error("Error saving objective block", error);
         });
       });
     }
     // setShowBlock(false);
-    handleShowBlock(users[0]);
+    
 
     //Falta actualizar o revisar que si actualice
   };
