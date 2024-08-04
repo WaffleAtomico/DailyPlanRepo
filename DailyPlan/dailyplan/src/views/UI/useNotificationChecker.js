@@ -47,6 +47,7 @@ const useNotificationChecker = (id) => {
   };
   
   const alarmNotifications = (id) => {
+    
     getAlarmsForUser(id).then(res => {
       if (res.status) {
         if (!initialLoad) {

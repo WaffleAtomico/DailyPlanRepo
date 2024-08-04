@@ -1,4 +1,5 @@
 import { db } from '../config/connection.js';
+
 const addReminderShare = (req, res) => {
 
     const body = req.body.reminderShareInfo;
@@ -10,7 +11,7 @@ const addReminderShare = (req, res) => {
             body.reminder_id,
         ],
     };
-    console.log("Body de reminderShare create ",req.body);
+    // console.log("Body de reminderShare create ",req.body);
     db.query(query.sql, query.values, (err, result) => {
         if (err) {
             return res.status(500).json({ message: "Error adding reminder share", error: err });
