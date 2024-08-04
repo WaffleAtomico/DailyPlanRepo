@@ -1,18 +1,24 @@
 import { db } from '../config/connection.js';
 
 const addAlarmShare = (req, res) => {
+
+    const body = req.body.alarmShareInfo;
+    
     const query = {
-        sql: "INSERT INTO `alarmshare`(`ar_user_id_target`, `alarm_id`) VALUES (?, ?)",
+        sql: "INSERT INTO `alarmshare`(`ar_user_id_target`, `alarm_id`) VALUES (?,?)",
+        //    INSERT INTO `alarmshare`(`ar_user_id_target`, `alarm_id`) VALUES (?,?)
         values: [
-            req.body.ar_user_id_target,
-            req.body.alarm_id,
+            body.ar_user_id_target,
+            body.alarm_id,
         ],
     };
-    db.query(query.sql, query.values, (err, data) => {
+    // console.log(query);
+    db.query(query.sql, query.values, (err, result) => {
+        console.log(result);
         if (err) {
-            return res.json({ message: "Error adding alarm share", error: err });
+            return res.status(500).json({ message: "Error adding alarm share", error: err });
         }
-        return res.json({ message: "Alarm share added successfully" });
+        return res.status(200).json({ message: "alarm share added successfully", alarmsha_id: result.insertId });
     });
 };
 

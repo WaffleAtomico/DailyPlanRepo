@@ -60,8 +60,7 @@ const getInvitationByUser = (req, res) => {
 
             return res.json({ message: "Error retrieving invitation", error: err });
         }
-
-        console.log("Datos obtenidos", data);
+        // console.log("Datos obtenidos", data);
         return res.json(data);
     });
 };
@@ -89,7 +88,7 @@ const updateInvitation = (req, res) => {
 };
 
 const updateInvitationState = (req, res) => {
-    console.log("Body y si entre al correcto ", req.body)
+    // console.log("Body y si entre al correcto ", req.body)
     const query = {
         sql: "UPDATE `invitations` SET `inv_state` = ? WHERE `inv_id` = ?",
         values: [
@@ -128,7 +127,7 @@ const deleteInvitation = (req, res) => {
         sql: "DELETE FROM `invitations` WHERE `inv_id` = ?",
         values: [req.body.inv_id],
     };
-    console.log("Si entre ", query.values)
+    // console.log("Si entre ", query.values)
     db.query(query.sql, query.values, (err, data) => {
         if (err) {
             return res.json({ message: "Error deleting invitation", error: err });
