@@ -42,6 +42,8 @@ import WeekSumerize from "./advices/WeekSumerize";
 import { useBootstrapBreakpoints } from "react-bootstrap/esm/ThemeProvider";
 import useNotificationChecker from "./useNotificationChecker";
 
+import { confirmArchivement, grantArchivement } from "../../utils/validations/services/Archivement";
+
 
 export default function OriginPage() {
   /* --------------------ORIGIN BASE-------------------- */
@@ -53,7 +55,6 @@ export default function OriginPage() {
   const [username, setUsername] = useState("");
   const [schedule, setSchedule] = useState([]);
   const [puntuality, setPuntuality] = useState(0);
-
 
   const handleOptionSelected = (index) => {
     setSelectedOption(index);
@@ -87,7 +88,7 @@ export default function OriginPage() {
                 setPuntuality(Math.round(sum_punt / 2));
 
                 if (rest_punt > 5) {
-                  updateTitleUser(1, user_id, 11).then(res => { });
+                  grantArchivement(11, user_id, confirmArchivement(11, user_id), "Ganando el tiempo al tiempo");
                 }
 
                 if (rest_punt >= 0) {
@@ -246,6 +247,8 @@ export default function OriginPage() {
           return;
         }
       }
+
+      grantArchivement(6, id, confirmArchivement(6, id), "Rey de la colina");
     }
   }, [myPojo._isShow, counter, currentAchievement]);
 
