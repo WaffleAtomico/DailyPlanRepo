@@ -34,7 +34,7 @@ const addAlarm = (req, res) => {
 const getAlarms = (req, res) => {
   const query = {
     sql: "SELECT `alarm_id`, `alarm_name`, `daysel_id`, `alarm_hour`, `alarm_min`, `alarm_sec`, `alarm_rep_tone`, `tone_id`, `alarm_days_suspended`, `alarm_active`, `alarm_image`, `alarm_desc`, `user_id` FROM `alarms` WHERE `user_id` = ?",
-    values: [req.params.user_id],
+    values: [req.body.user_id],
   };
 
   db.query(query.sql, query.values, (err, data) => {
@@ -49,13 +49,13 @@ const getAlarms = (req, res) => {
 const getAlarmById = (req, res) => {
   const query = {
     sql: "SELECT `alarm_id`, `alarm_name`, `daysel_id`, `alarm_hour`, `alarm_min`, `alarm_sec`, `alarm_rep_tone`, `tone_id`, `alarm_days_suspended`, `alarm_active`, `alarm_image`, `alarm_desc`, `user_id` FROM `alarms` WHERE `alarm_id` = ?",
-    values: [req.params.alarm_id],
+    values: [req.body.alarm_id],
   };
-
   db.query(query.sql, query.values, (err, data) => {
     if (err) {
       return res.status(500).json({ message: "Error getting alarm", error: err });
     }
+    // console.log("Data sin alterar ",data);
     return res.json(data[0]);
   });
 };
@@ -76,7 +76,7 @@ const updateAlarm = (req, res) => {
       req.body.alarm_active,
       req.body.alarm_imgage,
       req.body.alarm_desc,
-      req.params.alarm_id,
+      req.body.alarm_id,
     ],
   };
 
@@ -92,7 +92,7 @@ const updateAlarm = (req, res) => {
 const deleteAlarm = (req, res) => {
   const query = {
     sql: "DELETE FROM `alarms` WHERE `alarm_id` = ?",
-    values: [req.params.alarm_id],
+    values: [req.body.alarm_id],
   };
 
   db.query(query.sql, query.values, (err) => {

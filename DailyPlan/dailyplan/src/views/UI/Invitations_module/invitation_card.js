@@ -60,7 +60,8 @@ const InvitationCard = ({ name, color, Icon, content, flag, handleInvAccepted,
             } else {
                 //alarm solicitud
                 getAlarmById(item.alarm_id).then(res=>{
-                    const dataAlarm = res.data[0];
+                    // console.log(res);
+                    const dataAlarm = res.data;
                     const newDetail = {
                         invId: item.inv_id,
                         invAlarmId: dataAlarm.alarm_id,
@@ -68,7 +69,7 @@ const InvitationCard = ({ name, color, Icon, content, flag, handleInvAccepted,
                         invName: dataAlarm.alarm_name,
                         invHour: `${dataAlarm.alarm_hour}:${dataAlarm.alarm_min}`,
                     };
-                    // console.log("NewDetail: ",newDetail)
+                    // console.log("NewDetail: ", newDetail)
                     setDetailedContent(detailedContent => {
                         if (!detailedContent.some(detail => detail.invId === newDetail.invId)) {
                             return [...detailedContent, newDetail];
@@ -175,7 +176,7 @@ const InvitationCard = ({ name, color, Icon, content, flag, handleInvAccepted,
                                                 <FaTasks /> Objetivos
                                             </Button>
                                         }
-                                        <Button variant="danger" className="button-large" onClick={() => handleInvDelete(item.inv_id)}>
+                                        <Button variant="danger" className="button-large" onClick={() => handleInvDelete(item.inv_id, (item.reminder_id ? item.reminder_id : null), (item.alarm_id ? item.alarm_id : null))}>
                                             <MdBlock /> Eliminar
                                         </Button>
                                     </>

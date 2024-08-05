@@ -5,8 +5,8 @@ import { LuMailX } from "react-icons/lu";
 import { TiGroup } from 'react-icons/ti';
 import { checkScheduleConflict, findConflictEvent } from '../../../utils/validations/schedule';
 import '../../../styles/UI/Invitations/invitation_view.css';
-import { getAlarmById } from '../../../utils/validations/alarm';
-import { getReminderById } from '../../../utils/validations/reminders';
+import { deleteAlarm, getAlarmById } from '../../../utils/validations/alarm';
+import { deleteReminder, getReminderById } from '../../../utils/validations/reminders';
 import InvitationCard from './invitation_card';
 import { deleteInvitation, getInvitationByUser, updateInvitationReason, updateInvitationState } from '../../../utils/validations/invitation';
 import { myPojo } from '../../../utils/ShowNotifInfo';
@@ -17,7 +17,7 @@ import InvUserList from './InvUsers';
 import { deleteReminderShare, saveReminderShare } from '../../../utils/validations/remindershare';
 import { addNotification } from '../../../utils/validations/notification';
 import InvObjectivesBlock from './InvObjectivesBlock';
-import { addAlarmShare } from '../../../utils/validations/alarmShare';
+import { addAlarmShare, deleteAlarmShare } from '../../../utils/validations/alarmShare';
 
 export default function InvitationView(props) {
     const [data, setData] = useState([]);
@@ -172,6 +172,7 @@ export default function InvitationView(props) {
             console.error("Error confirming achievement: ", error);
         });
     };
+
     /*
     INVITATIONS STATES
     1 ============ ACCEPTED
@@ -234,17 +235,16 @@ export default function InvitationView(props) {
         updateInvitationState(true, inv_id).then(res => {
             // console.log(res)
             if (res.status) {
-                // console.log("Si jala bn, o deberia de actualizar");
-               
+                // console.log("Si jala bn, o deberia de actualizar", invType);
                 if (invType) { //true reminder
                     const reminderShareInfo = {
-                        rs_user_id_target: props.user_id, //yo soy qn la acepta, por ende soy el target
+                        rs_user_id_target: parseInt(props.user_id, 10), //yo soy qn la acepta, por ende soy el target
                         reminder_id: reminder_id,
                     }
-                    saveReminderShare(reminderShareInfo).then(resp => {
+                    saveReminderShare(reminderShareInfo).then(resR => {
                         // console.log("Reminder share response ",res)
-                        if (resp.status) {
-                            console.log("Si agrego el registro de reminderShare ", resp);
+                        if (resR.status) {
+                            console.log("Si agrego el registro de reminderShare ", resR);
                             grant4Archivement();
                             grant12Archivement(user_id_owner);
                         }
@@ -252,12 +252,12 @@ export default function InvitationView(props) {
                     ).catch(err => { console.log(err) })
                 } else { //false alarm
                     const alarmShareInfo = {
-                        as_user_id_target: props.user_id, //yo soy qn la acepta, por ende soy el target
+                        ar_user_id_target: parseInt(props.user_id, 10), //yo soy qn la acepta, por ende soy el target
                         alarm_id: alarm_id,
                     }
-                    addAlarmShare(alarmShareInfo).then(() => {
-                        if (res) {
-
+                    addAlarmShare(alarmShareInfo).then(respA => {
+                        if (respA) {
+                            console.log("Si agrego el registro de aparm ", respA.alarmsha_id);
                         }
                     }).catch(err => { console.log(err) })
                 }
@@ -345,7 +345,14 @@ export default function InvitationView(props) {
 
                         setShowCancelModal(false);
                     }
-                    deleteReminderShare(props.user_id, CurrentReminderId);
+                    if (CurrentReminderId) {
+                        deleteReminderShare(props.user_id, CurrentReminderId).then(resDSr => { }
+                        ).catch(err => { console.log(err) });
+                    }
+                    if (CurrentAlarmId) {
+                        deleteAlarmShare(props.user_id, CurrentAlarmId).then(resDSa => { }
+                        ).catch(err => { console.log(err) });
+                    }
                     fetchInvitations();
                 }).catch(err => { console.log(err) })
             }
@@ -361,7 +368,7 @@ export default function InvitationView(props) {
             setCurrentReminderId(invRemId);
             setCurrentAlarmId(null);
         }
-       
+
         setshowObjectivesBlock(true);
         //en este se va a poder ver una vista de los objetivos de un recordatorio
         //Y si, son los objetivos de todas las personas dentro de un recordatorio
@@ -374,12 +381,27 @@ export default function InvitationView(props) {
         //Tambien si tiene objetivos, se va a mostrar el tiempo de viaje que tiene 
     }
 
-    const handleInvDelete = (inv_id) => {
+    const handleInvDelete = (inv_id, reminder_id, alarm_id) => {
         //eliminar el recordatorio por parte del creador
         deleteInvitation(inv_id).then(res => {
             if (res) {
-                myPojo.setNotif("Invitacion cancelada", <LuMailX size={220} />)
-                fetchInvitations();
+                if (reminder_id) {
+                    //es recordatorio
+                    deleteReminder(reminder_id).then(res => {
+                        if (res.status) {
+                            myPojo.setNotif("Recordatorio eliminado", <LuMailX size={220} />)
+                            fetchInvitations();
+                        }
+                    }).catch(err => { console.log(err) })
+                } else if (alarm_id) {
+                    //Es alarma
+                    deleteAlarm(alarm_id).then(res => {
+                        if (res.status) {
+                            myPojo.setNotif("Alarma eliminada", <LuMailX size={220} />)
+                            fetchInvitations();
+                        }
+                    }).catch(err => { console.log(err) })
+                }
             }
         }).catch(err => { console.log(err) })
     }

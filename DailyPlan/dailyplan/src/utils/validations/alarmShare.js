@@ -11,8 +11,9 @@ import {
 
 
 export const addAlarmShare = async (alarmShareInfo) => {
+    // console.log("Info que envio", {alarmShareInfo});
     try {
-        const response = await axios.post(ADD_ALARMSHARE_URL, alarmShareInfo);
+        const response = await axios.post(ADD_ALARMSHARE_URL, { alarmShareInfo } );
         return response.data;
     } catch (err) {
         console.error(err);
