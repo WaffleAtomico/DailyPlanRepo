@@ -42,6 +42,8 @@ import WeekSumerize from "./advices/WeekSumerize";
 import { useBootstrapBreakpoints } from "react-bootstrap/esm/ThemeProvider";
 import useNotificationChecker from "./useNotificationChecker";
 
+import { confirmArchivements, grantArchivements } from "../../utils/validations/services/Archivement";
+
 
 export default function OriginPage() {
   /* --------------------ORIGIN BASE-------------------- */
@@ -53,7 +55,6 @@ export default function OriginPage() {
   const [username, setUsername] = useState("");
   const [schedule, setSchedule] = useState([]);
   const [puntuality, setPuntuality] = useState(0);
-
 
   const handleOptionSelected = (index) => {
     setSelectedOption(index);
@@ -87,7 +88,7 @@ export default function OriginPage() {
                 setPuntuality(Math.round(sum_punt / 2));
 
                 if (rest_punt > 5) {
-                  updateTitleUser(1, user_id, 11).then(res => { });
+                  grantArchivements(11, user_id, confirmArchivements(11, user_id), "Ganando el tiempo al tiempo");
                 }
 
                 if (rest_punt >= 0) {
@@ -126,6 +127,7 @@ export default function OriginPage() {
       });
     };
 
+    /*
     const showSumarize = (user_id) => {
       //Preguntar si existe o si esta en 0 o 1
       isUserWeeklyScorecard(user_id).then(res => {
@@ -134,10 +136,11 @@ export default function OriginPage() {
         }
       }).catch(err => { console.log(err) });
     }
+    */
 
     getUserName(id);
     getUserPuntuality(id);
-    showSumarize(id);
+    // showSumarize(id);
   }, []);
 
   const handleSuboption = (index) => {
@@ -219,6 +222,7 @@ export default function OriginPage() {
             fasArrival: false,
           }));
           setCurrentAchievement('timeObj');
+          grantArchivements(6, id, confirmArchivements(6, id), "Rey de la colina");
           return;
         }
       }
@@ -230,6 +234,7 @@ export default function OriginPage() {
             timeObj: false,
           }));
           setCurrentAchievement('allObj');
+          grantArchivements(6, id, confirmArchivements(6, id), "Rey de la colina");
           return;
         }
       }
@@ -241,6 +246,7 @@ export default function OriginPage() {
             allObj: false,
           }));
           setCurrentAchievement(null); // Todos los logros procesados
+          grantArchivements(6, id, confirmArchivements(6, id), "Rey de la colina");
           return;
         }
       }
