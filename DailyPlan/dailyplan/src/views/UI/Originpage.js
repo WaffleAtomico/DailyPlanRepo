@@ -316,7 +316,11 @@ export default function OriginPage() {
       });
 
       if (upcomingReminder) {
+        
         setShowMiniTab(true);
+        
+
+
       } else {
         setShowMiniTab(false);
       }
