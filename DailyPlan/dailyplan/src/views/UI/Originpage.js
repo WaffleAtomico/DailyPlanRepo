@@ -42,7 +42,7 @@ import WeekSumerize from "./advices/WeekSumerize";
 import { useBootstrapBreakpoints } from "react-bootstrap/esm/ThemeProvider";
 import useNotificationChecker from "./useNotificationChecker";
 
-import { confirmArchivement, grantArchivement } from "../../utils/validations/services/Archivement";
+import { confirmArchivements, grantArchivements } from "../../utils/validations/services/Archivement";
 
 
 export default function OriginPage() {
@@ -88,7 +88,7 @@ export default function OriginPage() {
                 setPuntuality(Math.round(sum_punt / 2));
 
                 if (rest_punt > 5) {
-                  grantArchivement(11, user_id, confirmArchivement(11, user_id), "Ganando el tiempo al tiempo");
+                  grantArchivements(11, user_id, confirmArchivements(11, user_id), "Ganando el tiempo al tiempo");
                 }
 
                 if (rest_punt >= 0) {
@@ -222,6 +222,7 @@ export default function OriginPage() {
             fasArrival: false,
           }));
           setCurrentAchievement('timeObj');
+          grantArchivements(6, id, confirmArchivements(6, id), "Rey de la colina");
           return;
         }
       }
@@ -233,6 +234,7 @@ export default function OriginPage() {
             timeObj: false,
           }));
           setCurrentAchievement('allObj');
+          grantArchivements(6, id, confirmArchivements(6, id), "Rey de la colina");
           return;
         }
       }
@@ -244,11 +246,10 @@ export default function OriginPage() {
             allObj: false,
           }));
           setCurrentAchievement(null); // Todos los logros procesados
+          grantArchivements(6, id, confirmArchivements(6, id), "Rey de la colina");
           return;
         }
       }
-
-      grantArchivement(6, id, confirmArchivement(6, id), "Rey de la colina");
     }
   }, [myPojo._isShow, counter, currentAchievement]);
 

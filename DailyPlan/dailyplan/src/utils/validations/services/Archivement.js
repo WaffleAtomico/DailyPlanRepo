@@ -13,7 +13,7 @@ import { GiTomato } from "react-icons/gi";
 import { BsCalendarWeek, BsClockHistory } from "react-icons/bs";
 import { GoGear } from "react-icons/go";
 
-export const confirmArchivement = async (grantTitleId, userId) => {
+export const confirmArchivements = (grantTitleId, userId) => {
   isCompleted(userId, grantTitleId).then(response => {
       if (response === false) {
           return response;
@@ -23,12 +23,12 @@ export const confirmArchivement = async (grantTitleId, userId) => {
   });
 };
 
-export const grantArchivement = async (grantTitleId, userId, isCompletedArchivement, name) => {
+export const grantArchivements = (grantTitleId, userId, isCompletedArchivement, name) => {
   if (!isCompletedArchivement) { //si no esta completado hay que entregarlo
       grantArchivement(userId, grantTitleId).then(res => {
           const logro_name = "Logro: " + name;
           const size_tag = 220;
-          
+
           switch(grantTitleId) {
               case 1:
                   // Obten una puntuacion mayor de 80 en puntualidad
