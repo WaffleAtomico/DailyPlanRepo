@@ -126,6 +126,7 @@ export default function OriginPage() {
       });
     };
 
+    /*
     const showSumarize = (user_id) => {
       //Preguntar si existe o si esta en 0 o 1
       isUserWeeklyScorecard(user_id).then(res => {
@@ -134,10 +135,11 @@ export default function OriginPage() {
         }
       }).catch(err => { console.log(err) });
     }
+    */
 
     getUserName(id);
     getUserPuntuality(id);
-    showSumarize(id);
+    // showSumarize(id);
   }, []);
 
   const handleSuboption = (index) => {

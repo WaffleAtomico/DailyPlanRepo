@@ -4,6 +4,7 @@ import { FaTimes } from 'react-icons/fa';
 import { Pie } from 'react-chartjs-2';
 import { Chart, ArcElement, Tooltip, Legend } from 'chart.js';
 import { getSleepQualityByUser } from '../../../utils/validations/sleepquality';
+import WeekSumerize from "../advices/WeekSumerize";
 // Register the Chart.js components
 Chart.register(ArcElement, Tooltip, Legend);
 
@@ -72,14 +73,11 @@ const PopupWindow = ({ closePopup, props }) => {
           <FaTimes />
         </button>
       </div>
-      <Tabs defaultActiveKey="reminders" id="punt_button-popup-tabs">
-        <Tab eventKey="reminders" title="Recordatorios">
+      <Tabs defaultActiveKey="puntuality" id="punt_button-popup-tabs">
+        <Tab eventKey="puntuality" title="Resumen Semanal de Puntualidad">
           <div className="punt_button-tab-content">
-            Contenido de Recordatorios
-            </div>
-        </Tab>
-        <Tab eventKey="alarms" title="Alarmas">
-          <div className="punt_button-tab-content">Contenido de Alarmas</div>
+            <WeekSumerize user_id={props.id_user} />
+          </div>
         </Tab>
         <Tab eventKey="sleep" title="Sueño">
           <div className="punt_button-tab-content">
@@ -95,9 +93,6 @@ const PopupWindow = ({ closePopup, props }) => {
               )}
             </div>
           </div>
-        </Tab>
-        <Tab eventKey="stopwatches" title="Cronómetros">
-          <div className="punt_button-tab-content">Contenido de Cronómetros</div>
         </Tab>
       </Tabs>
     </div>
