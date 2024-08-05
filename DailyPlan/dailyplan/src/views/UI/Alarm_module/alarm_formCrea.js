@@ -9,6 +9,7 @@ import { myPojo } from '../../../utils/ShowNotifInfo';
 import ShareUsers from '../Calendar_module/ShareReminder';
 import { checkIfUserBlocked } from '../../../utils/validations/blockedurs';
 import { addInvitation } from '../../../utils/validations/invitation';
+import { addTone } from '../../../utils/validations/tone';
 
 const AlarmFormView = (props) => {
     const [alarmTime, setAlarmTime] = useState('');
@@ -50,14 +51,29 @@ const AlarmFormView = (props) => {
         setReminderTime(event.target.value);
     };
 
+
+    //Handle para convertir el sonido en  base64
     const handleAlarmSoundChange = (event) => {
         const file = event.target.files[0];
         if (file && file.size <= 5 * 1024 * 1024) {
-            setAlarmSound(file);
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const base64String = e.target.result.split(',')[1];
+                setAlarmSound({
+                    base64: base64String,
+                    name: file.name,
+                    type: file.type
+                });
+            };
+            reader.readAsDataURL(file);
         } else {
             alert('El archivo de sonido no debe exceder los 5 MB.');
         }
     };
+    
+
+
+
 
     const handleAlarmNameChange = (event) => {
         setAlarmName(event.target.value);
@@ -121,6 +137,8 @@ const AlarmFormView = (props) => {
         addDaySelected(days).then(response => {
             const alarmTime_array = alarmTime.split(':');
 
+
+
             const alarmInfoToSend = {
                 alarm_name: alarmName,
                 daysel_id: response.data.insertId,
@@ -128,13 +146,28 @@ const AlarmFormView = (props) => {
                 alarm_min: alarmTime_array[1],
                 alarm_sec: 0,
                 alarm_rep_tone: 1,
-                tone_id: 1,
+                tone_id: null,
                 alarm_days_suspended: suspensionDays,
                 alarm_active: 1,
                 alarm_image: alarmImage,
-                alarm_desc: alarmDescription,
+                alarm_desc:   alarmDescription,
                 user_id: props.user_id
             };
+
+            
+            //agregar sonindo a la BD para posteriormente reproducir
+            if(alarmSound)
+                {
+                    return addTone({alarmTone: alarmSound.base64,
+                                    alarmToneName: alarmSound.name,
+                                    alarmToneType:  alarmSound.type
+                    }).then(toneResponse => {
+    
+                        alarmInfoToSend.tone_id = toneResponse.tone_id;                        
+                    })
+    
+                }
+    
 
             addAlarm(alarmInfoToSend).then(res => {
                 if (res) {

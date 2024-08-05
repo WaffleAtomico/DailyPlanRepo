@@ -41,6 +41,8 @@ import { isUserWeeklyScorecard, getWeeklyScorecardForUser, updateTitleUser } fro
 import WeekSumerize from "./advices/WeekSumerize";
 import { useBootstrapBreakpoints } from "react-bootstrap/esm/ThemeProvider";
 import useNotificationChecker from "./useNotificationChecker";
+import { getToneById } from "../../utils/validations/tone";
+import { playBlobAudio } from "../../utils/sounds";
 
 
 export default function OriginPage() {
@@ -53,7 +55,7 @@ export default function OriginPage() {
   const [username, setUsername] = useState("");
   const [schedule, setSchedule] = useState([]);
   const [puntuality, setPuntuality] = useState(0);
-  
+
 
   const handleOptionSelected = (index) => {
     setSelectedOption(index);
@@ -277,7 +279,7 @@ export default function OriginPage() {
 
 
   /*---------------------- PREPARACION ---------------------- */
-//#region 
+  //#region 
   const [targetDate, setTargetDate] = useState(null);
   const [mostrarPreparacion, setMostrarPreparacion] = useState(false);
   const [showMiniTab, setShowMiniTab] = useState(false);
@@ -301,6 +303,7 @@ export default function OriginPage() {
     const checkReminders = () => {
       const currentTime = new Date();
 
+
       const upcomingReminder = blocks.find(block => {
         const totalBlockDuration = block.objectives.length * block.timeLimit; // total time for the block
         const preparationTime = calculatePreparationTime(block.reminderDate, block.reminderHour, block.reminderMin, block.travelTime, totalBlockDuration);
@@ -316,11 +319,36 @@ export default function OriginPage() {
       });
 
       if (upcomingReminder) {
-        
+
         setShowMiniTab(true);
-        
+        const dateObj = new Date(upcomingReminder.reminderDate);
+
+        //Obtener todo: si es nulo, reproducir el predefinido. En caso contrario, el asignado
+
+        //Si está desactivado
+        if (upcomingReminder.status === 0) {
+              return;
+        }
+
+        getToneById(upcomingReminder.tone_id).then(response => {
+
+          //verificar si no existen 
+          if (upcomingReminder.objectives.length === 0) {
 
 
+          }
+
+
+          //  playBlobAudio(response.toneBlob);
+          //     myPojo.setNotif("Recordatorio", <h1>{upcomingReminder.reminderName} a las {String(upcomingReminder.reminderHour).padStart(2,'0')}:{String(upcomingReminder.reminderMin).padStart(2,'0')} del día { formatDate(dateObj)}</h1>)
+
+
+
+
+        })
+
+
+        //Reproducir sonidos
       } else {
         setShowMiniTab(false);
       }
@@ -351,8 +379,11 @@ export default function OriginPage() {
           } else {
             acc.push({
               reminder_id: reminder.reminder_id,
+              tone_id: reminder.tone_id,
               id: reminder.objblo_id,
+              status: reminder.remminder_active,
               name: reminder.objblo_name,
+              reminderName: reminder.reminder_name,
               timeLimit: reminder.objblo_duration_min,
               objectives: [objective],
               travelTime: reminder.reminder_travel_time,
