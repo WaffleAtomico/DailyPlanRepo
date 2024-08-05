@@ -18,6 +18,9 @@ const WeekSumerize = (props) => {
                 if (scoreCard) {
                     setPunctualityDatan([scoreCard.punt_num_rem, scoreCard.punt_num_alar, scoreCard.punt_num_timer, scoreCard.punt_num_chro]);
                     setPuntualityPercet([scoreCard.punt_percent_rem, scoreCard.punt_percent_alar, scoreCard.punt_percent_timer, scoreCard.punt_percent_chro]);
+                } else {
+                    setPunctualityDatan([0, 0, 0, 0]);
+                    setPuntualityPercet([0, 0, 0, 0]);
                 }
             }).catch(err => { console.log(err) });
         };
