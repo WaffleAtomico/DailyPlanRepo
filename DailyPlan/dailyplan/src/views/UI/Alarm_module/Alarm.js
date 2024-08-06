@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { FaPlus } from 'react-icons/fa';
 
-import Form_createAlarm from './options';
+
 import Alarm_formCrea from './alarm_formCrea';
 
 import { getAlarmsForUser } from "../../../utils/validations/alarm";
@@ -16,14 +16,14 @@ function Alarm_view(props) {
 
     useEffect(() => {
         addItemsAlarms();
-    }, []);
+    }, [props]);
 
     const addItemsAlarms = () => {
         getAlarmsForUser(props.user_id).then(response => {
             const tempItem = [];
             response.data.forEach(alarm => {
                 const newitems = tempItem.filter(x=>x.id===alarm.alarm_id);
-                console.log('test', newitems.length, newitems);
+
                 if (newitems.length === 0) {
                     getDaySelectedById(alarm.daysel_id).then(res => {
                         if (res.data.length > 0) {
@@ -31,8 +31,7 @@ function Alarm_view(props) {
                         } else {
                             const days_resp = {
                                 daysel_mon: 0,
-                                daysel_tues: 0,
-                                daysel_wed: 0,
+                                daysel_tues: 0,                                daysel_wed: 0,
                                 daysel_thur: 0,
                                 daysel_fri: 0,
                                 daysel_sat: 0,

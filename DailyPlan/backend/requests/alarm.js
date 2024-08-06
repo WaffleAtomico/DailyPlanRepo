@@ -2,6 +2,8 @@ import { db } from "../config/connection.js";
 
 // Agregar alarma
 const addAlarm = (req, res) => {
+
+  console.log("Agregar una alarma:", req.body);
   const body = req.body.alarmData;
 
   const query = {

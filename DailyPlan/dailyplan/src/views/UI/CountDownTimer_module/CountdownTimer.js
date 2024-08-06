@@ -3,7 +3,7 @@ import '../../../styles/UI/Countdowntimer/countdown.css';
 import { MdTimer, MdAlarm, MdProductionQuantityLimits } from "react-icons/md";
 
 import { addTimer, getTimerById, getTimersForUser } from "../../../utils/validations/timer";
-import { base64ToBlob, playBlobAudio } from "../../../utils/sounds";
+import { base64ToBlob, playAlarm, playBlobAudio } from "../../../utils/sounds";
 import { addTone } from "../../../utils/validations/tone";
 import Timer from "./Timer";
 import { myPojo } from "../../../utils/ShowNotifInfo";
@@ -63,7 +63,22 @@ export default function CountdownTimer(props) {
       setShowEndScreen({ ...showEndScreen, show: true });
       resetTimer();
       if (soundFile) {
-        playBlobAudio(soundFile, ringRepetitions, ringDuration, ringDuration);
+        try{
+        playBlobAudio(soundFile, ringRepetitions, ringDuration);
+        }catch{
+          
+          if(soundFile.base64 !== null)
+            {
+            const blob = base64ToBlob(soundFile.base64, 'audio/mpeg');
+            playBlobAudio(blob, ringRepetitions, ringDuration);
+            console.log("Se reprodujo:", blob); 
+            }
+
+        }
+      }
+      else
+      {
+        playAlarm(ringRepetitions, ringDuration);
       }
     }
 
@@ -138,7 +153,8 @@ export default function CountdownTimer(props) {
           name: file.name,
           type: file.type
         });
-      };
+
+          };
       reader.readAsDataURL(file);
     }
   };

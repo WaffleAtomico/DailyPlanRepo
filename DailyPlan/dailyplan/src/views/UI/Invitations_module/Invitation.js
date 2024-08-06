@@ -184,18 +184,54 @@ export default function InvitationView(props) {
         //si fue aceptada correctamente, entrega el logro
         // console.log("Entre a invitaciones aceptadas", inv_id);
 
+
+        //----------------------------------------------------------------------
         //Crear objeto para verificar conflicto
+        
 
-        if (reminder_id === null && alarm_id !== null) {
+
+        if(reminder_id ===  null && alarm_id !== null)
+        {   
+            //obtener la información de las alarmas almacenadas
             getAlarmById(alarm_id).then(response => {
+                
+                    if(response.data.length > 0)
+                    {
+                        const alarm = response.data[0];
 
-                if (response.data.length > 0) {
-                    const alarmEvent = response.data[0];
+                        //Create an object of event
+                        const alarmEvent = {
 
-                }
-            })
+                            schedule_eventname: alarm.alarm_name,
+                            schedule_datetime: 3,
+                            schedule_duration_hour: 3,
+                            schedule_duration_min: 4
 
+                        }
+
+                        
+                    }
+            }).catch(error => {console.log("ocurrio un problema al obtener alarma", error);})
         }
+        else if(reminder_id !== null && alarm_id === null) 
+        {
+            //obtener información de los recoerdatoriios almacenados
+            getReminderById(reminder_id).then(response => 
+            {
+                if(response.data.length > 0)
+                {
+                    const reminder = response.data[0];
+                }
+
+
+
+            }
+            ).catch(error => {console.log("ocurrio un problema al obtener recordatorio", error);})
+            
+        }
+
+
+
         updateInvitationState(true, inv_id).then(res => {
             // console.log(res)
             if (res.status) {
