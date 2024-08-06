@@ -165,7 +165,7 @@ const sleepNotifications = (id) => {
       }
 
       // Check if it's time to wake up
-      if (currentMinutes === sleep.sleep_endhour || currentMinutes < sleep.sleep_starthour) {
+      if (currentMinutes === sleep.sleep_endhour ) {
         myPojo.setNotif("Despertar", <h1>¡Es hora de despertar!</h1>);
       }
     });
