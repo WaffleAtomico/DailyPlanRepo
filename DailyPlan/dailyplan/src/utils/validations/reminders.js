@@ -5,10 +5,12 @@ import {
     GET_REMINDER_BY_ID_URL,
     UPDATE_REMINDER_URL,
     DELETE_REMINDER_URL,
+    GET_COUNT_REMINDER_URL,
     GET_REMINDERS_BY_MONTH_URL,
     GET_REMINDERS_BY_WEEK_URL,
     GET_REMINDER_BY_DAY_URL,
-    GET_REMINDER_BY_SOURCE_ID_AND_USER_ID_URL 
+    GET_REMINDER_BY_SOURCE_ID_AND_USER_ID_URL, 
+    DEACTIVATED_REMINDER_URL
 } from '../routes.js';
 
 export const saveUserReminder = async (reminderInfo) => {
@@ -48,6 +50,17 @@ export const updateReminder = async (reminderInfo) => {
     }
 };
 
+
+export const deactivateReminder = async (reminderId) => {
+    try {
+        await axios.post(DEACTIVATED_REMINDER_URL, { reminder_id: reminderId });
+        return true;
+    } catch (err) {
+        console.log(err);
+        return false;
+    }
+};
+
 export const deleteReminder = async (reminder_id) => {
     try {
         await axios.post(DELETE_REMINDER_URL, { reminder_id });
@@ -79,6 +92,16 @@ export const getRemindersByWeek = async (startDate, endDate, user_id) => {
 export const getRemindersByDay = async (date, user_id) => {
     try {
         const response = await axios.post(GET_REMINDER_BY_DAY_URL, { date,  user_id });
+        return response.data;
+    } catch (err) {
+        console.log(err);
+    }
+};
+
+
+export const getCountReminders = async (date, user_id) => {
+    try {
+        const response = await axios.post(GET_COUNT_REMINDER_URL, { date,  user_id });
         return response.data;
     } catch (err) {
         console.log(err);

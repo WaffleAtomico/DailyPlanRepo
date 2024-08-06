@@ -16,13 +16,15 @@ const useNotificationChecker = (id) => {
 
   useEffect(() => {
     const fetchNotifications = () => {
-      userNotifications(id);
+
+     userNotifications(id);
       alarmNotifications(id);
      
       blockPreparationNotifications(id);
       sleepNotifications(id);
-    };
-    const intervalId = setInterval(fetchNotifications, 40000); // 40 segundos
+      console.log("Se está llamando...");
+    }; 
+    const intervalId = setInterval(fetchNotifications, 20000); 
     return () => clearInterval(intervalId);
   }, [id]);
 
@@ -76,29 +78,38 @@ const useNotificationChecker = (id) => {
                 (dayselResp.daysel_wed === 1 && day === "mie") ||
                 (dayselResp.daysel_thur === 1 && day === "jue") ||
                 (dayselResp.daysel_fri === 1 && day === "vie") ||
-                (dayselResp.daysel_sat === 1 && day === "sab") ||
+                (dayselResp.daysel_sat === 1  && day === "sab") ||
                 (dayselResp.daysel_sun === 1 && day === "dom")
               ) {
-                if (hour === alarma.alarm_hour && min === alarma.alarm_min) {
+
+                console.log("verificando.. hora:", hour, "minutos:", min, "valores de alarma hour:", alarma.alarm_hour, "min:", alarma.alarm_min);
+
+                const hourInt = parseInt(hour, 10);
+                const minInt = parseInt(min, 10);
+                
+                console.log(hourInt === alarma.alarm_hour && minInt === alarma.alarm_min);
+                if (hourInt === alarma.alarm_hour && minInt === alarma.alarm_min) {
+                  console.log("Mostrar alarma");
                   myPojo.setNotif("Alarma", <>{alarma.alarm_name}</>);
 
                   /*  Reproducir tono
                    */
 
                   getToneById(alarma.tone_id).then(response => {
-
+                      console.log("Reproducir tono", response);
                     if(response.toneName === null)
                     {
-                      playAlarm(alarma.alarm_rep_tone, alarma.alarm_rep_tone );
+                      playAlarm(alarma.alarm_rep_tone, alarma.alarm_sec );
                     }
                     else
                     {
-                      playBlobAudio(response.toneBlob, alarma.alarm_rep_tone, alarma.alarm_rep_tone);
+                      playBlobAudio(response.toneBlob, alarma.alarm_rep_tone, alarma.alarm_sec);
                     }
 
 
-                    displayedNotifs.current.add(alarma.alarm_id); // Marcar la notificación como mostrada
+                     // Marcar la notificación como mostrada
                   });
+                  displayedNotifs.current.add(alarma.alarm_id);
                   
                 }
               }

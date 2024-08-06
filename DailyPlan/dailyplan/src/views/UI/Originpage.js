@@ -13,7 +13,7 @@ import Pomodoro from "./Pomodoro_module/Pomodoro";
 import PuntButton from "./Puntuality_module/punt_button";
 import ChronoIndicator from "./advices/ChronoMsjs";
 import GeneralNotif from "./advices/GeneralNotif";
-import { formatDate } from "../../utils/timeFormat";
+import { calculateTimeDifference, formatDate } from "../../utils/timeFormat";
 
 import { calculateWeekRange, timeFormatSec } from "../../utils/timeFormat";
 import { myPojo, changeCounter } from "../../utils/ShowNotifInfo";
@@ -34,9 +34,9 @@ import { addChronometer } from "../../utils/validations/chrono";
 import { getScheduleById } from "../../utils/validations/schedule";
 
 import PreparationView from "./advices/Preparation";
-import { getReminderById, getRemindersByDay } from "../../utils/validations/reminders";
+import { deactivateReminder, getCountReminders, getReminderById, getRemindersByDay } from "../../utils/validations/reminders";
 
-import { getPuntualityById, updatePuntualityStreak } from "../../utils/validations/puntuality";
+import { calculatePunctuality, getPuntualityById, getPuntualityByUserId, updatePuntuality, updatePuntualityStreak } from "../../utils/validations/puntuality";
 import { isUserWeeklyScorecard, getWeeklyScorecardForUser, updateTitleUser } from "../../utils/validations/weeklyscorecard";
 import WeekSumerize from "./advices/WeekSumerize";
 import { useBootstrapBreakpoints } from "react-bootstrap/esm/ThemeProvider";
@@ -336,17 +336,67 @@ export default function OriginPage() {
               return;
         }
 
+
+
         getToneById(upcomingReminder.tone_id).then(response => {
 
           //verificar si no existen 
           if (upcomingReminder.objectives.length === 0) {
 
+                //Calcular la diferencia de tiempo en minutos
+              const diferenceTime = calculateTimeDifference(upcomingReminder);
+
+              //Con ese valor calcular la puntualidad 
+
+               const result = calculatePunctuality(diferenceTime);
+
+                //obtener el número de reminders del día de hoy
+
+                getCountReminders(formatDate(new Date()), id).then(response => {
+
+                    const reminder_count = response.reminder_count
+
+
+                    getPuntualityByUserId(id).then(response => {
+
+                        //actualizar el numero de reminders
+                       response.punt_num_rem = reminder_count;
+
+                       //Actualizar el valor de puntualidad
+
+                      if(response.punt_percent_rem === 0)
+                      {
+                        //En caso de que sea cero, simplemente asignar
+                          response.punt_num_rem = result;
+
+
+                      }else
+                      {
+                        response.punt_percent_rem = (result + response.punt_percent_rem) / 2;
+                      }
+
+
+
+                       updatePuntuality(response).then(response => {
+
+
+                        deactivateReminder (id).then(response => {
+                          console.log("Se actualizó con éxito");
+                        }).catch(error => {console.log("No se logro el reminder")})
+                        
+                       }).catch(error => {console.log("No se logró actualizar")})
+
+                    }).catch(error => {console.log("no se pudo obtener la puntualidad de hoy:", error)})
+
+
+                    
+                } )
 
           }
 
 
-          //  playBlobAudio(response.toneBlob);
-          //     myPojo.setNotif("Recordatorio", <h1>{upcomingReminder.reminderName} a las {String(upcomingReminder.reminderHour).padStart(2,'0')}:{String(upcomingReminder.reminderMin).padStart(2,'0')} del día { formatDate(dateObj)}</h1>)
+            playBlobAudio(response.toneBlob);
+               myPojo.setNotif("Recordatorio", <h1>{upcomingReminder.reminderName} a las {String(upcomingReminder.reminderHour).padStart(2,'0')}:{String(upcomingReminder.reminderMin).padStart(2,'0')} del día { formatDate(dateObj)}</h1>)
 
 
 

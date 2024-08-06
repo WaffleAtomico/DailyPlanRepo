@@ -134,6 +134,30 @@ const getRemindersByDay = (req, res) => {
 
 
 
+const getCountReminderByDay = (req, res) => {
+    console.log("Se mando:", req.body.date);
+    const date = req.body.date;  // Expects 'YYYY-MM-DD'
+    const user_id = req.body.user_id;  // Expects the user ID
+
+    const query = {
+        sql: `SELECT COUNT(*) AS reminder_count
+              FROM reminders
+              WHERE user_id = ? AND reminder_date = ?`,
+        values: [user_id, date],
+    };
+
+    db.query(query.sql, query.values, (err, data) => {
+        if (err) {
+            console.log("Error al contar los recordatorios del día", err);
+            return res.json({ message: "Error counting reminders for the day", error: err });
+        }
+        console.log("Conteo de recordatorios del día:", data[0].reminder_count);
+        return res.json({ reminder_count: data[0].reminder_count });
+    });
+};
+
+
+
 const getReminderById = (req, res) => {
     const query = {
         sql: "SELECT `reminder_id`, `reminder_name`, `reminder_date`, `reminder_hour`, `reminder_min`, `reminder_active`, `repdays_id`, `reminder_tone_duration_sec`, `reminder_advance_min`, `reminder_img`, `reminder_desc`, `reminder_days_suspended`, `reminder_share`, `reminder_sourse_id` FROM `reminders` WHERE `reminder_id` = ?",
@@ -175,6 +199,23 @@ const updateReminder = (req, res) => {
     });
 };
 
+
+const deactivateReminder = (req, res) => {
+    const query = {
+        sql: "UPDATE `reminders` SET `reminder_active` = 0 WHERE `reminder_id` = ?",
+        values: [req.body.reminder_id],
+    };
+
+    db.query(query.sql, query.values, (err, data) => {
+        if (err) {
+            return res.json({ message: "Error deactivating reminder", error: err });
+        }
+        return res.json({ message: "Reminder deactivated successfully" });
+    });
+};
+
+
+
 const deleteReminder = (req, res) => {
     const query = {
         sql: "DELETE FROM `reminders` WHERE `reminder_id` = ?",
@@ -210,7 +251,9 @@ export {
     getRemindersByWeek,
     getReminderById,
     updateReminder,
+    deactivateReminder,
     deleteReminder,
     getRemindersByDay,
+    getCountReminderByDay,
     getReminderBySourceIdAndUserId,
 };

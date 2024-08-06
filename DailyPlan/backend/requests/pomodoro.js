@@ -51,7 +51,7 @@ const getPomodoroById = (req, res) => {
                 t.tone_name
             FROM 
                 pomodoros p
-            INNER JOIN 
+            LEFT JOIN 
                 tones t ON p.tone_id = t.tone_id
             WHERE 
                 p.pomodoro_id = ?

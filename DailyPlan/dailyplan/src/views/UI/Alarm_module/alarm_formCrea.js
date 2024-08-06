@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import { FaRegCalendarAlt, FaRegBell, FaRegImage } from 'react-icons/fa';
+
 import { addAlarm } from "../../../utils/validations/alarm";
 import { addDaySelected } from "../../../utils/validations/dayselected";
 import '../../../styles/UI/Alarm/alarm_formCrea.css';
@@ -75,6 +76,7 @@ const AlarmFormView = (props) => {
 
 
 
+
     const handleAlarmNameChange = (event) => {
         setAlarmName(event.target.value);
     };
@@ -100,86 +102,94 @@ const AlarmFormView = (props) => {
         setAlarmDescription(event.target.value);
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        days.daysel_mon = 0
-        days.daysel_tues = 0
-        days.daysel_wed = 0
-        days.daysel_thur = 0
-        days.daysel_fri = 0
-        days.daysel_sat = 0
-        days.daysel_sun = 0
-        
+    
+        days.daysel_mon = 0;
+        days.daysel_tues = 0;
+        days.daysel_wed = 0;
+        days.daysel_thur = 0;
+        days.daysel_fri = 0;
+        days.daysel_sat = 0;
+        days.daysel_sun = 0;
+    
         repeatDays.forEach(day_select => {
-            if (day_select === 'L') {
-                days.daysel_mon = 1
-            }
-            if (day_select === 'M') {
-                days.daysel_tues = 1
-            }
-            if (day_select === 'Mi') {
-                days.daysel_wed = 1
-            }
-            if (day_select === 'J') {
-                days.daysel_thur = 1
-            }
-            if (day_select === 'V') {
-                days.daysel_fri = 1
-            }
-            if (day_select === 'S') {
-                days.daysel_sat = 1
-            }
-            if (day_select === 'D') {
-                days.daysel_sun = 1
+            switch (day_select) {
+                case 'L':
+                    days.daysel_mon = 1;
+                    break;
+                case 'M':
+                    days.daysel_tues = 1;
+                    break;
+                case 'Mi':
+                    days.daysel_wed = 1;
+                    break;
+                case 'J':
+                    days.daysel_thur = 1;
+                    break;
+                case 'V':
+                    days.daysel_fri = 1;
+                    break;
+                case 'S':
+                    days.daysel_sat = 1;
+                    break;
+                case 'D':
+                    days.daysel_sun = 1;
+                    break;
+                default:
+                    break;
             }
         });
-
-        addDaySelected(days).then(response => {
+    
+        try {
+            console.log("hola");
+            const response = await addDaySelected(days);
             const alarmTime_array = alarmTime.split(':');
-
-
-
+    
             const alarmInfoToSend = {
                 alarm_name: alarmName,
                 daysel_id: response.data.insertId,
                 alarm_hour: alarmTime_array[0],
                 alarm_min: alarmTime_array[1],
-                alarm_sec: 0,
-                alarm_rep_tone: 1,
+                alarm_sec: alarmDuration,
+                alarm_rep_tone: alarmRepetition,
                 tone_id: null,
                 alarm_days_suspended: suspensionDays,
                 alarm_active: 1,
                 alarm_image: alarmImage,
-                alarm_desc:   alarmDescription,
+                alarm_desc: alarmDescription,
                 user_id: props.user_id
             };
-
-            
-            //agregar sonindo a la BD para posteriormente reproducir
-            if(alarmSound)
-                {
-                    return addTone({alarmTone: alarmSound.base64,
-                                    alarmToneName: alarmSound.name,
-                                    alarmToneType:  alarmSound.type
-                    }).then(toneResponse => {
     
-                        alarmInfoToSend.tone_id = toneResponse.tone_id;                        
-                    })
-    
+            // agregar sonido a la BD para posteriormente reproducir
+            if (alarmSound) {
+                try {
+                    const toneResponse = await addTone({
+                        alarmTone: alarmSound.base64,
+                        alarmToneName: alarmSound.name,
+                        alarmToneType: alarmSound.type
+                    });
+                    console.log("La respuesta despues de agregar el tono es:", toneResponse);
+                    alarmInfoToSend.tone_id = toneResponse.tone_id; // Ensure correct access to tone_id
+                } catch (error) {
+                    console.log("Todo salio mal:", error);
+                    return; // Exit if there's an error saving the tone
                 }
+            }
     
-
-            addAlarm(alarmInfoToSend).then(res => {
+            // Mandar a guardar la alarma
+            try {
+                const res = await addAlarm(alarmInfoToSend);
                 if (res) {
                     const { alarm_id } = res.data;
                     console.log(alarm_id);
-
+    
                     if (ShareUser.length > 0) {
-                        ShareUser.forEach(invUser => {
-                            
-                            checkIfUserBlocked(invUser.id, props.user_id).then(res => {
+                        for (const invUser of ShareUser) {
+                            try {
+                                const res = await checkIfUserBlocked(invUser.id, props.user_id);
                                 console.log("Esta bloqueado? ", res.data.isBlocked);
-                                if (!res.data.isBlocked) { //si no esta bloqueado, lo hace
+                                if (!res.data.isBlocked) { // si no esta bloqueado, lo hace
                                     const invitationUserData = {
                                         reminder_id: null,
                                         alarm_id: alarm_id,
@@ -187,31 +197,30 @@ const AlarmFormView = (props) => {
                                         user_id_target: invUser.id,
                                         inv_state: null,
                                         inv_reason: null,
-                                    };                                
-                                    addInvitation(invitationUserData).then(res => {
-                                        if (res.status)
-                                            console.log("Si se guarda bien la invitacion");
-                                        console.log(res);
-                                    }).catch(error => {
-                                        console.error("Error saving invitation ", error);
-                                    });
+                                    };
+                                    const inviteRes = await addInvitation(invitationUserData);
+                                    if (inviteRes.status) {
+                                        console.log("Si se guarda bien la invitacion");
+                                    }
+                                    console.log(inviteRes);
                                 }
+                            } catch (error) {
+                                console.error("Error saving invitation ", error);
                             }
-                            ).catch(err => { console.log(err) })
-                        });
+                        }
                     }
-
+    
+                    props.setVisibilty();
                 }
-                
-                props.setVisibilty();
-            }).catch(error => {
+            } catch (error) {
                 console.error(error);
                 myPojo.setNotif("Error: No se pudo guardar la alarma", <div size={220} />);
-            });
-        }).catch(error => {
+            }
+        } catch (error) {
             console.error(error);
-        });
+        }
     };
+    
 
     const handleAddUser = (user) => {
         setShareUser((prevData) => [
