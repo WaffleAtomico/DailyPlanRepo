@@ -280,6 +280,19 @@ const getUserByNumber = (req, res) => {
     });
 };
 
+const updateUserStatusToZero = (req, res) => {
+    const query = {
+        sql: "UPDATE `users` SET `user_status` = 0 WHERE `user_id` = ?",
+        values: [req.body.user_id],
+    };
+    db.query(query.sql, query.values, (err, data) => {
+        if (err) {
+            return res.json({ message: "Error updating user status", error: err });
+        }
+        return res.json({ message: "User status updated successfully" });
+    });
+};
+
 export { getUsers,
         getConn,
         getUser,
@@ -294,5 +307,6 @@ export { getUsers,
         userExistsByNumber,
         getUserByMail,
         getUserByNumber,
-        updateUserTitle
+        updateUserTitle,
+        updateUserStatusToZero,
         };

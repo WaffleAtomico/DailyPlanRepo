@@ -1,5 +1,7 @@
 .crealar-alarmv-body {
     margin-top: 2rem;
+    overflow-y: auto; /* Permite el scroll vertical */
+    max-height: 80vh; /* Limita la altura del contenedor para que aparezca el scroll */
 }
 
 .crealar-item-grid {
@@ -21,8 +23,8 @@
     border-radius: 20px;
     padding: 10px;
     margin-left: 1rem;
-    width: calc(25% - 10px); /* Ancho de cada item (25% del contenedor menos el espacio entre ellos) */
-    margin-bottom: 10px; /* Espacio entre items */
+    width: calc(25% - 10px);
+    margin-bottom: 10px;
     text-align: center;
 }
 
@@ -44,18 +46,18 @@
 }
 
 .day-selected {
-    width: 35px;           /* Ancho de 150 píxeles */
-    height: 35px;          /* Alto de 150 píxeles */
+    width: 35px;
+    height: 35px;
     color: white;
-    background: rgb(13, 160, 0);        /* Fondo de color rojo */
-    border: 1px solid #000; /* Borde color negro y de 1 píxel de grosor */
-    display:inline-block;
+    background: rgb(13, 160, 0);
+    border: 1px solid #000;
+    display: inline-block;
 }
 
 .day-not-selected {
-    width: 35px;           /* Ancho de 150 píxeles */
-    height: 35px;          /* Alto de 150 píxeles */
-    background: rgb(255, 255, 255);        /* Fondo de color rojo */
-    border: 1px solid #000; /* Borde color negro y de 1 píxel de grosor */
-    display:inline-block;
+    width: 35px;
+    height: 35px;
+    background: rgb(255, 255, 255);
+    border: 1px solid #000;
+    display: inline-block;
 }

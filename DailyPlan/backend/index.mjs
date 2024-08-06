@@ -24,7 +24,8 @@ import {
   getUserByMail,
   getUserByNumber,
   updateUserTitle,
-  updateUserName
+  updateUserName,
+  updateUserStatusToZero
 } from './requests/users.js';
 
 import {
@@ -349,6 +350,7 @@ app.post(urls.USER_EXISTS_NUMBER_URL, userExistsByNumber);
 app.post(urls.GET_USER_BY_MAIL_URL, getUserByMail);
 app.post(urls.GET_USER_BY_NUMBER_URL, getUserByNumber);
 app.post(urls.UPDATE_USER_TITLE_URL, updateUserTitle);
+app.post(urls.UPDATE_USER_STATUS_TO_ZERO_URL, updateUserStatusToZero)
 
 /*-------------------------- Clocks --------------------------*/
 app.post(urls.ADD_CLOCK_URL, addClock);
