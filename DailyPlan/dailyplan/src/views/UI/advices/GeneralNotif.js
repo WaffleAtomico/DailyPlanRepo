@@ -8,7 +8,11 @@ import { myPojo } from '../../../utils/ShowNotifInfo';
 export default function GeneralNotif({ mensaje, onClose, componente }) {
     useEffect(() => {
         if (myPojo._isShow) {
+            try{
             playRingtone();
+            }catch{
+                
+            }
         }
     }, [])
     const handleCloseNotif = () => {

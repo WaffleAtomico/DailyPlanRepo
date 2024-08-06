@@ -109,7 +109,7 @@ const getRemindersByDay = (req, res) => {
          ob.objblo_durationreal_min, o.obj_id, o.obj_name, o.id_user, o.obj_check, o.obj_at_time
             FROM 
                 reminders r
-            INNER JOIN 
+            LEFT JOIN 
                 objectivesblock ob ON r.reminder_id = ob.reminder_id
             INNER JOIN 
                 objectives o ON ob.objblo_id = o.objblo_id
@@ -198,21 +198,32 @@ const updateReminder = (req, res) => {
         return res.json({ message: "Reminder updated successfully" });
     });
 };
-
-
 const deactivateReminder = (req, res) => {
+    // Log the incoming request details
+    console.log("Received request to deactivate reminder:", req.body);
+
     const query = {
         sql: "UPDATE `reminders` SET `reminder_active` = 0 WHERE `reminder_id` = ?",
         values: [req.body.reminder_id],
     };
 
+    // Log the query details
+    console.log("Executing query:", query.sql);
+    console.log("With values:", query.values);
+
     db.query(query.sql, query.values, (err, data) => {
         if (err) {
+            // Log the error details
+            console.error("Error deactivating reminder:", err);
             return res.json({ message: "Error deactivating reminder", error: err });
         }
+
+        // Log the success message and result data
+        console.log("Reminder deactivated successfully. Result data:", data);
         return res.json({ message: "Reminder deactivated successfully" });
     });
 };
+
 
 
 
