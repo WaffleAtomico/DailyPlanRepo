@@ -18,6 +18,30 @@ const formatDate = (date) => {
 };
 
 
+
+function calculateTimeDifference(reminder) {
+    const currentTime = new Date();
+
+    const reminderDate = new Date(
+        currentTime.getFullYear(),
+        currentTime.getMonth(),
+        currentTime.getDate(),
+        reminder.reminderHour,
+        reminder.reminderMin
+    );
+
+    // If the reminder time has already passed today, consider it for tomorrow
+    if (reminderDate < currentTime) {
+        reminderDate.setDate(reminderDate.getDate() + 1);
+    }
+
+    const timeDifference = reminderDate - currentTime; // difference in milliseconds
+    const differenceInMinutes = Math.floor(timeDifference / 1000 / 60);
+
+    return differenceInMinutes;
+}
+
+
 function timeFormatHHMMSS(seconds) {
     const hours = Math.floor(seconds / 3600);
     const minutes = Math.floor((seconds % 3600) / 60); 
@@ -66,5 +90,5 @@ const calculateWeekRange = () => {
 
 
 export {
-    timeFormatSec, timeFormatHHMMSS, calculateWeekRange, formatDate, timeFormatHHMMSSString
+    timeFormatSec, timeFormatHHMMSS, calculateWeekRange, formatDate, timeFormatHHMMSSString, calculateTimeDifference
 }

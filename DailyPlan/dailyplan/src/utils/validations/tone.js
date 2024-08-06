@@ -26,11 +26,11 @@ const getTones = async () => {
 const getToneById = async (toneId) => {
     try {
         const response = await axios.post( GET_TONE_BY_ID_URL, { tone_id: toneId });
-        const { tone_name, tone_type, total_chunks, chunks } = response.data;
+        const { tone_name, tone_type, tone_location } = response.data;
 
         // Reassemble the base64 string from chunks
-        const completeBase64 = chunks.join('');
-        const toneBlob = base64ToBlob(completeBase64, tone_type);
+        
+        const toneBlob = base64ToBlob(tone_location, tone_type);
         return {
             toneName: tone_name,
             toneBlob: toneBlob

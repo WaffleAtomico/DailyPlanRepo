@@ -252,43 +252,45 @@ const ReminderFormView = (props) => {
     };
 
     const handleSubmit = (event) => {
-        event.preventDefault(); // Evitar envíos por defecto o nulos
-
+        event.preventDefault();
+    
         const { hours, minutes } = convertTimeString(formData.time);
-
+    
+        //Formato
+        const combinedDateTime = new Date(`${formData.date}T${formData.time}:00.000Z`).toISOString();
+    
+        //Duración de tiempo
+        const { durationHours, durationMinutes } = calculateTotalDuration(formData.goalList, result.duration.value);
+    
         // Crear un objeto para iniciar la verificación
         const newEvent = {
             schedule_eventname: formData.name,
-            schedule_duration_hour: hours,
-            schedule_duration_min: minutes,
-            schedule_datetime: formData.date, // Assuming this is where the datetime is coming from
+            schedule_duration_hour: durationHours,
+            schedule_duration_min: durationMinutes,
+            schedule_datetime: combinedDateTime,
             user_id: props.user_id,
         };
-
+    
         // Verificar existencia de conflicto
         if (checkScheduleConflict(newEvent)) {
             // Obtener la información del evento con el que se tiene conflicto
             const conflictingEvent = findConflictEvent(newEvent);
-
+    
             if (conflictingEvent) {
                 const { schedule_eventname, schedule_datetime } = conflictingEvent;
                 myPojo.setNotif("¡Cuidado!", `Se tiene conflicto con el evento ${schedule_eventname} en el día ${schedule_datetime}`);
             }
             return;
         }
-
+    
         addSchedule(newEvent);
         addNewEvent(newEvent);
-
-
-
-
+    
         const saveTone = formData.alarmTone ? addTone(formData) : Promise.resolve({ data: { tone_id: null } });
-
+    
         saveTone.then(response => {
             const tone_id = response.tone_id;
-            //Tratar de almacenar las ubicaciones asignadas
-
+    
             const reminder = {
                 reminder_name: formData.name,
                 reminder_date: formData.date,
@@ -305,39 +307,31 @@ const ReminderFormView = (props) => {
                 reminder_travel_time: result.duration.value,
                 user_id: props.user_id
             };
-
+    
             saveUserReminder(reminder).then(response => {
                 const { reminder_id } = response.data;
-
-
+    
                 //Tratar de almacenar las ubicaciones asignadas
-
-                //Verificar que, únicamente si ambos arreglos se llenan se trate de guardar: sino, nada            
-                if (arrivalLatLng != [null, null]
-                    && departureLatLng != [null, null]
-                ) {
+    
+                if (arrivalLatLng != [null, null] && departureLatLng != [null, null]) {
                     const arriveLocation = {
                         location_x: arrivalLatLng[0],
                         location_y: arrivalLatLng[1],
                         location_type: 0,
                         reminder_id: reminder_id,
-                    }
+                    };
                     const departureLocation = {
                         location_x: departureLatLng[0],
                         location_y: departureLatLng[1],
-                        reminder_id: 1,
+                        location_type: 1,
                         reminder_id: reminder_id,
-                    }
-
+                    };
+    
                     addLocation(arriveLocation).then(response => {
-
-                        addLocation(departureLocation)
-
-                    })
+                        addLocation(departureLocation);
+                    });
                 }
-          
-                // Tratar de guardar la localización
-
+    
                 if (formData.goalList.length > 0) {
                     formData.goalList.forEach(goal => {
                         const objectiveBlockData = {
@@ -347,14 +341,13 @@ const ReminderFormView = (props) => {
                             objblo_check: false,
                             reminder_id: reminder_id,
                         };
-
+    
                         saveObjectivesBlock(objectiveBlockData).then(response => {
                             const { objblo_id } = response.data;
-
+    
                             goal.objectives.forEach(objective => {
                                 const goalData = {
                                     obj_name: objective,
-
                                     objblo_id: objblo_id,
                                     id_user: props.user_id,
                                 };
@@ -369,14 +362,12 @@ const ReminderFormView = (props) => {
                         });
                     });
                 }
-
-                //trata de guardar los usuarios invitados
-
+    
                 if (formData.shareUsers.length > 0) {
                     formData.shareUsers.forEach(invUser => {
                         checkIfUserBlocked(invUser.id, props.user_id).then(res => {
-                            console.log("Esta bloqueado? ",res.data.isBlocked);
-                            if(!res.data.isBlocked){ //si no esta bloqueado, lo hace
+                            console.log("Esta bloqueado? ", res.data.isBlocked);
+                            if (!res.data.isBlocked) { //si no esta bloqueado, lo hace
                                 const invitationUserData = {
                                     reminder_id: reminder_id,
                                     alarm_id: null,
@@ -386,16 +377,13 @@ const ReminderFormView = (props) => {
                                     inv_reason: null,
                                 };
                                 addInvitation(invitationUserData).then(res => {
-                                    if(res.status)
-                                    console.log("Si se guarda bien la invitacion");
+                                    if (res.status) console.log("Si se guarda bien la invitacion");
                                     console.log(res);
                                 }).catch(error => {
                                     console.error("Error saving invitation ", error);
                                 });
                             }
-                        }
-                        ).catch(err => { console.log(err) })
-
+                        }).catch(err => { console.log(err) });
                     });
                 }
             }).catch(error => {
@@ -404,9 +392,10 @@ const ReminderFormView = (props) => {
         }).catch(error => {
             console.error("Error saving reminder", error);
         });
+    
         props.showform();
     };
-
+        
     const handleDeleteReminder = () => {
         deleteReminder(props.Reminder_id).then(res => {
             props.setReminderId(null);
@@ -417,12 +406,34 @@ const ReminderFormView = (props) => {
         props.showform();
         props.setReminderId(null);
     }
+    //___________________________________________
     //Utils
+    //___________________________________________
     function convertTimeString(timeString) {
         console.log(timeString.split(':').map(Number));
         const [hours, minutes] = timeString.split(':').map(Number);
         return { hours, minutes };
     }
+
+
+    const calculateTotalDuration = (goalList, travelTime) => {
+        const totalBlockDuration = goalList.reduce((total, block) => total + block.time, 0);
+        console.log("Total Block Duration (minutes):", totalBlockDuration);
+    
+        const totalTravelDuration = travelTime / 60; // Convert travel time from seconds to minutes
+        console.log("Total Travel Duration (minutes):", totalTravelDuration);
+    
+        const totalDuration = totalBlockDuration + totalTravelDuration;
+        console.log("Total Duration (minutes):", totalDuration);
+    
+        const durationHours = Math.floor(totalDuration / 60);
+        console.log("Duration Hours:", durationHours);
+    
+        const durationMinutes = totalDuration % 60;
+        console.log("Duration Minutes:", durationMinutes);
+    
+        return { durationHours, durationMinutes };
+    };
 
     return (
         <div>

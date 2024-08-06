@@ -130,9 +130,13 @@ const GET_REMINDER_BY_ID_URL = `${urlreference}/get-reminder`;
 const GET_REMINDER_BY_DAY_URL = `${urlreference}/get-reminders-by-day`;
 const UPDATE_REMINDER_URL = `${urlreference}/update-reminder`;
 const DELETE_REMINDER_URL = `${urlreference}/delete-reminder`;
+
 const GET_REMINDERS_BY_MONTH_URL = `${urlreference}/get-reminders-by-month`;
 const GET_REMINDERS_BY_WEEK_URL = `${urlreference}/get-reminders-by-week`;
+const GET_COUNT_REMINDER_URL = `${urlreference}/get-count-reminder`;
 const GET_REMINDER_BY_SOURCE_ID_AND_USER_ID_URL = `${urlreference}/get-reminder-by-source-id-and-user-id`;
+const DEACTIVATED_REMINDER_URL = `${urlreference}/deactivated-reminder`;
+
 
 const ADD_REMINDERSHARE_URL = `${urlreference}/add-remindershare`;
 const GET_REMINDERSHARES_FOR_USER_URL = `${urlreference}/get-user-remindershares`;
@@ -320,7 +324,9 @@ export {
     DELETE_REMINDER_URL,
     GET_REMINDERS_BY_MONTH_URL,
     GET_REMINDERS_BY_WEEK_URL,
+    GET_COUNT_REMINDER_URL,
     GET_REMINDER_BY_DAY_URL,
+    DEACTIVATED_REMINDER_URL,
     GET_REMINDER_BY_SOURCE_ID_AND_USER_ID_URL,
     
     ADD_REMINDERSHARE_URL,

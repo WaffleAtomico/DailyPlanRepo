@@ -103,7 +103,8 @@ const getRemindersByDay = (req, res) => {
     const user_id = req.body.user_id;  // Expects the user ID
 
     const query = {
-        sql: `SELECT r.reminder_id, r.reminder_name, r.reminder_hour, r.reminder_date, r.reminder_min,
+        sql: `SELECT r.reminder_id, r.reminder_name, r.reminder_hour, r.reminder_date, r.reminder_min, r.tone_id,
+        r.reminder_active,
          r.reminder_travel_time, ob.objblo_id, ob.objblo_name, ob.objblo_check, ob.objblo_duration_min, 
          ob.objblo_durationreal_min, o.obj_id, o.obj_name, o.id_user, o.obj_check, o.obj_at_time
             FROM 
@@ -128,6 +129,30 @@ const getRemindersByDay = (req, res) => {
         }
         console.log("Recordatorios del día:", data);
         return res.json(data);
+    });
+};
+
+
+
+const getCountReminderByDay = (req, res) => {
+    console.log("Se mando:", req.body.date);
+    const date = req.body.date;  // Expects 'YYYY-MM-DD'
+    const user_id = req.body.user_id;  // Expects the user ID
+
+    const query = {
+        sql: `SELECT COUNT(*) AS reminder_count
+              FROM reminders
+              WHERE user_id = ? AND reminder_date = ?`,
+        values: [user_id, date],
+    };
+
+    db.query(query.sql, query.values, (err, data) => {
+        if (err) {
+            console.log("Error al contar los recordatorios del día", err);
+            return res.json({ message: "Error counting reminders for the day", error: err });
+        }
+        console.log("Conteo de recordatorios del día:", data[0].reminder_count);
+        return res.json({ reminder_count: data[0].reminder_count });
     });
 };
 
@@ -174,6 +199,23 @@ const updateReminder = (req, res) => {
     });
 };
 
+
+const deactivateReminder = (req, res) => {
+    const query = {
+        sql: "UPDATE `reminders` SET `reminder_active` = 0 WHERE `reminder_id` = ?",
+        values: [req.body.reminder_id],
+    };
+
+    db.query(query.sql, query.values, (err, data) => {
+        if (err) {
+            return res.json({ message: "Error deactivating reminder", error: err });
+        }
+        return res.json({ message: "Reminder deactivated successfully" });
+    });
+};
+
+
+
 const deleteReminder = (req, res) => {
     const query = {
         sql: "DELETE FROM `reminders` WHERE `reminder_id` = ?",
@@ -209,7 +251,9 @@ export {
     getRemindersByWeek,
     getReminderById,
     updateReminder,
+    deactivateReminder,
     deleteReminder,
     getRemindersByDay,
+    getCountReminderByDay,
     getReminderBySourceIdAndUserId,
 };

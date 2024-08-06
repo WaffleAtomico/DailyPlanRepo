@@ -146,7 +146,7 @@ export function checkScheduleConflict(newEvent) {
 
         return (newEventStart >= eventStart && newEventStart < eventEnd) ||
                (newEventEnd > eventStart && newEventEnd <= eventEnd);
-    });
+     });
 }
 
 export function checkScheduleSleep(newEvent) {
@@ -174,6 +174,32 @@ export function checkScheduleSleep(newEvent) {
     });
 }
 
+
+
+export function checkSchedulePomodoro(newEvent) {
+    const existingEvents = loadSchedulesFromLocalStorage();
+    
+    const newEventStart = new Date(newEvent.schedule_datetime);
+    const newEventEnd = new Date(newEventStart);
+    newEventEnd.setHours(newEventEnd.getHours() + newEvent.schedule_duration_hour);
+    newEventEnd.setMinutes(newEventEnd.getMinutes() + newEvent.schedule_duration_min);
+
+    return existingEvents.some(event => {
+        // Excluir eventos cuyo nombre contiene "Sleep"
+        if (event.schedule_eventname.toLowerCase().includes("pomodoro")) {
+            return false;
+        }
+
+        const eventStart = new Date(event.schedule_datetime);
+        const eventEnd = new Date(eventStart);
+        eventEnd.setHours(eventEnd.getHours() + event.schedule_duration_hour);
+        eventEnd.setMinutes(eventEnd.getMinutes() + event.schedule_duration_min);
+
+        return (newEventStart >= eventStart && newEventStart < eventEnd) ||
+               (newEventEnd > eventStart && newEventEnd <= eventEnd) ||
+               (newEventStart < eventStart && newEventEnd > eventEnd);
+    });
+}
 
 export function findConflictEvent(newEvent) {
     const existingEvents = loadSchedulesFromLocalStorage();
@@ -238,6 +264,43 @@ export function findConflictSleep(newEvent) {
 
     return null;
 }
+
+
+
+export function findConflictPomodoro(newEvent) {
+    const existingEvents = loadSchedulesFromLocalStorage();
+    
+    const newEventStart = new Date(newEvent.schedule_datetime);
+    const newEventEnd = new Date(newEventStart);
+    newEventEnd.setHours(newEventEnd.getHours() + newEvent.schedule_duration_hour);
+    newEventEnd.setMinutes(newEventEnd.getMinutes() + newEvent.schedule_duration_min);
+
+    for (const event of existingEvents) {
+        // Excluir eventos cuyo nombre contiene "Sleep"
+        if (event.schedule_eventname.toLowerCase().includes("pomodoro")) {
+            continue;
+        }
+
+        const eventStart = new Date(event.schedule_datetime);
+        const eventEnd = new Date(eventStart);
+        eventEnd.setHours(eventEnd.getHours() + event.schedule_duration_hour);
+        eventEnd.setMinutes(eventEnd.getMinutes() + event.schedule_duration_min);
+
+        const isConflict = (newEventStart >= eventStart && newEventStart < eventEnd) ||
+                           (newEventEnd > eventStart && newEventEnd <= eventEnd) ||
+                           (newEventStart < eventStart && newEventEnd > eventEnd);
+
+        if (isConflict) {
+            return {
+                schedule_datetime: event.schedule_datetime,
+                schedule_eventname: event.schedule_eventname
+            };
+        }
+    }
+
+    return null;
+}
+
 
 
 export function addNewEvent(newEvent) {

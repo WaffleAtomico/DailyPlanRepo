@@ -168,6 +168,8 @@ import {
   deleteReminder,
   getRemindersByDay,
   getReminderBySourceIdAndUserId,
+  getCountReminderByDay,
+  deactivateReminder,
 } from './requests/reminder.js';
 
 import {
@@ -472,7 +474,8 @@ app.post(urls.GET_REMINDER_BY_DAY_URL, getRemindersByDay);
 app.post(urls.UPDATE_REMINDER_URL, updateReminder);
 app.post(urls.DELETE_REMINDER_URL, deleteReminder);
 app.post(urls.GET_REMINDER_BY_SOURCE_ID_AND_USER_ID_URL, getReminderBySourceIdAndUserId);
-
+app.post(urls.GET_COUNT_REMINDER_URL, getCountReminderByDay);
+app.post(urls.DEACTIVATED_REMINDER_URL, deactivateReminder);
 
 /*-------------------------------ReminderShare-------------------------*/
 app.post(urls.ADD_REMINDERSHARE_URL, addReminderShare);

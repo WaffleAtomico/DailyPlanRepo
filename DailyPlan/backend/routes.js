@@ -124,11 +124,13 @@ const GET_PUNTUALITY_BY_USER_ID_AND_DATE_URL = '/getPuntualityByUserIdAndDate';
 
 const ADD_REMINDER_URL = '/add-reminder';
 const GET_REMINDERS_URL = '/get-reminders';
+const DEACTIVATED_REMINDER_URL = '/deactivated-reminder';
 const GET_REMINDERS_BY_MONTH_URL = '/get-reminders-by-month';
 const GET_REMINDERS_BY_WEEK_URL = '/get-reminders-by-week';
 const GET_REMINDER_BY_ID_URL = '/get-reminder';
 const GET_REMINDER_BY_DAY_URL = '/get-reminders-by-day';
 const UPDATE_REMINDER_URL = '/update-reminder';
+const GET_COUNT_REMINDER_URL = '/get-count-reminder';
 const DELETE_REMINDER_URL = '/delete-reminder';
 const GET_REMINDER_BY_SOURCE_ID_AND_USER_ID_URL = '/get-reminder-by-source-id-and-user-id';
 
@@ -299,6 +301,7 @@ export {
     GET_REMINDER_BY_DAY_URL,
     GET_REMINDER_BY_ID_URL,
     UPDATE_REMINDER_URL,
+    DEACTIVATED_REMINDER_URL,
     DELETE_REMINDER_URL,
     GET_REMINDER_BY_SOURCE_ID_AND_USER_ID_URL,
     
@@ -307,6 +310,7 @@ export {
     GET_REMINDERSHARE_BY_ID_URL,
     UPDATE_REMINDERSHARE_URL,
     DELETE_REMINDERSHARE_URL,
+    GET_COUNT_REMINDER_URL,
     GET_USER_IDS_BY_REMINDER_URL,
 
     ADD_REPETITIONDAY_URL,

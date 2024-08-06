@@ -46,7 +46,7 @@ export const getPuntualityById = async (user_id) => {
 };
 
 // Function to get punctuality by user ID and date
-export const getPuntualityByUserId = async (user_id, date) => {
+export const getPuntualityByUserId = async (user_id) => {
     try {
         console.log("Se llamo la punualidad por el usuario:", user_id);
         const response = await axios.post(GET_PUNTUALITY_BY_USER_ID_AND_DATE_URL, { user_id });
@@ -156,7 +156,7 @@ export function applyLatePenalty(punctuality, timeDifferenceInMinutes) {
 }
 
 //Method to get the percentage of all the marks
-//Method to get the percentage of all the marks
+
 export const getPercentages = (expectedTimes, actualTimes) => {
     if (expectedTimes.length !== actualTimes.length) {
         throw new Error("The length of expectedTimes and actualTimes must be the same.");

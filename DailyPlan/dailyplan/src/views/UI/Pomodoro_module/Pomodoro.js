@@ -8,7 +8,7 @@ import { myPojo } from '../../../utils/ShowNotifInfo';
 import { grantArchivement, isCompleted } from '../../../utils/archivements/grantArchivement';
 import { getPomodoroById, updatePomodoro } from '../../../utils/validations/pomodoro';
 import { addTone } from "../../../utils/validations/tone";
-import { addNewEvent, addPomodoroSchedule, findConflictEvent } from '../../../utils/validations/schedule';
+import { addNewEvent, addPomodoroSchedule, checkSchedulePomodoro, findConflictEvent, findConflictPomodoro } from '../../../utils/validations/schedule';
 import { checkScheduleConflict } from '../../../utils/validations/schedule';
 import BreakOverlay from './BreakOverlay';
 import { getDistanceMatrix } from '../../../utils/validations/services/distanceMatrixClient';
@@ -32,6 +32,7 @@ const Pomodoro_view = (props) => {
     useEffect(() => {
         getPomodoroById(props.id_user)
             .then(response => {
+            
                 const data = response.data[0];
                 setPomodoro(data);
                 const [hours, minutes] = convertMinutesToHours(data.tpomodoro_hour_work);
@@ -97,7 +98,17 @@ const Pomodoro_view = (props) => {
 
     const playSound = () => {
         if (soundFile) {
+            try{
             playBlobAudio(soundFile);
+            }
+            catch{
+
+                if(soundFile.base64 !== null)
+                {
+                const blob = base64ToBlob(soundFile.base64, 'audio/mpeg');
+                playBlobAudio(blob); 
+                }
+            }
         } else {
             playRingtone();
         }
@@ -173,7 +184,7 @@ const Pomodoro_view = (props) => {
 
         const now = new Date();
         const eventPomodoro = {
-            schedule_eventname: "Sleep",
+            schedule_eventname: "Pomodoro",
             schedule_datetime: now,
             schedule_duration_hour: Math.floor(workMinutes / 60),
             schedule_duration_min: workMinutes % 60,
@@ -181,8 +192,8 @@ const Pomodoro_view = (props) => {
         };
 
             //verificar por un conflicto con un evento
-        if (checkScheduleConflict(eventPomodoro)) {
-            const { schedule_datetime, schedule_eventname } = findConflictEvent(eventPomodoro);
+        if (checkSchedulePomodoro(eventPomodoro)) {
+            const { schedule_datetime, schedule_eventname } = findConflictPomodoro(eventPomodoro);
         
             const titulo = "Conflicto con otro evento";
             const contenido = `Existe el evento ${schedule_eventname} a las ${schedule_datetime}`;

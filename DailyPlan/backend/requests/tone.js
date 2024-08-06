@@ -81,14 +81,11 @@ const  getToneById = (req, res) => {
         }
 
         const tone = data[0];
-        const base64Chunks = splitBase64(tone.tone_location);
-
         return res.json({
             tone_id: tone_id,
             tone_name: tone.tone_name,
-            tone_type: "audio/mp3", // Assuming mp3, modify if needed
-            total_chunks: base64Chunks.length,
-            chunks: base64Chunks
+            tone_location: tone.tone_location,
+            tone_type: "audio/mp3" 
         });
     });
 };
