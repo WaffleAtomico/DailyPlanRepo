@@ -7,49 +7,112 @@ import Alarm_formCrea from './alarm_formCrea';
 import { getAlarmsForUser } from "../../../utils/validations/alarm";
 import { getDaySelectedById } from "../../../utils/validations/dayselected";
 
-import '../../../styles/UI/Alarm/alarmview.css'
 import '../../../styles/UI/Alarm/alarmview.css';
 
 function Alarm_view(props) {
     const [visible, setVisibilty] = useState(false);
     const [items, setItems] = useState([]);
+    const [tempItem, setTempItem] = useState([]);
+    const [isFetched, setIsFetched] = useState(true);
 
     useEffect(() => {
-        addItemsAlarms();
+        if(isFetched){
+            console.log("entre");
+            addItemsAlarms();
+            setIsFetched(false)
+        }
+
     }, [props]);
 
     const addItemsAlarms = () => {
         getAlarmsForUser(props.user_id).then(response => {
-            const tempItem = [];
-            response.data.forEach(alarm => {
-                const newitems = tempItem.filter(x=>x.id===alarm.alarm_id);
-
+            const newTempItem = [...tempItem];
+    
+            const promises = response.data.map(alarm => {
+                const newitems = newTempItem.filter(x => x.id === alarm.alarm_id);
+    
                 if (newitems.length === 0) {
-                    getDaySelectedById(alarm.daysel_id).then(res => {
+                    return getDaySelectedById(alarm.daysel_id).then(res => {
+                        let daysData;
+    
                         if (res.data.length > 0) {
-                            tempItem.push({id: alarm.alarm_id, name: alarm.alarm_name, hour: `${alarm.alarm_hour}:${alarm.alarm_min}`, days: res.data[0]});
+                            daysData = res.data[0];
                         } else {
-                            const days_resp = {
+                            daysData = {
                                 daysel_mon: 0,
-                                daysel_tues: 0,                                daysel_wed: 0,
+                                daysel_tues: 0,
+                                daysel_wed: 0,
                                 daysel_thur: 0,
                                 daysel_fri: 0,
                                 daysel_sat: 0,
                                 daysel_sun: 0
                             };
-                            tempItem.push({id: alarm.alarm_id, name: alarm.alarm_name, hour: `${alarm.alarm_hour}:${alarm.alarm_min}`, days: days_resp});
                         }
-                        
-                    }).catch(error => {});
+    
+                        return {
+                            id: alarm.alarm_id,
+                            name: alarm.alarm_name,
+                            hour: `${alarm.alarm_hour}:${alarm.alarm_min}`,
+                            days: daysData
+                        };
+                    });
                 }
+                return null;
             });
-
-            setItems(tempItem);
+    
+            Promise.all(promises).then(newItems => {
+                const filteredItems = newItems.filter(item => item !== null);
+                const combinedItems = [...newTempItem, ...filteredItems];
+    
+                const uniqueItems = combinedItems.reduce((acc, current) => {
+                    const x = acc.find(item => item.id === current.id);
+                    if (!x) {
+                        return acc.concat([current]);
+                    } else {
+                        return acc;
+                    }
+                }, []);
+    
+                setTempItem(uniqueItems);
+                setItems(uniqueItems);
+            }).catch(error => {
+                console.error(error);
+            });
         }).catch(error => {
             console.error(error);
         });
     };
     
+    useEffect(() => {
+        const uniqueItems = items.reduce((acc, current) => {
+            const x = acc.find(item => item.id === current.id);
+            if (!x) {
+                return acc.concat([current]);
+            } else {
+                return acc;
+            }
+        }, []);    
+        if (JSON.stringify(items) !== JSON.stringify(uniqueItems)) {
+            setItems(uniqueItems);
+        }
+    }, [items]);
+    
+    
+    // useEffect(() => {
+    //     let totalElementos = 0;
+
+    //     items.forEach(item => {
+    //         totalElementos += 1; 
+    //     });
+
+    //     console.log("ElementosEspecif0 ", items[0]);
+    //     console.log("ElementosEspecif1 ", items[1]);
+    //     console.log("ElementosEspecif2 ", items[2]);
+    //     console.log("Elementos ", items);
+    //     console.log("ElementosCant ", totalElementos);
+    // }, [items]);
+
+
     const addItem = () => {
         setVisibilty(visible => !visible);
     };
@@ -79,27 +142,28 @@ function Alarm_view(props) {
                         setVisibilty={setVisibilty} 
                         // saveAlarm={}
                     /> */}
-                    <Alarm_formCrea 
-                        setVisibilty={setVisibilty} 
+                    <Alarm_formCrea
+                        fetchAlarms={addItemsAlarms}
+                        setVisibilty={setVisibilty}
                         user_id={props.user_id}
                     />
-                    
+
                 </div>
             </div>}
-            {items.length > 0 && (
+            {(items.length > 0) && (
                 <div className="crealar-item-grid">
                     <div className="crealar-linea">
                         <div className="crealar-item" onClick={addItem}>
                             <button className="crealar-custom-button crealar-agregar-btn" >
-                                <FaPlus size={40} />
+                                <FaPlus size={140} />
                             </button>
                         </div>
                         {firstLine.map((item, itemIndex) => (
                             <div className="crealar-item" key={itemIndex}>
                                 <h3>{item.name}</h3>
-                                <br/>
+                                <br />
                                 <h1>{item.hour}</h1>
-                                <br/>
+                                <br />
                                 <div className={item.days.daysel_mon === 1 ? "day-selected" : "day-not-selected"}>
                                     <h4>L</h4>
                                 </div>
@@ -129,9 +193,9 @@ function Alarm_view(props) {
                             {line.map((item, itemIndex) => (
                                 <div className="crealar-item" key={itemIndex}>
                                     <h3>{item.name}</h3>
-                                    <br/>
+                                    <br />
                                     <h1>{item.hour}</h1>
-                                    <br/>
+                                    <br />
                                     <div className={item.days.daysel_mon === 1 ? "day-selected" : "day-not-selected"}>
                                         <h4>L</h4>
                                     </div>
@@ -159,7 +223,7 @@ function Alarm_view(props) {
                     ))}
                 </div>
             )}
-            {items.length === 0 && (
+            {(items.length === 0) && (
                 <div className="crealar-linea">
                     <div className="crealar-item" onClick={addItem}>
                         <button className="crealar-custom-button crealar-agregar-btn" >

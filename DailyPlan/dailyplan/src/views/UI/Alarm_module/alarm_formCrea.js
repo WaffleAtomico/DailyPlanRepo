@@ -142,7 +142,7 @@ const AlarmFormView = (props) => {
         });
     
         try {
-            console.log("hola");
+            // console.log("hola");
             const response = await addDaySelected(days);
             const alarmTime_array = alarmTime.split(':');
     
@@ -183,7 +183,7 @@ const AlarmFormView = (props) => {
                 if (res) {
                     const { alarm_id } = res.data;
                     console.log(alarm_id);
-    
+                    
                     if (ShareUser.length > 0) {
                         for (const invUser of ShareUser) {
                             try {
@@ -209,7 +209,7 @@ const AlarmFormView = (props) => {
                             }
                         }
                     }
-    
+                    props.fetchAlarms();
                     props.setVisibilty();
                 }
             } catch (error) {
