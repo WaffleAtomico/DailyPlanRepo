@@ -321,21 +321,28 @@ export default function OriginPage() {
         reminderTime.setMilliseconds(0);
         console.log("currenTime:", currentTime);
         console.log("reminderTime:", reminderTime);
-        return currentTime >= preparationTime && currentTime < reminderTime;
+        return currentTime >= preparationTime ;
       });
 
       if (upcomingReminder) {
 
-        setShowMiniTab(true);
+           //Obtener todo: si es nulo, reproducir el predefinido. En caso contrario, el asignado
+           console.log("estatus:", upcomingReminder.status);
+           //Si está desactivado
+           if (upcomingReminder.status === 0 || mostrarPreparacion === true) {
+                 
+            setShowMiniTab(false);
+            return;
+           }
+
+
+
+           
+   
+        
         const dateObj = new Date(upcomingReminder.reminderDate);
 
-        //Obtener todo: si es nulo, reproducir el predefinido. En caso contrario, el asignado
-
-        //Si está desactivado
-        if (upcomingReminder.status === 0) {
-              return;
-        }
-
+     
 
 
         getToneById(upcomingReminder.tone_id).then(response => {
@@ -393,9 +400,16 @@ export default function OriginPage() {
                 } )
 
           }
+          else
+          {
+            setShowMiniTab(true);
+          }
 
-
+            try{
             playBlobAudio(response.toneBlob);
+            }catch{
+
+            }
                myPojo.setNotif("Recordatorio", <h1>{upcomingReminder.reminderName} a las {String(upcomingReminder.reminderHour).padStart(2,'0')}:{String(upcomingReminder.reminderMin).padStart(2,'0')} del día { formatDate(dateObj)}</h1>)
 
 
@@ -437,7 +451,7 @@ export default function OriginPage() {
               reminder_id: reminder.reminder_id,
               tone_id: reminder.tone_id,
               id: reminder.objblo_id,
-              status: reminder.remminder_active,
+              status: reminder.reminder_active,
               name: reminder.objblo_name,
               reminderName: reminder.reminder_name,
               timeLimit: reminder.objblo_duration_min,
@@ -458,7 +472,7 @@ export default function OriginPage() {
       .catch(error => {
         console.log("No se pudieron obtener los recordatorios de la semana", error);
       });
-  }, [id]);
+  }, [mostrarPreparacion, id]);
 
 
   const handleClosePreparationView = () => {
