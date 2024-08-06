@@ -15,6 +15,7 @@ const DELETE_ALARM_URL = `${urlreference}/delete-alarm`;
 const ALARM_NAME_EXISTS_URL = `${urlreference}/alarms-existsname`;
 const USER_ALARM_LIMIT_REACHED_URL = `${urlreference}/alarms-limit-user`;
 
+
 const ADD_USER_BLOCKED_URL = `${urlreference}/bloqusr`;
 const DELETE_USER_BLOCKED_URL = `${urlreference}/unbloq`;
 const GET_USERS_BLOCKED_URL = `${urlreference}/getusrbloq`;
@@ -43,6 +44,7 @@ const GET_USER_INFO_URL = `${urlreference}/get-userinfo`;
 const GET_USER_BY_MAIL_URL = `${urlreference}/user-bymail`;
 const GET_USER_BY_PHONE_URL = `${urlreference}/user-byphone`;
 const UPDATE_USER_TITLE_URL = `${urlreference}/user-updtitle`;
+const UPDATE_USER_STATUS_TO_ZERO_URL = `${urlreference}/update-user-status-to-zero`;
 
 const SEND_MAIL_URL = `${urlreference}/send`;
 const SEND_MAILJT_URL = `${urlreference}/sendjt`;
@@ -231,6 +233,7 @@ export {
     GET_USER_BY_MAIL_URL,
     GET_USER_BY_PHONE_URL,
     UPDATE_USER_TITLE_URL,
+    UPDATE_USER_STATUS_TO_ZERO_URL,
 
     SEND_MAIL_URL,
     SEND_MAILJT_URL,

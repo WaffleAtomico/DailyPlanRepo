@@ -21,6 +21,7 @@ const USER_EXISTS_NUMBER_URL = '/users-existnumber';
 const GET_USER_BY_MAIL_URL = '/user-bymail';
 const GET_USER_BY_NUMBER_URL = '/user-bynumber';
 const UPDATE_USER_TITLE_URL = '/user-updtitle';
+const UPDATE_USER_STATUS_TO_ZERO_URL = '/update-user-status-to-zero';
 
 const ADD_CLOCK_URL = '/clock-id';
 const GET_CLOCK_URL = '/clock-byid';
@@ -207,6 +208,7 @@ export {
     UPDATE_USER_NAME_URL,
     GET_USER_BY_MAIL_URL,
     GET_USER_BY_NUMBER_URL,
+    UPDATE_USER_STATUS_TO_ZERO_URL,
     ADD_CLOCK_URL,
     GET_CLOCK_URL,
     DELETE_CLOCK_URL,

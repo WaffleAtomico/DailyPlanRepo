@@ -16,7 +16,7 @@ import "../../../styles/UI/profile/configOptions.css";
 import "../../../styles/UI/profile/notifView.css";
 import "../../../styles/UI/profile/profileInfo.css";
 import { addPermission, getPermissionById } from "../../../utils/validations/permission";
-import { updateUserName, updateUserTitle } from "../../../utils/validations/user";
+import { updateUserName, updateUserStatusToZero, updateUserTitle } from "../../../utils/validations/user";
 import { myPojo } from "../../../utils/ShowNotifInfo";
 import { GoGear } from "react-icons/go";
 import { getUserNotifications } from "../../../utils/validations/notification";
@@ -74,6 +74,11 @@ const PersoInfo = (props) => {
 
   const handleDeleteAccount = () => {
     console.log('Cuenta eliminada');
+    updateUserStatusToZero(props.id).then(res =>{
+      if(res){
+        console.log("Cuenta eliminada o con numero de 0 de estatus")
+      }
+    }).catch(err =>{console.log(err)});
     navigate("/login");
   };
 
