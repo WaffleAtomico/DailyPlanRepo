@@ -275,11 +275,11 @@ export const transporterjt = nodemailer.createTransport({
   port: 587,
   secure: false, // use TLS
   auth: {
-    user: "dailyplan@javateam.com.mx",
-    pass: "d4i1yp!an2024",
+    user: "",
+    pass: "",
   },
   tls: {
-    ciphers: 'SSLv3'
+    ciphers: ''
   }
 });
 
@@ -304,7 +304,7 @@ async function main() {
   // send mail with defined transport object
   const infoJ = await transporter.sendMail({
     from: '"DailyPlan" <dailyplan@javateam.com.mx>', // sender address
-    to: "openilla@javateam.com.mx", // list of receivers
+    to: "", // list of receivers
     subject: "Hello", // Subject line
     text: "Hello world?", // plain text body
     html: "<b>Hello world?</b>", // html body
@@ -312,7 +312,7 @@ async function main() {
 
   const infom = await transporter.sendMail({
     from: '"DailyPlan" <109a3dc47f4611@inbox.mailtrap.io>', // sender address
-    to: "openilla@javateam.com.mx", // list of receivers
+    to: "", // list of receivers
     subject: "Hello", // Subject line
     text: "Hello world?", // plain text body
     html: "<b>Hello world?</b>", // html body
@@ -545,15 +545,15 @@ app.post(urls.GET_USER_NOTIFICATIONS_URL, getUserNotifications);
 
 /*-------------------------------spotify------------------------- */
 
-const CLIENT_ID = 'b8a02610f9414e06875e2a1ab33695a6';
-const CLIENT_SECRET = 'ece004e5f2d44a9e9f4ad4b80140532e';
+const CLIENT_ID = '';
+const CLIENT_SECRET = '';
 const REDIRECT_URI = 'http://localhost:3000/callback';
 
 
 /*-------------------------------Google Maps Platform---------------------------*/
 
-const CLIENT_ID_MAP = 'AIzaSyABWa3p-_7ZFIh7eOEUPLD8r7vKDn3KHfE';
-const CLIENT_SECRET_MAP = 'z-ucHPnSDWcMh7R_mNuqnsZG5c0=';
+const CLIENT_ID_MAP = '';
+const CLIENT_SECRET_MAP = '';
 
 
 
