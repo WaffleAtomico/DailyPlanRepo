@@ -283,7 +283,7 @@ export const transporterjt = nodemailer.createTransport({
   }
 });
 
-export var mailsenderjt = '"DailyPlan" <dailyplan@javateam.com.mx>';
+export var mailsenderjt = '"DailyPlan"';
 
 
 export const transporter = nodemailer.createTransport({
@@ -296,34 +296,7 @@ export const transporter = nodemailer.createTransport({
   }
 });
 
-export var mailsender = '"DailyPlan" <109a3dc47f4611@inbox.mailtrap.io>';
-
-/*
-// async..await is not allowed in global scope, must use a wrapper
-async function main() {
-  // send mail with defined transport object
-  const infoJ = await transporter.sendMail({
-    from: '"DailyPlan" <dailyplan@javateam.com.mx>', // sender address
-    to: "", // list of receivers
-    subject: "Hello", // Subject line
-    text: "Hello world?", // plain text body
-    html: "<b>Hello world?</b>", // html body
-  });
-
-  const infom = await transporter.sendMail({
-    from: '"DailyPlan" <109a3dc47f4611@inbox.mailtrap.io>', // sender address
-    to: "", // list of receivers
-    subject: "Hello", // Subject line
-    text: "Hello world?", // plain text body
-    html: "<b>Hello world?</b>", // html body
-  });
-
-  console.log("Message sent: %s", info.messageId);
-  // Message sent: <d786aa62-4e0a-070a-47ed-0b0666549519@ethereal.email>
-}
-//prueba de envio de correo
-main().catch(console.error);
-*/
+export var mailsender = '"DailyPlan"';
 
 /*-------------------------- Envio de correo --------------------------*/
 app.post(urls.SEND_MAIL_URL, sendMailrest);
